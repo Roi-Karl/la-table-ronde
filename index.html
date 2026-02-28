@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Table Ronde (mais carrée) | Domaine du Roi Karl</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --or-royal: #D4AF37;
+            --or-sombre: #AA8222;
+            --noir-encre: #1A1A1A;
+            --parchemin: #F4EBD0;
+            --rouge-blason: #8B0000;
+            --gris-pierre: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--noir-encre);
+            color: var(--parchemin);
+            font-family: 'Lora', serif;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png'); /* Texture subtile */
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Cinzel', serif; text-align: center; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background: rgba(0,0,0,0.8);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--or-royal);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--or-royal);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: white; text-shadow: 0 0 5px var(--or-royal); }
+
+        /* --- HEADER --- */
+        header {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1599408162165-41e976696d32?auto=format&fit=crop&q=80&w=1600'); /* Image d'ambiance château */
+            background-size: cover;
+            background-position: center;
+            border-bottom: 3px double var(--or-royal);
+        }
+
+        .titre-principal { font-size: clamp(2.5rem, 8vw, 4.5rem); color: var(--or-royal); text-shadow: 3px 3px 0px black; }
+        .titre-secondaire { font-size: 1.5rem; font-style: italic; margin-bottom: 2rem; }
+
+        /* --- CONTENEUR --- */
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+
+        .parchemin-box {
+            background-color: var(--parchemin);
+            color: var(--noir-encre);
+            padding: 3rem;
+            margin-bottom: 4rem;
+            border: 10px double var(--or-sombre);
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        }
+
+        .parchemin-box h2 { color: var(--rouge-blason); margin-bottom: 2rem; border-bottom: 1px solid var(--or-sombre); display: inline-block; width: 100%; padding-bottom: 10px; }
+
+        /* --- LETTRINE --- */
+        .lettrine::first-letter {
+            float: left;
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            line-height: 0.8;
+            padding-right: 10px;
+            color: var(--rouge-blason);
+            font-weight: bold;
+        }
+
+        /* --- VIDEO --- */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 2rem 0;
+            border: 5px solid var(--gris-pierre);
+        }
+        .video-wrapper iframe { position: absolute; top:0; left:0; width:100%; height:100%; }
+
+        /* --- GRILLES (BOUTIQUE & SPONSORS) --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 2rem; }
+        .card { border: 1px solid var(--or-sombre); padding: 1.5rem; text-align: center; background: rgba(0,0,0,0.03); }
+
+        /* --- NEWSLETTER (REGISTRE) --- */
+        .registre-form { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 1rem; }
+        input[type="email"] { padding: 10px; width: 80%; max-width: 400px; border: 1px solid var(--or-sombre); font-family: 'Lora', serif; }
+
+        /* --- BOUTONS --- */
+        .btn {
+            background: var(--rouge-blason);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            border: 2px solid var(--or-royal);
+            cursor: pointer;
+            transition: 0.4s;
+            display: inline-block;
+        }
+        .btn:hover { background: var(--or-royal); color: black; transform: scale(1.05); }
+
+        footer { text-align: center; padding: 3rem; background: #000; color: var(--or-sombre); font-size: 0.8rem; }
+
+        @media (max-width: 600px) { .parchemin-box { padding: 1.5rem; } }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#accueil">ACCUEIL</a>
+        <a href="#video">DERNIÈRE QUÊTE</a>
+        <a href="#grimoire">GRIMOIRE</a>
+        <a href="#echoppe">ÉCHOPPE</a>
+        <a href="#registre">S'INSCRIRE</a>
+        <a href="#audience">FAQ</a>
+    </nav>
+
+    <header id="accueil">
+        <h1 class="titre-principal">La Table Ronde</h1>
+        <h2 class="titre-secondaire">(mais carrée)</h2>
+        <p>Le Royaume Digital du Roi Karl</p>
+        <br>
+        <a href="https://www.youtube.com/@Roi-Karl" target="_blank" class="btn">Rejoindre l'Armée sur YouTube</a>
+    </header>
+
+    <div class="container">
+        
+        <section class="parchemin-box">
+            <h2>Éditorial du Souverain</h2>
+            <p class="lettrine">Oyez ! Bienvenue dans cet espace où la géométrie défie la légende. Ici, nous débattons de tout avec la ferveur des anciens et l'humour des temps modernes. Que vous soyez chevalier, mage ou simple paysan égaré sur le web, il y a un coin pour vous à cette table.</p>
+        </section>
+
+        <section id="video" class="parchemin-box">
+            <h2>La Lucarne Magique</h2>
+            <p>Le dernier exploit du Roi Karl en images :</p>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section id="grimoire" class="parchemin-box">
+            <h2>Le Grimoire des Quêtes</h2>
+            <p>Ce que l'avenir nous réserve :</p>
+            <ul style="list-style: none; margin-top: 1rem; text-align: left;">
+                <li>⚔️ <strong>Mars 2026 :</strong> Grande épopée sur l'histoire de la Table Carrée.</li>
+                <li>🏰 <strong>Avril 2026 :</strong> Exploration des ruines de l'algorithme YouTube.</li>
+                <li>🍷 <strong>Chaque Vendredi :</strong> Banquet en direct (Live Stream).</li>
+            </ul>
+        </section>
+
+        <section id="echoppe" class="parchemin-box">
+            <h2>L'Échoppe & Les Alliés</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Tuniques de Cour</h3>
+                    <p>Habillez-vous comme un noble de la table carrée. (Bientôt disponible)</p>
+                </div>
+                <div class="card">
+                    <h3>Mécène Actuel</h3>
+                    <p>Bannière de notre sponsor principal. (Emplacement libre)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="registre" class="parchemin-box" style="text-align: center;">
+            <h2>Le Registre des Nobles</h2>
+            <p>Laissez votre sceau pour ne manquer aucune convocation royale.</p>
+            <form class="registre-form">
+                <input type="email" placeholder="Votre courriel..." required>
+                <button type="submit" class="btn">Apposer mon Sceau</button>
+            </form>
+        </section>
+
+        <section id="audience" class="parchemin-box">
+            <h2>Salle d'Audience (FAQ)</h2>
+            <div style="text-align: left; margin-top: 1rem;">
+                <p><strong>Q : Pourquoi une table carrée ?</strong><br>R : Pour éviter que les bouteilles de cervoise ne roulent par terre, pardi !</p>
+                <br>
+                <p><strong>Q : Comment devenir Chevalier ?</strong><br>R : En cliquant sur le bouton d'abonnement et en activant la cloche du royaume.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Propriété de la Couronne - Roi Karl &copy; 2026</p>
+        <p>Fait de pierre et de pixels.</p>
+    </footer>
+
+</body>
+</html>
