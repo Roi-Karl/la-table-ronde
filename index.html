@@ -191,12 +191,24 @@
         <section id="registre" class="parchemin-box" style="text-align: center;">
             <h2>Le Registre des Nobles</h2>
             <p>Laissez votre sceau pour ne manquer aucune convocation royale.</p>
-            <form action="https://api.web3forms.com/submit" method="POST">
-              <input type="hidden" name="access_key" value="06d74c50-f45c-4714-b0f5-2ccc0f4a421f">
-              <input type="text" name="name" required>
-              <input type="email" name="email" required>
-              <textarea name="message" required></textarea>
-              <button type="submit">Submit</button>
+            <form action="https://api.web3forms.com/submit" method="POST" class="registre-form">
+
+                <input type="hidden" name="access_key" value="06d74c50-f45c-4714-b0f5-2ccc0f4a421f">
+            
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+            
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+                    <input type="email" name="email" placeholder="Votre courriel de noble..." required 
+                           style="padding: 10px; width: 80%; max-width: 400px; border: 1px solid var(--or-sombre);">
+                    
+                    <input type="hidden" name="from_name" value="Le Roi Karl">
+                    <input type="hidden" name="subject" value="Bienvenue à la Table Ronde (mais carrée) !">
+                    <input type="hidden" name="message" value="Oyez ! Le Roi Karl a bien reçu votre allégeance. Bienvenue parmi nous. Surveillez votre lucarne magique, de nouvelles aventures arrivent !">
+            
+                    <input type="hidden" name="redirect" value="https://VOTRE-PSEUDO.github.io/la-table-ronde/merci.html">
+            
+                    <button type="submit" class="btn">Apposer mon Sceau</button>
+                </div>
             </form>
         </section>
 
