@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sceau Apposé | La Table Ronde</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --or-royal: #D4AF37;
+            --parchemin: #F4EBD0;
+            --noir-encre: #1A1A1A;
+            --rouge-blason: #8B0000;
+        }
+        body {
+            background-color: var(--noir-encre);
+            color: var(--parchemin);
+            font-family: 'Lora', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .carte-merci {
+            background-color: var(--parchemin);
+            color: var(--noir-encre);
+            padding: 3rem;
+            border: 8px double var(--or-royal);
+            max-width: 500px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+        h1 { font-family: 'Cinzel', serif; color: var(--rouge-blason); margin-bottom: 1rem; }
+        p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .btn {
+            display: inline-block;
+            background: var(--rouge-blason);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            border: 2px solid var(--or-royal);
+            transition: 0.3s;
+        }
+        .btn:hover { background: var(--or-royal); color: black; }
+    </style>
+</head>
+<body>
+    <div class="carte-merci">
+        <h1>C'est entendu !</h1>
+        <p>Votre sceau a été vérifié par le Grand Chambellan. Vous êtes désormais inscrit au Registre des Nobles du Roi Karl.</p>
+        <a href="index.html" class="btn">Retourner au Donjon</a>
+    </div>
+</body>
+</html>
