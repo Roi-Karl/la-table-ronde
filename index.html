@@ -180,24 +180,36 @@
                 <li>🍷 <strong>Chaque Vendredi :</strong> Banquet en direct (Live Stream).</li>
             </ul>
         </section>
-        <section id="section-profil" class="parchemin-box" style="display:none; border: 2px solid var(--or-royal); background: rgba(0,0,0,0.2);">
-            <h2>👤 Votre Titre de Chevalier</h2>
-            <div style="text-align: center; margin-top: 1rem;">
-                <p><strong>Identité :</strong> <span id="profil-email">...</span></p>
-                <p><strong>Statut :</strong> <span style="color: var(--or-royal); font-weight: bold;">Chevalier Officiel</span></p>
-                <p><strong>Arrivée au Donjon :</strong> <span id="profil-date">...</span></p>
-                <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px; align-items: center;">
-                <button onclick="oubliMotDePasse()" style="background: var(--or-royal); color: black; border: none; padding: 10px 20px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; width: fit-content;">
-                    Changer mon mot de passe
-                </button>
-                <button onclick="deconnexion()" style="margin-top: 20px; background: none; border: 1px solid var(--rouge-blason); color: var(--rouge-blason); cursor: pointer; padding: 5px 10px;">
-                    Rendre les armes (Déconnexion)
-                </button>
-                    <p style="margin-top: 30px; font-size: 0.7rem; opacity: 0.6;">
-                        <a href="javascript:void(0)" onclick="demanderSuppression()" style="color: var(--rouge-blason); text-decoration: underline;">
-                            Quitter la Table Ronde définitivement (Supprimer mon compte)
-                        </a>
+        <section id="section-profil" class="parchemin-box" style="display:none;">
+            <h2>📜 Votre Titre de Chevalier</h2>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                
+                <div style="background: rgba(0,0,0,0.05); padding: 20px; border: 1px dashed var(--or-sombre); margin-bottom: 2rem;">
+                    <p style="font-family: 'Cinzel', serif; color: var(--rouge-blason); font-size: 1.2rem; margin-bottom: 10px;">
+                        Fidèle Sujet : <span id="profil-email" style="color: var(--noir-encre);">...</span>
                     </p>
+                    <p style="font-style: italic;">
+                        Admis au Donjon le : <span id="profil-date">...</span>
+                    </p>
+                </div>
+        
+                <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                    <button onclick="oubliMotDePasse()" class="btn" style="padding: 10px 20px; font-size: 0.8rem;">
+                        Changer ma clé (Mot de passe)
+                    </button>
+                    
+                    <div style="margin-top: 10px;">
+                        <a href="javascript:deconnexion()" style="color: var(--rouge-blason); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--rouge-blason);">
+                            REPOSER LES ARMES
+                        </a>
+                    </div>
+        
+                    <button onclick="demanderSuppression()" style="background: none; border: none; color: #666; font-size: 0.7rem; cursor: pointer; text-decoration: underline; margin-top: 20px;">
+                        Effacer mon nom du registre définitivement
+                    </button>
+                </div>
             </div>
         </section>
         <section id="zone-privee" class="parchemin-box" style="display:none; border: 4px solid var(--or-royal);">
