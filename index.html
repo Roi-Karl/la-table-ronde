@@ -242,7 +242,21 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
+                                // Forcer les fonctions à être visibles par les boutons du HTML
+                                  window.ouvrirPorte = () => {
+                                    document.getElementById('modalConnexion').style.display = 'flex';
+                                  };
+                                  
+                                  window.fermerPorte = () => {
+                                    document.getElementById('modalConnexion').style.display = 'none';
+                                  };
+                                
+                                  window.basculerMode = () => {
+                                    modeInscription = !modeInscription;
+                                    document.getElementById('titreModal').innerText = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
+                                    document.getElementById('btnAction').innerText = modeInscription ? "S'inscrire" : "Se Connecter";
+                                    document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
+                                  };
     const firebaseConfig = {
       apiKey: "AIzaSyDuWDm8uNJwYZrfPg_YLbzRyMc0TSyVhzw",
       authDomain: "la-table-ronde.firebaseapp.com",
