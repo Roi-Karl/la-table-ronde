@@ -141,6 +141,7 @@
     <nav>
             <a href="#accueil">ACCUEIL</a>
             <a href="#video">DERNIÈRE QUÊTE</a>
+                <span id="btn-nav-auth" style="margin-left:15px;"></span>
             <a href="#grimoire">GRIMOIRE</a>
             <a href="#echoppe">ÉCHOPPE</a>
             <a href="#registre">Registre</a>
@@ -238,43 +239,61 @@
         <p>Propriété de la Couronne - Roi Karl &copy; 2026</p>
         <p>Fait de pierre et de pixels.</p>
     </footer>
-    <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // REMPLACEZ CECI PAR VOS COORDONNÉES FIREBASE
-  const firebaseConfig = {
-    apiKey: "VOTRE_API_KEY",
-    authDomain: "VOTRE_PROJET.firebaseapp.com",
-    projectId: "VOTRE_PROJET_ID",
-    storageBucket: "VOTRE_PROJET.appspot.com",
-    messagingSenderId: "VOTRE_ID",
-    appId: "VOTRE_APP_ID"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyDuWDm8uNJwYZrfPg_YLbzRyMc0TSyVhzw",
+      authDomain: "la-table-ronde.firebaseapp.com",
+      projectId: "la-table-ronde",
+      storageBucket: "la-table-ronde.firebasestorage.app",
+      messagingSenderId: "846762387353",
+      appId: "1:846762387353:web:21b289708e91e76cadd508",
+      measurementId: "G-JCHK68XYB2"
+    };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  let modeInscription = false;
 
-  // LOGIQUE DE CONNEXION (Exemple rapide)
-  window.connexionRoyale = async () => {
-    const email = prompt("Votre courriel, noble ami ?");
-    const password = prompt("Le mot de passe secret ?");
+  // Fonctions pour la fenêtre
+  window.ouvrirPorte = () => document.getElementById('modalConnexion').style.display = 'flex';
+  window.fermerPorte = () => document.getElementById('modalConnexion').style.display = 'none';
+  window.deconnexion = () => signOut(auth);
+  
+  window.basculerMode = () => {
+    modeInscription = !modeInscription;
+    document.getElementById('titreModal').innerText = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
+    document.getElementById('btnAction').innerText = modeInscription ? "S'inscrire" : "Se Connecter";
+    document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
+  };
+
+  window.agirRoyale = async () => {
+    const email = document.getElementById('authEmail').value;
+    const pass = document.getElementById('authPassword').value;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert("Bienvenue au château !");
-    } catch (error) {
-      alert("Accès refusé : " + error.message);
+      if (modeInscription) {
+        await createUserWithEmailAndPassword(auth, email, pass);
+      } else {
+        await signInWithEmailAndPassword(auth, email, pass);
+      }
+      fermerPorte();
+    } catch (e) {
+      alert("Erreur de la garde : " + e.message);
     }
   };
 
-  // SURVEILLER L'ÉTAT (Connecté ou non)
+  // Surveillance de l'état
   onAuthStateChanged(auth, (user) => {
-    const zoneSecrete = document.getElementById('zone-privee');
+    const zonePrivée = document.getElementById('zone-privee');
+    const btnNav = document.getElementById('btn-nav-auth');
     if (user) {
-      zoneSecrete.style.display = 'block';
-      console.log("Utilisateur connecté :", user.email);
+      zonePrivée.style.display = 'block';
+      btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason);">QUITTER LE DONJON</a>`;
     } else {
-      zoneSecrete.style.display = 'none';
+      zonePrivée.style.display = 'none';
+      btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:5px 10px; border-radius:4px; font-weight:bold;">ACCÈS MEMBRE</a>`;
     }
   });
 </script>
