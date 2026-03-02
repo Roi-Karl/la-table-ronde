@@ -262,9 +262,9 @@
   const auth = getAuth(app);
   let modeInscription = false; // ← Déclaré EN PREMIER
 
-  window.ouvrirPorte = () => document.getElementById('modalConnexion').style.display = 'block';
-  window.fermerPorte = () => document.getElementById('modalConnexion').style.display = 'none';
-  window.deconnexion = () => signOut(auth); // ← Ajouté !
+window.ouvrirPorte = () => { document.getElementById('modalConnexion').style.display = 'block'; };
+window.fermerPorte = () => { document.getElementById('modalConnexion').style.display = 'none'; };
+window.deconnexion = () => { signOut(auth); };
 
   window.basculerMode = () => {
     modeInscription = !modeInscription;
