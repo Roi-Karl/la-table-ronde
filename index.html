@@ -299,18 +299,21 @@ window.deconnexion = () => { signOut(auth); };
     document.getElementById('btnAction').innerText = modeInscription ? "S'inscrire" : "Se Connecter";
     document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
   };
+    window.oubliMotDePasse = async () => {
+    // On essaie d'abord de prendre l'email de l'utilisateur connecté
+    // Sinon, on prend celui écrit dans le formulaire
+    const userConnecte = auth.currentUser;
+    const emailFormulaire = document.getElementById('authEmail').value;
+    const emailCible = userConnecte ? userConnecte.email : emailFormulaire;
     
-window.oubliMotDePasse = async () => {
-    const email = document.getElementById('authEmail').value;
-    
-    if (!email) {
+    if (!emailCible) {
         alert("Noble ami, inscrivez d'abord l'endroit ou vous crèchez dans le champ ci-dessus pour recevoir mon aide, votre humble serviteur...!");
         return;
     }
 
     try {
-        await sendPasswordResetEmail(auth, email);
-        alert("🛡️ Un pigeon voyageur est en route ! Consultez vos courriers pour réinitialiser votre mot de passe.");
+        await sendPasswordResetEmail(auth, emailCible);
+        alert("🛡️ Le pigeon voyageur est en route vers " + emailCible + " ! Suivez les instructions pour changer votre clé.");
     } catch (e) {
         alert("Erreur de la garde : " + e.message);
     }
