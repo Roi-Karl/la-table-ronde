@@ -250,34 +250,30 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-                                // Forcer les fonctions à être visibles par les boutons du HTML
-                                  window.ouvrirPorte = () => {
-                                    document.getElementById('modalConnexion').style.display = 'block';
-                                  };
-                                  
-                                  window.fermerPorte = () => {
-                                    document.getElementById('modalConnexion').style.display = 'none';
-                                  };
-                                
-                                  window.basculerMode = () => {
-                                    modeInscription = !modeInscription;
-                                    document.getElementById('titreModal').innerText = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
-                                    document.getElementById('btnAction').innerText = modeInscription ? "S'inscrire" : "Se Connecter";
-                                    document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
-                                  };
-    const firebaseConfig = {
-      apiKey: "AIzaSyDuWDm8uNJwYZrfPg_YLbzRyMc0TSyVhzw",
-      authDomain: "la-table-ronde.firebaseapp.com",
-      projectId: "la-table-ronde",
-      storageBucket: "la-table-ronde.firebasestorage.app",
-      messagingSenderId: "846762387353",
-      appId: "1:846762387353:web:21b289708e91e76cadd508"
-      
-    };
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuWDm8uNJwYZrfPg_YLbzRyMc0TSyVhzw",
+    authDomain: "la-table-ronde.firebaseapp.com",
+    projectId: "la-table-ronde",
+    storageBucket: "la-table-ronde.firebasestorage.app",
+    messagingSenderId: "846762387353",
+    appId: "1:846762387353:web:21b289708e91e76cadd508"
+  };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  let modeInscription = false;
+  let modeInscription = false; // ← Déclaré EN PREMIER
+
+  window.ouvrirPorte = () => document.getElementById('modalConnexion').style.display = 'block';
+  window.fermerPorte = () => document.getElementById('modalConnexion').style.display = 'none';
+  window.deconnexion = () => signOut(auth); // ← Ajouté !
+
+  window.basculerMode = () => {
+    modeInscription = !modeInscription;
+    document.getElementById('titreModal').innerText = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
+    document.getElementById('btnAction').innerText = modeInscription ? "S'inscrire" : "Se Connecter";
+    document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
+  };
 
   window.agirRoyale = async () => {
     const email = document.getElementById('authEmail').value;
@@ -294,7 +290,6 @@
     }
   };
 
-  // Surveillance de l'état
   onAuthStateChanged(auth, (user) => {
     const zonePrivée = document.getElementById('zone-privee');
     const btnNav = document.getElementById('btn-nav-auth');
@@ -309,3 +304,4 @@
 </script>
 </body>
 </html>
+
