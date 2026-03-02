@@ -180,6 +180,18 @@
                 <li>🍷 <strong>Chaque Vendredi :</strong> Banquet en direct (Live Stream).</li>
             </ul>
         </section>
+        <section id="section-profil" class="parchemin-box" style="display:none; border: 2px solid var(--or-royal); background: rgba(0,0,0,0.2);">
+            <h2>👤 Votre Titre de Chevalier</h2>
+            <div style="text-align: center; margin-top: 1rem;">
+                <p><strong>Identité :</strong> <span id="profil-email">...</span></p>
+                <p><strong>Statut :</strong> <span style="color: var(--or-royal); font-weight: bold;">Chevalier Officiel</span></p>
+                <p><strong>Arrivée au Donjon :</strong> <span id="profil-date">...</span></p>
+                
+                <button onclick="deconnexion()" style="margin-top: 20px; background: none; border: 1px solid var(--rouge-blason); color: var(--rouge-blason); cursor: pointer; padding: 5px 10px;">
+                    Rendre les armes (Déconnexion)
+                </button>
+            </div>
+        </section>
         <section id="zone-privee" class="parchemin-box" style="display:none; border: 4px solid var(--or-royal);">
             <h2>🏰 Contenu Exclusif des Chevalier(e)s</h2>
             <p>Oyez ! Vous avez franchi la herse. Voici vos privilèges :</p>
@@ -332,23 +344,36 @@ window.agirRoyale = async () => {
 
 onAuthStateChanged(auth, (user) => {
     const zonePrivée = document.getElementById('zone-privee');
+    const sectionProfil = document.getElementById('section-profil');
     const btnNav = document.getElementById('btn-nav-auth');
     
-    // 🛡️ LA CONDITION CRUCIALE : user doit exister ET emailVerified doit être vrai
     if (user && user.emailVerified) {
-      zonePrivée.style.display = 'block';
-      btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
+        // 1. On affiche les sections
+        zonePrivée.style.display = 'block';
+        sectionProfil.style.display = 'block';
+        
+        // 2. On remplit les informations du profil
+        document.getElementById('profil-email').innerText = user.email;
+        
+        // On transforme la date de création en format lisible
+        const dateCreation = new Date(user.metadata.creationTime).toLocaleDateString('fr-FR', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+        document.getElementById('profil-date').innerText = dateCreation;
+
+        // 3. Bouton Quitter
+        btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
     } else {
-      // Si pas de user OU si le mail n'est pas encore validé
-      zonePrivée.style.display = 'none';
-      btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
-      
-      // Optionnel : si l'utilisateur est connecté mais non vérifié, on peut le déconnecter de force
-      if (user && !user.emailVerified) {
-          signOut(auth);
-      }
+        zonePrivée.style.display = 'none';
+        sectionProfil.style.display = 'none';
+        btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
+        
+        if (user && !user.emailVerified) {
+            signOut(auth);
+        }
     }
-  });
+});
+    
 </script>
 </body>
 </html>
