@@ -247,7 +247,14 @@
     </footer>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  onAuthStateChanged, 
+  signOut,
+  sendEmailVerification // ← Ajoutez ceci
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDuWDm8uNJwYZrfPg_YLbzRyMc0TSyVhzw",
@@ -273,20 +280,34 @@ window.deconnexion = () => { signOut(auth); };
     document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
   };
 
-  window.agirRoyale = async () => {
+window.agirRoyale = async () => {
     const email = document.getElementById('authEmail').value;
     const pass = document.getElementById('authPassword').value;
+    
     try {
       if (modeInscription) {
-        await createUserWithEmailAndPassword(auth, email, pass);
+        // 1. Création du compte
+        const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+        // 2. Envoi du mail de validation
+        await sendEmailVerification(userCredential.user);
+        
+        alert("🛡️ Sceau créé ! Un pigeon voyageur (email) vous a été envoyé pour vérifier votre identité avant de vous laisser entrer.");
+        signOut(auth); // On déconnecte pour forcer la vérification
       } else {
-        await signInWithEmailAndPassword(auth, email, pass);
+        const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+        
+        // Optionnel : Empêcher l'accès si l'email n'est pas vérifié
+        if (!userCredential.user.emailVerified) {
+            alert("Halte ! Votre email n'a pas encore été validé. Vérifiez vos courriers.");
+            signOut(auth);
+            return;
+        }
       }
       fermerPorte();
     } catch (e) {
       alert("Erreur de la garde : " + e.message);
     }
-  };
+};
 
   onAuthStateChanged(auth, (user) => {
     const zonePrivée = document.getElementById('zone-privee');
