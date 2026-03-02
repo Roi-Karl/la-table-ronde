@@ -253,7 +253,8 @@
   signInWithEmailAndPassword, 
   onAuthStateChanged, 
   signOut,
-  sendEmailVerification // ← Ajoutez ceci
+  sendEmailVerification,
+  sendPasswordResetEmail // ← Ajoutez cette fonction ici
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -279,7 +280,23 @@ window.deconnexion = () => { signOut(auth); };
     document.getElementById('btnAction').innerText = modeInscription ? "S'inscrire" : "Se Connecter";
     document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
   };
+    
+window.oubliMotDePasse = async () => {
+    const email = document.getElementById('authEmail').value;
+    
+    if (!email) {
+        alert("Noble ami, inscrivez d'abord votre email dans le champ ci-dessus pour recevoir le lien de secours !");
+        return;
+    }
 
+    try {
+        await sendPasswordResetEmail(auth, email);
+        alert("🛡️ Un pigeon voyageur est en route ! Consultez vos courriers pour réinitialiser votre mot de passe.");
+    } catch (e) {
+        alert("Erreur de la garde : " + e.message);
+    }
+};
+    
 window.agirRoyale = async () => {
     const email = document.getElementById('authEmail').value;
     const pass = document.getElementById('authPassword').value;
