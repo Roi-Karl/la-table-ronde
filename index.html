@@ -181,7 +181,14 @@
                 <li>🍷 <strong>Chaque Vendredi :</strong> Banquet en direct (Live Stream).</li>
             </ul>
         </section>
-
+        <section id="zone-privee" class="parchemin-box" style="display:none; border: 4px solid var(--or-royal);">
+            <h2>🏰 Contenu Exclusif des Chevalier(e)s</h2>
+            <p>Oyez ! Vous avez franchi la herse. Voici vos privilèges :</p>
+            <ul>
+                <li>📜 Parchemins secrets de production</li>
+                <li>🎬 Vidéos en avant-première</li>
+            </ul>
+        </section>
         <section id="echoppe" class="parchemin-box">
             <h2>L'Échoppe & Les Alliés</h2>
             <div class="grid">
@@ -213,11 +220,63 @@
         </section>
 
     </div>
-
+    <div id="modalConnexion" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1000; justify-content:center; align-items:center;">
+        <div class="parchemin-box" style="width:90%; max-width:400px; position:relative;">
+            <span onclick="fermerPorte()" style="position:absolute; top:10px; right:20px; cursor:pointer; font-size:2rem; color:var(--rouge-blason);">&times;</span>
+            <h2 id="titreModal">Entrer au Donjon</h2>
+            <div class="registre-form" style="margin-top:20px;">
+                <input type="email" id="authEmail" placeholder="Votre courriel..." style="width:100%; margin-bottom:10px; padding:12px;">
+                <input type="password" id="authPassword" placeholder="Mot de passe..." style="width:100%; margin-bottom:15px; padding:12px;">
+                <button onclick="agirRoyale()" class="btn" id="btnAction" style="width:100%;">Se Connecter</button>
+                <p style="margin-top:15px; font-size:0.9rem;">
+                    <a href="javascript:void(0)" onclick="basculerMode()" id="lienBascule" style="color:var(--rouge-blason);">Pas encore chevalier ? S'inscrire</a>
+                </p>
+            </div>
+        </div>
+    </div>
     <footer>
         <p>Propriété de la Couronne - Roi Karl &copy; 2026</p>
         <p>Fait de pierre et de pixels.</p>
     </footer>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+  // REMPLACEZ CECI PAR VOS COORDONNÉES FIREBASE
+  const firebaseConfig = {
+    apiKey: "VOTRE_API_KEY",
+    authDomain: "VOTRE_PROJET.firebaseapp.com",
+    projectId: "VOTRE_PROJET_ID",
+    storageBucket: "VOTRE_PROJET.appspot.com",
+    messagingSenderId: "VOTRE_ID",
+    appId: "VOTRE_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // LOGIQUE DE CONNEXION (Exemple rapide)
+  window.connexionRoyale = async () => {
+    const email = prompt("Votre courriel, noble ami ?");
+    const password = prompt("Le mot de passe secret ?");
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert("Bienvenue au château !");
+    } catch (error) {
+      alert("Accès refusé : " + error.message);
+    }
+  };
+
+  // SURVEILLER L'ÉTAT (Connecté ou non)
+  onAuthStateChanged(auth, (user) => {
+    const zoneSecrete = document.getElementById('zone-privee');
+    if (user) {
+      zoneSecrete.style.display = 'block';
+      console.log("Utilisateur connecté :", user.email);
+    } else {
+      zoneSecrete.style.display = 'none';
+    }
+  });
+</script>
 </body>
 </html>
