@@ -193,6 +193,11 @@
                 <button onclick="deconnexion()" style="margin-top: 20px; background: none; border: 1px solid var(--rouge-blason); color: var(--rouge-blason); cursor: pointer; padding: 5px 10px;">
                     Rendre les armes (Déconnexion)
                 </button>
+                    <p style="margin-top: 30px; font-size: 0.7rem; opacity: 0.6;">
+                        <a href="javascript:void(0)" onclick="demanderSuppression()" style="color: var(--rouge-blason); text-decoration: underline;">
+                            Quitter la Table Ronde définitivement (Supprimer mon compte)
+                        </a>
+                    </p>
             </div>
         </section>
         <section id="zone-privee" class="parchemin-box" style="display:none; border: 4px solid var(--or-royal);">
@@ -273,7 +278,8 @@
   onAuthStateChanged, 
   signOut,
   sendEmailVerification,
-  sendPasswordResetEmail // ← Ajoutez cette fonction ici
+  sendPasswordResetEmail,
+  deleteUser // ← Ajoutez ceci
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -379,7 +385,29 @@ onAuthStateChanged(auth, (user) => {
         }
     }
 });
-    
+    window.demanderSuppression = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    // Double vérification royale
+    const confirmation = confirm("⚠ ALERTE DU SÉNÉCHAL ⚠\n\nSouhaitez-vous vraiment effacer votre nom du registre ? Cette action est irréversible et vos titres seront perdus à jamais.");
+
+    if (confirmation) {
+        try {
+            await deleteUser(user);
+            alert("🏰 Votre nom a été effacé. Vous quittez le royaume en paix. Adieu, noble ami.");
+            // Le onAuthStateChanged s'occupera de cacher les zones privées automatiquement
+        } catch (e) {
+            // Sécurité Firebase : Si la session est trop vieille, il demandera de se reconnecter
+            if (e.code === 'auth/requires-recent-login') {
+                alert("🛡 Sécurité : Pour supprimer votre compte, vous devez vous être connecté très récemment. Veuillez vous reconnecter et réessayer.");
+                signOut(auth);
+            } else {
+                alert("Erreur de la garde : " + e.message);
+            }
+        }
+    }
+};
 </script>
 </body>
 </html>
