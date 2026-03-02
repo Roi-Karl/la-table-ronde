@@ -130,10 +130,23 @@
             display: inline-block;
         }
         .btn:hover { background: var(--or-royal); color: black; transform: scale(1.05); }
-
+                        /* --- EFFET BLASON PROFIL --- */
+                .blason-interactif {
+                    font-size: 5rem; /* ← Taille du blason agrandie (environ 80px) */
+                    transition: 0.4s ease-in-out; /* Douceur de l'animation */
+                    cursor: default; /* Pas de curseur "main" car ce n'est pas un lien */
+                    margin-bottom: 1.5rem;
+                    display: inline-block; /* Nécessaire pour l'effet de transformation */
+                }
+                
+                .blason-interactif:hover {
+                    transform: scale(1.1) rotate(5deg); /* Grandit et tourne légèrement */
+                    filter: drop-shadow(0 0 15px var(--or-royal)); /* Éclat doré magique */
+                }
         footer { text-align: center; padding: 3rem; background: #000; color: var(--or-sombre); font-size: 0.8rem; }
 
         @media (max-width: 600px) { .parchemin-box { padding: 1.5rem; } }
+
     </style>
 </head>
 <body>
@@ -184,7 +197,7 @@
             <h2>📜 Votre Titre de Chevalier</h2>
             
             <div style="text-align: center; margin-top: 2rem;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                <div class="blason-interactif">🛡️</div>
                 
                 <div style="background: rgba(0,0,0,0.05); padding: 20px; border: 1px dashed var(--or-sombre); margin-bottom: 2rem;">
                     <p style="font-family: 'Cinzel', serif; color: var(--rouge-blason); font-size: 1.2rem; margin-bottom: 10px;">
