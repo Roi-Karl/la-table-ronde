@@ -309,15 +309,23 @@ window.agirRoyale = async () => {
     }
 };
 
-  onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, (user) => {
     const zonePrivée = document.getElementById('zone-privee');
     const btnNav = document.getElementById('btn-nav-auth');
-    if (user) {
+    
+    // 🛡️ LA CONDITION CRUCIALE : user doit exister ET emailVerified doit être vrai
+    if (user && user.emailVerified) {
       zonePrivée.style.display = 'block';
-      btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason);">QUITTER LE DONJON</a>`;
+      btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
     } else {
+      // Si pas de user OU si le mail n'est pas encore validé
       zonePrivée.style.display = 'none';
-      btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:5px 10px; border-radius:4px; font-weight:bold;">ACCÈS MEMBRE</a>`;
+      btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
+      
+      // Optionnel : si l'utilisateur est connecté mais non vérifié, on peut le déconnecter de force
+      if (user && !user.emailVerified) {
+          signOut(auth);
+      }
     }
   });
 </script>
