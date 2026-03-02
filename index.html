@@ -279,18 +279,6 @@
   const auth = getAuth(app);
   let modeInscription = false;
 
-  // Fonctions pour la fenêtre
-  window.ouvrirPorte = () => document.getElementById('modalConnexion').style.display = 'block';
-  window.fermerPorte = () => document.getElementById('modalConnexion').style.display = 'none';
-  window.deconnexion = () => signOut(auth);
-  
-  window.basculerMode = () => {
-    modeInscription = !modeInscription;
-    document.getElementById('titreModal').innerText = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
-    document.getElementById('btnAction').innerText = modeInscription ? "S'inscrire" : "Se Connecter";
-    document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
-  };
-
   window.agirRoyale = async () => {
     const email = document.getElementById('authEmail').value;
     const pass = document.getElementById('authPassword').value;
