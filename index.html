@@ -292,7 +292,7 @@ window.agirRoyale = async () => {
         await sendEmailVerification(userCredential.user);
         
         alert("🛡️ Sceau créé ! Un pigeon voyageur (email) vous a été envoyé pour vérifier votre identité avant de vous laisser entrer.");
-        signOut(auth); // On déconnecte pour forcer la vérification
+        await signOut(auth); // On déconnecte pour forcer la vérification
       } else {
         const userCredential = await signInWithEmailAndPassword(auth, email, pass);
         
