@@ -221,23 +221,24 @@
         </section>
 
     </div>
-    <div id="modalConnexion" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center;">
-    <div class="parchemin-box" style="background:#F4EBD0; color:#1a1a1a; padding:40px; border:5px double #D4AF37; width:90%; max-width:400px; position:relative; box-shadow: 0 0 30px black;">
+<div id="modalConnexion" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.9); z-index:9999;">
+    
+    <div style="background-color:#F4EBD0; color:#1a1a1a; padding:30px; border:5px double #D4AF37; width:320px; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); box-shadow: 0 0 30px #000; text-align:center;">
         
-        <span onclick="fermerPorte()" style="position:absolute; top:5px; right:15px; cursor:pointer; font-size:30px; color:#8B0000; font-weight:bold;">&times;</span>
+        <span onclick="fermerPorte()" style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:24px; color:#8B0000; font-weight:bold;">&times;</span>
         
-        <h2 id="titreModal" style="font-family:'Cinzel', serif; margin-bottom:20px; text-align:center;">Entrer au Donjon</h2>
+        <h2 id="titreModal" style="font-family:'Cinzel', serif; margin-bottom:20px;">Entrer au Donjon</h2>
         
-        <div style="display:flex; flex-direction:column; gap:15px;">
-            <input type="email" id="authEmail" placeholder="Votre courriel..." style="padding:12px; border:1px solid #D4AF37;">
-            <input type="password" id="authPassword" placeholder="Mot de passe..." style="padding:12px; border:1px solid #D4AF37;">
+        <div style="display:flex; flex-direction:column; gap:10px;">
+            <input type="email" id="authEmail" placeholder="Votre courriel..." style="padding:10px; border:1px solid #D4AF37;">
+            <input type="password" id="authPassword" placeholder="Mot de passe..." style="padding:10px; border:1px solid #D4AF37;">
             
-            <button onclick="agirRoyale()" class="btn" id="btnAction" style="background:#8B0000; color:white; padding:12px; cursor:pointer; border:2px solid #D4AF37; font-family:'Cinzel', serif;">
+            <button onclick="agirRoyale()" id="btnAction" style="background-color:#8B0000; color:white; padding:12px; border:2px solid #D4AF37; cursor:pointer; font-family:'Cinzel', serif; font-weight:bold; margin-top:10px;">
                 Se Connecter
             </button>
             
-            <p style="text-align:center; font-size:0.9rem;">
-                <a href="javascript:void(0)" onclick="basculerMode()" id="lienBascule" style="color:#8B0000; text-decoration:underline;">Pas encore membre ? S'inscrire</a>
+            <p style="margin-top:15px; font-size:0.85rem;">
+                <a href="javascript:void(0)" onclick="basculerMode()" id="lienBascule" style="color:#8B0000; text-decoration:underline; font-weight:bold;">Pas encore membre ? S'inscrire</a>
             </p>
         </div>
     </div>
