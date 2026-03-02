@@ -252,7 +252,7 @@
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
                                 // Forcer les fonctions à être visibles par les boutons du HTML
                                   window.ouvrirPorte = () => {
-                                    document.getElementById('modalConnexion').style.display = 'flex';
+                                    document.getElementById('modalConnexion').style.display = 'block';
                                   };
                                   
                                   window.fermerPorte = () => {
@@ -280,7 +280,7 @@
   let modeInscription = false;
 
   // Fonctions pour la fenêtre
-  window.ouvrirPorte = () => document.getElementById('modalConnexion').style.display = 'flex';
+  window.ouvrirPorte = () => document.getElementById('modalConnexion').style.display = 'block';
   window.fermerPorte = () => document.getElementById('modalConnexion').style.display = 'none';
   window.deconnexion = () => signOut(auth);
   
