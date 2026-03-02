@@ -319,7 +319,7 @@ window.agirRoyale = async () => {
         
         // Optionnel : Empêcher l'accès si l'email n'est pas vérifié
         if (!userCredential.user.emailVerified) {
-            alert("Halte ! Votre email n'a pas encore été validé. Vérifiez vos courriers.");
+            alert("Halte vagabond! A côté des marchands et des pèlerins, les courriers comptent au Moyen Age parmi les usagers les plus fréquents et les plus réguliers de la route, vérifiez auprès d'eux si vous n'auriez pas reçu quelque chose.");
             signOut(auth);
             return;
         }
