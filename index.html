@@ -692,16 +692,21 @@ if (corpsTableau) {
         document.getElementById('section-regles').style.display = 'block';
         btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
 
-    } else {
-        zonePrivée.style.display = 'none';
-        sectionProfil.style.display = 'none';
-        document.getElementById('section-regles').style.display = 'none';
+} else {
+    // --- ÉTAT : DÉCONNECTÉ ---
+    if (zonePrivée) zonePrivée.style.display = 'none';
+    if (sectionProfil) sectionProfil.style.display = 'none';
+    
+    // C'EST CETTE LIGNE QUI FAIT REVENIR LE BOUTON
+    const btnNav = document.getElementById('btn-nav-auth');
+    if (btnNav) {
         btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
-        
-        if (user && !user.emailVerified) {
-            signOut(auth);
-        }
     }
+
+    if (user && !user.emailVerified) {
+        signOut(auth);
+    }
+}
 });
     window.demanderSuppression = async () => {
     const user = auth.currentUser;
