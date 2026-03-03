@@ -560,29 +560,27 @@ onAuthStateChanged(auth, (user) => {
             xpPourcentage = (joursDansCeRang / joursNecessaires) * 100;
             texteXP = (prochainRang.seuil - joursAnciennete) + " jours avant le grade de " + prochainRang.nom;
         }
-// --- DANS onAuthStateChanged, pour le tableau des règles ---
+// --- Tableau des règles (RETOUR À LA TAILLE STANDARD) ---
 const corpsTableau = document.getElementById('tableau-rangs-details');
 if (corpsTableau) {
-    corpsTableau.innerHTML = ""; // On vide pour éviter les doublons
+    corpsTableau.innerHTML = ""; 
 
     grades.forEach(g => {
         const estAtteint = joursAnciennete >= g.seuil;
         
-        // Style de ligne : On grise ce qui n'est pas encore acquis
-        const opacite = estAtteint ? "1" : "0.3";
+        const opacite = estAtteint ? "1" : "0.5";
         const couleurTexte = estAtteint ? "var(--noir-encre)" : "#888";
-        const fondLigne = estAtteint ? "rgba(212, 175, 55, 0.05)" : "transparent";
 
         corpsTableau.innerHTML += `
-            <tr style="border-bottom: 1px solid rgba(0,0,0,0.1); background: ${fondLigne}; opacity: ${opacite}; color: ${couleurTexte}; transition: 0.3s;">
-                <td style="padding: 15px 10px; font-size: 2.5rem; text-align: center; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));">
+            <tr style="border-bottom: 1px solid rgba(0,0,0,0.05); opacity: ${opacite}; color: ${couleurTexte};">
+                <td style="padding: 8px 10px; font-size: 1.2rem; text-align: center;">
                     ${g.icone}
                 </td>
-                <td style="padding: 15px 10px; vertical-align: middle;">
-                    <strong style="font-family: 'Cinzel', serif; font-size: 1rem;">${g.nom}</strong>
+                <td style="padding: 8px 10px; vertical-align: middle;">
+                    <strong style="font-family: 'Cinzel', serif;">${g.nom}</strong>
                 </td>
-                <td style="padding: 15px 10px; vertical-align: middle; text-align: center; font-family: 'Cinzel', serif;">
-                    ${estAtteint ? "✅ ACQUIS" : "🔒 " + g.seuil + " J"}
+                <td style="padding: 8px 10px; vertical-align: middle; text-align: center; font-family: 'Cinzel', serif;">
+                    ${estAtteint ? "✅" : "🔒 " + g.seuil + " j"}
                 </td>
             </tr>
         `;
