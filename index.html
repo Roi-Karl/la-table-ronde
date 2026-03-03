@@ -585,18 +585,19 @@ onAuthStateChanged(auth, (user) => {
     const zonePrivée = document.getElementById('zone-privee');
     const sectionProfil = document.getElementById('section-profil');
     const btnNav = document.getElementById('btn-nav-auth');
-// --- À AJOUTER DANS onAuthStateChanged (quand user est connecté) ---
+
+    if (user && user.emailVerified) {
+        // --- À AJOUTER DANS onAuthStateChanged (quand user est connecté) ---
     const savedInfos = localStorage.getItem('infos_chevalier_' + user.uid);
     if (savedInfos) {
         const data = JSON.parse(savedInfos);
-        document.getElementById('profil-pseudo').value = data.pseudo || "";
-        document.getElementById('profil-royaume').value = data.royaume || "";
-        document.getElementById('profil-devise').value = data.devise || "";
-    }
-    if (user && user.emailVerified) {
+        if(document.getElementById('profil-pseudo')) 
+                document.getElementById('profil-pseudo').value = data.pseudo || "";
+                document.getElementById('profil-royaume').value = data.royaume || "";
+                document.getElementById('profil-devise').value = data.devise || "";
+    }    
         zonePrivée.style.display = 'block';
-        sectionProfil.style.display = 'block';
-        
+        sectionProfil.style.display = 'block';    
         // 1. Remplissage des infos texte
         document.getElementById('profil-email').innerText = user.email;
         
@@ -693,20 +694,19 @@ if (corpsTableau) {
         btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
 
 } else {
-    // --- ÉTAT : DÉCONNECTÉ ---
-    if (zonePrivée) zonePrivée.style.display = 'none';
-    if (sectionProfil) sectionProfil.style.display = 'none';
-    
-    // C'EST CETTE LIGNE QUI FAIT REVENIR LE BOUTON
-    const btnNav = document.getElementById('btn-nav-auth');
-    if (btnNav) {
-        btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
-    }
+        // --- ÉTAT DÉCONNECTÉ (user est null ici, on ne touche pas à user.uid) ---
+        if (zonePrivée) zonePrivée.style.display = 'none';
+        if (sectionProfil) sectionProfil.style.display = 'none';
+        
+        // Le bouton revient à la vie !
+        if (btnNav) {
+            btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
+        }
 
-    if (user && !user.emailVerified) {
-        signOut(auth);
+        if (user && !user.emailVerified) {
+            signOut(auth);
+        }
     }
-}
 });
     window.demanderSuppression = async () => {
     const user = auth.currentUser;
