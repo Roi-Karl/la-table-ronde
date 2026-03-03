@@ -339,19 +339,36 @@
                 <p><strong>Note du Sénéchal :</strong> Quitter le donjon efface vos titres à jamais des registres. Réfléchissez avant de poser les armes !</p>
             </div>
         </div>
-
-        <div class="parchemin-identite">
+        <div class="parchemin-identite" style="text-align: left;">
             <div class="ligne-info">
-                <span class="label">Fidèle Sujet :</span>
-                <span id="profil-email" class="valeur">...</span>
+                <span class="label">Nom de Guerre :</span>
+                <input type="text" id="profil-pseudo" placeholder="Ex: Galahad le Brave" 
+                       style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%;">
             </div>
             <div class="ligne-info">
-                <span class="label">Admis au Donjon le :</span>
+                <span class="label">Fief / Royaume :</span>
+                <input type="text" id="profil-royaume" placeholder="Ex: Camelot" 
+                       style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%;">
+            </div>
+            <div class="ligne-info" style="flex-direction: column; align-items: flex-start;">
+                <span class="label">Devise Royale :</span>
+                <textarea id="profil-devise" placeholder="Votre cri de guerre..." 
+                          style="background:rgba(0,0,0,0.03); border:1px dashed var(--or-sombre); font-family:'Lora'; font-style:italic; width:100%; margin-top:5px; padding:5px; height:50px; resize:none;"></textarea>
+            </div>
+            
+            <button onclick="sauvegarderProfil()" id="btn-save-profil" class="btn-secondaire" style="width:100%; margin-top:10px; font-size:0.8rem;">
+                📜 Sceller mes informations
+            </button>
+        
+            <hr style="margin: 15px 0; border: 0; border-top: 1px double var(--or-sombre);">
+        
+            <div class="ligne-info">
+                <span class="label">Sceau Magique :</span>
+                <span id="profil-email" class="valeur" style="font-size:0.8rem;">...</span>
+            </div>
+            <div class="ligne-info">
+                <span class="label">Admis le :</span>
                 <span id="profil-date" class="valeur">...</span>
-            </div>
-            <div class="ligne-info">
-                <span class="label">Ancienneté :</span>
-                <span id="profil-anciennete" class="valeur">0 jour</span>
             </div>
         </div>
 
@@ -541,12 +558,41 @@ window.agirRoyale = async () => {
       alert("Erreur de la garde : " + e.message);
     }
 };
+window.sauvegarderProfil = () => {
+    const user = auth.currentUser;
+    if (!user) return;
 
+    const infos = {
+        pseudo: document.getElementById('profil-pseudo').value,
+        royaume: document.getElementById('profil-royaume').value,
+        devise: document.getElementById('profil-devise').value
+    };
+// On sauvegarde dans le navigateur avec une clé unique par utilisateur
+    localStorage.setItem('infos_chevalier_' + user.uid, JSON.stringify(infos));
+    
+    const btn = document.getElementById('btn-save-profil');
+    btn.innerText = "✨ Sceau Apposé !";
+    btn.style.borderColor = "green";
+    btn.style.color = "green";
+    
+    setTimeout(() => {
+        btn.innerText = "📜 Sceller mes informations";
+        btn.style.borderColor = "var(--rouge-blason)";
+        btn.style.color = "var(--rouge-blason)";
+    }, 2000);
+};
 onAuthStateChanged(auth, (user) => {
     const zonePrivée = document.getElementById('zone-privee');
     const sectionProfil = document.getElementById('section-profil');
     const btnNav = document.getElementById('btn-nav-auth');
-    
+// --- À AJOUTER DANS onAuthStateChanged (quand user est connecté) ---
+    const savedInfos = localStorage.getItem('infos_chevalier_' + user.uid);
+    if (savedInfos) {
+        const data = JSON.parse(savedInfos);
+        document.getElementById('profil-pseudo').value = data.pseudo || "";
+        document.getElementById('profil-royaume').value = data.royaume || "";
+        document.getElementById('profil-devise').value = data.devise || "";
+    }
     if (user && user.emailVerified) {
         zonePrivée.style.display = 'block';
         sectionProfil.style.display = 'block';
