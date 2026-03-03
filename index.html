@@ -318,7 +318,6 @@
     <div class="blason-conteneur" style="position: relative; display: inline-block;">
             <img src="favicon.ico" alt="Sceau" style="width: 100px; height: 100px; opacity: 0.3; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
             <h3 id="rang-chevalier" style="font-family:'Cinzel'; color:var(--rouge-blason); margin-bottom:10px;">Chargement du rang...</h3>
-        <div class="blason-conteneur" style="position: relative; display: inline-block;">
             <div class="blason-interactif" id="blason-image" style="position: relative; z-index: 2; font-size: 4rem;">🛡️</div>
         </div>
 
@@ -639,6 +638,38 @@ window.sauvegarderProfil = () => {
         btn.style.color = "var(--rouge-blason)";
     }, 2000);
 };
+// Fonction pour remplir le tableau des rangs dans la section Règles
+function remplirTableauRangs() {
+    const tableauBody = document.getElementById('tableau-rangs-details');
+    if (!tableauBody) return;
+
+    // La liste des grades (identique à celle du profil pour la cohérence)
+    const grades = [
+        { seuil: 0,   nom: "Serf Égaré",        icone: "🪵" },
+        { seuil: 2,   nom: "Vilein Courageux",  icone: "🌾" },
+        { seuil: 5,   nom: "Écuyer Novice",     icone: "🛡️" },
+        { seuil: 10,  nom: "Vassal du Fief",    icone: "🏰" },
+        { seuil: 20,  nom: "Chevalier Errant",  icone: "🐎" },
+        { seuil: 40,  nom: "Héraut Royal",      icone: "🎺" },
+        { seuil: 70,  nom: "Baron de la Carrée",icone: "🍷" },
+        { seuil: 120, nom: "Maître d'Armes",    icone: "⚔️" },
+        { seuil: 200, nom: "Haut Connétable",   icone: "🚩" },
+        { seuil: 365, nom: "Main du Roi Karl",  icone: "👑" }
+    ];
+
+    // On vide le tableau au cas où et on le remplit
+    tableauBody.innerHTML = "";
+    grades.forEach(g => {
+        const ligne = `
+            <tr style="border-bottom: 1px solid rgba(0,0,0,0.1);">
+                <td style="padding: 10px; font-size: 1.2rem;">${g.icone}</td>
+                <td style="padding: 10px; font-weight: bold;">${g.nom}</td>
+                <td style="padding: 10px;">${g.seuil} jours</td>
+            </tr>
+        `;
+        tableauBody.innerHTML += ligne;
+    });
+}
 onAuthStateChanged(auth, (user) => {
     const zonePrivée = document.getElementById('zone-privee');
     const sectionProfil = document.getElementById('section-profil');
@@ -657,8 +688,10 @@ onAuthStateChanged(auth, (user) => {
         
         if(zonePrivée) zonePrivée.style.display = 'block';
         if(sectionProfil) sectionProfil.style.display = 'block';
-        if(sectionRegles) sectionRegles.style.display = 'block'; // On affiche les règles
-
+        if(sectionRegles) {
+            sectionRegles.style.display = 'block';
+            remplirTableauRangs();
+        }
         // 1. Remplissage des infos
         if(document.getElementById('profil-email')) document.getElementById('profil-email').innerText = user.email;
         
