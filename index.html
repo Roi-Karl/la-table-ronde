@@ -249,55 +249,74 @@
                 <li>🍷 <strong>Chaque Vendredi :</strong> Banquet en direct (Live Stream).</li>
             </ul>
         </section>
-        <section id="section-profil" class="parchemin-box" style="display:none;">
-            <h2>📜 Votre Titre de Chevalier</h2>
+       <section id="section-profil" class="parchemin-box" style="display:none;">
+    <h2>📜 Votre Titre de Chevalier</h2>
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        
+        <div class="blason-conteneur">
+            <div class="blason-interactif" id="blason-image">🛡️</div>
+            <p id="rang-chevalier" style="font-family: 'Cinzel', serif; font-weight: bold; color: var(--or-sombre); margin-top: -10px; font-size: 1.2rem;"></p>
+        </div>
 
-            <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif;">
-                <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 80px;">
-                    <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">NIVEAU</span>
-                    <strong id="profil-niveau" style="font-size: 1.2rem;">1</strong>
-                </div>
-                <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 80px;">
-                    <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">PUISSANCE</span>
-                    <strong id="profil-puissance" style="font-size: 1.2rem;">10</strong>
-                </div>
+        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif;">
+            <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 90px;">
+                <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">NIVEAU</span>
+                <strong id="profil-niveau" style="font-size: 1.2rem;">1</strong>
             </div>
-            
-            <div style="text-align: center; margin-top: 2rem;">
-                <div class="blason-conteneur">
-                    <div class="blason-interactif" id="blason-image">🛡️</div>
-                    <p id="rang-chevalier" style="font-family: 'Cinzel', serif; font-weight: bold; color: var(--or-sombre); margin-top: -10px;"></p>
-                </div>
-        
-                <div style="max-width: 400px; margin: 10px auto;">
-                    <p style="font-size: 0.8rem; font-family: 'Cinzel'; margin-bottom: 5px;">Progression vers le prochain rang</p>
-                    <div style="background: #ddd; border: 1px solid var(--or-sombre); height: 12px; border-radius: 6px; overflow: hidden;">
-                        <div id="barre-xp" style="background: var(--rouge-blason); width: 0%; height: 100%; transition: width 1s ease-in-out;"></div>
-                    </div>
-                    <p id="texte-xp" style="font-size: 0.7rem; font-style: italic; margin-top: 5px;"></p>
-                </div>
-                
-                <div class="parchemin-identite">
-                    <div class="ligne-info">
-                        <span class="label">Fidèle Sujet :</span>
-                        <span id="profil-email" class="valeur">...</span>
-                    </div>
-                    <div class="ligne-info">
-                        <span class="label">Admis au Donjon le :</span>
-                        <span id="profil-date" class="valeur">...</span> </div>
-                    <div class="ligne-info">
-                        <span class="label">Ancienneté :</span>
-                        <span id="profil-anciennete" class="valeur">0 jour</span>
-                    </div>
-                </div>
-        
-                <div class="actions-donjon">
-                    <button onclick="oubliMotDePasse()" class="btn-secondaire">🔑 Changer ma clé</button>
-                    <a href="javascript:deconnexion()" class="lien-quitter">REPOSER LES ARMES</a>
-                    <button onclick="demanderSuppression()" class="btn-danger">Effacer mon nom du registre</button>
-                </div>
+            <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 90px;">
+                <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">PUISSANCE</span>
+                <strong id="profil-puissance" style="font-size: 1.2rem;">10</strong>
             </div>
-        </section>
+        </div>
+
+        <div style="max-width: 400px; margin: 10px auto;">
+            <p style="font-size: 0.8rem; font-family: 'Cinzel'; margin-bottom: 5px;">Progression vers le prochain rang</p>
+            <div style="background: #ddd; border: 1px solid var(--or-sombre); height: 12px; border-radius: 6px; overflow: hidden;">
+                <div id="barre-xp" style="background: var(--rouge-blason); width: 0%; height: 100%; transition: width 1s ease-in-out;"></div>
+            </div>
+            <p id="texte-xp" style="font-size: 0.7rem; font-style: italic; margin-top: 5px;"></p>
+        </div>
+
+        <div style="margin: 2rem auto; max-width: 450px; border-top: 1px double var(--or-sombre); padding-top: 20px;">
+            <p style="font-style: italic; color: var(--gris-pierre); margin-bottom: 15px; font-size: 0.9rem;">
+                "La patience est la vertu des nobles. Voici comment s'acquiert la gloire en ces terres."
+            </p>
+
+            <div style="text-align: left; font-size: 0.85rem; line-height: 1.6; padding-left: 20px;">
+                <p><strong>🛡️ Progression :</strong> Chaque lever de soleil vous rapproche du rang supérieur.</p>
+                <p><strong>📈 Niveaux :</strong> Votre niveau augmente tous les 1.5 jours d'allégeance.</p>
+                <p><strong>⚔️ Puissance :</strong> +12 points de force par jour passé au donjon.</p>
+                <p><strong>📜 Noblesse :</strong> Il existe 10 grades, du Serf à la Main du Roi (365 jours).</p>
+            </div>
+
+            <div style="margin-top: 15px; padding: 10px; background: rgba(139, 0, 0, 0.05); border-left: 3px solid var(--rouge-blason); font-size: 0.8rem; text-align: left;">
+                <p><strong>Note du Sénéchal :</strong> Quitter le donjon efface vos titres à jamais des registres. Réfléchissez avant de poser les armes !</p>
+            </div>
+        </div>
+
+        <div class="parchemin-identite">
+            <div class="ligne-info">
+                <span class="label">Fidèle Sujet :</span>
+                <span id="profil-email" class="valeur">...</span>
+            </div>
+            <div class="ligne-info">
+                <span class="label">Admis au Donjon le :</span>
+                <span id="profil-date" class="valeur">...</span>
+            </div>
+            <div class="ligne-info">
+                <span class="label">Ancienneté :</span>
+                <span id="profil-anciennete" class="valeur">0 jour</span>
+            </div>
+        </div>
+
+        <div class="actions-donjon">
+            <button onclick="oubliMotDePasse()" class="btn-secondaire">🔑 Changer ma clé</button>
+            <a href="javascript:deconnexion()" class="lien-quitter">REPOSER LES ARMES</a>
+            <button onclick="demanderSuppression()" class="btn-danger">Effacer mon nom du registre</button>
+        </div>
+    </div>
+</section>
         <section id="section-regles" class="parchemin-box" style="display:none; margin-top: -2rem;">
             <h3 style="font-family: 'Cinzel', serif; color: var(--rouge-blason); border-bottom: 1px solid var(--or-sombre); margin-bottom: 15px;">📜 Le Code de la Chevalerie</h3>
             
