@@ -316,6 +316,9 @@
         </div>
 
         <div style="max-width: 400px; margin: 10px auto;">
+            <p style="font-family: 'Cinzel', serif; font-size: 0.9rem; margin-bottom: 10px;">
+        <strong>🛡️ Progression :</strong> <span id="profil-anciennete">...</span> jours d'allégeance.
+    </p>
             <p style="font-size: 0.8rem; font-family: 'Cinzel'; margin-bottom: 5px;">Progression vers le prochain rang</p>
             <div style="background: #ddd; border: 1px solid var(--or-sombre); height: 12px; border-radius: 6px; overflow: hidden;">
                 <div id="barre-xp" style="background: var(--rouge-blason); width: 0%; height: 100%; transition: width 1s ease-in-out;"></div>
@@ -678,16 +681,22 @@ if (corpsTableau) {
         `;
     });
 }
-        // MISE À JOUR VISUELLE
+        // --- MISE À JOUR VISUELLE ---
         document.getElementById('profil-niveau').innerText = niveau;
         document.getElementById('profil-puissance').innerText = puissance;
         document.getElementById('rang-chevalier').innerText = rangActuel.nom;
         document.getElementById('blason-image').innerText = rangActuel.icone;
         
         const barre = document.getElementById('barre-xp');
-        barre.style.width = Math.min(xpPourcentage, 100) + "%";
-        barre.style.background = rangActuel.coul; // La barre prend la couleur du rang !
-        barre.style.boxShadow = `0 0 10px ${rangActuel.coul}`;
+        if (barre) {
+            // On s'assure que le pourcentage ne dépasse pas 100%
+            const largeur = Math.min(xpPourcentage, 100);
+            barre.style.width = largeur + "%";
+            
+            // On applique la couleur du rang actuel !
+            barre.style.backgroundColor = rangActuel.coul; 
+            barre.style.boxShadow = `0 0 10px ${rangActuel.coul}`;
+        }
         
         document.getElementById('texte-xp').innerText = texteXP;
         document.getElementById('section-regles').style.display = 'block';
