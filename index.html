@@ -146,7 +146,57 @@
         footer { text-align: center; padding: 3rem; background: #000; color: var(--or-sombre); font-size: 0.8rem; }
 
         @media (max-width: 600px) { .parchemin-box { padding: 1.5rem; } }
+/* Design du parchemin d'identité */
+.parchemin-identite {
+    background: rgba(0,0,0,0.05);
+    padding: 25px;
+    border: 2px solid var(--or-sombre);
+    border-style: double;
+    margin: 2rem auto;
+    max-width: 450px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+}
 
+.ligne-info {
+    display: flex;
+    justify-content:空间-between;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+}
+
+.label { font-family: 'Cinzel', serif; color: var(--rouge-blason); font-size: 0.9rem; }
+.valeur { font-weight: bold; color: var(--noir-encre); }
+
+/* Boutons plus thématiques */
+.btn-secondaire {
+    background: none;
+    border: 1px solid var(--rouge-blason);
+    color: var(--rouge-blason);
+    padding: 8px 15px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    transition: 0.3s;
+}
+.btn-secondaire:hover { background: var(--rouge-blason); color: white; }
+
+.lien-quitter {
+    display: block;
+    margin: 20px 0;
+    color: var(--noir-encre);
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.btn-danger {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 0.7rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
     </style>
 </head>
 <body>
@@ -197,30 +247,37 @@
             <h2>📜 Votre Titre de Chevalier</h2>
             
             <div style="text-align: center; margin-top: 2rem;">
-                <div class="blason-interactif">🛡️</div>
+                <div class="blason-conteneur">
+                    <div class="blason-interactif" id="blason-image">🛡️</div>
+                    <p id="rang-chevalier" style="font-family: 'Cinzel', serif; font-weight: bold; color: var(--or-sombre); margin-top: -10px;"></p>
+                </div>
                 
-                <div style="background: rgba(0,0,0,0.05); padding: 20px; border: 1px dashed var(--or-sombre); margin-bottom: 2rem;">
-                    <p style="font-family: 'Cinzel', serif; color: var(--rouge-blason); font-size: 1.2rem; margin-bottom: 10px;">
-                        Fidèle Sujet : <span id="profil-email" style="color: var(--noir-encre);">...</span>
-                    </p>
-                    <p style="font-style: italic;">
-                        Admis au Donjon le : <span id="profil-date">...</span>
-                    </p>
+                <div class="parchemin-identite">
+                    <div class="ligne-info">
+                        <span class="label">Fidèle Sujet :</span>
+                        <span id="profil-email" class="valeur">...</span>
+                    </div>
+                    <div class="ligne-info">
+                        <span class="label">Admis au Donjon le :</span>
+                        <span id="profil-date" class="valeur">...</span>
+                    </div>
+                    <div class="ligne-info">
+                        <span class="label">Statut Royal :</span>
+                        <span class="valeur" style="color: #228B22;">Vérifié par la Garde</span>
+                    </div>
                 </div>
         
-                <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-                    <button onclick="oubliMotDePasse()" class="btn" style="padding: 10px 20px; font-size: 0.8rem;">
+                <div class="actions-donjon">
+                    <button onclick="oubliMotDePasse()" class="btn-secondaire">
                         Changer ma clé (Mot de passe)
                     </button>
                     
-                    <div style="margin-top: 10px;">
-                        <a href="javascript:deconnexion()" style="color: var(--rouge-blason); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--rouge-blason);">
-                            REPOSER LES ARMES
-                        </a>
-                    </div>
+                    <a href="javascript:deconnexion()" class="lien-quitter">
+                        REPOSER LES ARMES
+                    </a>
         
-                    <button onclick="demanderSuppression()" style="background: none; border: none; color: #666; font-size: 0.7rem; cursor: pointer; text-decoration: underline; margin-top: 20px;">
-                        Effacer mon nom du registre définitivement
+                    <button onclick="demanderSuppression()" class="btn-danger">
+                        Effacer mon nom du registre
                     </button>
                 </div>
             </div>
@@ -400,6 +457,25 @@ onAuthStateChanged(auth, (user) => {
 
         // 3. Bouton Quitter
         btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
+        // 4. Logique JavaScript (pour les rangs et les blasons)
+        
+        const dateCreation = new Date(user.metadata.creationTime);
+        const aujourdhui = new Date();
+        const joursAnciennete = Math.floor((aujourdhui - dateCreation) / (1000 * 60 * 60 * 24));
+        
+        let rang = "Écuyer";
+        let blason = "🛡️";
+        
+        if (joursAnciennete > 30) {
+            rang = "Chevalier de la Table Carrée";
+            blason = "⚔️";
+        } else if (joursAnciennete > 7) {
+            rang = "Vassal Fidèle";
+            blason = "🏰";
+        }
+        
+        document.getElementById('rang-chevalier').innerText = rang;
+        document.getElementById('blason-image').innerText = blason;
     } else {
         zonePrivée.style.display = 'none';
         sectionProfil.style.display = 'none';
