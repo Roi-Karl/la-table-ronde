@@ -250,6 +250,20 @@
             html {
         scroll-behavior: smooth;
     }
+    /* L'animation de secousse */
+@keyframes secousse {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+/* La classe qu'on appliquera en cas d'erreur */
+.erreur-secousse {
+    animation: secousse 0.4s ease-in-out;
+    border: 2px solid #ff4d4d !important; /* On souligne l'erreur en rouge sang */
+}
     </style>
 </head>
 <body>
@@ -582,7 +596,23 @@ window.agirRoyale = async () => {
       }
       fermerPorte();
     } catch (e) {
-      alert("🏰 Message du Sénéchal :\n\n" + traduireErreur(e.code));
+        // 1. On traduit le message technique en langage de chevalier
+        const messageElegant = traduireErreur(e.code);
+        
+        // 2. On récupère le parchemin (le conteneur du formulaire)
+        // Note : Si ta classe n'est pas .container, essaie .main-box ou document.body
+        const parchemin = document.querySelector('.container') || document.body; 
+        
+        // 3. On déclenche la secousse visuelle
+        parchemin.classList.add('erreur-secousse');
+        
+        // 4. On affiche l'alerte
+        alert("🏰 Message du Sénéchal :\n\n" + messageElegant);
+        
+        // 5. On nettoie la classe après l'animation (0.5 seconde)
+        setTimeout(() => {
+            parchemin.classList.remove('erreur-secousse');
+        }, 500);
     }
 };
 window.sauvegarderProfil = () => {
