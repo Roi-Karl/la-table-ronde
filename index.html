@@ -317,7 +317,8 @@
         
     <div class="blason-conteneur" style="position: relative; display: inline-block;">
             <img src="favicon.ico" alt="Sceau" style="width: 100px; height: 100px; opacity: 0.3; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
-            
+            <h3 id="rang-chevalier" style="font-family:'Cinzel'; color:var(--rouge-blason); margin-bottom:10px;">Chargement du rang...</h3>
+        <div class="blason-conteneur" style="position: relative; display: inline-block;">
             <div class="blason-interactif" id="blason-image" style="position: relative; z-index: 2; font-size: 4rem;">🛡️</div>
         </div>
 
@@ -642,132 +643,87 @@ onAuthStateChanged(auth, (user) => {
     const zonePrivée = document.getElementById('zone-privee');
     const sectionProfil = document.getElementById('section-profil');
     const btnNav = document.getElementById('btn-nav-auth');
+    const sectionRegles = document.getElementById('section-regles'); // Ajouté
 
     if (user && user.emailVerified) {
-        // --- À AJOUTER DANS onAuthStateChanged (quand user est connecté) ---
-    const savedInfos = localStorage.getItem('infos_chevalier_' + user.uid);
-    if (savedInfos) {
-        const data = JSON.parse(savedInfos);
-        if(document.getElementById('profil-pseudo')) 
-                document.getElementById('profil-pseudo').value = data.pseudo || "";
-                document.getElementById('profil-royaume').value = data.royaume || "";
-                document.getElementById('profil-devise').value = data.devise || "";
-    }    
-        zonePrivée.style.display = 'block';
-        sectionProfil.style.display = 'block';    
-        // 1. Remplissage des infos texte
-        document.getElementById('profil-email').innerText = user.email;
+        // Chargement des infos locales
+        const savedInfos = localStorage.getItem('infos_chevalier_' + user.uid);
+        if (savedInfos) {
+            const data = JSON.parse(savedInfos);
+            if(document.getElementById('profil-pseudo')) document.getElementById('profil-pseudo').value = data.pseudo || "";
+            if(document.getElementById('profil-royaume')) document.getElementById('profil-royaume').value = data.royaume || "";
+            if(document.getElementById('profil-devise')) document.getElementById('profil-devise').value = data.devise || "";
+        }    
         
-        // Extraction et formatage de la date de création
+        if(zonePrivée) zonePrivée.style.display = 'block';
+        if(sectionProfil) sectionProfil.style.display = 'block';
+        if(sectionRegles) sectionRegles.style.display = 'block'; // On affiche les règles
+
+        // 1. Remplissage des infos
+        if(document.getElementById('profil-email')) document.getElementById('profil-email').innerText = user.email;
+        
         const dateCreation = new Date(user.metadata.creationTime);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('profil-date').innerText = dateCreation.toLocaleDateString('fr-FR', options);
+        if(document.getElementById('profil-date')) document.getElementById('profil-date').innerText = dateCreation.toLocaleDateString('fr-FR', options);
 
-        // 2. Calcul de l'ancienneté (en jours)
         const aujourdhui = new Date();
         const joursAnciennete = Math.floor((aujourdhui - dateCreation) / (1000 * 60 * 60 * 24));
-        document.getElementById('profil-anciennete').innerText = joursAnciennete + (joursAnciennete > 1 ? " jours" : " jour");
+        if(document.getElementById('profil-anciennete')) document.getElementById('profil-anciennete').innerText = joursAnciennete + (joursAnciennete > 1 ? " jours" : " jour");
 
-        // 3. Système de Rangs
-        // --- LOGIQUE DES 10 RANGS ---
-        
-        // Calcul niveau & puissance
-        const niveau = Math.floor(joursAnciennete / 1.5) + 1; // Niveau grimpe vite
+        // 2. Système de Rangs
+        const niveau = Math.floor(joursAnciennete / 1.5) + 1;
         const puissance = 10 + (joursAnciennete * 12); 
         
         const grades = [
             { seuil: 0,   nom: "Serf Égaré",        icone: "🪵", coul: "#7f8c8d" },
             { seuil: 2,   nom: "Vilein Courageux",  icone: "🌾", coul: "#95a5a6" },
             { seuil: 5,   nom: "Écuyer Novice",     icone: "🛡️", coul: "#bc8f8f" },
-            { seuil: 10,  nom: "Vassal du Fief",    icone: "🏰", coul: "#cd7f32" }, // Bronze
-            { seuil: 20,  nom: "Chevalier Errant",  icone: "🐎", coul: "#bdc3c7" }, // Argent
-            { seuil: 40,  nom: "Héraut Royal",      icone: "🎺", coul: "#f1c40f" }, // Or
+            { seuil: 10,  nom: "Vassal du Fief",    icone: "🏰", coul: "#cd7f32" },
+            { seuil: 20,  nom: "Chevalier Errant",  icone: "🐎", coul: "#bdc3c7" },
+            { seuil: 40,  nom: "Héraut Royal",      icone: "🎺", coul: "#f1c40f" },
             { seuil: 70,  nom: "Baron de la Carrée",icone: "🍷", coul: "#e67e22" },
             { seuil: 120, nom: "Maître d'Armes",    icone: "⚔️", coul: "#8b0000" },
             { seuil: 200, nom: "Haut Connétable",   icone: "🚩", coul: "#4a0404" },
-            { seuil: 365, nom: "Main du Roi Karl",  icone: "👑", coul: "#d4af37" } // Le Graal (1 an)
+            { seuil: 365, nom: "Main du Roi Karl",  icone: "👑", coul: "#d4af37" }
         ];
         
-        // Trouver le rang actuel
         let rangActuel = grades[0];
         let prochainRang = null;
-        
         for (let i = 0; i < grades.length; i++) {
             if (joursAnciennete >= grades[i].seuil) {
                 rangActuel = grades[i];
                 prochainRang = grades[i + 1] || null;
             }
         }
-        
-        // Calcul de la barre d'XP relative au rang
-        let xpPourcentage = 100;
-        let texteXP = "Vous avez atteint le rang ultime des légendes !";
-        
-        if (prochainRang) {
-            const joursDansCeRang = joursAnciennete - rangActuel.seuil;
-            const joursNecessaires = prochainRang.seuil - rangActuel.seuil;
-            xpPourcentage = (joursDansCeRang / joursNecessaires) * 100;
-            texteXP = (prochainRang.seuil - joursAnciennete) + " jours avant le grade de " + prochainRang.nom;
-        }
-// --- Tableau des règles (RETOUR À LA TAILLE STANDARD) ---
-const corpsTableau = document.getElementById('tableau-rangs-details');
-if (corpsTableau) {
-    corpsTableau.innerHTML = ""; 
 
-    grades.forEach(g => {
-        const estAtteint = joursAnciennete >= g.seuil;
+        // Mise à jour visuelle sécurisée
+        if(document.getElementById('profil-niveau')) document.getElementById('profil-niveau').innerText = niveau;
+        if(document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
+        if(document.getElementById('rang-chevalier')) document.getElementById('rang-chevalier').innerText = rangActuel.nom;
+        if(document.getElementById('blason-image')) document.getElementById('blason-image').innerText = rangActuel.icone;
         
-        const opacite = estAtteint ? "1" : "0.5";
-        const couleurTexte = estAtteint ? "var(--noir-encre)" : "#888";
-
-        corpsTableau.innerHTML += `
-            <tr style="border-bottom: 1px solid rgba(0,0,0,0.05); opacity: ${opacite}; color: ${couleurTexte};">
-                <td style="padding: 8px 10px; font-size: 1.2rem; text-align: center;">
-                    ${g.icone}
-                </td>
-                <td style="padding: 8px 10px; vertical-align: middle;">
-                    <strong style="font-family: 'Cinzel', serif;">${g.nom}</strong>
-                </td>
-                <td style="padding: 8px 10px; vertical-align: middle; text-align: center; font-family: 'Cinzel', serif;">
-                    ${estAtteint ? "✅" : "🔒 " + g.seuil + " j"}
-                </td>
-            </tr>
-        `;
-    });
-}
-        // --- MISE À JOUR VISUELLE ---
-        document.getElementById('profil-niveau').innerText = niveau;
-        document.getElementById('profil-puissance').innerText = puissance;
-        document.getElementById('rang-chevalier').innerText = rangActuel.nom;
-        document.getElementById('blason-image').innerText = rangActuel.icone;
-        
+        // Barre d'XP
         const barre = document.getElementById('barre-xp');
         if (barre) {
-            // On s'assure que le pourcentage ne dépasse pas 100%
-            const largeur = Math.min(xpPourcentage, 100);
-            barre.style.width = largeur + "%";
-            
-            // On applique la couleur du rang actuel !
-            barre.style.backgroundColor = rangActuel.coul; 
-            barre.style.boxShadow = `0 0 10px ${rangActuel.coul}`;
+            let xpPct = 100;
+            if (prochainRang) {
+                xpPct = ((joursAnciennete - rangActuel.seuil) / (prochainRang.seuil - rangActuel.seuil)) * 100;
+            }
+            barre.style.width = Math.min(xpPct, 100) + "%";
+            barre.style.backgroundColor = rangActuel.coul;
         }
-        
-        document.getElementById('texte-xp').innerText = texteXP;
-        document.getElementById('section-regles').style.display = 'block';
-        btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
 
-} else {
-        // --- ÉTAT DÉCONNECTÉ (user est null ici, on ne touche pas à user.uid) ---
+        // Affichage du bouton de déconnexion
+        if(btnNav) btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
+
+    } else {
+        // ÉTAT DÉCONNECTÉ
         if (zonePrivée) zonePrivée.style.display = 'none';
         if (sectionProfil) sectionProfil.style.display = 'none';
+        if (sectionRegles) sectionRegles.style.display = 'none';
         
-        // Le bouton revient à la vie !
         if (btnNav) {
             btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
-        }
-
-        if (user && !user.emailVerified) {
-            signOut(auth);
         }
     }
 });
