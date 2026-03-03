@@ -159,7 +159,7 @@
 
 .ligne-info {
     display: flex;
-    justify-content:空间-between;
+    justify-content: space-between; /* Corrigé ici */
     margin-bottom: 15px;
     border-bottom: 1px dashed #ccc;
     padding-bottom: 5px;
@@ -442,45 +442,54 @@ onAuthStateChanged(auth, (user) => {
     const btnNav = document.getElementById('btn-nav-auth');
     
     if (user && user.emailVerified) {
-        // 1. On affiche les sections
+        // --- ÉTAT : CONNECTÉ ---
         zonePrivée.style.display = 'block';
         sectionProfil.style.display = 'block';
         
-        // 2. On remplit les informations du profil
+        // Infos de base
         document.getElementById('profil-email').innerText = user.email;
-        
-        // On transforme la date de création en format lisible
-        const dateCreation = new Date(user.metadata.creationTime).toLocaleDateString('fr-FR', {
-            year: 'numeric', month: 'long', day: 'numeric'
-        });
-        document.getElementById('profil-date').innerText = dateCreation;
-
-        // 3. Bouton Quitter
-        btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
-        // 4. Logique JavaScript (pour les rangs et les blasons)
-        
         const dateCreation = new Date(user.metadata.creationTime);
         const aujourdhui = new Date();
         const joursAnciennete = Math.floor((aujourdhui - dateCreation) / (1000 * 60 * 60 * 24));
         
+        // Rangs et Progression
         let rang = "Écuyer";
         let blason = "🛡️";
-        
-        if (joursAnciennete > 30) {
+        let xpPourcentage = (joursAnciennete / 7) * 100;
+        let texteProchain = (7 - joursAnciennete) + " jours avant de devenir Vassal";
+
+        if (joursAnciennete >= 30) {
             rang = "Chevalier de la Table Carrée";
             blason = "⚔️";
-        } else if (joursAnciennete > 7) {
+            xpPourcentage = 100;
+            texteProchain = "Niveau de noblesse maximum !";
+        } else if (joursAnciennete >= 7) {
             rang = "Vassal Fidèle";
             blason = "🏰";
+            xpPourcentage = ((joursAnciennete - 7) / (30 - 7)) * 100;
+            texteProchain = (30 - joursAnciennete) + " jours avant de devenir Chevalier";
         }
-        
+
+        // Mise à jour visuelle du profil
         document.getElementById('rang-chevalier').innerText = rang;
         document.getElementById('blason-image').innerText = blason;
+        document.getElementById('barre-xp').style.width = Math.min(xpPourcentage, 100) + "%";
+        document.getElementById('texte-xp').innerText = texteProchain;
+        document.getElementById('profil-date').innerText = dateCreation.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('profil-anciennete').innerText = joursAnciennete + (joursAnciennete > 1 ? " jours" : " jour");
+
+        // Menu de navigation
+        btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
+
     } else {
+        // --- ÉTAT : DÉCONNECTÉ ---
         zonePrivée.style.display = 'none';
         sectionProfil.style.display = 'none';
+        
+        // RÉAPPARITION DU BOUTON
         btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
         
+        // Si l'utilisateur essaie de se connecter sans avoir validé son mail
         if (user && !user.emailVerified) {
             signOut(auth);
         }
