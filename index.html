@@ -264,6 +264,10 @@
     animation: secousse 0.4s ease-in-out;
     border: 2px solid #ff4d4d !important; /* On souligne l'erreur en rouge sang */
 }
+.blason-signature #blason-image {
+    margin-bottom: 0 !important; /* Enlève la marge du bas pour l'alignement */
+    font-size: 2.5rem !important; /* Taille réduite pour l'icône de rang */
+}
     </style>
 </head>
 <body>
@@ -315,11 +319,18 @@
     
     <div style="text-align: center; margin-top: 2rem;">
         
-    <div class="blason-conteneur" style="position: relative; display: inline-block;">
-            <img src="favicon.ico" alt="Sceau" style="width: 100px; height: 100px; opacity: 0.3; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
-            <h3 id="rang-chevalier" style="font-family:'Cinzel'; color:var(--rouge-blason); margin-bottom:10px;">Chargement du rang...</h3>
-            <div class="blason-interactif" id="blason-image" style="position: relative; z-index: 2; font-size: 4rem;">🛡️</div>
-        </div>
+    <div class="blason-signature" style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px;">
+    
+    <div style="position: relative; width: 80px; height: 80px;">
+        <img src="favicon.ico" alt="Sceau" 
+             style="width: 100%; height: 100%; object-fit: contain; border: 2px solid var(--or-royal); border-radius: 8px; padding: 5px; background: rgba(255, 215, 0, 0.05);">
+    </div>
+
+    <div id="blason-image" class="blason-interactif" 
+         style="font-size: 2.5rem; background: rgba(0,0,0,0.03); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--or-sombre); border-radius: 50%;">
+        🛡️
+    </div>
+</div>
 
         <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif;">
             <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 90px;">
