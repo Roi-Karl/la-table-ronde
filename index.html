@@ -611,7 +611,8 @@ onAuthStateChanged(auth, (user) => {
 
         // 2. Calcul de l'ancienneté (en jours)
         const aujourdhui = new Date();
-        const joursAnciennete = Math.floor((aujourdhui - dateCreation) / (1000 * 60 * 60 * 24));
+        const joursAnciennete = 15; // Force le test à 15 jours
+       // const joursAnciennete = Math.floor((aujourdhui - dateCreation) / (1000 * 60 * 60 * 24));
         document.getElementById('profil-anciennete').innerText = joursAnciennete + (joursAnciennete > 1 ? " jours" : " jour");
 
         // 3. Système de Rangs
