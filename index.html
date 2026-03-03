@@ -203,6 +203,51 @@
     #section-regles td {
         vertical-align: top;
     }
+        /* Curseur personnalisé pour tout le corps du site */
+            body {
+                cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size: 24px;'><text y='24'>⚔️</text></svg>"), auto;
+            }
+            
+            /* Curseur spécifique pour les éléments cliquables */
+            a, button, .blason-interactif {
+                cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size: 24px;'><text y='24'>🔥</text></svg>"), pointer;
+            }
+        @keyframes deroulement {
+        from {
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: top;
+        }
+        to {
+            opacity: 1;
+            transform: scaleY(1);
+            transform-origin: top;
+        }
+    }
+    
+    .parchemin-box {
+        animation: deroulement 0.8s ease-out forwards;
+        /* On ajoute une texture de vieux papier plus prononcée sur les bords */
+        background-image: radial-gradient(circle at center, rgba(244, 235, 208, 0.2) 0%, rgba(220, 200, 150, 0.3) 100%);
+    }
+            .parchemin-box:hover {
+        box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        transition: box-shadow 0.5s ease;
+    }
+    
+    /* Animation spéciale pour le blason du profil */
+    #blason-image {
+        display: inline-block;
+        animation: battement 3s infinite ease-in-out;
+    }
+    
+    @keyframes battement {
+        0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px transparent); }
+        50% { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--or-royal)); }
+    }
+            html {
+        scroll-behavior: smooth;
+    }
     </style>
 </head>
 <body>
