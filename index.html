@@ -492,7 +492,28 @@
   sendPasswordResetEmail,
   deleteUser // ← Ajoutez ceci
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
+function traduireErreur(code) {
+    switch (code) {
+        case 'auth/invalid-email':
+            return "✉️ Ce parchemin d'adresse semble mal écrit ou falsifié.";
+        case 'auth/user-not-found':
+            return "👤 Ce nom n'est pas inscrit dans nos registres. Êtes-vous un espion ?";
+        case 'auth/wrong-password':
+            return "🔑 Le mot de passe ne déverrouille pas ce compte. Réessayez, messire.";
+        case 'auth/missing-password':
+            return "🗝️ Vous avez oublié la clé ! (Le mot de passe est obligatoire).";
+        case 'auth/email-already-in-use':
+            return "🛡️ Ce nom est déjà porté par un autre Chevalier du royaume.";
+        case 'auth/weak-password':
+            return "⚔️ Votre mot de passe est trop fragile. Forgez-en un plus robuste (6 caractères min).";
+        case 'auth/network-request-failed':
+            return "📡 Le pigeon voyageur s'est perdu... Vérifiez votre connexion internet.";
+        case 'auth/too-many-requests':
+            return "🚪 La garde bloque l'accès suite à trop d'échecs. Patientez un instant !";
+        default:
+            return "📜 Une erreur mystérieuse s'est produite : " + code;
+    }
+}
   const firebaseConfig = {
     apiKey: "AIzaSyDuWDm8uNJwYZrfPg_YLbzRyMc0TSyVhzw",
     authDomain: "la-table-ronde.firebaseapp.com",
@@ -532,7 +553,7 @@ window.deconnexion = () => { signOut(auth); };
         await sendPasswordResetEmail(auth, emailCible);
         alert("🛡️ Le pigeon voyageur est en route vers " + emailCible + " ! Suivez les instructions pour changer votre clé.");
     } catch (e) {
-        alert("Erreur de la garde : " + e.message);
+        alert("🏰 Message du Sénéchal :\n\n" + traduireErreur(e.code));
     }
 };
     
@@ -561,7 +582,7 @@ window.agirRoyale = async () => {
       }
       fermerPorte();
     } catch (e) {
-      alert("Erreur de la garde : " + e.message);
+      alert("🏰 Message du Sénéchal :\n\n" + traduireErreur(e.code));
     }
 };
 window.sauvegarderProfil = () => {
@@ -738,7 +759,7 @@ if (corpsTableau) {
                 alert("🛡 Sécurité : Pour supprimer votre compte, vous devez vous être connecté très récemment. Veuillez vous reconnecter et réessayer.");
                 signOut(auth);
             } else {
-                alert("Erreur de la garde : " + e.message);
+                alert("🏰 Message du Sénéchal :\n\n" + traduireErreur(e.code));
             }
         }
     }
