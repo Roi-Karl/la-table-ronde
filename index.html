@@ -245,6 +245,17 @@
         </section>
         <section id="section-profil" class="parchemin-box" style="display:none;">
             <h2>📜 Votre Titre de Chevalier</h2>
+
+            <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif;">
+                <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 80px;">
+                    <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">NIVEAU</span>
+                    <strong id="profil-niveau" style="font-size: 1.2rem;">1</strong>
+                </div>
+                <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 80px;">
+                    <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">PUISSANCE</span>
+                    <strong id="profil-puissance" style="font-size: 1.2rem;">10</strong>
+                </div>
+            </div>
             
             <div style="text-align: center; margin-top: 2rem;">
                 <div class="blason-conteneur">
@@ -458,28 +469,59 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById('profil-anciennete').innerText = joursAnciennete + (joursAnciennete > 1 ? " jours" : " jour");
 
         // 3. Système de Rangs
-        let rang = "Écuyer";
-        let blason = "🛡️";
-        let xpPourcentage = (joursAnciennete / 7) * 100;
-        let texteProchain = (7 - joursAnciennete) + " jours avant de devenir Vassal";
-
-        if (joursAnciennete >= 30) {
-            rang = "Chevalier de la Table Carrée";
-            blason = "⚔️";
-            xpPourcentage = 100;
-            texteProchain = "Niveau de noblesse maximum !";
-        } else if (joursAnciennete >= 7) {
-            rang = "Vassal Fidèle";
-            blason = "🏰";
-            xpPourcentage = ((joursAnciennete - 7) / (30 - 7)) * 100;
-            texteProchain = (30 - joursAnciennete) + " jours avant de devenir Chevalier";
+        // --- LOGIQUE DES 10 RANGS ---
+        
+        // Calcul niveau & puissance
+        const niveau = Math.floor(joursAnciennete / 1.5) + 1; // Niveau grimpe vite
+        const puissance = 10 + (joursAnciennete * 12); 
+        
+        const grades = [
+            { seuil: 0,   nom: "Serf Égaré",        icone: "🪵", coul: "#7f8c8d" },
+            { seuil: 2,   nom: "Vilein Courageux",  icone: "🌾", coul: "#95a5a6" },
+            { seuil: 5,   nom: "Écuyer Novice",     icone: "🛡️", coul: "#bc8f8f" },
+            { seuil: 10,  nom: "Vassal du Fief",    icone: "🏰", coul: "#cd7f32" }, // Bronze
+            { seuil: 20,  nom: "Chevalier Errant",  icone: "🐎", coul: "#bdc3c7" }, // Argent
+            { seuil: 40,  nom: "Héraut Royal",      icone: "🎺", coul: "#f1c40f" }, // Or
+            { seuil: 70,  nom: "Baron de la Carrée",icone: "🍷", coul: "#e67e22" },
+            { seuil: 120, nom: "Maître d'Armes",    icone: "⚔️", coul: "#8b0000" },
+            { seuil: 200, nom: "Haut Connétable",   icone: "🚩", coul: "#4a0404" },
+            { seuil: 365, nom: "Main du Roi Karl",  icone: "👑", coul: "#d4af37" } // Le Graal (1 an)
+        ];
+        
+        // Trouver le rang actuel
+        let rangActuel = grades[0];
+        let prochainRang = null;
+        
+        for (let i = 0; i < grades.length; i++) {
+            if (joursAnciennete >= grades[i].seuil) {
+                rangActuel = grades[i];
+                prochainRang = grades[i + 1] || null;
+            }
         }
-
-        // Mise à jour visuelle
-        document.getElementById('rang-chevalier').innerText = rang;
-        document.getElementById('blason-image').innerText = blason;
-        document.getElementById('barre-xp').style.width = Math.min(xpPourcentage, 100) + "%";
-        document.getElementById('texte-xp').innerText = texteProchain;
+        
+        // Calcul de la barre d'XP relative au rang
+        let xpPourcentage = 100;
+        let texteXP = "Vous avez atteint le rang ultime des légendes !";
+        
+        if (prochainRang) {
+            const joursDansCeRang = joursAnciennete - rangActuel.seuil;
+            const joursNecessaires = prochainRang.seuil - rangActuel.seuil;
+            xpPourcentage = (joursDansCeRang / joursNecessaires) * 100;
+            texteXP = (prochainRang.seuil - joursAnciennete) + " jours avant le grade de " + prochainRang.nom;
+        }
+        
+        // MISE À JOUR VISUELLE
+        document.getElementById('profil-niveau').innerText = niveau;
+        document.getElementById('profil-puissance').innerText = puissance;
+        document.getElementById('rang-chevalier').innerText = rangActuel.nom;
+        document.getElementById('blason-image').innerText = rangActuel.icone;
+        
+        const barre = document.getElementById('barre-xp');
+        barre.style.width = Math.min(xpPourcentage, 100) + "%";
+        barre.style.background = rangActuel.coul; // La barre prend la couleur du rang !
+        barre.style.boxShadow = `0 0 10px ${rangActuel.coul}`;
+        
+        document.getElementById('texte-xp').innerText = texteXP;
 
         btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
 
