@@ -197,6 +197,12 @@
     cursor: pointer;
     text-decoration: underline;
 }
+    #section-regles table tr {
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    #section-regles td {
+        vertical-align: top;
+    }
     </style>
 </head>
 <body>
@@ -290,6 +296,42 @@
                     <a href="javascript:deconnexion()" class="lien-quitter">REPOSER LES ARMES</a>
                     <button onclick="demanderSuppression()" class="btn-danger">Effacer mon nom du registre</button>
                 </div>
+            </div>
+        </section>
+        <section id="section-regles" class="parchemin-box" style="display:none; margin-top: -2rem; font-size: 0.9rem;">
+            <h3 style="font-family: 'Cinzel', serif; color: var(--rouge-blason); border-bottom: 1px solid var(--or-sombre); margin-bottom: 15px;">📜 Le Code de la Chevalerie</h3>
+            
+            <p style="font-style: italic; margin-bottom: 15px;">"La patience est la vertu des nobles. Voici comment s'acquiert la gloire en ces terres."</p>
+            
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="color: var(--or-sombre); border-bottom: 2px solid var(--or-sombre);">
+                        <th style="padding: 5px;">Voie</th>
+                        <th style="padding: 5px;">Gains</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px 5px;"><strong>Progression</strong></td>
+                        <td>Chaque lever de soleil (24h) vous rapproche du rang supérieur.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 5px;"><strong>Niveaux</strong></td>
+                        <td>Votre niveau augmente tous les 1.5 jours d'allégeance.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 5px;"><strong>Puissance</strong></td>
+                        <td>+12 points de force par jour passé au donjon.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 5px;"><strong>Noblesse</strong></td>
+                        <td>Il existe 10 grades, du Serf à la Main du Roi (365 jours).</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.05); border-left: 3px solid var(--rouge-blason);">
+                <p><strong>Note du Sénéchal :</strong> Quitter le donjon (supprimer son compte) efface vos titres à jamais des registres royaux. Réfléchissez avant de poser les armes !</p>
             </div>
         </section>
         <section id="zone-privee" class="parchemin-box" style="display:none; border: 4px solid var(--or-royal);">
@@ -522,12 +564,13 @@ onAuthStateChanged(auth, (user) => {
         barre.style.boxShadow = `0 0 10px ${rangActuel.coul}`;
         
         document.getElementById('texte-xp').innerText = texteXP;
-
+        document.getElementById('section-regles').style.display = 'block';
         btnNav.innerHTML = `<a href="javascript:deconnexion()" style="color:var(--rouge-blason); font-weight:bold; text-decoration:none;">QUITTER LE DONJON</a>`;
 
     } else {
         zonePrivée.style.display = 'none';
         sectionProfil.style.display = 'none';
+        document.getElementById('section-regles').style.display = 'none';
         btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
         
         if (user && !user.emailVerified) {
