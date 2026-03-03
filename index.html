@@ -496,6 +496,8 @@ function traduireErreur(code) {
     switch (code) {
         case 'auth/invalid-email':
             return "✉️ Ce parchemin d'adresse semble mal écrit ou falsifié.";
+        case 'auth/invalid-credential': // <-- La nouvelle erreur ici
+            return "🗝️ Les informations fournies ne permettent pas d'ouvrir la herse. Vérifiez l'e-mail ou le mot de passe, messire.";
         case 'auth/user-not-found':
             return "👤 Ce nom n'est pas inscrit dans nos registres. Êtes-vous un espion ?";
         case 'auth/wrong-password':
@@ -506,8 +508,6 @@ function traduireErreur(code) {
             return "🛡️ Ce nom est déjà porté par un autre Chevalier du royaume.";
         case 'auth/weak-password':
             return "⚔️ Votre mot de passe est trop fragile. Forgez-en un plus robuste (6 caractères min).";
-        case 'auth/network-request-failed':
-            return "📡 Le pigeon voyageur s'est perdu... Vérifiez votre connexion internet.";
         case 'auth/too-many-requests':
             return "🚪 La garde bloque l'accès suite à trop d'échecs. Patientez un instant !";
         default:
