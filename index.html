@@ -222,9 +222,15 @@
     }
     
     .parchemin-box {
-        animation: deroulement 0.8s ease-out forwards;
-        /* On ajoute une texture de vieux papier plus prononcée sur les bords */
+        /* L'animation ne se déclenche que via la classe .visible ajoutée par l'Intersection Observer */
+        opacity: 0;
+        transform: scaleY(0);
+        transform-origin: top;
         background-image: radial-gradient(circle at center, rgba(244, 235, 208, 0.2) 0%, rgba(220, 200, 150, 0.3) 100%);
+    }
+
+    .parchemin-box.visible {
+        animation: deroulement 0.8s ease-out forwards;
     }
             .parchemin-box:hover {
         box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
@@ -553,6 +559,28 @@
         <p>Propriété de la Couronne - Roi Karl &copy; 2026</p>
         <p>Fait de pierre et de pixels.</p>
     </footer>
+
+<script>
+    // --- INTERSECTION OBSERVER ---
+    // Déclenche l'animation .deroulement uniquement quand une section entre dans la vue
+    const observateur = new IntersectionObserver((entrees) => {
+        entrees.forEach(entree => {
+            if (entree.isIntersecting) {
+                entree.target.classList.add('visible');
+                // On arrête d'observer une fois animée pour ne pas rejouer l'animation
+                observateur.unobserve(entree.target);
+            }
+        });
+    }, {
+        threshold: 0.1 // Se déclenche quand 10% de la section est visible
+    });
+
+    // On observe chaque parchemin-box de la page
+    document.querySelectorAll('.parchemin-box').forEach(section => {
+        observateur.observe(section);
+    });
+</script>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { 
