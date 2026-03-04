@@ -268,6 +268,54 @@
     margin-bottom: 0 !important; /* Enlève la marge du bas pour l'alignement */
     font-size: 2.5rem !important; /* Taille réduite pour l'icône de rang */
 }
+/* Conteneur pour positionner l'infobulle */
+.infobulle-conteneur {
+    position: relative;
+    display: inline-block;
+}
+
+/* Le petit parchemin d'info */
+.infobulle-texte {
+    visibility: hidden;
+    width: 140px;
+    background-color: var(--parchemin);
+    color: var(--rouge-blason);
+    text-align: center;
+    border: 1px solid var(--or-sombre);
+    padding: 5px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    
+    /* Positionnement au-dessus de l'icône */
+    position: absolute;
+    z-index: 10;
+    bottom: 125%; 
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Petit triangle sous le parchemin */
+.infobulle-texte::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--or-sombre) transparent transparent transparent;
+}
+
+/* Affichage au survol */
+.infobulle-conteneur:hover .infobulle-texte {
+    visibility: visible;
+    opacity: 1;
+}
     </style>
 </head>
 <body>
@@ -319,16 +367,19 @@
     
     <div style="text-align: center; margin-top: 2rem;">
         
-    <div class="blason-signature" style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px;">
+<div class="blason-signature" style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px;">
     
     <div style="position: relative; width: 80px; height: 80px;">
         <img src="favicon.ico" alt="Sceau" 
              style="width: 100%; height: 100%; object-fit: contain; border: 2px solid var(--or-royal); border-radius: 8px; padding: 5px; background: rgba(255, 215, 0, 0.05);">
     </div>
 
-    <div id="blason-image" class="blason-interactif" 
-         style="font-size: 2.5rem; background: rgba(0,0,0,0.03); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--or-sombre); border-radius: 50%;">
-        🛡️
+    <div class="infobulle-conteneur">
+        <span class="infobulle-texte" id="infobulle-rang">Titre de Noblesse</span>
+        <div id="blason-image" class="blason-interactif" 
+             style="font-size: 2.5rem; background: rgba(0,0,0,0.03); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--or-sombre); border-radius: 50%;">
+            🛡️
+        </div>
     </div>
 </div>
 
@@ -744,6 +795,7 @@ onAuthStateChanged(auth, (user) => {
         if(document.getElementById('profil-niveau')) document.getElementById('profil-niveau').innerText = niveau;
         if(document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
         if(document.getElementById('rang-chevalier')) document.getElementById('rang-chevalier').innerText = rangActuel.nom;
+        if(document.getElementById('infobulle-rang')) document.getElementById('infobulle-rang').innerText = rangActuel.nom;
         if(document.getElementById('blason-image')) document.getElementById('blason-image').innerText = rangActuel.icone;
         
         // Barre d'XP
