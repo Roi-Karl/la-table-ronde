@@ -56,18 +56,19 @@
 
         /* --- HEADER --- */
         header {
-            padding: 6rem 2rem;
+            padding: 4rem 1rem; /* Réduit l'espacement sur petit écran */
             text-align: center;
-            /* On remplace l'image générique par la vôtre */
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('banniere.png'); 
-            background-size: cover;
-            background-position: center;
+            background-size: cover;      /* L'image couvre toute la zone sans se déformer */
+            background-position: center; /* L'image reste centrée */
+            background-repeat: no-repeat;
             border-bottom: 3px double var(--or-royal);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 400px; /* Ajustez la hauteur selon vos goûts */
+            min-height: 60vh; /* Utilise 60% de la hauteur de l'écran au lieu d'un fixe en px */
+            width: 100%;
         }
 
         .titre-principal { font-size: clamp(2.5rem, 8vw, 4.5rem); color: var(--or-royal); text-shadow: 3px 3px 0px black; }
@@ -145,7 +146,17 @@
                 }
         footer { text-align: center; padding: 3rem; background: #000; color: var(--or-sombre); font-size: 0.8rem; }
 
-        @media (max-width: 600px) { .parchemin-box { padding: 1.5rem; } }
+        @media (max-width: 600px) {
+    header {
+        min-height: 300px; /* Hauteur plus petite sur mobile */
+        padding: 2rem 1rem;
+    }
+
+    .titre-principal {
+        font-size: 2.5rem; /* Réduit la taille du texte pour éviter les coupures */
+        line-height: 1.1;
+    }
+}
 /* Design du parchemin d'identité */
 .parchemin-identite {
     background: rgba(0,0,0,0.05);
