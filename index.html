@@ -363,6 +363,7 @@
     
     <div style="text-align: center; margin-top: 2rem;">
         <h3 id="rang-chevalier" style="font-family:'Cinzel', serif; color:var(--rouge-blason); margin-bottom:15px;">Chargement du rang...</h3>
+        
 <div class="blason-signature" style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px;">
     
     <div style="position: relative; width: 80px; height: 80px;">
@@ -673,7 +674,7 @@ window.agirRoyale = async () => {
         
         // 2. On récupère le parchemin (le conteneur du formulaire)
         // Note : Si ta classe n'est pas .container, essaie .main-box ou document.body
-        const parchemin = document.querySelector('.container') || document.body; 
+        const parchemin = document.querySelector('#modalConnexion > div') || document.body; 
         
         // 3. On déclenche la secousse visuelle
         parchemin.classList.add('erreur-secousse');
