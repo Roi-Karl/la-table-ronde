@@ -809,7 +809,7 @@ onAuthStateChanged(auth, (user) => {
         if (sectionRegles) sectionRegles.style.display = 'none';
         
         if (btnNav) {
-            btnNav.innerHTML = `<a href="javascript:ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; text-decoration:none;">ACCÈS MEMBRE</a>`;
+            btnNav.innerHTML = `<button onclick="ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; font-family:'Cinzel',serif; font-size:0.9rem; cursor:pointer; border:none;">ACCÈS MEMBRE</button>`;
         }
     }
 });
