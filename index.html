@@ -866,6 +866,8 @@
                 </div>
 
                 <div class="parchemin-identite" style="text-align: left;">
+
+                    <!-- ── Infos de base ── -->
                     <div class="ligne-info">
                         <span class="label">Nom de Guerre :</span>
                         <input type="text" id="profil-pseudo" placeholder="Ex: Galahad le Brave"
@@ -876,12 +878,69 @@
                         <input type="text" id="profil-royaume" placeholder="Ex: Camelot"
                                style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%;">
                     </div>
+                    <div class="ligne-info">
+                        <span class="label">Province :</span>
+                        <input type="text" id="profil-province" placeholder="Ex: Québec, France..."
+                               style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%;">
+                    </div>
+                    <div class="ligne-info">
+                        <span class="label">Arme de Prédilection :</span>
+                        <select id="profil-arme"
+                                style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%; color:var(--noir-encre); cursor:pointer;">
+                            <option value="">— Choisir —</option>
+                            <option value="⚔️ Épée longue">⚔️ Épée longue</option>
+                            <option value="🗡️ Dague">🗡️ Dague</option>
+                            <option value="🏹 Arc">🏹 Arc</option>
+                            <option value="🪓 Hache de guerre">🪓 Hache de guerre</option>
+                            <option value="🔱 Trident">🔱 Trident</option>
+                            <option value="🛡️ Bouclier (défenseur)">🛡️ Bouclier (défenseur)</option>
+                            <option value="📜 Parchemin (mage)">📜 Parchemin (mage)</option>
+                            <option value="🍺 Chope de cervoise">🍺 Chope de cervoise</option>
+                        </select>
+                    </div>
+                    <div class="ligne-info">
+                        <span class="label">Jour de Naissance :</span>
+                        <input type="date" id="profil-naissance"
+                               style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%; color:var(--noir-encre);">
+                    </div>
+
+                    <!-- ── Couleur de blason ── -->
+                    <div class="ligne-info" style="align-items: center;">
+                        <span class="label">Couleur du Blason :</span>
+                        <div style="display:flex; align-items:center; gap:10px; width:60%;">
+                            <input type="color" id="profil-couleur-blason" value="#8B0000"
+                                   style="width:40px; height:30px; border:2px solid var(--or-sombre); cursor:pointer; background:none; padding:2px;">
+                            <span id="label-couleur-blason" style="font-size:0.8rem; font-family:'Lora'; font-style:italic; color:#666;">Rouge Blason</span>
+                        </div>
+                    </div>
+
+                    <!-- ── Devise ── -->
                     <div class="ligne-info" style="flex-direction: column; align-items: flex-start;">
                         <span class="label">Devise Royale :</span>
                         <textarea id="profil-devise" placeholder="Votre cri de guerre..."
                                   style="background:rgba(0,0,0,0.03); border:1px dashed var(--or-sombre); font-family:'Lora'; font-style:italic; width:100%; margin-top:5px; padding:5px; height:55px; resize:none;"></textarea>
                     </div>
-                    <button onclick="sauvegarderProfil()" id="btn-save-profil" class="btn-secondaire" style="width:100%; margin-top:10px; font-size:0.8rem;">
+
+                    <!-- ── Préférences de notifications ── -->
+                    <div style="margin: 12px 0 8px;">
+                        <span class="label" style="display:block; margin-bottom:8px;">🔔 Notifications Royales :</span>
+                        <div style="display:flex; flex-direction:column; gap:6px; padding-left:4px;">
+                            <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; cursor:pointer;">
+                                <input type="checkbox" id="notif-videos" style="accent-color:var(--rouge-blason); width:14px; height:14px;">
+                                🎬 Nouvelle vidéo YouTube
+                            </label>
+                            <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; cursor:pointer;">
+                                <input type="checkbox" id="notif-exclusif" style="accent-color:var(--rouge-blason); width:14px; height:14px;">
+                                🏰 Nouveau contenu exclusif membre
+                            </label>
+                            <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; cursor:pointer;">
+                                <input type="checkbox" id="notif-annonces" style="accent-color:var(--rouge-blason); width:14px; height:14px;">
+                                📯 Annonces royales (général)
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="sauvegarderProfil()" id="btn-save-profil" class="btn-secondaire" style="width:100%; margin-top:14px; font-size:0.8rem;">
                         📜 Sceller mes informations
                     </button>
 
@@ -1108,6 +1167,17 @@
 
     <!-- ─── SCRIPTS ────────────────────────── -->
     <script>
+        // ── COULEUR DE BLASON ─────────────────────
+        function mettreAJourLabelCouleur(hex) {
+            const label = document.getElementById('label-couleur-blason');
+            if (label) label.style.color = hex;
+            if (label) label.innerText   = hex.toUpperCase();
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const picker = document.getElementById('profil-couleur-blason');
+            if (picker) picker.addEventListener('input', () => mettreAJourLabelCouleur(picker.value));
+        });
+
         // ── VOIR / CACHER MOT DE PASSE ────────────
         function toggleMotDePasse() {
             const input = document.getElementById('authPassword');
@@ -1314,21 +1384,24 @@
             btn.disabled   = true;
             btn.innerText  = "⏳ Envoi au royaume...";
 
-            // Construit l'objet avec tous les champs connus
-            // Pour ajouter un nouveau champ plus tard : ajoutez simplement
-            // une clé ici ET un input HTML avec l'id correspondant
             const infos = {
-                pseudo:       document.getElementById('profil-pseudo')?.value  || "",
-                royaume:      document.getElementById('profil-royaume')?.value || "",
-                devise:       document.getElementById('profil-devise')?.value  || "",
+                pseudo:         document.getElementById('profil-pseudo')?.value        || "",
+                royaume:        document.getElementById('profil-royaume')?.value       || "",
+                devise:         document.getElementById('profil-devise')?.value        || "",
+                province:       document.getElementById('profil-province')?.value      || "",
+                arme:           document.getElementById('profil-arme')?.value          || "",
+                naissance:      document.getElementById('profil-naissance')?.value     || "",
+                couleur_blason: document.getElementById('profil-couleur-blason')?.value || "#8B0000",
+                notifications: {
+                    videos:    document.getElementById('notif-videos')?.checked    || false,
+                    exclusif:  document.getElementById('notif-exclusif')?.checked  || false,
+                    annonces:  document.getElementById('notif-annonces')?.checked  || false,
+                },
                 email:        user.email,
                 mis_a_jour:   serverTimestamp()
-                // Exemple pour ajouter un champ futur :
-                // ville: document.getElementById('profil-ville')?.value || "",
             };
 
             try {
-                // setDoc avec merge:true préserve les champs non modifiés
                 await setDoc(doc(db, "membres", user.uid), infos, { merge: true });
                 btn.innerText          = "✨ Sceau Apposé !";
                 btn.style.borderColor  = "green";
@@ -1378,15 +1451,24 @@
                     const snap = await getDoc(doc(db, "membres", user.uid));
                     if (snap.exists()) {
                         const data = snap.data();
-                        if (document.getElementById('profil-pseudo'))  document.getElementById('profil-pseudo').value  = data.pseudo  || "";
-                        if (document.getElementById('profil-royaume')) document.getElementById('profil-royaume').value = data.royaume || "";
-                        if (document.getElementById('profil-devise'))  document.getElementById('profil-devise').value  = data.devise  || "";
-                        // Ajout futur : if (document.getElementById('profil-ville')) document.getElementById('profil-ville').value = data.ville || "";
-
-                        // Utilise cree_le Firestore si disponible (permet les tests d'ancienneté)
+                        if (document.getElementById('profil-pseudo'))    document.getElementById('profil-pseudo').value    = data.pseudo    || "";
+                        if (document.getElementById('profil-royaume'))   document.getElementById('profil-royaume').value   = data.royaume   || "";
+                        if (document.getElementById('profil-devise'))    document.getElementById('profil-devise').value    = data.devise    || "";
+                        if (document.getElementById('profil-province'))  document.getElementById('profil-province').value  = data.province  || "";
+                        if (document.getElementById('profil-arme'))      document.getElementById('profil-arme').value      = data.arme      || "";
+                        if (document.getElementById('profil-naissance')) document.getElementById('profil-naissance').value = data.naissance || "";
+                        if (document.getElementById('profil-couleur-blason')) {
+                            const couleur = data.couleur_blason || "#8B0000";
+                            document.getElementById('profil-couleur-blason').value = couleur;
+                            mettreAJourLabelCouleur(couleur);
+                        }
+                        if (data.notifications) {
+                            if (document.getElementById('notif-videos'))   document.getElementById('notif-videos').checked   = data.notifications.videos   || false;
+                            if (document.getElementById('notif-exclusif')) document.getElementById('notif-exclusif').checked = data.notifications.exclusif || false;
+                            if (document.getElementById('notif-annonces')) document.getElementById('notif-annonces').checked = data.notifications.annonces || false;
+                        }
                         if (data.cree_le) dateCreation = data.cree_le.toDate();
                     } else {
-                        // Premier login : création du document membre avec les infos de base
                         await setDoc(doc(db, "membres", user.uid), {
                             email:      user.email,
                             cree_le:    serverTimestamp(),
