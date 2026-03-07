@@ -1247,6 +1247,13 @@
             if (e.target === this) window.fermerPorte();
         });
 
+        // ── TOUCHE ENTER POUR SE CONNECTER ────────
+        ['authEmail', 'authPassword'].forEach(id => {
+            document.getElementById(id).addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') window.agirRoyale();
+            });
+        });
+
         window.deconnexion = () => signOut(auth);
 
         window.basculerMode = () => {
