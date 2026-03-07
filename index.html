@@ -1172,6 +1172,19 @@
             const label = document.getElementById('label-couleur-blason');
             if (label) label.style.color = hex;
             if (label) label.innerText   = hex.toUpperCase();
+
+            // Application visuelle sur le blason et les éléments du profil
+            const blason = document.getElementById('blason-image');
+            if (blason) {
+                blason.style.borderColor       = hex;
+                blason.style.backgroundColor   = hex + "22"; // 22 = ~13% opacité
+                blason.style.filter            = `drop-shadow(0 0 8px ${hex}88)`;
+            }
+            const rang = document.getElementById('rang-chevalier');
+            if (rang) rang.style.color = hex;
+
+            const barre = document.getElementById('barre-xp');
+            if (barre) barre.style.backgroundColor = hex;
         }
         document.addEventListener('DOMContentLoaded', () => {
             const picker = document.getElementById('profil-couleur-blason');
@@ -1461,8 +1474,7 @@
                             const couleur = data.couleur_blason || "#8B0000";
                             document.getElementById('profil-couleur-blason').value = couleur;
                             mettreAJourLabelCouleur(couleur);
-                        }
-                        if (data.notifications) {
+                        }                        if (data.notifications) {
                             if (document.getElementById('notif-videos'))   document.getElementById('notif-videos').checked   = data.notifications.videos   || false;
                             if (document.getElementById('notif-exclusif')) document.getElementById('notif-exclusif').checked = data.notifications.exclusif || false;
                             if (document.getElementById('notif-annonces')) document.getElementById('notif-annonces').checked = data.notifications.annonces || false;
