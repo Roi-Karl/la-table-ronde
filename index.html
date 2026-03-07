@@ -1372,7 +1372,8 @@
 
             if (user && user.emailVerified) {
 
-                // ── Chargement profil depuis Firestore ──
+                // ── Chargement profil + date depuis Firestore (1 seul appel) ──
+                let dateCreation = new Date(user.metadata.creationTime); // fallback Auth
                 try {
                     const snap = await getDoc(doc(db, "membres", user.uid));
                     if (snap.exists()) {
@@ -1381,6 +1382,9 @@
                         if (document.getElementById('profil-royaume')) document.getElementById('profil-royaume').value = data.royaume || "";
                         if (document.getElementById('profil-devise'))  document.getElementById('profil-devise').value  = data.devise  || "";
                         // Ajout futur : if (document.getElementById('profil-ville')) document.getElementById('profil-ville').value = data.ville || "";
+
+                        // Utilise cree_le Firestore si disponible (permet les tests d'ancienneté)
+                        if (data.cree_le) dateCreation = data.cree_le.toDate();
                     } else {
                         // Premier login : création du document membre avec les infos de base
                         await setDoc(doc(db, "membres", user.uid), {
@@ -1398,9 +1402,7 @@
                 if (sectionRegles) { sectionRegles.style.display = 'block'; remplirTableauRangs(); }
 
                 if (document.getElementById('profil-email')) document.getElementById('profil-email').innerText = user.email;
-
-                const dateCreation  = new Date(user.metadata.creationTime);
-                const options       = { year: 'numeric', month: 'long', day: 'numeric' };
+                const options     = { year: 'numeric', month: 'long', day: 'numeric' };
                 if (document.getElementById('profil-date')) document.getElementById('profil-date').innerText = dateCreation.toLocaleDateString('fr-FR', options);
 
                 const aujourdhui    = new Date();
