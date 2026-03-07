@@ -1,46 +1,86 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Table Ronde (mais carrée) | Domaine du Roi Karl</title>
+
+    <!-- ✅ Open Graph / Partage réseaux sociaux -->
+    <meta property="og:title" content="La Table Ronde (mais carrée) — Domaine du Roi Karl">
+    <meta property="og:description" content="Le Royaume Digital du Roi Karl. Débats, vidéos, chevalerie moderne et humour médiéval.">
+    <meta property="og:image" content="https://i.imgur.com/placeholder.png">
+    <meta property="og:url" content="https://la-table-ronde.firebaseapp.com">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="La Table Ronde (mais carrée)">
+    <meta name="twitter:description" content="Le Royaume Digital du Roi Karl.">
+
+    <!-- ✅ SEO -->
+    <meta name="description" content="Bienvenue sur le site officiel du Roi Karl — débats, vidéos YouTube, chevalerie numérique et humour médiéval.">
+    <meta name="author" content="Roi Karl">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+
     <style>
         :root {
             --or-royal: #D4AF37;
             --or-sombre: #AA8222;
-            --noir-encre: #1A1A1A;
+            --or-clair: #f0d060;
+            --noir-encre: #0f0f0f;
+            --noir-profond: #070707;
             --parchemin: #F4EBD0;
+            --parchemin-sombre: #e8d5a8;
             --rouge-blason: #8B0000;
+            --rouge-vif: #a01010;
             --gris-pierre: #333333;
+            --gris-clair: #888;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--noir-encre);
             color: var(--parchemin);
             font-family: 'Lora', serif;
-            background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png'); /* Texture subtile */
-            line-height: 1.6;
+            /* ✅ Texture encodée en base64 (pattern simple) au lieu de dépendre d'un domaine tiers */
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255,255,255,0.012) 2px,
+                    rgba(255,255,255,0.012) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 4px,
+                    rgba(255,255,255,0.008) 4px,
+                    rgba(255,255,255,0.008) 5px
+                );
+            line-height: 1.7;
         }
 
-        h1, h2, h3 { font-family: 'Cinzel', serif; text-align: center; }
+        h1, h2, h3, h4 { font-family: 'Cinzel', serif; text-align: center; }
 
-        /* --- NAVIGATION --- */
+        /* ─── NAVIGATION ─────────────────────────── */
         nav {
-            background: rgba(0,0,0,0.8);
-            padding: 1rem;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(8px);
+            padding: 1rem 2rem;
             position: sticky;
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--or-royal);
             display: flex;
             justify-content: center;
-            gap: 20px;
+            align-items: center;
+            gap: 24px;
             flex-wrap: wrap;
         }
 
@@ -48,436 +88,834 @@
             color: var(--or-royal);
             text-decoration: none;
             font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
             transition: 0.3s;
+            padding: 4px 0;
+            border-bottom: 1px solid transparent;
         }
 
-        nav a:hover { color: white; text-shadow: 0 0 5px var(--or-royal); }
+        nav a:hover {
+            color: white;
+            border-bottom-color: var(--or-royal);
+        }
 
-        /* --- HEADER --- */
+        /* ─── HEADER ─────────────────────────────── */
         header {
-            padding: 4rem 1rem; /* Réduit l'espacement sur petit écran */
+            padding: 5rem 1rem;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('banniere.png'); 
-            background-size: cover;      /* L'image couvre toute la zone sans se déformer */
-            background-position: center; /* L'image reste centrée */
-            background-repeat: no-repeat;
+            background: 
+                linear-gradient(160deg, rgba(0,0,0,0.75) 0%, rgba(80,0,0,0.4) 50%, rgba(0,0,0,0.85) 100%),
+                url('banniere.png') center/cover no-repeat;
             border-bottom: 3px double var(--or-royal);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 60vh; /* Utilise 60% de la hauteur de l'écran au lieu d'un fixe en px */
+            min-height: 65vh;
             width: 100%;
+            position: relative;
+            overflow: hidden;
         }
 
-        .titre-principal { font-size: clamp(2.5rem, 8vw, 4.5rem); color: var(--or-royal); text-shadow: 3px 3px 0px black; }
-        .titre-secondaire { font-size: 1.5rem; font-style: italic; margin-bottom: 2rem; }
+        /* Effet de vignette doré en bas du header */
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(transparent, var(--noir-encre));
+            pointer-events: none;
+        }
 
-        /* --- CONTENEUR --- */
-        .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+        .titre-principal {
+            font-size: clamp(2.8rem, 9vw, 5.5rem);
+            font-weight: 900;
+            color: var(--or-royal);
+            text-shadow: 3px 3px 0px #000, 0 0 40px rgba(212,175,55,0.4);
+            letter-spacing: 0.04em;
+            line-height: 1.1;
+            animation: apparition 1.2s ease-out forwards;
+        }
 
+        .titre-secondaire {
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            font-style: italic;
+            font-family: 'Lora', serif;
+            margin: 0.5rem 0 1.5rem;
+            color: var(--parchemin);
+            opacity: 0.85;
+            animation: apparition 1.2s 0.2s ease-out both;
+        }
+
+        .sous-titre-header {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--or-sombre);
+            margin-bottom: 2.5rem;
+            animation: apparition 1.2s 0.4s ease-out both;
+        }
+
+        @keyframes apparition {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── CONTENEUR ──────────────────────────── */
+        .container { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+        /* ─── PARCHEMIN BOX ──────────────────────── */
         .parchemin-box {
             background-color: var(--parchemin);
             color: var(--noir-encre);
             padding: 3rem;
             margin-bottom: 4rem;
-            border: 10px double var(--or-sombre);
+            border: 8px double var(--or-sombre);
             position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.04);
+            opacity: 0;
+            transform: translateY(30px);
+            background-image: 
+                radial-gradient(ellipse at top left, rgba(244,235,208,1) 0%, rgba(232,213,168,0.6) 100%);
         }
 
-        .parchemin-box h2 { color: var(--rouge-blason); margin-bottom: 2rem; border-bottom: 1px solid var(--or-sombre); display: inline-block; width: 100%; padding-bottom: 10px; }
+        /* Coins décoratifs */
+        .parchemin-box::before,
+        .parchemin-box::after {
+            content: '✦';
+            position: absolute;
+            font-size: 1rem;
+            color: var(--or-sombre);
+            opacity: 0.6;
+        }
+        .parchemin-box::before { top: 8px; left: 12px; }
+        .parchemin-box::after  { bottom: 8px; right: 12px; }
 
-        /* --- LETTRINE --- */
+        .parchemin-box.visible {
+            animation: slideUp 0.7s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .parchemin-box:hover {
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(212,175,55,0.25), inset 0 0 30px rgba(0,0,0,0.04);
+            transition: box-shadow 0.5s ease;
+        }
+
+        .parchemin-box h2 {
+            color: var(--rouge-blason);
+            margin-bottom: 2rem;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--or-sombre);
+            font-size: clamp(1.2rem, 3vw, 1.7rem);
+            letter-spacing: 0.06em;
+        }
+
+        /* ─── LETTRINE ───────────────────────────── */
         .lettrine::first-letter {
             float: left;
             font-family: 'Cinzel', serif;
-            font-size: 4rem;
-            line-height: 0.8;
-            padding-right: 10px;
+            font-size: 4.5rem;
+            line-height: 0.75;
+            padding-right: 12px;
+            padding-top: 6px;
             color: var(--rouge-blason);
-            font-weight: bold;
+            font-weight: 900;
         }
 
-        /* --- VIDEO --- */
+        /* ─── VIDÉO ──────────────────────────────── */
         .video-wrapper {
             position: relative;
             padding-bottom: 56.25%;
             height: 0;
             margin: 2rem 0;
-            border: 5px solid var(--gris-pierre);
+            border: 4px solid var(--or-sombre);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
-        .video-wrapper iframe { position: absolute; top:0; left:0; width:100%; height:100%; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* --- GRILLES (BOUTIQUE & SPONSORS) --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 2rem; }
-        .card { border: 1px solid var(--or-sombre); padding: 1.5rem; text-align: center; background: rgba(0,0,0,0.03); }
+        /* ─── GRILLES ────────────────────────────── */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-top: 2rem; }
 
-        /* --- NEWSLETTER (REGISTRE) --- */
-        .registre-form { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 1rem; }
-        input[type="email"] { padding: 10px; width: 80%; max-width: 400px; border: 1px solid var(--or-sombre); font-family: 'Lora', serif; }
+        .card {
+            border: 1px solid var(--or-sombre);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            background: rgba(0,0,0,0.04);
+            transition: 0.3s;
+        }
+        .card:hover {
+            background: rgba(212,175,55,0.08);
+            border-color: var(--or-royal);
+            transform: translateY(-3px);
+        }
+        .card h3 { font-size: 1rem; color: var(--rouge-blason); margin-bottom: 0.8rem; }
 
-        /* --- BOUTONS --- */
+        /* ─── BOUTONS ────────────────────────────── */
         .btn {
             background: var(--rouge-blason);
             color: white;
-            padding: 15px 30px;
+            padding: 15px 32px;
             text-decoration: none;
             font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
             border: 2px solid var(--or-royal);
             cursor: pointer;
-            transition: 0.4s;
+            transition: 0.35s;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+        .btn:hover {
+            background: var(--or-royal);
+            color: black;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212,175,55,0.35);
+        }
+
+        /* ─── BOUTONS SECONDAIRES ────────────────── */
+        .btn-secondaire {
+            background: none;
+            border: 1px solid var(--rouge-blason);
+            color: var(--rouge-blason);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .btn-secondaire:hover { background: var(--rouge-blason); color: white; }
+
+        .btn-danger {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 0.7rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .lien-quitter {
+            display: block;
+            margin: 14px 0;
+            color: var(--noir-encre);
+            text-decoration: underline;
+            font-weight: bold;
+            font-size: 0.9rem;
+            background: none;
+            border: none;
+            font-family: 'Lora', serif;
+            cursor: pointer;
+        }
+
+        /* ─── BLASON PROFIL ──────────────────────── */
+        .blason-interactif {
+            font-size: 5rem;
+            transition: 0.4s ease-in-out;
+            cursor: default;
+            margin-bottom: 1.5rem;
             display: inline-block;
         }
-        .btn:hover { background: var(--or-royal); color: black; transform: scale(1.05); }
-                        /* --- EFFET BLASON PROFIL --- */
-                .blason-interactif {
-                    font-size: 5rem; /* ← Taille du blason agrandie (environ 80px) */
-                    transition: 0.4s ease-in-out; /* Douceur de l'animation */
-                    cursor: default; /* Pas de curseur "main" car ce n'est pas un lien */
-                    margin-bottom: 1.5rem;
-                    display: inline-block; /* Nécessaire pour l'effet de transformation */
-                }
-                
-                .blason-interactif:hover {
-                    transform: scale(1.1) rotate(5deg); /* Grandit et tourne légèrement */
-                    filter: drop-shadow(0 0 15px var(--or-royal)); /* Éclat doré magique */
-                }
-        footer { text-align: center; padding: 3rem; background: #000; color: var(--or-sombre); font-size: 0.8rem; }
+        .blason-interactif:hover {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 0 15px var(--or-royal));
+        }
 
-        @media (max-width: 600px) {
-    header {
-        min-height: 300px; /* Hauteur plus petite sur mobile */
-        padding: 2rem 1rem;
-    }
+        #blason-image {
+            border: 2px solid var(--or-royal);
+            border-radius: 10px;
+            padding: 5px;
+            background: rgba(255,215,0,0.08);
+        }
 
-    .titre-principal {
-        font-size: 2.5rem; /* Réduit la taille du texte pour éviter les coupures */
-        line-height: 1.1;
-    }
-}
-/* Design du parchemin d'identité */
-.parchemin-identite {
-    background: rgba(0,0,0,0.05);
-    padding: 25px;
-    border: 2px solid var(--or-sombre);
-    border-style: double;
-    margin: 2rem auto;
-    max-width: 450px;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
-}
+        /* ─── PARCHEMIN IDENTITÉ ─────────────────── */
+        .parchemin-identite {
+            background: rgba(0,0,0,0.04);
+            padding: 25px;
+            border: 2px double var(--or-sombre);
+            margin: 2rem auto;
+            max-width: 450px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.08);
+        }
 
-.ligne-info {
-    display: flex;
-    justify-content: space-between; /* Corrigé ici */
-    margin-bottom: 15px;
-    border-bottom: 1px dashed #ccc;
-    padding-bottom: 5px;
-}
+        .ligne-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 8px;
+        }
 
-.label { font-family: 'Cinzel', serif; color: var(--rouge-blason); font-size: 0.9rem; }
-.valeur { font-weight: bold; color: var(--noir-encre); }
+        .label { font-family: 'Cinzel', serif; color: var(--rouge-blason); font-size: 0.85rem; }
+        .valeur { font-weight: bold; color: var(--noir-encre); font-size: 0.9rem; }
 
-/* Boutons plus thématiques */
-.btn-secondaire {
-    background: none;
-    border: 1px solid var(--rouge-blason);
-    color: var(--rouge-blason);
-    padding: 8px 15px;
-    cursor: pointer;
-    font-family: 'Cinzel', serif;
-    transition: 0.3s;
-}
-.btn-secondaire:hover { background: var(--rouge-blason); color: white; }
+        /* ─── INFOBULLE ──────────────────────────── */
+        .infobulle-conteneur { position: relative; display: inline-block; }
 
-.lien-quitter {
-    display: block;
-    margin: 20px 0;
-    color: var(--noir-encre);
-    text-decoration: underline;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-.btn-danger {
-    background: none;
-    border: none;
-    color: #999;
-    font-size: 0.7rem;
-    cursor: pointer;
-    text-decoration: underline;
-}
-    #section-regles table tr {
-        border-bottom: 1px solid rgba(0,0,0,0.1);
-    }
-    #section-regles td {
-        vertical-align: top;
-    }
-        @keyframes deroulement {
-        from {
+        .infobulle-texte {
+            visibility: hidden;
+            width: 150px;
+            background-color: var(--parchemin);
+            color: var(--rouge-blason);
+            text-align: center;
+            border: 1px solid var(--or-sombre);
+            padding: 6px;
+            border-radius: 4px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            font-weight: bold;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            position: absolute;
+            z-index: 10;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
             opacity: 0;
-            transform: scaleY(0);
-            transform-origin: top;
+            transition: opacity 0.3s;
         }
-        to {
-            opacity: 1;
-            transform: scaleY(1);
-            transform-origin: top;
+
+        .infobulle-texte::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--or-sombre) transparent transparent transparent;
         }
-    }
-    
-    .parchemin-box {
-        /* L'animation ne se déclenche que via la classe .visible ajoutée par l'Intersection Observer */
-        opacity: 0;
-        transform: scaleY(0);
-        transform-origin: top;
-        background-image: radial-gradient(circle at center, rgba(244, 235, 208, 0.2) 0%, rgba(220, 200, 150, 0.3) 100%);
-    }
 
-    .parchemin-box.visible {
-        animation: deroulement 0.8s ease-out forwards;
-    }
-            .parchemin-box:hover {
-        box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-        transition: box-shadow 0.5s ease;
-    }
-    
-    /* Animation spéciale pour le blason du profil */
-    #blason-image {
-    border: 2px solid var(--or-royal);
-    border-radius: 10px; /* Un peu arrondi pour le style */
-    padding: 5px;
-    background: rgba(255, 215, 0, 0.1);
-}
-    
-    @keyframes battement {
-        0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px transparent); }
-        50% { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--or-royal)); }
-    }
-            html {
-        scroll-behavior: smooth;
-    }
-    /* L'animation de secousse */
-@keyframes secousse {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    75% { transform: translateX(-10px); }
-    100% { transform: translateX(0); }
-}
+        .infobulle-conteneur:hover .infobulle-texte { visibility: visible; opacity: 1; }
 
-/* La classe qu'on appliquera en cas d'erreur */
-.erreur-secousse {
-    animation: secousse 0.4s ease-in-out;
-    border: 2px solid #ff4d4d !important; /* On souligne l'erreur en rouge sang */
-}
-.blason-signature #blason-image {
-    margin-bottom: 0 !important; /* Enlève la marge du bas pour l'alignement */
-    font-size: 2.5rem !important; /* Taille réduite pour l'icône de rang */
-}
-/* Conteneur pour positionner l'infobulle */
-.infobulle-conteneur {
-    position: relative;
-    display: inline-block;
-}
+        /* ─── FAQ ACCORDION ──────────────────────── */
+        .faq-item {
+            border-bottom: 1px solid rgba(0,0,0,0.12);
+            margin-bottom: 0;
+        }
 
-/* Le petit parchemin d'info */
-.infobulle-texte {
-    visibility: hidden;
-    width: 140px;
-    background-color: var(--parchemin);
-    color: var(--rouge-blason);
-    text-align: center;
-    border: 1px solid var(--or-sombre);
-    padding: 5px;
-    border-radius: 4px;
-    font-family: 'Cinzel', serif;
-    font-size: 0.75rem;
-    font-weight: bold;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-    
-    /* Positionnement au-dessus de l'icône */
-    position: absolute;
-    z-index: 10;
-    bottom: 125%; 
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.3s;
-}
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            color: var(--rouge-blason);
+            list-style: none;
+            transition: 0.2s;
+        }
 
-/* Petit triangle sous le parchemin */
-.infobulle-texte::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: var(--or-sombre) transparent transparent transparent;
-}
+        .faq-question:hover { color: var(--noir-encre); }
 
-/* Affichage au survol */
-.infobulle-conteneur:hover .infobulle-texte {
-    visibility: visible;
-    opacity: 1;
-}
+        .faq-question .chevron {
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+            color: var(--or-sombre);
+        }
+
+        .faq-reponse {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .faq-item.ouvert .faq-reponse { max-height: 300px; padding-bottom: 14px; }
+        .faq-item.ouvert .chevron { transform: rotate(180deg); }
+
+        /* ─── ERREUR SECOUSSE ────────────────────── */
+        @keyframes secousse {
+            0%   { transform: translateX(0); }
+            25%  { transform: translateX(-10px); }
+            50%  { transform: translateX(10px); }
+            75%  { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .erreur-secousse {
+            animation: secousse 0.4s ease-in-out;
+            border: 2px solid #ff4d4d !important;
+        }
+
+        /* ─── MODAL CONNEXION ────────────────────── */
+        #modalConnexion {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            z-index: 9999;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-inner {
+            background: var(--parchemin);
+            color: var(--noir-encre);
+            padding: 36px 30px;
+            border: 5px double var(--or-royal);
+            width: 340px;
+            max-width: 90vw;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 20px rgba(212,175,55,0.2);
+            text-align: center;
+            animation: ouvertureModal 0.35s ease-out;
+        }
+
+        @keyframes ouvertureModal {
+            from { opacity: 0; transform: translate(-50%, -48%) scale(0.95); }
+            to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .modal-inner h2 {
+            font-family: 'Cinzel', serif;
+            margin-bottom: 22px;
+            color: var(--rouge-blason);
+            font-size: 1.3rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px; right: 16px;
+            cursor: pointer;
+            font-size: 22px;
+            color: var(--rouge-blason);
+            font-weight: bold;
+            background: none;
+            border: none;
+            line-height: 1;
+            transition: 0.2s;
+        }
+        .modal-close:hover { transform: scale(1.2); }
+
+        .modal-input {
+            padding: 11px;
+            border: 1px solid var(--or-sombre);
+            font-family: 'Lora', serif;
+            width: 100%;
+            background: white;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        /* ─── FOOTER ─────────────────────────────── */
+        footer {
+            background: var(--noir-profond);
+            border-top: 2px double var(--or-sombre);
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+        }
+
+        .footer-titre {
+            font-family: 'Cinzel', serif;
+            color: var(--or-royal);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-sous-titre {
+            font-style: italic;
+            color: var(--gris-clair);
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-liens {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-liens a {
+            color: var(--or-sombre);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: 0.2s;
+            border-bottom: 1px solid transparent;
+        }
+        .footer-liens a:hover {
+            color: var(--or-royal);
+            border-bottom-color: var(--or-royal);
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-social a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--or-sombre);
+            color: var(--or-sombre);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        .footer-social a:hover {
+            border-color: var(--or-royal);
+            color: var(--or-royal);
+            background: rgba(212,175,55,0.08);
+        }
+
+        .footer-separateur {
+            width: 60px;
+            height: 1px;
+            background: var(--or-sombre);
+            margin: 0 auto 2rem;
+            opacity: 0.4;
+        }
+
+        .footer-legal {
+            font-size: 0.75rem;
+            color: #444;
+            line-height: 1.8;
+        }
+
+        .footer-legal a {
+            color: #555;
+            text-decoration: underline;
+        }
+        .footer-legal a:hover { color: var(--or-sombre); }
+
+        /* ─── BANNIÈRE RGPD ──────────────────────── */
+        #bandeau-rgpd {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10,10,10,0.97);
+            border-top: 1px solid var(--or-sombre);
+            padding: 16px 24px;
+            z-index: 8888;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            backdrop-filter: blur(4px);
+        }
+
+        #bandeau-rgpd p {
+            font-size: 0.8rem;
+            color: #bbb;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        #bandeau-rgpd a { color: var(--or-sombre); }
+
+        .rgpd-btns { display: flex; gap: 10px; flex-shrink: 0; }
+
+        .btn-rgpd-accepter {
+            background: var(--rouge-blason);
+            color: white;
+            border: 1px solid var(--or-sombre);
+            padding: 8px 18px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-rgpd-accepter:hover { background: var(--or-royal); color: black; }
+
+        .btn-rgpd-refuser {
+            background: none;
+            color: #666;
+            border: 1px solid #333;
+            padding: 8px 14px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-rgpd-refuser:hover { color: #aaa; border-color: #555; }
+
+        /* ─── MODAL MENTIONS LÉGALES ─────────────── */
+        #modalLegal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            z-index: 9999;
+            overflow-y: auto;
+        }
+
+        .modal-legal-inner {
+            background: var(--parchemin);
+            color: var(--noir-encre);
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 48px 40px;
+            border: 5px double var(--or-sombre);
+            position: relative;
+        }
+
+        .modal-legal-inner h2 {
+            color: var(--rouge-blason);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        .modal-legal-inner h3 {
+            color: var(--rouge-blason);
+            text-align: left;
+            font-size: 1rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .modal-legal-inner p {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            margin-bottom: 0.8rem;
+        }
+
+        /* ─── RESPONSIVE ─────────────────────────── */
+        @media (max-width: 600px) {
+            header { min-height: 55vh; padding: 3rem 1rem; }
+            .parchemin-box { padding: 2rem 1.5rem; }
+            nav { gap: 14px; padding: 0.8rem 1rem; }
+            nav a { font-size: 0.72rem; }
+            .modal-legal-inner { margin: 0; padding: 32px 20px; }
+        }
+
+        /* ─── SCROLL INDICATOR ───────────────────── */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: var(--or-sombre);
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            50%       { transform: translateX(-50%) translateY(-10px); opacity: 0.5; }
+        }
+
+        /* ─── TABLEAU RANGS ──────────────────────── */
+        #section-regles table tr { border-bottom: 1px solid rgba(0,0,0,0.1); }
+        #section-regles td { vertical-align: top; }
+
+        /* ─── ACTIONS DONJON ─────────────────────── */
+        .actions-donjon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+        }
+
+        /* ─── BLASON SIGNATURE ───────────────────── */
+        .blason-signature {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .blason-signature #blason-image {
+            margin-bottom: 0 !important;
+            font-size: 2.5rem !important;
+        }
+
     </style>
 </head>
 <body>
 
+    <!-- ✅ Bannière RGPD -->
+    <div id="bandeau-rgpd">
+        <p>🍪 Ce site utilise Firebase pour l'authentification. En continuant, vous acceptez notre <a href="#" onclick="ouvrirMentions(); return false;">politique de confidentialité</a>.</p>
+        <div class="rgpd-btns">
+            <button class="btn-rgpd-refuser" onclick="fermerRGPD()">Refuser</button>
+            <button class="btn-rgpd-accepter" onclick="fermerRGPD()">J'accepte</button>
+        </div>
+    </div>
+
+    <!-- ─── NAVIGATION ─────────────────────── -->
     <nav>
-            <a href="#accueil">ACCUEIL</a>
-            <a href="#video">DERNIÈRE QUÊTE</a>
-            <a href="#grimoire">GRIMOIRE</a>
-            <a href="#echoppe">ÉCHOPPE</a>
-            <a href="#registre">Registre</a>
-            <a href="#audience">FAQ</a>
-                <span id="btn-nav-auth" style="margin-left:15px;"></span>
+        <a href="#accueil">Accueil</a>
+        <a href="#video">Dernière Quête</a>
+        <a href="#grimoire">Grimoire</a>
+        <a href="#echoppe">Échoppe</a>
+        <a href="#registre">Registre</a>
+        <a href="#audience">FAQ</a>
+        <span id="btn-nav-auth" style="margin-left: 10px;"></span>
     </nav>
 
+    <!-- ─── HEADER ────────────────────────── -->
     <header id="accueil">
         <h1 class="titre-principal">La Table Ronde</h1>
-        <h2 class="titre-secondaire">(mais carrée)</h2>
-        <p>Le Royaume Digital du Roi Karl</p>
-        <br>
-        <a href="https://www.youtube.com/@Roi-Karl" target="_blank" class="btn">Rejoindre l'Armée sur YouTube</a>
+        <p class="titre-secondaire">(mais carrée)</p>
+        <p class="sous-titre-header">Le Royaume Digital du Roi Karl</p>
+        <a href="https://www.youtube.com/@Roi-Karl" target="_blank" class="btn">⚔️ Rejoindre l'Armée sur YouTube</a>
+        <div class="scroll-indicator">⌄</div>
     </header>
 
+    <!-- ─── CONTENU PRINCIPAL ─────────────── -->
     <div class="container">
-        
+
+        <!-- ÉDITORIAL -->
         <section class="parchemin-box">
             <h2>Éditorial du Souverain</h2>
             <p class="lettrine">Oyez ! Bienvenue dans cet espace où la géométrie défie la légende. Ici, nous débattons de tout avec la ferveur des anciens et l'humour des temps modernes. Que vous soyez chevalier, mage ou simple paysan égaré sur le web, il y a un coin pour vous à cette table.</p>
         </section>
 
+        <!-- VIDÉO -->
         <section id="video" class="parchemin-box">
             <h2>La Lucarne Magique</h2>
             <p>Le dernier exploit du Roi Karl en images :</p>
             <div class="video-wrapper">
-                <iframe src="https://www.youtube-nocookie.com/embed/1Cv8GLnS5BM" frameborder="0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube-nocookie.com/embed/1Cv8GLnS5BM" frameborder="0" allowfullscreen loading="lazy"></iframe>
             </div>
         </section>
 
+        <!-- GRIMOIRE -->
         <section id="grimoire" class="parchemin-box">
             <h2>Le Grimoire des Quêtes</h2>
             <p>Ce que l'avenir nous réserve :</p>
-            <ul style="list-style: none; margin-top: 1rem; text-align: left;">
-                <li>⚔️ <strong>Mars 2026 :</strong> Grande épopée sur l'histoire de la Table Carrée.</li>
-                <li>🏰 <strong>Avril 2026 :</strong> Exploration des ruines de l'algorithme YouTube.</li>
-                <li>🍷 <strong>Chaque Vendredi :</strong> Banquet en direct (Live Stream).</li>
+            <ul style="list-style: none; margin-top: 1.5rem; text-align: left;">
+                <li style="padding: 10px 0; border-bottom: 1px dashed rgba(0,0,0,0.15);">⚔️ <strong>Mars 2026 :</strong> Grande épopée sur l'histoire de la Table Carrée.</li>
+                <li style="padding: 10px 0; border-bottom: 1px dashed rgba(0,0,0,0.15);">🏰 <strong>Avril 2026 :</strong> Exploration des ruines de l'algorithme YouTube.</li>
+                <li style="padding: 10px 0;">🍷 <strong>Chaque Vendredi :</strong> Banquet en direct (Live Stream).</li>
             </ul>
         </section>
-       <section id="section-profil" class="parchemin-box" style="display:none;">
-    <h2>📜 Votre Titre de Chevalier</h2>
-    
-    <div style="text-align: center; margin-top: 2rem;">
-        <h3 id="rang-chevalier" style="font-family:'Cinzel', serif; color:var(--rouge-blason); margin-bottom:15px;">Chargement du rang...</h3>
-        
-<div class="blason-signature" style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px;">
-    
-    <div style="position: relative; width: 80px; height: 80px;">
-        <img src="favicon.ico" alt="Sceau" 
-             style="width: 100%; height: 100%; object-fit: contain; border: 2px solid var(--or-royal); border-radius: 8px; padding: 5px; background: rgba(255, 215, 0, 0.05);">
-    </div>
 
-    <div class="infobulle-conteneur">
-        <span class="infobulle-texte" id="infobulle-rang">Titre de Noblesse</span>
-        <div id="blason-image" class="blason-interactif" 
-             style="font-size: 2.5rem; background: rgba(0,0,0,0.03); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--or-sombre); border-radius: 50%;">
-            🛡️
-        </div>
-    </div>
-</div>
+        <!-- PROFIL CHEVALIER (caché si déconnecté) -->
+        <section id="section-profil" class="parchemin-box" style="display:none;">
+            <h2>📜 Votre Titre de Chevalier</h2>
 
-        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif;">
-            <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 90px;">
-                <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">NIVEAU</span>
-                <strong id="profil-niveau" style="font-size: 1.2rem;">1</strong>
-            </div>
-            <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 90px;">
-                <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">PUISSANCE</span>
-                <strong id="profil-puissance" style="font-size: 1.2rem;">10</strong>
-            </div>
-        </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <h3 id="rang-chevalier" style="color:var(--rouge-blason); margin-bottom:15px;">Chargement du rang...</h3>
 
-        <div style="max-width: 400px; margin: 10px auto;">
-            <p style="font-family: 'Cinzel', serif; font-size: 0.9rem; margin-bottom: 10px;">
-        <strong>🛡️ Progression :</strong> <span id="profil-anciennete">...</span> jours d'allégeance.
-    </p>
-            <p style="font-size: 0.8rem; font-family: 'Cinzel', serif; margin-bottom: 5px;">Progression vers le prochain rang</p>
-            <div style="background: #ddd; border: 1px solid var(--or-sombre); height: 12px; border-radius: 6px; overflow: hidden;">
-                <div id="barre-xp" style="background: var(--rouge-blason); width: 0%; height: 100%; transition: width 1s ease-in-out;"></div>
-            </div>
-            <p id="texte-xp" style="font-size: 0.7rem; font-style: italic; margin-top: 5px;"></p>
-        </div>
+                <div class="blason-signature">
+                    <div style="position: relative; width: 80px; height: 80px;">
+                        <img src="favicon.ico" alt="Sceau"
+                             style="width: 100%; height: 100%; object-fit: contain; border: 2px solid var(--or-royal); border-radius: 8px; padding: 5px; background: rgba(255,215,0,0.05);">
+                    </div>
+                    <div class="infobulle-conteneur">
+                        <span class="infobulle-texte" id="infobulle-rang">Titre de Noblesse</span>
+                        <div id="blason-image" class="blason-interactif"
+                             style="font-size: 2.5rem; background: rgba(0,0,0,0.03); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--or-sombre); border-radius: 50%;">
+                            🛡️
+                        </div>
+                    </div>
+                </div>
 
-        <div style="margin: 2rem auto; max-width: 450px; border-top: 1px double var(--or-sombre); padding-top: 20px;">
-            <p style="font-style: italic; color: var(--gris-pierre); margin-bottom: 15px; font-size: 0.9rem;">
-                "La patience est la vertu des nobles. Voici comment s'acquiert la gloire en ces terres."
-            </p>
+                <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif;">
+                    <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 90px;">
+                        <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">NIVEAU</span>
+                        <strong id="profil-niveau" style="font-size: 1.2rem;">1</strong>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 90px;">
+                        <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">PUISSANCE</span>
+                        <strong id="profil-puissance" style="font-size: 1.2rem;">10</strong>
+                    </div>
+                </div>
 
-            <div style="text-align: left; font-size: 0.85rem; line-height: 1.6; padding-left: 20px;">
-                <p><strong>🛡️ Progression :</strong> Chaque lever de soleil vous rapproche du rang supérieur.</p>
-                <p><strong>📈 Niveaux :</strong> Votre niveau augmente tous les 1.5 jours d'allégeance.</p>
-                <p><strong>⚔️ Puissance :</strong> +12 points de force par jour passé au donjon.</p>
-                <p><strong>📜 Noblesse :</strong> Il existe 10 grades, du Serf à la Main du Roi (365 jours).</p>
-            </div>
+                <div style="max-width: 400px; margin: 10px auto;">
+                    <p style="font-family: 'Cinzel', serif; font-size: 0.9rem; margin-bottom: 10px;">
+                        <strong>🛡️ Progression :</strong> <span id="profil-anciennete">...</span> jours d'allégeance.
+                    </p>
+                    <p style="font-size: 0.8rem; font-family: 'Cinzel', serif; margin-bottom: 5px;">Progression vers le prochain rang</p>
+                    <div style="background: #ddd; border: 1px solid var(--or-sombre); height: 14px; border-radius: 7px; overflow: hidden;">
+                        <div id="barre-xp" style="background: var(--rouge-blason); width: 0%; height: 100%; transition: width 1.2s ease-in-out; border-radius: 7px;"></div>
+                    </div>
+                </div>
 
-            <div style="margin-top: 15px; padding: 10px; background: rgba(139, 0, 0, 0.05); border-left: 3px solid var(--rouge-blason); font-size: 0.8rem; text-align: left;">
-                <p><strong>Note du Sénéchal :</strong> Quitter le donjon efface vos titres à jamais des registres. Réfléchissez avant de poser les armes !</p>
-            </div>
-        </div>
-        <div class="parchemin-identite" style="text-align: left;">
-            <div class="ligne-info">
-                <span class="label">Nom de Guerre :</span>
-                <input type="text" id="profil-pseudo" placeholder="Ex: Galahad le Brave" 
-                       style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%;">
-            </div>
-            <div class="ligne-info">
-                <span class="label">Fief / Royaume :</span>
-                <input type="text" id="profil-royaume" placeholder="Ex: Camelot" 
-                       style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%;">
-            </div>
-            <div class="ligne-info" style="flex-direction: column; align-items: flex-start;">
-                <span class="label">Devise Royale :</span>
-                <textarea id="profil-devise" placeholder="Votre cri de guerre..." 
-                          style="background:rgba(0,0,0,0.03); border:1px dashed var(--or-sombre); font-family:'Lora'; font-style:italic; width:100%; margin-top:5px; padding:5px; height:50px; resize:none;"></textarea>
-            </div>
-            
-            <button onclick="sauvegarderProfil()" id="btn-save-profil" class="btn-secondaire" style="width:100%; margin-top:10px; font-size:0.8rem;">
-                📜 Sceller mes informations
-            </button>
-        
-            <hr style="margin: 15px 0; border: 0; border-top: 1px double var(--or-sombre);">
-        
-            <div class="ligne-info">
-                <span class="label">Sceau Magique :</span>
-                <span id="profil-email" class="valeur" style="font-size:0.8rem;">...</span>
-            </div>
-            <div class="ligne-info">
-                <span class="label">Admis le :</span>
-                <span id="profil-date" class="valeur">...</span>
-            </div>
-        </div>
+                <div style="margin: 2rem auto; max-width: 450px; border-top: 1px double var(--or-sombre); padding-top: 20px;">
+                    <p style="font-style: italic; color: var(--gris-pierre); margin-bottom: 15px; font-size: 0.9rem;">
+                        "La patience est la vertu des nobles. Voici comment s'acquiert la gloire en ces terres."
+                    </p>
+                    <div style="text-align: left; font-size: 0.85rem; line-height: 1.8; padding-left: 10px;">
+                        <p>🛡️ <strong>Progression :</strong> Chaque lever de soleil vous rapproche du rang supérieur.</p>
+                        <p>📈 <strong>Niveaux :</strong> Votre niveau augmente tous les 1.5 jours d'allégeance.</p>
+                        <p>⚔️ <strong>Puissance :</strong> +12 points de force par jour passé au donjon.</p>
+                        <p>📜 <strong>Noblesse :</strong> 10 grades, du Serf à la Main du Roi (365 jours).</p>
+                    </div>
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(139,0,0,0.05); border-left: 3px solid var(--rouge-blason); font-size: 0.8rem; text-align: left;">
+                        <p><strong>Note du Sénéchal :</strong> Quitter le donjon efface vos titres à jamais des registres. Réfléchissez avant de poser les armes !</p>
+                    </div>
+                </div>
 
-        <div class="actions-donjon">
-            <button onclick="oubliMotDePasse()" class="btn-secondaire">🔑 Changer ma clé</button>
-            <button onclick="deconnexion()" class="lien-quitter" style="background:none; border:none; font-family:'Lora',serif; font-size:inherit; text-decoration:underline;">REPOSER LES ARMES</button>
-            <button onclick="demanderSuppression()" class="btn-danger">Effacer mon nom du registre</button>
-        </div>
-    </div>
-</section>
+                <div class="parchemin-identite" style="text-align: left;">
+                    <div class="ligne-info">
+                        <span class="label">Nom de Guerre :</span>
+                        <input type="text" id="profil-pseudo" placeholder="Ex: Galahad le Brave"
+                               style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%;">
+                    </div>
+                    <div class="ligne-info">
+                        <span class="label">Fief / Royaume :</span>
+                        <input type="text" id="profil-royaume" placeholder="Ex: Camelot"
+                               style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%;">
+                    </div>
+                    <div class="ligne-info" style="flex-direction: column; align-items: flex-start;">
+                        <span class="label">Devise Royale :</span>
+                        <textarea id="profil-devise" placeholder="Votre cri de guerre..."
+                                  style="background:rgba(0,0,0,0.03); border:1px dashed var(--or-sombre); font-family:'Lora'; font-style:italic; width:100%; margin-top:5px; padding:5px; height:55px; resize:none;"></textarea>
+                    </div>
+                    <button onclick="sauvegarderProfil()" id="btn-save-profil" class="btn-secondaire" style="width:100%; margin-top:10px; font-size:0.8rem;">
+                        📜 Sceller mes informations
+                    </button>
+
+                    <!-- ✅ Avertissement localStorage transparent -->
+                    <p style="font-size:0.7rem; color:#999; text-align:center; margin-top:8px; font-style:italic;">
+                        ⚠️ Ces infos sont sauvegardées sur cet appareil uniquement.
+                    </p>
+
+                    <hr style="margin: 15px 0; border: 0; border-top: 1px double var(--or-sombre);">
+                    <div class="ligne-info">
+                        <span class="label">Sceau Magique :</span>
+                        <span id="profil-email" class="valeur" style="font-size:0.8rem;">...</span>
+                    </div>
+                    <div class="ligne-info">
+                        <span class="label">Admis le :</span>
+                        <span id="profil-date" class="valeur">...</span>
+                    </div>
+                </div>
+
+                <div class="actions-donjon">
+                    <button onclick="oubliMotDePasse()" class="btn-secondaire">🔑 Changer ma clé</button>
+                    <button onclick="deconnexion()" class="lien-quitter">REPOSER LES ARMES</button>
+                    <button onclick="demanderSuppression()" class="btn-danger">Effacer mon nom du registre</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- RÈGLES / CODE DE CHEVALERIE -->
         <section id="section-regles" class="parchemin-box" style="display:none; margin-top: -2rem;">
-            <h3 style="font-family: 'Cinzel', serif; color: var(--rouge-blason); border-bottom: 1px solid var(--or-sombre); margin-bottom: 15px;">📜 Le Code de la Chevalerie</h3>
-            
+            <h3 style="color: var(--rouge-blason); border-bottom: 1px solid var(--or-sombre); padding-bottom: 12px; margin-bottom: 15px;">📜 Le Code de la Chevalerie</h3>
             <div style="font-size: 0.9rem; margin-bottom: 20px;">
                 <p style="font-style: italic;">"Nul ne devient grand sans patience. Votre loyauté définit votre place à la Table."</p>
             </div>
-        
-            <h4 style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--or-sombre); text-transform: uppercase; margin-bottom: 10px;">Les 10 Degrés de Noblesse</h4>
+            <h4 style="text-align:left; font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--or-sombre); text-transform: uppercase; margin-bottom: 10px;">Les 10 Degrés de Noblesse</h4>
             <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
                     <thead style="background: rgba(0,0,0,0.05);">
@@ -487,390 +925,474 @@
                             <th style="padding: 10px; border-bottom: 1px solid var(--or-sombre);">Quête (Jours)</th>
                         </tr>
                     </thead>
-                    <tbody id="tableau-rangs-details">
-                        </tbody>
+                    <tbody id="tableau-rangs-details"></tbody>
                 </table>
             </div>
-        
-            <div style="margin-top: 20px; padding: 10px; background: rgba(139, 0, 0, 0.05); border-left: 3px solid var(--rouge-blason); font-size: 0.85rem;">
+            <div style="margin-top: 20px; padding: 12px; background: rgba(139,0,0,0.05); border-left: 3px solid var(--rouge-blason); font-size: 0.85rem;">
                 <p><strong>Note du Sénéchal :</strong> Le Niveau augmente tous les 1.5 jours et la Puissance de +12 points quotidiennement.</p>
             </div>
         </section>
+
+        <!-- ZONE PRIVÉE MEMBRES -->
         <section id="zone-privee" class="parchemin-box" style="display:none; border: 4px solid var(--or-royal);">
             <h2>🏰 Contenu Exclusif des Chevalier(e)s</h2>
             <p>Oyez ! Vous avez franchi la herse. Voici vos privilèges :</p>
-            <ul>
+            <ul style="margin-top: 1rem; padding-left: 1.5rem; line-height: 2;">
                 <li>📜 Parchemins secrets de production</li>
                 <li>🎬 Vidéos en avant-première</li>
             </ul>
         </section>
+
+        <!-- ÉCHOPPE -->
         <section id="echoppe" class="parchemin-box">
             <h2>L'Échoppe & Les Alliés</h2>
             <div class="grid">
                 <div class="card">
                     <h3>Tuniques de Cour</h3>
-                    <p>Habillez-vous comme un noble de la table carrée. (Bientôt disponible)</p>
+                    <p>Habillez-vous comme un noble de la table carrée.</p>
+                    <p style="margin-top:0.8rem; font-size:0.8rem; font-style:italic; color:var(--gris-clair);">Bientôt disponible</p>
                 </div>
                 <div class="card">
                     <h3>Mécène Actuel</h3>
-                    <p>Bannière de notre sponsor principal. (Emplacement libre)</p>
+                    <p>Bannière de notre sponsor principal.</p>
+                    <p style="margin-top:0.8rem; font-size:0.8rem; font-style:italic; color:var(--gris-clair);">Emplacement libre</p>
                 </div>
             </div>
         </section>
 
-<section id="registre" class="parchemin-box" style="text-align: center;">
-    <h2>Le Registre des Nobles</h2>
-    <p>Laissez votre sceau pour ne manquer aucune convocation royale.</p>
-    
-    <iframe width="100%" height="500" src="https://14e010ce.sibforms.com/serve/MUIFAIfEMW6v6_3Sq-2oiDOF9G2YZAz_ZeoQvFwf2W1_cZbVRzxk9Fzf96T82wxEn_LuM_1WBMWlMj-jkX5ftxWfSPW0T5DuEE0RVZIST-4pQeDL1z9b50GsYELnHDLSG29yiWNtyxQLc4rkAHc4UGMJu8WHWxJoo3t73v8RiQx5g-gKOjmJCiWDRWbB711WsWjpcAxCQ68zUe7Z4w==" frameborder="0" scrolling="auto" allowfullscreen style="display: block; margin-left: auto; margin-right: auto; max-width: 500px; border: 2px solid var(--or-royal);"></iframe>
-</section>
+        <!-- REGISTRE / NEWSLETTER -->
+        <section id="registre" class="parchemin-box" style="text-align: center;">
+            <h2>Le Registre des Nobles</h2>
+            <p>Laissez votre sceau pour ne manquer aucune convocation royale.</p>
+            <iframe width="100%" height="500"
+                src="https://14e010ce.sibforms.com/serve/MUIFAIfEMW6v6_3Sq-2oiDOF9G2YZAz_ZeoQvFwf2W1_cZbVRzxk9Fzf96T82wxEn_LuM_1WBMWlMj-jkX5ftxWfSPW0T5DuEE0RVZIST-4pQeDL1z9b50GsYELnHDLSG29yiWNtyxQLc4rkAHc4UGMJu8WHWxJoo3t73v8RiQx5g-gKOjmJCiWDRWbB711WsWjpcAxCQ68zUe7Z4w=="
+                frameborder="0" scrolling="auto" allowfullscreen
+                style="display: block; margin: 1.5rem auto 0; max-width: 500px; border: 2px solid var(--or-royal);"
+                loading="lazy"></iframe>
+        </section>
 
+        <!-- ✅ FAQ en accordéon (à la place de texte statique) -->
         <section id="audience" class="parchemin-box">
             <h2>Salle d'Audience (FAQ)</h2>
-            <div style="text-align: left; margin-top: 1rem;">
-                <p><strong>Q : Pourquoi une table carrée ?</strong><br>R : Pour éviter que les bouteilles de cervoise ne roulent par terre, pardi !</p>
-                <br>
-                <p><strong>Q : Comment devenir Chevalier ?</strong><br>R : En cliquant sur le bouton d'abonnement et en activant la cloche du royaume.</p>
+            <div style="text-align: left; margin-top: 1.5rem;">
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Q : Pourquoi une table carrée ?
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="faq-reponse">
+                        Pour éviter que les bouteilles de cervoise ne roulent par terre, pardi ! Et surtout parce que "La Table Carrée" était disponible comme nom de domaine, contrairement à l'autre.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Q : Comment devenir Chevalier ?
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="faq-reponse">
+                        En cliquant sur le bouton <em>Accès Membre</em> dans la navigation, en créant votre compte, et en activant la cloche du royaume sur YouTube. Votre rang augmentera avec le temps passé à la Table.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Q : Les live streams sont-ils archivés ?
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="faq-reponse">
+                        Oui, les archives des banquets du vendredi restent disponibles sur la chaîne YouTube du Roi Karl. Les membres ayant atteint le rang de Héraut Royal bénéficient d'un accès anticipé aux rediffusions.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Q : Comment contacter le Roi Karl ?
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="faq-reponse">
+                        Via les commentaires YouTube pour les sujets royaux, ou par les canaux officiels indiqués dans le registre des nobles. Le Roi répond dans les plus brefs délais, entre deux quêtes.
+                    </div>
+                </div>
+
             </div>
         </section>
 
-    </div>
-<div id="modalConnexion" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.9); z-index:9999;">
-    
-    <div style="background-color:#F4EBD0; color:#1a1a1a; padding:30px; border:5px double #D4AF37; width:320px; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); box-shadow: 0 0 30px #000; text-align:center;">
-        
-        <span onclick="fermerPorte()" style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:24px; color:#8B0000; font-weight:bold;">&times;</span>
-        
-        <h2 id="titreModal" style="font-family:'Cinzel', serif; margin-bottom:20px;">Entrer au Donjon</h2>
-        
-        <div style="display:flex; flex-direction:column; gap:10px;">
-            <input type="email" id="authEmail" placeholder="Votre courriel..." style="padding:10px; border:1px solid #D4AF37;">
-            <input type="password" id="authPassword" placeholder="Mot de passe..." style="padding:10px; border:1px solid #D4AF37;">
+    </div><!-- /container -->
 
-                <p style="text-align:right; font-size:0.75rem; margin-top:-5px;">
-                    <a href="#" onclick="oubliMotDePasse(); return false;" style="color:#8B0000; text-decoration:none;">Mot de passe oublié ?</a>
+    <!-- ─── MODAL CONNEXION ────────────────── -->
+    <div id="modalConnexion">
+        <div class="modal-inner">
+            <button class="modal-close" onclick="fermerPorte()" aria-label="Fermer">&times;</button>
+            <h2 id="titreModal">Entrer au Donjon</h2>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <input type="email" id="authEmail" placeholder="Votre courriel..." class="modal-input">
+                <input type="password" id="authPassword" placeholder="Mot de passe..." class="modal-input">
+                <p style="text-align:right; font-size:0.75rem; margin-top:-4px;">
+                    <a href="#" onclick="oubliMotDePasse(); return false;" style="color:var(--rouge-blason); text-decoration:none;">Mot de passe oublié ?</a>
                 </p>
-                            
-            <button onclick="agirRoyale()" id="btnAction" style="background-color:#8B0000; color:white; padding:12px; border:2px solid #D4AF37; cursor:pointer; font-family:'Cinzel', serif; font-weight:bold; margin-top:10px;">
-                Se Connecter
-            </button>
-            
-            <p style="margin-top:15px; font-size:0.85rem;">
-                <a href="#" onclick="basculerMode(); return false;" id="lienBascule" style="color:#8B0000; text-decoration:underline; font-weight:bold;">Pas encore membre ? S'inscrire</a>
-            </p>
+                <button onclick="agirRoyale()" id="btnAction" style="background-color:var(--rouge-blason); color:white; padding:13px; border:2px solid var(--or-royal); cursor:pointer; font-family:'Cinzel', serif; font-weight:bold; margin-top:6px; font-size:0.9rem; transition:0.3s;" onmouseover="this.style.background='var(--or-royal)';this.style.color='black';" onmouseout="this.style.background='var(--rouge-blason)';this.style.color='white';">
+                    Se Connecter
+                </button>
+                <p style="margin-top:12px; font-size:0.85rem;">
+                    <a href="#" onclick="basculerMode(); return false;" id="lienBascule" style="color:var(--rouge-blason); text-decoration:underline; font-weight:bold;">Pas encore membre ? S'inscrire</a>
+                </p>
+            </div>
         </div>
     </div>
-</div>
+
+    <!-- ─── MODAL MENTIONS LÉGALES ─────────── -->
+    <div id="modalLegal">
+        <div class="modal-legal-inner">
+            <button class="modal-close" onclick="fermerMentions()" style="position:absolute; top:16px; right:20px; font-size:22px; background:none; border:none; cursor:pointer; color:var(--rouge-blason);">&times;</button>
+            <h2>⚖️ Mentions Légales & Confidentialité</h2>
+
+            <h3>Éditeur du site</h3>
+            <p>Ce site est édité à titre personnel par Roi Karl, créateur de contenu. Contact : via la chaîne YouTube officielle.</p>
+
+            <h3>Hébergement</h3>
+            <p>Ce site est hébergé par <strong>Firebase / Google LLC</strong>, 1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis.</p>
+
+            <h3>Données personnelles (RGPD)</h3>
+            <p>Ce site collecte des adresses e-mail à deux fins uniquement : l'authentification des membres via Firebase Authentication, et l'envoi de la newsletter via Brevo (anciennement Sendinblue).</p>
+            <p>Ces données ne sont jamais revendues à des tiers. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ce droit, utilisez la fonction "Effacer mon nom du registre" dans votre profil, ou contactez l'éditeur.</p>
+            <p>Les informations de profil (pseudo, royaume, devise) sont stockées localement dans votre navigateur (localStorage) et ne transitent pas par nos serveurs.</p>
+
+            <h3>Cookies</h3>
+            <p>Ce site utilise uniquement les cookies techniques nécessaires au fonctionnement de Firebase Authentication. Aucun cookie publicitaire n'est utilisé.</p>
+
+            <h3>Propriété intellectuelle</h3>
+            <p>L'ensemble du contenu de ce site (textes, visuels, nom "La Table Ronde mais carrée", univers du Roi Karl) est la propriété exclusive de son auteur. Toute reproduction est interdite sans autorisation.</p>
+
+            <div style="text-align:center; margin-top:2rem;">
+                <button onclick="fermerMentions()" class="btn">Fermer le Parchemin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── FOOTER ─────────────────────────── -->
     <footer>
-        <p>Propriété de la Couronne - Roi Karl &copy; 2026</p>
-        <p>Fait de pierre et de pixels.</p>
+        <p class="footer-titre">⚜ La Table Ronde (mais carrée) ⚜</p>
+        <p class="footer-sous-titre">Le Royaume Digital du Roi Karl</p>
+
+        <div class="footer-social">
+            <a href="https://www.youtube.com/@Roi-Karl" target="_blank" title="YouTube" aria-label="YouTube">▶</a>
+            <a href="#registre" title="Newsletter" aria-label="Newsletter">✉</a>
+        </div>
+
+        <div class="footer-liens">
+            <a href="#accueil">Accueil</a>
+            <a href="#video">Dernière Quête</a>
+            <a href="#grimoire">Grimoire</a>
+            <a href="#echoppe">Échoppe</a>
+            <a href="#registre">Registre</a>
+            <a href="#audience">FAQ</a>
+        </div>
+
+        <div class="footer-separateur"></div>
+
+        <div class="footer-legal">
+            <p>Propriété de la Couronne — Roi Karl &copy; 2026. Fait de pierre et de pixels.</p>
+            <p style="margin-top:8px;">
+                <a href="#" onclick="ouvrirMentions(); return false;">Mentions légales & Confidentialité</a>
+                &nbsp;·&nbsp;
+                <a href="https://www.youtube.com/@Roi-Karl" target="_blank">Chaîne YouTube</a>
+            </p>
+        </div>
     </footer>
 
-<script>
-    // --- INTERSECTION OBSERVER ---
-    // Déclenche l'animation .deroulement uniquement quand une section entre dans la vue
-    const observateur = new IntersectionObserver((entrees) => {
-        entrees.forEach(entree => {
-            if (entree.isIntersecting) {
-                entree.target.classList.add('visible');
-                // On arrête d'observer une fois animée pour ne pas rejouer l'animation
-                observateur.unobserve(entree.target);
-            }
+    <!-- ─── SCRIPTS ────────────────────────── -->
+    <script>
+        // ── RGPD ──────────────────────────────────
+        function fermerRGPD() {
+            document.getElementById('bandeau-rgpd').style.display = 'none';
+        }
+        // Cacher le bandeau si déjà accepté lors d'une session précédente
+        if (localStorage.getItem('rgpd_accepte')) {
+            document.getElementById('bandeau-rgpd').style.display = 'none';
+        }
+        document.querySelectorAll('.btn-rgpd-accepter').forEach(btn => {
+            btn.addEventListener('click', () => {
+                localStorage.setItem('rgpd_accepte', '1');
+            });
         });
-    }, {
-        threshold: 0.1 // Se déclenche quand 10% de la section est visible
-    });
 
-    // On observe chaque parchemin-box de la page
-    document.querySelectorAll('.parchemin-box').forEach(section => {
-        observateur.observe(section);
-    });
-</script>
+        // ── MENTIONS LÉGALES ─────────────────────
+        function ouvrirMentions() { document.getElementById('modalLegal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
+        function fermerMentions() { document.getElementById('modalLegal').style.display = 'none'; document.body.style.overflow = ''; }
+        document.getElementById('modalLegal').addEventListener('click', function(e) {
+            if (e.target === this) fermerMentions();
+        });
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  onAuthStateChanged, 
-  signOut,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  deleteUser // ← Ajoutez ceci
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-// Tableau des grades partagé — source unique de vérité
-const GRADES = [
-    { seuil: 0,   nom: "Serf Égaré",         icone: "🪵", coul: "#7f8c8d" },
-    { seuil: 2,   nom: "Vilein Courageux",   icone: "🌾", coul: "#95a5a6" },
-    { seuil: 5,   nom: "Écuyer Novice",      icone: "🛡️", coul: "#bc8f8f" },
-    { seuil: 10,  nom: "Vassal du Fief",     icone: "🏰", coul: "#cd7f32" },
-    { seuil: 20,  nom: "Chevalier Errant",   icone: "🐎", coul: "#bdc3c7" },
-    { seuil: 40,  nom: "Héraut Royal",       icone: "🎺", coul: "#f1c40f" },
-    { seuil: 70,  nom: "Baron de la Carrée", icone: "🍷", coul: "#e67e22" },
-    { seuil: 120, nom: "Maître d'Armes",     icone: "⚔️", coul: "#8b0000" },
-    { seuil: 200, nom: "Haut Connétable",    icone: "🚩", coul: "#4a0404" },
-    { seuil: 365, nom: "Main du Roi Karl",   icone: "👑", coul: "#d4af37" }
-];
-
-function traduireErreur(code) {
-    switch (code) {
-        case 'auth/invalid-email':
-            return "✉️ Ce parchemin d'adresse semble mal écrit ou falsifié.";
-        case 'auth/invalid-credential': // <-- La nouvelle erreur ici
-            return "🗝️ Les informations fournies ne permettent pas d'ouvrir la herse. Vérifiez l'e-mail ou le mot de passe, messire.";
-        case 'auth/user-not-found':
-            return "👤 Ce nom n'est pas inscrit dans nos registres. Êtes-vous un espion ?";
-        case 'auth/wrong-password':
-            return "🔑 Le mot de passe ne déverrouille pas ce compte. Réessayez, messire.";
-        case 'auth/missing-password':
-            return "🗝️ Vous avez oublié la clé ! (Le mot de passe est obligatoire).";
-        case 'auth/email-already-in-use':
-            return "🛡️ Ce nom est déjà porté par un autre Chevalier du royaume.";
-        case 'auth/weak-password':
-            return "⚔️ Votre mot de passe est trop fragile. Forgez-en un plus robuste (6 caractères min).";
-        case 'auth/too-many-requests':
-            return "🚪 La garde bloque l'accès suite à trop d'échecs. Patientez un instant !";
-        default:
-            return "📜 Une erreur mystérieuse s'est produite : " + code;
-    }
-}
-  const firebaseConfig = {
-    apiKey: "AIzaSyDuWDm8uNJwYZrfPg_YLbzRyMc0TSyVhzw",
-    authDomain: "la-table-ronde.firebaseapp.com",
-    projectId: "la-table-ronde",
-    storageBucket: "la-table-ronde.firebasestorage.app",
-    messagingSenderId: "846762387353",
-    appId: "1:846762387353:web:21b289708e91e76cadd508"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  let modeInscription = false; // ← Déclaré EN PREMIER
-
-window.ouvrirPorte = () => { document.getElementById('modalConnexion').style.display = 'block'; };
-window.fermerPorte = () => { document.getElementById('modalConnexion').style.display = 'none'; };
-window.deconnexion = () => { signOut(auth); };
-
-  window.basculerMode = () => {
-    modeInscription = !modeInscription;
-    document.getElementById('titreModal').innerText = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
-    document.getElementById('btnAction').innerText = modeInscription ? "S'inscrire" : "Se Connecter";
-    document.getElementById('lienBascule').innerText = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
-  };
-    window.oubliMotDePasse = async () => {
-    // On essaie d'abord de prendre l'email de l'utilisateur connecté
-    // Sinon, on prend celui écrit dans le formulaire
-    const userConnecte = auth.currentUser;
-    const emailFormulaire = document.getElementById('authEmail').value;
-    const emailCible = userConnecte ? userConnecte.email : emailFormulaire;
-    
-    if (!emailCible) {
-        alert("Noble ami, inscrivez d'abord l'endroit ou vous crèchez dans le champ ci-dessus pour recevoir mon aide, votre humble serviteur...!");
-        return;
-    }
-
-    try {
-        await sendPasswordResetEmail(auth, emailCible);
-        alert("🛡️ Le pigeon voyageur est en route vers " + emailCible + " ! Suivez les instructions pour changer votre clé.");
-    } catch (e) {
-        alert("🏰 Message du Sénéchal :\n\n" + traduireErreur(e.code));
-    }
-};
-    
-window.agirRoyale = async () => {
-    const email = document.getElementById('authEmail').value;
-    const pass = document.getElementById('authPassword').value;
-    
-    try {
-      if (modeInscription) {
-        // 1. Création du compte
-        const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-        // 2. Envoi du mail de validation
-        await sendEmailVerification(userCredential.user);
-        
-        alert("🛡️ Sceau créé ! Un pigeon voyageur (email) vous a été envoyé pour vérifier votre identité avant de vous laisser entrer.");
-        await signOut(auth); // On déconnecte pour forcer la vérification
-      } else {
-        const userCredential = await signInWithEmailAndPassword(auth, email, pass);
-        
-        // Optionnel : Empêcher l'accès si l'email n'est pas vérifié
-        if (!userCredential.user.emailVerified) {
-            alert("🛡️ Halte, vagabond ! Le pigeon voyageur ne vous a pas encore trouvé. Vérifiez votre courrier avant d'entrer au donjon.");
-            signOut(auth);
-            return;
+        // ── FAQ ACCORDÉON ─────────────────────────
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const isOuvert = item.classList.contains('ouvert');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('ouvert'));
+            if (!isOuvert) item.classList.add('ouvert');
         }
-      }
-      fermerPorte();
-    } catch (e) {
-        // 1. On traduit le message technique en langage de chevalier
-        const messageElegant = traduireErreur(e.code);
-        
-        // 2. On récupère le parchemin (le conteneur du formulaire)
-        // Note : Si ta classe n'est pas .container, essaie .main-box ou document.body
-        const parchemin = document.querySelector('#modalConnexion > div') || document.body; 
-        
-        // 3. On déclenche la secousse visuelle
-        parchemin.classList.add('erreur-secousse');
-        
-        // 4. On affiche l'alerte
-        alert("🏰 Message du Sénéchal :\n\n" + messageElegant);
-        
-        // 5. On nettoie la classe après l'animation (0.5 seconde)
-        setTimeout(() => {
-            parchemin.classList.remove('erreur-secousse');
-        }, 500);
-    }
-};
-window.sauvegarderProfil = () => {
-    const user = auth.currentUser;
-    if (!user) return;
 
-    const infos = {
-        pseudo: document.getElementById('profil-pseudo').value,
-        royaume: document.getElementById('profil-royaume').value,
-        devise: document.getElementById('profil-devise').value
-    };
-// On sauvegarde dans le navigateur avec une clé unique par utilisateur
-    localStorage.setItem('infos_chevalier_' + user.uid, JSON.stringify(infos));
-    
-    const btn = document.getElementById('btn-save-profil');
-    btn.innerText = "✨ Sceau Apposé !";
-    btn.style.borderColor = "green";
-    btn.style.color = "green";
-    
-    setTimeout(() => {
-        btn.innerText = "📜 Sceller mes informations";
-        btn.style.borderColor = "var(--rouge-blason)";
-        btn.style.color = "var(--rouge-blason)";
-    }, 2000);
-};
-// Fonction pour remplir le tableau des rangs dans la section Règles
-function remplirTableauRangs() {
-    const tableauBody = document.getElementById('tableau-rangs-details');
-    if (!tableauBody) return;
+        // ── INTERSECTION OBSERVER ─────────────────
+        const observateur = new IntersectionObserver((entrees) => {
+            entrees.forEach(entree => {
+                if (entree.isIntersecting) {
+                    entree.target.classList.add('visible');
+                    observateur.unobserve(entree.target);
+                }
+            });
+        }, { threshold: 0.08 });
 
-    // La liste des grades est définie dans la constante partagée GRADES
-    const grades = GRADES;
+        document.querySelectorAll('.parchemin-box').forEach(section => {
+            observateur.observe(section);
+        });
+    </script>
 
-    // On vide le tableau au cas où et on le remplit
-    tableauBody.innerHTML = "";
-    grades.forEach(g => {
-        const ligne = `
-            <tr style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-                <td style="padding: 10px; font-size: 1.2rem;">${g.icone}</td>
-                <td style="padding: 10px; font-weight: bold;">${g.nom}</td>
-                <td style="padding: 10px;">${g.seuil} jours</td>
-            </tr>
-        `;
-        tableauBody.innerHTML += ligne;
-    });
-}
-onAuthStateChanged(auth, (user) => {
-    const zonePrivée = document.getElementById('zone-privee');
-    const sectionProfil = document.getElementById('section-profil');
-    const btnNav = document.getElementById('btn-nav-auth');
-    const sectionRegles = document.getElementById('section-regles'); // Ajouté
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut,
+            sendEmailVerification,
+            sendPasswordResetEmail,
+            deleteUser
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    if (user && user.emailVerified) {
-        // Chargement des infos locales
-        const savedInfos = localStorage.getItem('infos_chevalier_' + user.uid);
-        if (savedInfos) {
-            const data = JSON.parse(savedInfos);
-            if(document.getElementById('profil-pseudo')) document.getElementById('profil-pseudo').value = data.pseudo || "";
-            if(document.getElementById('profil-royaume')) document.getElementById('profil-royaume').value = data.royaume || "";
-            if(document.getElementById('profil-devise')) document.getElementById('profil-devise').value = data.devise || "";
-        }    
-        
-        if(zonePrivée) zonePrivée.style.display = 'block';
-        if(sectionProfil) sectionProfil.style.display = 'block';
-        if(sectionRegles) {
-            sectionRegles.style.display = 'block';
-            remplirTableauRangs();
-        }
-        // 1. Remplissage des infos
-        if(document.getElementById('profil-email')) document.getElementById('profil-email').innerText = user.email;
-        
-        const dateCreation = new Date(user.metadata.creationTime);
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        if(document.getElementById('profil-date')) document.getElementById('profil-date').innerText = dateCreation.toLocaleDateString('fr-FR', options);
+        // ── GRADES ───────────────────────────────
+        const GRADES = [
+            { seuil: 0,   nom: "Serf Égaré",          icone: "🪵", coul: "#7f8c8d" },
+            { seuil: 2,   nom: "Vilein Courageux",     icone: "🌾", coul: "#95a5a6" },
+            { seuil: 5,   nom: "Écuyer Novice",        icone: "🛡️", coul: "#bc8f8f" },
+            { seuil: 10,  nom: "Vassal du Fief",       icone: "🏰", coul: "#cd7f32" },
+            { seuil: 20,  nom: "Chevalier Errant",     icone: "🐎", coul: "#bdc3c7" },
+            { seuil: 40,  nom: "Héraut Royal",         icone: "🎺", coul: "#f1c40f" },
+            { seuil: 70,  nom: "Baron de la Carrée",   icone: "🍷", coul: "#e67e22" },
+            { seuil: 120, nom: "Maître d'Armes",       icone: "⚔️", coul: "#8b0000" },
+            { seuil: 200, nom: "Haut Connétable",      icone: "🚩", coul: "#4a0404" },
+            { seuil: 365, nom: "Main du Roi Karl",     icone: "👑", coul: "#d4af37" }
+        ];
 
-        const aujourdhui = new Date();
-        const joursAnciennete = Math.floor((aujourdhui - dateCreation) / (1000 * 60 * 60 * 24));
-        if(document.getElementById('profil-anciennete')) document.getElementById('profil-anciennete').innerText = joursAnciennete + (joursAnciennete > 1 ? " jours" : " jour");
-
-        // 2. Système de Rangs
-        const niveau = Math.floor(joursAnciennete / 1.5) + 1;
-        const puissance = 10 + (joursAnciennete * 12); 
-        
-        // Système de Rangs — utilise la constante partagée GRADES
-        const grades = GRADES;
-        
-        let rangActuel = grades[0];
-        let prochainRang = null;
-        for (let i = 0; i < grades.length; i++) {
-            if (joursAnciennete >= grades[i].seuil) {
-                rangActuel = grades[i];
-                prochainRang = grades[i + 1] || null;
+        // ── ERREURS TRADUITES ─────────────────────
+        function traduireErreur(code) {
+            switch (code) {
+                case 'auth/invalid-email':         return "✉️ Ce parchemin d'adresse semble mal écrit ou falsifié.";
+                case 'auth/invalid-credential':    return "🗝️ Les informations fournies ne permettent pas d'ouvrir la herse. Vérifiez l'e-mail ou le mot de passe, messire.";
+                case 'auth/user-not-found':        return "👤 Ce nom n'est pas inscrit dans nos registres. Êtes-vous un espion ?";
+                case 'auth/wrong-password':        return "🔑 Le mot de passe ne déverrouille pas ce compte. Réessayez, messire.";
+                case 'auth/missing-password':      return "🗝️ Vous avez oublié la clé ! (Le mot de passe est obligatoire).";
+                case 'auth/email-already-in-use':  return "🛡️ Ce nom est déjà porté par un autre Chevalier du royaume.";
+                case 'auth/weak-password':         return "⚔️ Votre mot de passe est trop fragile. Forgez-en un plus robuste (6 caractères min).";
+                case 'auth/too-many-requests':     return "🚪 La garde bloque l'accès suite à trop d'échecs. Patientez un instant !";
+                default:                           return "📜 Une erreur mystérieuse s'est produite : " + code;
             }
         }
 
-        // Mise à jour visuelle sécurisée
-        if(document.getElementById('profil-niveau')) document.getElementById('profil-niveau').innerText = niveau;
-        if(document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
-        if(document.getElementById('rang-chevalier')) document.getElementById('rang-chevalier').innerText = rangActuel.nom;
-        if(document.getElementById('infobulle-rang')) document.getElementById('infobulle-rang').innerText = rangActuel.nom;
-        if(document.getElementById('blason-image')) document.getElementById('blason-image').innerText = rangActuel.icone;
-        
-        // Barre d'XP
-        const barre = document.getElementById('barre-xp');
-        if (barre) {
-            let xpPct = 100;
-            if (prochainRang) {
-                xpPct = ((joursAnciennete - rangActuel.seuil) / (prochainRang.seuil - rangActuel.seuil)) * 100;
+        // ── FIREBASE INIT ─────────────────────────
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuWDm8uNJwYZrfPg_YLbzRyMc0TSyVhzw",
+            authDomain: "la-table-ronde.firebaseapp.com",
+            projectId: "la-table-ronde",
+            storageBucket: "la-table-ronde.firebasestorage.app",
+            messagingSenderId: "846762387353",
+            appId: "1:846762387353:web:21b289708e91e76cadd508"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        let modeInscription = false;
+
+        // ── MODAL AUTH ────────────────────────────
+        window.ouvrirPorte = () => {
+            document.getElementById('modalConnexion').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
+        window.fermerPorte = () => {
+            document.getElementById('modalConnexion').style.display = 'none';
+            document.body.style.overflow = '';
+        };
+
+        // Fermer en cliquant sur l'overlay
+        document.getElementById('modalConnexion').addEventListener('click', function(e) {
+            if (e.target === this) window.fermerPorte();
+        });
+
+        window.deconnexion = () => signOut(auth);
+
+        window.basculerMode = () => {
+            modeInscription = !modeInscription;
+            document.getElementById('titreModal').innerText   = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
+            document.getElementById('btnAction').innerText    = modeInscription ? "S'inscrire" : "Se Connecter";
+            document.getElementById('lienBascule').innerText  = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
+        };
+
+        window.oubliMotDePasse = async () => {
+            const userConnecte   = auth.currentUser;
+            const emailFormulaire = document.getElementById('authEmail').value;
+            const emailCible     = userConnecte ? userConnecte.email : emailFormulaire;
+            if (!emailCible) {
+                alert("Noble ami, inscrivez d'abord votre courriel dans le champ ci-dessus !");
+                return;
             }
-            barre.style.width = Math.min(xpPct, 100) + "%";
-            barre.style.backgroundColor = rangActuel.coul;
-        }
-
-        // Affichage du bouton de déconnexion
-        if(btnNav) btnNav.innerHTML = `<button onclick="deconnexion()" style="background:none; border:none; color:var(--rouge-blason); font-weight:bold; font-family:'Cinzel',serif; font-size:0.9rem; cursor:pointer; text-decoration:none;">QUITTER LE DONJON</button>`;
-
-    } else {
-        // ÉTAT DÉCONNECTÉ
-        if (zonePrivée) zonePrivée.style.display = 'none';
-        if (sectionProfil) sectionProfil.style.display = 'none';
-        if (sectionRegles) sectionRegles.style.display = 'none';
-        
-        if (btnNav) {
-            btnNav.innerHTML = `<button onclick="ouvrirPorte()" style="background:var(--or-royal); color:black; padding:8px 15px; border-radius:4px; font-weight:bold; font-family:'Cinzel',serif; font-size:0.9rem; cursor:pointer; border:none;">ACCÈS MEMBRE</button>`;
-        }
-    }
-});
-    window.demanderSuppression = async () => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    // Double vérification royale
-    const confirmation = confirm("⚠ ALERTE DU SÉNÉCHAL ⚠\n\nSouhaitez-vous vraiment effacer votre nom du registre ? Cette action est irréversible et vos titres seront perdus à jamais.");
-
-    if (confirmation) {
-        try {
-            await deleteUser(user);
-            alert("🏰 Votre nom a été effacé. Vous quittez le royaume en paix. Adieu, noble ami.");
-            // Le onAuthStateChanged s'occupera de cacher les zones privées automatiquement
-        } catch (e) {
-            // Sécurité Firebase : Si la session est trop vieille, il demandera de se reconnecter
-            if (e.code === 'auth/requires-recent-login') {
-                alert("🛡 Sécurité : Pour supprimer votre compte, vous devez vous être connecté très récemment. Veuillez vous reconnecter et réessayer.");
-                signOut(auth);
-            } else {
+            try {
+                await sendPasswordResetEmail(auth, emailCible);
+                alert("🛡️ Le pigeon voyageur est en route vers " + emailCible + " ! Suivez les instructions pour changer votre clé.");
+            } catch (e) {
                 alert("🏰 Message du Sénéchal :\n\n" + traduireErreur(e.code));
             }
+        };
+
+        window.agirRoyale = async () => {
+            const email = document.getElementById('authEmail').value;
+            const pass  = document.getElementById('authPassword').value;
+            try {
+                if (modeInscription) {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                    await sendEmailVerification(userCredential.user);
+                    alert("🛡️ Sceau créé ! Un pigeon voyageur (email) vous a été envoyé pour vérifier votre identité avant de vous laisser entrer.");
+                    await signOut(auth);
+                } else {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+                    if (!userCredential.user.emailVerified) {
+                        alert("🛡️ Halte, vagabond ! Le pigeon voyageur ne vous a pas encore trouvé. Vérifiez votre courrier avant d'entrer au donjon.");
+                        signOut(auth);
+                        return;
+                    }
+                }
+                window.fermerPorte();
+            } catch (e) {
+                const messageElegant = traduireErreur(e.code);
+                const parchemin = document.querySelector('#modalConnexion > div') || document.body;
+                parchemin.classList.add('erreur-secousse');
+                alert("🏰 Message du Sénéchal :\n\n" + messageElegant);
+                setTimeout(() => parchemin.classList.remove('erreur-secousse'), 500);
+            }
+        };
+
+        // ── SAUVEGARDE PROFIL ─────────────────────
+        window.sauvegarderProfil = () => {
+            const user = auth.currentUser;
+            if (!user) return;
+            const infos = {
+                pseudo:  document.getElementById('profil-pseudo').value,
+                royaume: document.getElementById('profil-royaume').value,
+                devise:  document.getElementById('profil-devise').value
+            };
+            localStorage.setItem('infos_chevalier_' + user.uid, JSON.stringify(infos));
+            const btn = document.getElementById('btn-save-profil');
+            btn.innerText          = "✨ Sceau Apposé !";
+            btn.style.borderColor  = "green";
+            btn.style.color        = "green";
+            setTimeout(() => {
+                btn.innerText          = "📜 Sceller mes informations";
+                btn.style.borderColor  = "var(--rouge-blason)";
+                btn.style.color        = "var(--rouge-blason)";
+            }, 2000);
+        };
+
+        // ── TABLEAU DES RANGS ─────────────────────
+        function remplirTableauRangs() {
+            const tableauBody = document.getElementById('tableau-rangs-details');
+            if (!tableauBody) return;
+            tableauBody.innerHTML = "";
+            GRADES.forEach(g => {
+                tableauBody.innerHTML += `
+                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.1);">
+                        <td style="padding: 10px; font-size: 1.2rem;">${g.icone}</td>
+                        <td style="padding: 10px; font-weight: bold;">${g.nom}</td>
+                        <td style="padding: 10px;">${g.seuil} jours</td>
+                    </tr>`;
+            });
         }
-    }
-};
-</script>
+
+        // ── AUTH STATE ────────────────────────────
+        onAuthStateChanged(auth, (user) => {
+            const zonePrivée     = document.getElementById('zone-privee');
+            const sectionProfil  = document.getElementById('section-profil');
+            const btnNav         = document.getElementById('btn-nav-auth');
+            const sectionRegles  = document.getElementById('section-regles');
+
+            if (user && user.emailVerified) {
+                // Chargement infos locales
+                const savedInfos = localStorage.getItem('infos_chevalier_' + user.uid);
+                if (savedInfos) {
+                    const data = JSON.parse(savedInfos);
+                    if (document.getElementById('profil-pseudo'))  document.getElementById('profil-pseudo').value  = data.pseudo  || "";
+                    if (document.getElementById('profil-royaume')) document.getElementById('profil-royaume').value = data.royaume || "";
+                    if (document.getElementById('profil-devise'))  document.getElementById('profil-devise').value  = data.devise  || "";
+                }
+
+                if (zonePrivée)    zonePrivée.style.display    = 'block';
+                if (sectionProfil) sectionProfil.style.display = 'block';
+                if (sectionRegles) { sectionRegles.style.display = 'block'; remplirTableauRangs(); }
+
+                if (document.getElementById('profil-email')) document.getElementById('profil-email').innerText = user.email;
+
+                const dateCreation  = new Date(user.metadata.creationTime);
+                const options       = { year: 'numeric', month: 'long', day: 'numeric' };
+                if (document.getElementById('profil-date')) document.getElementById('profil-date').innerText = dateCreation.toLocaleDateString('fr-FR', options);
+
+                const aujourdhui    = new Date();
+                const joursAncien   = Math.floor((aujourdhui - dateCreation) / (1000 * 60 * 60 * 24));
+                if (document.getElementById('profil-anciennete')) document.getElementById('profil-anciennete').innerText = joursAncien + (joursAncien > 1 ? " jours" : " jour");
+
+                const niveau    = Math.floor(joursAncien / 1.5) + 1;
+                const puissance = 10 + (joursAncien * 12);
+
+                let rangActuel = GRADES[0];
+                let prochainRang = null;
+                for (let i = 0; i < GRADES.length; i++) {
+                    if (joursAncien >= GRADES[i].seuil) {
+                        rangActuel   = GRADES[i];
+                        prochainRang = GRADES[i + 1] || null;
+                    }
+                }
+
+                if (document.getElementById('profil-niveau'))    document.getElementById('profil-niveau').innerText    = niveau;
+                if (document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
+                if (document.getElementById('rang-chevalier'))   document.getElementById('rang-chevalier').innerText   = rangActuel.nom;
+                if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = rangActuel.nom;
+                if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
+
+                const barre = document.getElementById('barre-xp');
+                if (barre) {
+                    let xpPct = 100;
+                    if (prochainRang) xpPct = ((joursAncien - rangActuel.seuil) / (prochainRang.seuil - rangActuel.seuil)) * 100;
+                    barre.style.width           = Math.min(xpPct, 100) + "%";
+                    barre.style.backgroundColor = rangActuel.coul;
+                }
+
+                if (btnNav) btnNav.innerHTML = `<button onclick="deconnexion()" style="background:none; border:none; color:var(--rouge-blason); font-weight:bold; font-family:'Cinzel',serif; font-size:0.8rem; cursor:pointer; letter-spacing:0.05em;">QUITTER LE DONJON</button>`;
+
+            } else {
+                if (zonePrivée)    zonePrivée.style.display    = 'none';
+                if (sectionProfil) sectionProfil.style.display = 'none';
+                if (sectionRegles) sectionRegles.style.display = 'none';
+                if (btnNav) btnNav.innerHTML = `<button onclick="ouvrirPorte()" style="background:var(--or-royal); color:black; padding:7px 14px; border-radius:2px; font-weight:bold; font-family:'Cinzel',serif; font-size:0.8rem; cursor:pointer; border:none; letter-spacing:0.05em;">ACCÈS MEMBRE</button>`;
+            }
+        });
+
+        // ── SUPPRESSION COMPTE ────────────────────
+        window.demanderSuppression = async () => {
+            const user = auth.currentUser;
+            if (!user) return;
+            const confirmation = confirm("⚠ ALERTE DU SÉNÉCHAL ⚠\n\nSouhaitez-vous vraiment effacer votre nom du registre ? Cette action est irréversible et vos titres seront perdus à jamais.");
+            if (confirmation) {
+                try {
+                    await deleteUser(user);
+                    alert("🏰 Votre nom a été effacé. Vous quittez le royaume en paix. Adieu, noble ami.");
+                } catch (e) {
+                    if (e.code === 'auth/requires-recent-login') {
+                        alert("🛡 Sécurité : Pour supprimer votre compte, vous devez vous être connecté très récemment. Veuillez vous reconnecter et réessayer.");
+                        signOut(auth);
+                    } else {
+                        alert("🏰 Message du Sénéchal :\n\n" + traduireErreur(e.code));
+                    }
+                }
+            }
+        };
+    </script>
 </body>
 </html>
-
