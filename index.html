@@ -885,9 +885,8 @@
                         📜 Sceller mes informations
                     </button>
 
-                    <!-- ✅ Avertissement localStorage transparent -->
                     <p style="font-size:0.7rem; color:#999; text-align:center; margin-top:8px; font-style:italic;">
-                        ⚠️ Ces infos sont sauvegardées sur cet appareil uniquement.
+                        ☁️ Vos infos sont sauvegardées dans le royaume et accessibles sur tous vos appareils.
                     </p>
 
                     <hr style="margin: 15px 0; border: 0; border-top: 1px double var(--or-sombre);">
@@ -1057,7 +1056,7 @@
             <h3>Données personnelles (RGPD)</h3>
             <p>Ce site collecte des adresses e-mail à deux fins uniquement : l'authentification des membres via Firebase Authentication, et l'envoi de la newsletter via Brevo (anciennement Sendinblue).</p>
             <p>Ces données ne sont jamais revendues à des tiers. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ce droit, utilisez la fonction "Effacer mon nom du registre" dans votre profil, ou contactez l'éditeur.</p>
-            <p>Les informations de profil (pseudo, royaume, devise) sont stockées localement dans votre navigateur (localStorage) et ne transitent pas par nos serveurs.</p>
+            <p>Les informations de profil (pseudo, royaume, devise) sont sauvegardées dans notre base de données sécurisée Firebase Firestore et synchronisées sur tous vos appareils.</p>
 
             <h3>Cookies</h3>
             <p>Ce site utilise uniquement les cookies techniques nécessaires au fonctionnement de Firebase Authentication. Aucun cookie publicitaire n'est utilisé.</p>
@@ -1160,6 +1159,14 @@
             sendPasswordResetEmail,
             deleteUser
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            setDoc,
+            deleteDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // ── GRADES ───────────────────────────────
         const GRADES = [
@@ -1200,8 +1207,9 @@
             appId: "1:846762387353:web:21b289708e91e76cadd508"
         };
 
-        const app = initializeApp(firebaseConfig);
+        const app  = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db   = getFirestore(app);
         let modeInscription = false;
 
         // ── MODAL AUTH ────────────────────────────
@@ -1271,25 +1279,46 @@
             }
         };
 
-        // ── SAUVEGARDE PROFIL ─────────────────────
-        window.sauvegarderProfil = () => {
+        // ── SAUVEGARDE PROFIL (Firestore) ─────────
+        window.sauvegarderProfil = async () => {
             const user = auth.currentUser;
             if (!user) return;
-            const infos = {
-                pseudo:  document.getElementById('profil-pseudo').value,
-                royaume: document.getElementById('profil-royaume').value,
-                devise:  document.getElementById('profil-devise').value
-            };
-            localStorage.setItem('infos_chevalier_' + user.uid, JSON.stringify(infos));
             const btn = document.getElementById('btn-save-profil');
-            btn.innerText          = "✨ Sceau Apposé !";
-            btn.style.borderColor  = "green";
-            btn.style.color        = "green";
-            setTimeout(() => {
-                btn.innerText          = "📜 Sceller mes informations";
-                btn.style.borderColor  = "var(--rouge-blason)";
-                btn.style.color        = "var(--rouge-blason)";
-            }, 2000);
+            btn.disabled   = true;
+            btn.innerText  = "⏳ Envoi au royaume...";
+
+            // Construit l'objet avec tous les champs connus
+            // Pour ajouter un nouveau champ plus tard : ajoutez simplement
+            // une clé ici ET un input HTML avec l'id correspondant
+            const infos = {
+                pseudo:       document.getElementById('profil-pseudo')?.value  || "",
+                royaume:      document.getElementById('profil-royaume')?.value || "",
+                devise:       document.getElementById('profil-devise')?.value  || "",
+                email:        user.email,
+                mis_a_jour:   serverTimestamp()
+                // Exemple pour ajouter un champ futur :
+                // ville: document.getElementById('profil-ville')?.value || "",
+            };
+
+            try {
+                // setDoc avec merge:true préserve les champs non modifiés
+                await setDoc(doc(db, "membres", user.uid), infos, { merge: true });
+                btn.innerText          = "✨ Sceau Apposé !";
+                btn.style.borderColor  = "green";
+                btn.style.color        = "green";
+            } catch (e) {
+                console.error("Erreur Firestore :", e);
+                btn.innerText         = "❌ Échec de l'envoi";
+                btn.style.borderColor = "red";
+                btn.style.color       = "red";
+            } finally {
+                btn.disabled = false;
+                setTimeout(() => {
+                    btn.innerText          = "📜 Sceller mes informations";
+                    btn.style.borderColor  = "var(--rouge-blason)";
+                    btn.style.color        = "var(--rouge-blason)";
+                }, 2500);
+            }
         };
 
         // ── TABLEAU DES RANGS ─────────────────────
@@ -1308,20 +1337,33 @@
         }
 
         // ── AUTH STATE ────────────────────────────
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             const zonePrivée     = document.getElementById('zone-privee');
             const sectionProfil  = document.getElementById('section-profil');
             const btnNav         = document.getElementById('btn-nav-auth');
             const sectionRegles  = document.getElementById('section-regles');
 
             if (user && user.emailVerified) {
-                // Chargement infos locales
-                const savedInfos = localStorage.getItem('infos_chevalier_' + user.uid);
-                if (savedInfos) {
-                    const data = JSON.parse(savedInfos);
-                    if (document.getElementById('profil-pseudo'))  document.getElementById('profil-pseudo').value  = data.pseudo  || "";
-                    if (document.getElementById('profil-royaume')) document.getElementById('profil-royaume').value = data.royaume || "";
-                    if (document.getElementById('profil-devise'))  document.getElementById('profil-devise').value  = data.devise  || "";
+
+                // ── Chargement profil depuis Firestore ──
+                try {
+                    const snap = await getDoc(doc(db, "membres", user.uid));
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        if (document.getElementById('profil-pseudo'))  document.getElementById('profil-pseudo').value  = data.pseudo  || "";
+                        if (document.getElementById('profil-royaume')) document.getElementById('profil-royaume').value = data.royaume || "";
+                        if (document.getElementById('profil-devise'))  document.getElementById('profil-devise').value  = data.devise  || "";
+                        // Ajout futur : if (document.getElementById('profil-ville')) document.getElementById('profil-ville').value = data.ville || "";
+                    } else {
+                        // Premier login : création du document membre avec les infos de base
+                        await setDoc(doc(db, "membres", user.uid), {
+                            email:      user.email,
+                            cree_le:    serverTimestamp(),
+                            mis_a_jour: serverTimestamp()
+                        }, { merge: true });
+                    }
+                } catch (e) {
+                    console.warn("Impossible de charger le profil Firestore :", e);
                 }
 
                 if (zonePrivée)    zonePrivée.style.display    = 'block';
@@ -1381,6 +1423,9 @@
             const confirmation = confirm("⚠ ALERTE DU SÉNÉCHAL ⚠\n\nSouhaitez-vous vraiment effacer votre nom du registre ? Cette action est irréversible et vos titres seront perdus à jamais.");
             if (confirmation) {
                 try {
+                    // Supprime le document Firestore du membre d'abord
+                    await deleteDoc(doc(db, "membres", user.uid));
+                    // Puis supprime le compte Auth
                     await deleteUser(user);
                     alert("🏰 Votre nom a été effacé. Vous quittez le royaume en paix. Adieu, noble ami.");
                 } catch (e) {
