@@ -861,8 +861,19 @@
         <section id="section-profil" class="parchemin-box" style="display:none;">
             <h2>📜 Votre Titre de Chevalier</h2>
 
-            <div style="text-align: center; margin-top: 2rem;">
-                <h3 id="rang-chevalier" style="color:var(--rouge-blason); margin-bottom:15px;">Chargement du rang...</h3>
+            <!-- Rang + Alignement en haut à gauche -->
+            <div style="margin-top:1.5rem; margin-bottom:1rem; text-align:left; padding: 10px 14px; border-left: 3px solid var(--or-sombre); background: rgba(212,175,55,0.04);">
+                <p style="font-family:'Cinzel',serif; font-size:0.85rem; margin:0 0 6px 0;">
+                    <span style="color:var(--or-sombre); letter-spacing:0.08em;">Rang :</span>
+                    <span id="rang-chevalier" style="color:var(--rouge-blason); margin-left:8px; font-weight:bold;">Chargement...</span>
+                </p>
+                <p style="font-family:'Cinzel',serif; font-size:0.85rem; margin:0;">
+                    <span style="color:var(--or-sombre); letter-spacing:0.08em;">Alignement :</span>
+                    <span id="profil-alignement" style="color:#ccc; margin-left:8px; font-style:italic;">—</span>
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 1rem;">
 
                 <div class="blason-signature">
                     <div style="position: relative; width: 80px; height: 80px;">
@@ -1668,9 +1679,14 @@
 
                 if (document.getElementById('profil-niveau'))    document.getElementById('profil-niveau').innerText    = niveau;
                 if (document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
-                if (document.getElementById('rang-chevalier'))   document.getElementById('rang-chevalier').innerText   = rangActuel.nom;
+                if (document.getElementById('rang-chevalier'))   document.getElementById('rang-chevalier').innerText   = `${rangActuel.icone} ${rangActuel.nom}`;
                 if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = rangActuel.nom;
                 if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
+
+                // Alignement depuis Firestore
+                const alignement = data.alignement || null;
+                const elAlign = document.getElementById('profil-alignement');
+                if (elAlign) elAlign.innerText = alignement ? alignement : '— Non déterminé —';
 
                 const barre = document.getElementById('barre-xp');
                 if (barre) {
@@ -1799,6 +1815,15 @@
         document.getElementById('quiz-description').innerText = result.desc;
         document.getElementById('quiz-container').style.display = 'none';
         document.getElementById('quiz-resultat').style.display  = 'block';
+
+        // Sauvegarder dans Firestore si connecté
+        const user = auth.currentUser;
+        if (user) {
+            const ref = doc(db, "membres", user.uid);
+            setDoc(ref, { alignement: cle }, { merge: true });
+            const elAlign = document.getElementById('profil-alignement');
+            if (elAlign) elAlign.innerText = cle;
+        }
     };
 
     window.recommencerQuiz = () => {
