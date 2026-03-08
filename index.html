@@ -702,6 +702,12 @@
             .modal-legal-inner { margin: 0; padding: 32px 20px; }
         }
 
+        /* ─── DÉFILEMENT MUSIQUE ─────────────────── */
+        @keyframes defiler {
+            0%   { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
         /* ─── SCROLL INDICATOR ───────────────────── */
         .scroll-indicator {
             position: absolute;
@@ -1629,9 +1635,18 @@
         <button onclick="pisteSuiv()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.9rem; padding:0; transition:0.2s;" title="Piste suivante">▶</button>
 
         <!-- Infos piste -->
-        <div style="display:flex; flex-direction:column; line-height:1.3; flex:1; min-width:0;">
+        <div style="display:flex; flex-direction:column; line-height:1.3; flex:1; min-width:0; overflow:hidden;">
             <span style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.1em; text-transform:uppercase;">Musique Royale</span>
-            <span id="label-musique" style="font-family:'Lora',serif; font-size:0.7rem; color:#666; font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">— En silence —</span>
+            <div style="overflow:hidden; white-space:nowrap; width:100%;">
+                <span id="label-musique" style="
+                    font-family:'Lora',serif;
+                    font-size:0.7rem;
+                    color:#666;
+                    font-style:italic;
+                    display:inline-block;
+                ">— En silence —</span>
+            </div>
+            <span style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); opacity:0.6; letter-spacing:0.05em;">par ZRD_DIODGE</span>
         </div>
 
         <!-- Volume -->
@@ -1646,22 +1661,48 @@
     <script>
     // ── LECTEUR MP3 ───────────────────────────────────────────────
     const PISTES = [
-        { nom: "YEAT 130BPM",  fichier: "music/YEAT 130BPM Amin.mp3"   },
-        { nom: "108BPM F#min", fichier: "music/108BPM Fmin.mp3"        },
-        { nom: "140BPM Cmin",  fichier: "music/140BPM Cmin.mp3"         },
+        { nom: "YEAT 130BPM Amin",  fichier: "music/YEAT 130BPM Amin.mp3"   },
+        { nom: "108BPM Fmin",       fichier: "music/108BPM Fmin.mp3"            },
+        { nom: "140BPM Cmin",       fichier: "music/140BPM Cmin.mp3"         },
     ];
 
-    let pisteActuelle = 0; // YEAT par défaut
+    let pisteActuelle = 0;
     let musiqueActive = false;
+    let animDefilement = null;
     const audio = document.getElementById('audio-royal');
+
+    function demarrerDefilement(texte) {
+        const label = document.getElementById('label-musique');
+        label.style.color = 'var(--or-sombre)';
+        label.innerText   = '♪ ' + texte;
+
+        // Reset animation
+        label.style.animation = 'none';
+        label.offsetHeight; // reflow
+        const largeurTexte = label.scrollWidth;
+        const largeurContainer = label.parentElement.offsetWidth;
+
+        if (largeurTexte > largeurContainer) {
+            const duree = largeurTexte / 30; // vitesse de défilement
+            label.style.animation = `defiler ${duree}s linear infinite`;
+        } else {
+            label.style.animation = 'none';
+        }
+    }
+
+    function arreterDefilement() {
+        const label = document.getElementById('label-musique');
+        label.style.animation = 'none';
+        label.innerText       = '— En silence —';
+        label.style.color     = '#666';
+    }
 
     function chargerPiste(index) {
         pisteActuelle = (index + PISTES.length) % PISTES.length;
         const piste   = PISTES[pisteActuelle];
         audio.src     = piste.fichier;
         audio.volume  = parseFloat(document.getElementById('volume-musique').value);
-        document.getElementById('label-musique').innerText = '♪ ' + piste.nom;
-        document.getElementById('label-musique').style.color = 'var(--or-sombre)';
+        demarrerDefilement(piste.nom);
         if (musiqueActive) audio.play();
     }
 
@@ -1679,17 +1720,15 @@
                 chargerPiste(0);
             } else {
                 audio.play();
-                label.innerText   = '♪ ' + PISTES[pisteActuelle].nom;
-                label.style.color = 'var(--or-sombre)';
+                demarrerDefilement(PISTES[pisteActuelle].nom);
             }
         } else {
             musiqueActive     = false;
             btn.textContent   = '▶▐';
             btn.title         = 'Activer la musique royale';
-            label.innerText   = '— En silence —';
-            label.style.color = '#666';
             vol.style.display = 'none';
             audio.pause();
+            arreterDefilement();
         }
     };
 
