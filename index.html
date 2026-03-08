@@ -1622,10 +1622,12 @@
 
                 // ── Chargement profil + date depuis Firestore (1 seul appel) ──
                 let dateCreation = new Date(user.metadata.creationTime); // fallback Auth
+                let profilData = {};
                 try {
                     const snap = await getDoc(doc(db, "membres", user.uid));
                     if (snap.exists()) {
                         const data = snap.data();
+                        profilData = data;
                         if (document.getElementById('profil-pseudo'))    document.getElementById('profil-pseudo').value    = data.pseudo    || "";
                         if (document.getElementById('profil-royaume'))   document.getElementById('profil-royaume').value   = data.royaume   || "";
                         if (document.getElementById('profil-devise'))    document.getElementById('profil-devise').value    = data.devise    || "";
@@ -1684,7 +1686,7 @@
                 if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
 
                 // Alignement depuis Firestore
-                const alignement = data.alignement || null;
+                const alignement = profilData.alignement || null;
                 const elAlign = document.getElementById('profil-alignement');
                 if (elAlign) elAlign.innerText = alignement ? alignement : '— Non déterminé —';
 
