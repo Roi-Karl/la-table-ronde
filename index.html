@@ -1730,6 +1730,64 @@
                 }
             }
         };
+
+        // ── QUIZ D'ALIGNEMENT — SAUVEGARDE FIRESTORE ─────────────
+        const ALIGNEMENTS_DATA = {
+            "Loyal Bon":        { icone: "😇", desc: "Vous êtes un paladin dans l'âme. Vous défendez la loi et protégez les innocents avec ferveur. Le Code de l'Honneur est votre bouclier." },
+            "Loyal Neutre":     { icone: "⚖️", desc: "La loi avant tout, ni plus ni moins. Vous êtes un gardien de l'ordre, sans vous laisser guider par la compassion ou la cruauté." },
+            "Loyal Mauvais":    { icone: "👹", desc: "Vous utilisez les règles et les structures pour asseoir votre pouvoir. Redoutable et méthodique, vous êtes un tyran organisé." },
+            "Neutre Bon":       { icone: "🕊️", desc: "Vous faites le bien sans vous soucier des lois ou du chaos. Votre boussole est votre cœur, et il pointe toujours vers la lumière." },
+            "Neutre Strict":    { icone: "🌗", desc: "L'équilibre est votre religion. Ni bien ni mal, ni ordre ni chaos — vous êtes le gardien de la balance universelle." },
+            "Neutre Mauvais":   { icone: "🗡️", desc: "Vous faites ce qui vous profite, sans scrupules ni loyauté envers quiconque. Un mercenaire de votre propre ambition." },
+            "Chaotique Bon":    { icone: "🦅", desc: "Rebelle au grand cœur. Vous brisez les chaînes de l'injustice et défendez les opprimés, même si cela vous met hors-la-loi." },
+            "Chaotique Neutre": { icone: "🌀", desc: "Libre comme le vent. Vous suivez vos caprices et refusez toute contrainte — ni saint ni démon, juste imprévisible." },
+            "Chaotique Mauvais":{ icone: "💀", desc: "La destruction et le chaos sont vos alliés. Vous ne suivez que vos désirs les plus sombres, sans foi ni loi." },
+        };
+
+        window.calculerAlignement = async () => {
+            const noms = ['q1','q2','q3','q4'];
+            for (const nom of noms) {
+                if (!document.querySelector(`input[name="${nom}"]:checked`)) {
+                    alert("⚔️ Vous devez répondre à toutes les questions, noble voyageur !");
+                    return;
+                }
+            }
+            let ordre = { L: 0, N: 0, C: 0 };
+            let moral  = { B: 0, N: 0, M: 0 };
+            ordre[document.querySelector('input[name="q1"]:checked').value]++;
+            ordre[document.querySelector('input[name="q2"]:checked').value]++;
+            moral[document.querySelector('input[name="q3"]:checked').value]++;
+            moral[document.querySelector('input[name="q4"]:checked').value]++;
+
+            let axe1 = "Neutre";
+            if (ordre.L > ordre.C && ordre.L > ordre.N) axe1 = "Loyal";
+            else if (ordre.C > ordre.L && ordre.C > ordre.N) axe1 = "Chaotique";
+
+            let axe2 = "Neutre";
+            if (moral.B > moral.M && moral.B > moral.N) axe2 = "Bon";
+            else if (moral.M > moral.B && moral.M > moral.N) axe2 = "Mauvais";
+
+            const cle    = (axe1 === "Neutre" && axe2 === "Neutre") ? "Neutre Strict" : `${axe1} ${axe2}`;
+            const result = ALIGNEMENTS_DATA[cle];
+
+            document.getElementById('quiz-icone').innerText       = result.icone;
+            document.getElementById('quiz-nom').innerText         = cle;
+            document.getElementById('quiz-description').innerText = result.desc;
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-resultat').style.display  = 'block';
+
+            // Sauvegarder dans Firestore si connecté
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    await setDoc(doc(db, "membres", user.uid), { alignement: cle }, { merge: true });
+                    const elAlign = document.getElementById('profil-alignement');
+                    if (elAlign) elAlign.innerText = cle;
+                } catch(e) {
+                    console.warn("Erreur sauvegarde alignement :", e);
+                }
+            }
+        };
     </script>
 
     <!-- ─── LECTEUR MUSICAL ───────────────────── -->
@@ -1771,63 +1829,6 @@
     <audio id="audio-royal" loop preload="none"></audio>
 
     <script>
-    // ── QUIZ D'ALIGNEMENT ─────────────────────────────────────────
-    const ALIGNEMENTS = {
-        "Loyal Bon":       { icone: "😇", desc: "Vous êtes un paladin dans l'âme. Vous défendez la loi et protégez les innocents avec ferveur. Le Code de l'Honneur est votre bouclier." },
-        "Loyal Neutre":    { icone: "⚖️", desc: "La loi avant tout, ni plus ni moins. Vous êtes un gardien de l'ordre, sans vous laisser guider par la compassion ou la cruauté." },
-        "Loyal Mauvais":   { icone: "👹", desc: "Vous utilisez les règles et les structures pour asseoir votre pouvoir. Redoutable et méthodique, vous êtes un tyran organisé." },
-        "Neutre Bon":      { icone: "🕊️", desc: "Vous faites le bien sans vous soucier des lois ou du chaos. Votre boussole est votre cœur, et il pointe toujours vers la lumière." },
-        "Neutre Strict":   { icone: "🌗", desc: "L'équilibre est votre religion. Ni bien ni mal, ni ordre ni chaos — vous êtes le gardien de la balance universelle." },
-        "Neutre Mauvais":  { icone: "🗡️", desc: "Vous faites ce qui vous profite, sans scrupules ni loyauté envers quiconque. Un mercenaire de votre propre ambition." },
-        "Chaotique Bon":   { icone: "🦅", desc: "Rebelle au grand cœur. Vous brisez les chaînes de l'injustice et défendez les opprimés, même si cela vous met hors-la-loi." },
-        "Chaotique Neutre":{ icone: "🌀", desc: "Libre comme le vent. Vous suivez vos caprices et refusez toute contrainte — ni saint ni démon, juste imprévisible." },
-        "Chaotique Mauvais":{ icone: "💀", desc: "La destruction et le chaos sont vos alliés. Vous ne suivez que vos désirs les plus sombres, sans foi ni loi." },
-    };
-
-    window.calculerAlignement = () => {
-        const noms = ['q1','q2','q3','q4'];
-        for (const nom of noms) {
-            if (!document.querySelector(`input[name="${nom}"]:checked`)) {
-                alert("⚔️ Vous devez répondre à toutes les questions, noble voyageur !");
-                return;
-            }
-        }
-
-        let ordre = { L: 0, N: 0, C: 0 };
-        let moral  = { B: 0, N: 0, M: 0 };
-
-        ordre[document.querySelector('input[name="q1"]:checked').value]++;
-        ordre[document.querySelector('input[name="q2"]:checked').value]++;
-        moral[document.querySelector('input[name="q3"]:checked').value]++;
-        moral[document.querySelector('input[name="q4"]:checked').value]++;
-
-        let axe1 = "Neutre";
-        if (ordre.L > ordre.C && ordre.L > ordre.N) axe1 = "Loyal";
-        else if (ordre.C > ordre.L && ordre.C > ordre.N) axe1 = "Chaotique";
-
-        let axe2 = "Neutre";
-        if (moral.B > moral.M && moral.B > moral.N) axe2 = "Bon";
-        else if (moral.M > moral.B && moral.M > moral.N) axe2 = "Mauvais";
-
-        const cle = (axe1 === "Neutre" && axe2 === "Neutre") ? "Neutre Strict" : `${axe1} ${axe2}`;
-        const result = ALIGNEMENTS[cle];
-
-        document.getElementById('quiz-icone').innerText      = result.icone;
-        document.getElementById('quiz-nom').innerText        = cle;
-        document.getElementById('quiz-description').innerText = result.desc;
-        document.getElementById('quiz-container').style.display = 'none';
-        document.getElementById('quiz-resultat').style.display  = 'block';
-
-        // Sauvegarder dans Firestore si connecté
-        const user = auth.currentUser;
-        if (user) {
-            const ref = doc(db, "membres", user.uid);
-            setDoc(ref, { alignement: cle }, { merge: true });
-            const elAlign = document.getElementById('profil-alignement');
-            if (elAlign) elAlign.innerText = cle;
-        }
-    };
-
     window.recommencerQuiz = () => {
         document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
         document.querySelectorAll('.quiz-label').forEach(l => l.classList.remove('selected'));
