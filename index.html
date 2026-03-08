@@ -864,12 +864,12 @@
             <!-- Rang + Alignement en haut à gauche -->
             <div style="margin-top:1.5rem; margin-bottom:1rem; text-align:left; padding: 10px 14px; border-left: 3px solid var(--or-sombre); background: rgba(212,175,55,0.04);">
                 <p style="font-family:'Cinzel',serif; font-size:0.85rem; margin:0 0 6px 0;">
-                    <span style="color:var(--or-sombre); letter-spacing:0.08em;">Rang :</span>
+                    <span style="color:var(--or-royal); letter-spacing:0.08em; font-weight:bold;">Rang :</span>
                     <span id="rang-chevalier" style="color:var(--rouge-blason); margin-left:8px; font-weight:bold;">Chargement...</span>
                 </p>
                 <p style="font-family:'Cinzel',serif; font-size:0.85rem; margin:0;">
-                    <span style="color:var(--or-sombre); letter-spacing:0.08em;">Alignement :</span>
-                    <span id="profil-alignement" style="color:#ccc; margin-left:8px; font-style:italic;">—</span>
+                    <span style="color:var(--or-royal); letter-spacing:0.08em; font-weight:bold;">Alignement :</span>
+                    <span id="profil-alignement" style="color:var(--rouge-blason); margin-left:8px; font-weight:bold;">—</span>
                 </p>
             </div>
 
@@ -1447,6 +1447,19 @@
             { seuil: 365, nom: "Main du Roi Karl",     icone: "👑", coul: "#d4af37" }
         ];
 
+        // ── ALIGNEMENTS ──────────────────────────
+        const ALIGNEMENTS_DATA = {
+            "Loyal Bon":        { icone: "😇", desc: "Vous êtes un paladin dans l'âme. Vous défendez la loi et protégez les innocents avec ferveur. Le Code de l'Honneur est votre bouclier." },
+            "Loyal Neutre":     { icone: "⚖️", desc: "La loi avant tout, ni plus ni moins. Vous êtes un gardien de l'ordre, sans vous laisser guider par la compassion ou la cruauté." },
+            "Loyal Mauvais":    { icone: "👹", desc: "Vous utilisez les règles et les structures pour asseoir votre pouvoir. Redoutable et méthodique, vous êtes un tyran organisé." },
+            "Neutre Bon":       { icone: "🕊️", desc: "Vous faites le bien sans vous soucier des lois ou du chaos. Votre boussole est votre cœur, et il pointe toujours vers la lumière." },
+            "Neutre Strict":    { icone: "🌗", desc: "L'équilibre est votre religion. Ni bien ni mal, ni ordre ni chaos — vous êtes le gardien de la balance universelle." },
+            "Neutre Mauvais":   { icone: "🗡️", desc: "Vous faites ce qui vous profite, sans scrupules ni loyauté envers quiconque. Un mercenaire de votre propre ambition." },
+            "Chaotique Bon":    { icone: "🦅", desc: "Rebelle au grand cœur. Vous brisez les chaînes de l'injustice et défendez les opprimés, même si cela vous met hors-la-loi." },
+            "Chaotique Neutre": { icone: "🌀", desc: "Libre comme le vent. Vous suivez vos caprices et refusez toute contrainte — ni saint ni démon, juste imprévisible." },
+            "Chaotique Mauvais":{ icone: "💀", desc: "La destruction et le chaos sont vos alliés. Vous ne suivez que vos désirs les plus sombres, sans foi ni loi." },
+        };
+
         // ── ERREURS TRADUITES ─────────────────────
         function traduireErreur(code) {
             switch (code) {
@@ -1688,7 +1701,13 @@
                 // Alignement depuis Firestore
                 const alignement = profilData.alignement || null;
                 const elAlign = document.getElementById('profil-alignement');
-                if (elAlign) elAlign.innerText = alignement ? alignement : '— Non déterminé —';
+                if (elAlign) {
+                    if (alignement && ALIGNEMENTS_DATA && ALIGNEMENTS_DATA[alignement]) {
+                        elAlign.innerText = `${ALIGNEMENTS_DATA[alignement].icone} ${alignement}`;
+                    } else {
+                        elAlign.innerText = alignement || '— Non déterminé —';
+                    }
+                }
 
                 const barre = document.getElementById('barre-xp');
                 if (barre) {
@@ -1732,18 +1751,6 @@
         };
 
         // ── QUIZ D'ALIGNEMENT — SAUVEGARDE FIRESTORE ─────────────
-        const ALIGNEMENTS_DATA = {
-            "Loyal Bon":        { icone: "😇", desc: "Vous êtes un paladin dans l'âme. Vous défendez la loi et protégez les innocents avec ferveur. Le Code de l'Honneur est votre bouclier." },
-            "Loyal Neutre":     { icone: "⚖️", desc: "La loi avant tout, ni plus ni moins. Vous êtes un gardien de l'ordre, sans vous laisser guider par la compassion ou la cruauté." },
-            "Loyal Mauvais":    { icone: "👹", desc: "Vous utilisez les règles et les structures pour asseoir votre pouvoir. Redoutable et méthodique, vous êtes un tyran organisé." },
-            "Neutre Bon":       { icone: "🕊️", desc: "Vous faites le bien sans vous soucier des lois ou du chaos. Votre boussole est votre cœur, et il pointe toujours vers la lumière." },
-            "Neutre Strict":    { icone: "🌗", desc: "L'équilibre est votre religion. Ni bien ni mal, ni ordre ni chaos — vous êtes le gardien de la balance universelle." },
-            "Neutre Mauvais":   { icone: "🗡️", desc: "Vous faites ce qui vous profite, sans scrupules ni loyauté envers quiconque. Un mercenaire de votre propre ambition." },
-            "Chaotique Bon":    { icone: "🦅", desc: "Rebelle au grand cœur. Vous brisez les chaînes de l'injustice et défendez les opprimés, même si cela vous met hors-la-loi." },
-            "Chaotique Neutre": { icone: "🌀", desc: "Libre comme le vent. Vous suivez vos caprices et refusez toute contrainte — ni saint ni démon, juste imprévisible." },
-            "Chaotique Mauvais":{ icone: "💀", desc: "La destruction et le chaos sont vos alliés. Vous ne suivez que vos désirs les plus sombres, sans foi ni loi." },
-        };
-
         window.calculerAlignement = async () => {
             const noms = ['q1','q2','q3','q4'];
             for (const nom of noms) {
@@ -1782,7 +1789,7 @@
                 try {
                     await setDoc(doc(db, "membres", user.uid), { alignement: cle }, { merge: true });
                     const elAlign = document.getElementById('profil-alignement');
-                    if (elAlign) elAlign.innerText = cle;
+                    if (elAlign) elAlign.innerText = `${result.icone} ${cle}`;
                 } catch(e) {
                     console.warn("Erreur sauvegarde alignement :", e);
                 }
