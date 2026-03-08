@@ -1610,14 +1610,15 @@
         right: 24px;
         z-index: 9000;
         display: flex;
+        flex-wrap: nowrap;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         background: rgba(0,0,0,0.88);
         border: 1px solid var(--or-sombre);
-        padding: 8px 14px;
+        padding: 8px 12px;
         backdrop-filter: blur(6px);
         box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-        min-width: 220px;
+        max-width: 280px;
     ">
         <!-- Bouton précédent -->
         <button onclick="pistePrec()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.9rem; padding:0; transition:0.2s;" title="Piste précédente">◀</button>
