@@ -1569,40 +1569,6 @@
         };
     </script>
 
-    <!-- ─── MUSIQUE MÉDIÉVALE ─────────────────── -->
-    <div id="lecteur-musical" style="
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        z-index: 9000;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: rgba(0,0,0,0.88);
-        border: 1px solid var(--or-sombre);
-        padding: 8px 14px;
-        backdrop-filter: blur(6px);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-    ">
-        <button id="btn-musique" onclick="toggleMusique()" style="
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            padding: 0;
-            color: var(--or-royal);
-            transition: 0.2s;
-        " title="Activer la musique royale">🔇</button>
-        <div style="display: flex; flex-direction: column; line-height: 1.3;">
-            <span style="font-family: 'Cinzel', serif; font-size: 0.65rem; color: var(--or-sombre); letter-spacing: 0.1em; text-transform: uppercase;">Fanfare Royale</span>
-            <span id="label-musique" style="font-family: 'Lora', serif; font-size: 0.7rem; color: #666; font-style: italic;">— En silence —</span>
-        </div>
-        <input type="range" id="volume-musique" min="0" max="1" step="0.05" value="0.35"
-               oninput="changerVolume(this.value)"
-               style="width: 60px; accent-color: var(--or-royal); cursor: pointer; display: none;">
-    </div>
-
     <!-- ─── LECTEUR MUSICAL ───────────────────── -->
     <div id="lecteur-musical" style="
         position: fixed;
@@ -1612,50 +1578,35 @@
         display: flex;
         flex-wrap: nowrap;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         background: rgba(0,0,0,0.88);
         border: 1px solid var(--or-sombre);
         padding: 8px 12px;
         backdrop-filter: blur(6px);
         box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-        max-width: 280px;
     ">
         <!-- Bouton précédent -->
-        <button onclick="pistePrec()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.9rem; padding:0; transition:0.2s;" title="Piste précédente">◀</button>
+        <button onclick="pistePrec()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.8rem; padding:0; flex-shrink:0;">◀</button>
 
-        <!-- Bouton play/mute -->
-        <button id="btn-musique" onclick="toggleMusique()" style="
-            background:none; border:none; cursor:pointer;
-            font-size:1rem; line-height:1; padding:0;
-            color:var(--or-royal); transition:0.2s;
-            font-family:'Cinzel',serif; letter-spacing:0;
-            min-width:24px; text-align:center;
-        " title="Activer la musique royale">▶▐</button>
+        <!-- Bouton play/pause -->
+        <button id="btn-musique" onclick="toggleMusique()" style="background:none; border:none; cursor:pointer; font-size:0.85rem; line-height:1; padding:0; color:var(--or-royal); flex-shrink:0; font-family:monospace;">▶</button>
 
         <!-- Bouton suivant -->
-        <button onclick="pisteSuiv()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.9rem; padding:0; transition:0.2s;" title="Piste suivante">▶</button>
+        <button onclick="pisteSuiv()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.8rem; padding:0; flex-shrink:0;">▶</button>
 
         <!-- Infos piste -->
-        <div style="display:flex; flex-direction:column; line-height:1.2; flex:1; min-width:0; overflow:hidden;">
-            <div style="overflow:hidden; white-space:nowrap; width:100%;">
-                <span id="label-musique" style="
-                    font-family:'Lora',serif;
-                    font-size:0.7rem;
-                    color:#666;
-                    font-style:italic;
-                    display:inline-block;
-                ">— En silence —</span>
+        <div style="display:flex; flex-direction:column; line-height:1.2; width:90px; overflow:hidden;">
+            <div style="overflow:hidden; white-space:nowrap; width:90px;">
+                <span id="label-musique" style="font-family:'Lora',serif; font-size:0.7rem; color:#666; font-style:italic; display:inline-block;">— En silence —</span>
             </div>
-            <span style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); opacity:0.6; letter-spacing:0.05em; white-space:nowrap;">par ZRD_DIODGE</span>
+            <span style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); opacity:0.6; white-space:nowrap;">par ZRD_DIODGE</span>
         </div>
 
-        <!-- Volume -->
-        <input type="range" id="volume-musique" min="0" max="1" step="0.05" value="0.5"
-               oninput="changerVolume(this.value)"
-               style="width:55px; accent-color:var(--or-royal); cursor:pointer; display:none; flex-shrink:0;">
+        <!-- Volume - / + -->
+        <button onclick="baisserVolume()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.9rem; padding:0; flex-shrink:0; line-height:1;">−</button>
+        <button onclick="monterVolume()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.9rem; padding:0; flex-shrink:0; line-height:1;">+</button>
     </div>
 
-    <!-- Élément audio caché -->
     <audio id="audio-royal" loop preload="none"></audio>
 
     <script>
@@ -1668,25 +1619,20 @@
 
     let pisteActuelle = 0;
     let musiqueActive = false;
-    let animDefilement = null;
+    let volumeActuel  = 0.5;
     const audio = document.getElementById('audio-royal');
 
     function demarrerDefilement(texte) {
         const label = document.getElementById('label-musique');
         label.style.color = 'var(--or-sombre)';
         label.innerText   = '♪ ' + texte;
-
-        // Reset animation
         label.style.animation = 'none';
-        label.offsetHeight; // reflow
-        const largeurTexte = label.scrollWidth;
+        label.offsetHeight;
+        const largeurTexte     = label.scrollWidth;
         const largeurContainer = label.parentElement.offsetWidth;
-
         if (largeurTexte > largeurContainer) {
-            const duree = largeurTexte / 30; // vitesse de défilement
+            const duree = largeurTexte / 30;
             label.style.animation = `defiler ${duree}s linear infinite`;
-        } else {
-            label.style.animation = 'none';
         }
     }
 
@@ -1701,21 +1647,16 @@
         pisteActuelle = (index + PISTES.length) % PISTES.length;
         const piste   = PISTES[pisteActuelle];
         audio.src     = piste.fichier;
-        audio.volume  = parseFloat(document.getElementById('volume-musique').value);
+        audio.volume  = volumeActuel;
         demarrerDefilement(piste.nom);
         if (musiqueActive) audio.play();
     }
 
     window.toggleMusique = () => {
-        const btn   = document.getElementById('btn-musique');
-        const label = document.getElementById('label-musique');
-        const vol   = document.getElementById('volume-musique');
-
+        const btn = document.getElementById('btn-musique');
         if (!musiqueActive) {
-            musiqueActive     = true;
-            btn.textContent   = '❚❚';
-            btn.title         = 'Couper la musique royale';
-            vol.style.display = 'inline-block';
+            musiqueActive   = true;
+            btn.textContent = '❚❚';
             if (!audio.src || audio.src === window.location.href) {
                 chargerPiste(0);
             } else {
@@ -1723,27 +1664,27 @@
                 demarrerDefilement(PISTES[pisteActuelle].nom);
             }
         } else {
-            musiqueActive     = false;
-            btn.textContent   = '▶▐';
-            btn.title         = 'Activer la musique royale';
-            vol.style.display = 'none';
+            musiqueActive   = false;
+            btn.textContent = '▶';
             audio.pause();
             arreterDefilement();
         }
     };
 
-    window.pisteSuiv = () => {
-        chargerPiste(pisteActuelle + 1);
-        if (!musiqueActive) toggleMusique();
-    };
+    window.pisteSuiv  = () => { chargerPiste(pisteActuelle + 1); if (!musiqueActive) toggleMusique(); };
+    window.pistePrec  = () => { chargerPiste(pisteActuelle - 1); if (!musiqueActive) toggleMusique(); };
 
-    window.pistePrec = () => {
-        chargerPiste(pisteActuelle - 1);
-        if (!musiqueActive) toggleMusique();
+    window.monterVolume = () => {
+        volumeActuel = Math.min(1, volumeActuel + 0.1);
+        audio.volume = volumeActuel;
     };
-
+    window.baisserVolume = () => {
+        volumeActuel = Math.max(0, volumeActuel - 0.1);
+        audio.volume = volumeActuel;
+    };
     window.changerVolume = (val) => {
-        audio.volume = parseFloat(val);
+        volumeActuel = parseFloat(val);
+        audio.volume = volumeActuel;
     };
     </script>
 </body>
