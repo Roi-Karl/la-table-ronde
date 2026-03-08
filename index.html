@@ -1,4 +1,3 @@
-<script src="questions.js"></script>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -797,6 +796,8 @@
         }
 
     </style>
+    <!-- Banque de questions du Quiz d'Alignement -->
+    <script src="questions.js"></script>
 </head>
 <body>
 
@@ -1095,53 +1096,8 @@
 
             <div id="quiz-container">
 
-                <h3 style="color:var(--or-sombre); font-family:'Cinzel',serif; letter-spacing:0.1em; border-bottom:1px solid var(--or-sombre); padding-bottom:8px; margin-bottom:1.5rem;">
-                    I. L'Axe de l'Ordre
-                </h3>
-
-                <!-- Question 1 -->
-                <div class="quiz-question">
-                    <p class="quiz-q-texte">📜 1. Le décret du Baron : Le Baron local a imposé une taxe injuste, mais elle finance la garde qui protège la région des orcs. Que faites-vous ?</p>
-                    <div class="quiz-options">
-                        <label class="quiz-label"><input type="radio" name="q1" value="L"> <span>Je paie et j'encourage les autres à le faire. La loi est le seul rempart contre l'anarchie.</span></label>
-                        <label class="quiz-label"><input type="radio" name="q1" value="N"> <span>Je paie ma part, mais je cherche une solution diplomatique pour alléger le fardeau des pauvres.</span></label>
-                        <label class="quiz-label"><input type="radio" name="q1" value="C"> <span>J'aide les paysans à cacher leurs récoltes et je sabote les collecteurs de taxes.</span></label>
-                    </div>
-                </div>
-
-                <!-- Question 2 -->
-                <div class="quiz-question">
-                    <p class="quiz-q-texte">📜 2. Le serment rompu : Vous avez juré de protéger un marchand, mais vous découvrez qu'il transporte des marchandises volées à un temple.</p>
-                    <div class="quiz-options">
-                        <label class="quiz-label"><input type="radio" name="q2" value="L"> <span>Mon serment est sacré. Je le protège jusqu'à destination, puis je le livre à la justice.</span></label>
-                        <label class="quiz-label"><input type="radio" name="q2" value="N"> <span>Je romps le contrat et je m'en vais. Je ne veux pas être mêlé à cette affaire.</span></label>
-                        <label class="quiz-label"><input type="radio" name="q2" value="C"> <span>Je prends les marchandises pour les rendre au temple et je laisse le marchand à son sort.</span></label>
-                    </div>
-                </div>
-
-                <h3 style="color:var(--or-sombre); font-family:'Cinzel',serif; letter-spacing:0.1em; border-bottom:1px solid var(--or-sombre); padding-bottom:8px; margin:2rem 0 1.5rem;">
-                    II. L'Axe de la Morale
-                </h3>
-
-                <!-- Question 3 -->
-                <div class="quiz-question">
-                    <p class="quiz-q-texte">📜 3. Le prisonnier gobelin : Vous avez capturé un gobelin qui possède des informations cruciales. Il refuse de parler.</p>
-                    <div class="quiz-options">
-                        <label class="quiz-label"><input type="radio" name="q3" value="B"> <span>Je lui offre de la nourriture et sa liberté en échange des informations.</span></label>
-                        <label class="quiz-label"><input type="radio" name="q3" value="N"> <span>Je l'intimide ou je l'enferme jusqu'à ce qu'il craque de lui-même.</span></label>
-                        <label class="quiz-label"><input type="radio" name="q3" value="M"> <span>Je le torture sans hésiter. La fin justifie les moyens.</span></label>
-                    </div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="quiz-question">
-                    <p class="quiz-q-texte">📜 4. La bourse oubliée : Vous voyez un riche noble perdre une bourse d'or dans une ruelle sombre. Personne ne vous regarde.</p>
-                    <div class="quiz-options">
-                        <label class="quiz-label"><input type="radio" name="q4" value="B"> <span>Je le rattrape pour lui rendre son bien. C'est la chose juste à faire.</span></label>
-                        <label class="quiz-label"><input type="radio" name="q4" value="N"> <span>Je ramasse la bourse. S'il est assez riche pour ne pas s'en rendre compte, il n'en a pas besoin.</span></label>
-                        <label class="quiz-label"><input type="radio" name="q4" value="M"> <span>Je ramasse la bourse et je cherche si je peux aussi lui dérober sa dague ornée.</span></label>
-                    </div>
-                </div>
+                <!-- Questions générées dynamiquement depuis questions.js -->
+                <div id="questions-container"></div>
 
                 <div style="text-align:center; margin-top:2rem;">
                     <button onclick="calculerAlignement()" style="
@@ -1758,7 +1714,123 @@
             }
         };
 
-        // ── QUIZ D'ALIGNEMENT — SAUVEGARDE FIRESTORE ─────────────
+        // ── QUIZ D'ALIGNEMENT — GÉNÉRATION + SAUVEGARDE FIRESTORE ──
+
+        // Questions tirées au sort au chargement (5 ordre + 5 morale)
+        let questionsActuelles = [];
+
+        function genererQuestionnaire() {
+            const container = document.getElementById('questions-container');
+            if (!container || typeof banqueQuestions === 'undefined') return;
+
+            const melanger = arr => [...arr].sort(() => 0.5 - Math.random());
+            const ordreChoix  = melanger(banqueQuestions.ordre).slice(0, 5);
+            const moraleChoix = melanger(banqueQuestions.morale).slice(0, 5);
+            questionsActuelles = [...ordreChoix, ...moraleChoix];
+
+            container.innerHTML = '';
+
+            // Titre axe Ordre
+            const titreOrdre = document.createElement('h3');
+            titreOrdre.style.cssText = "color:var(--or-sombre);font-family:'Cinzel',serif;letter-spacing:0.1em;border-bottom:1px solid var(--or-sombre);padding-bottom:8px;margin-bottom:1.5rem;";
+            titreOrdre.textContent = 'I. L\'Axe de l\'Ordre';
+            container.appendChild(titreOrdre);
+
+            ordreChoix.forEach((data, i) => {
+                container.appendChild(creerBloc(data, i, i + 1));
+            });
+
+            // Titre axe Morale
+            const titreMorale = document.createElement('h3');
+            titreMorale.style.cssText = "color:var(--or-sombre);font-family:'Cinzel',serif;letter-spacing:0.1em;border-bottom:1px solid var(--or-sombre);padding-bottom:8px;margin:2rem 0 1.5rem;";
+            titreMorale.textContent = 'II. L\'Axe de la Morale';
+            container.appendChild(titreMorale);
+
+            moraleChoix.forEach((data, i) => {
+                container.appendChild(creerBloc(data, 5 + i, i + 6));
+            });
+        }
+
+        function creerBloc(data, index, numero) {
+            const div = document.createElement('div');
+            div.className = 'quiz-question';
+            const keys = Object.keys(data.r);
+            const optionsHtml = keys.map(key => `
+                <label class="quiz-label">
+                    <input type="radio" name="q${index}" value="${key}">
+                    <span>${data.r[key]}</span>
+                </label>`).join('');
+            div.innerHTML = `
+                <p class="quiz-q-texte">📜 ${numero}. ${data.q}</p>
+                <div class="quiz-options">${optionsHtml}</div>`;
+            return div;
+        }
+
+        // Appel au chargement
+        document.addEventListener('DOMContentLoaded', genererQuestionnaire);
+
+        window.calculerAlignement = async () => {
+            // Vérifier que toutes les questions ont une réponse
+            for (let i = 0; i < questionsActuelles.length; i++) {
+                if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+                    alert("⚔️ Vous devez répondre à toutes les questions, noble voyageur !");
+                    return;
+                }
+            }
+
+            // Compter les votes sur chaque axe
+            let ordre = { L: 0, N: 0, C: 0 };
+            let moral  = { B: 0, N: 0, M: 0 };
+
+            questionsActuelles.forEach((q, i) => {
+                const val = document.querySelector(`input[name="q${i}"]:checked`).value;
+                if (val === 'L' || val === 'C') ordre[val]++;
+                else if (val === 'N') {
+                    // N peut être ordre ou morale selon l'axe de la question
+                    const keys = Object.keys(q.r);
+                    if (keys.includes('L')) ordre.N++;
+                    else moral.N++;
+                }
+                else if (val === 'B' || val === 'M') moral[val]++;
+            });
+
+            let axe1 = "Neutre";
+            if (ordre.L > ordre.C && ordre.L > ordre.N) axe1 = "Loyal";
+            else if (ordre.C > ordre.L && ordre.C > ordre.N) axe1 = "Chaotique";
+
+            let axe2 = "Neutre";
+            if (moral.B > moral.M && moral.B > moral.N) axe2 = "Bon";
+            else if (moral.M > moral.B && moral.M > moral.N) axe2 = "Mauvais";
+
+            const cle    = (axe1 === "Neutre" && axe2 === "Neutre") ? "Neutre Strict" : `${axe1} ${axe2}`;
+            const result = ALIGNEMENTS_DATA[cle];
+
+            // Composer description aléatoire
+            const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+            const intro  = rand(DESCRIPTIONS.intros);
+            const trait  = rand(DESCRIPTIONS.traits[cle] || ["votre destin reste encore mystérieux."]);
+            const outro  = rand(DESCRIPTIONS.conclusions);
+            const descDynamique = `${intro}${trait}${outro}`;
+
+            document.getElementById('quiz-icone').innerText       = result.icone;
+            document.getElementById('quiz-nom').innerText         = cle;
+            document.getElementById('quiz-description').innerText = descDynamique;
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-resultat').style.display  = 'block';
+
+            // Sauvegarder dans Firestore si connecté
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    await setDoc(doc(db, "membres", user.uid), { alignement: cle }, { merge: true });
+                    const elAlign = document.getElementById('profil-alignement');
+                    if (elAlign) elAlign.innerText = `${result.icone} ${cle}`;
+                } catch(e) {
+                    console.warn("Erreur sauvegarde alignement :", e);
+                }
+            }
+        };
+
         const DESCRIPTIONS = {
             "intros": [
                 "Les astres révèlent votre véritable nature : ",
@@ -1855,57 +1927,6 @@
             }
         };
 
-        window.calculerAlignement = async () => {
-            const noms = ['q1','q2','q3','q4'];
-            for (const nom of noms) {
-                if (!document.querySelector(`input[name="${nom}"]:checked`)) {
-                    alert("⚔️ Vous devez répondre à toutes les questions, noble voyageur !");
-                    return;
-                }
-            }
-            let ordre = { L: 0, N: 0, C: 0 };
-            let moral  = { B: 0, N: 0, M: 0 };
-            ordre[document.querySelector('input[name="q1"]:checked').value]++;
-            ordre[document.querySelector('input[name="q2"]:checked').value]++;
-            moral[document.querySelector('input[name="q3"]:checked').value]++;
-            moral[document.querySelector('input[name="q4"]:checked').value]++;
-
-            let axe1 = "Neutre";
-            if (ordre.L > ordre.C && ordre.L > ordre.N) axe1 = "Loyal";
-            else if (ordre.C > ordre.L && ordre.C > ordre.N) axe1 = "Chaotique";
-
-            let axe2 = "Neutre";
-            if (moral.B > moral.M && moral.B > moral.N) axe2 = "Bon";
-            else if (moral.M > moral.B && moral.M > moral.N) axe2 = "Mauvais";
-
-            const cle    = (axe1 === "Neutre" && axe2 === "Neutre") ? "Neutre Strict" : `${axe1} ${axe2}`;
-            const result = ALIGNEMENTS_DATA[cle];
-
-            // Composer description aléatoire
-            const rand = arr => arr[Math.floor(Math.random() * arr.length)];
-            const intro  = rand(DESCRIPTIONS.intros);
-            const trait  = rand(DESCRIPTIONS.traits[cle] || ["votre destin reste encore mystérieux."]);
-            const outro  = rand(DESCRIPTIONS.conclusions);
-            const descDynamique = `${intro}${trait}${outro}`;
-
-            document.getElementById('quiz-icone').innerText       = result.icone;
-            document.getElementById('quiz-nom').innerText         = cle;
-            document.getElementById('quiz-description').innerText = descDynamique;
-            document.getElementById('quiz-container').style.display = 'none';
-            document.getElementById('quiz-resultat').style.display  = 'block';
-
-            // Sauvegarder dans Firestore si connecté
-            const user = auth.currentUser;
-            if (user) {
-                try {
-                    await setDoc(doc(db, "membres", user.uid), { alignement: cle }, { merge: true });
-                    const elAlign = document.getElementById('profil-alignement');
-                    if (elAlign) elAlign.innerText = `${result.icone} ${cle}`;
-                } catch(e) {
-                    console.warn("Erreur sauvegarde alignement :", e);
-                }
-            }
-        };
     </script>
 
     <!-- ─── LECTEUR MUSICAL ───────────────────── -->
