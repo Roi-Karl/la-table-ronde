@@ -1597,181 +1597,112 @@
                style="width: 60px; accent-color: var(--or-royal); cursor: pointer; display: none;">
     </div>
 
+    <!-- ─── LECTEUR MUSICAL ───────────────────── -->
+    <div id="lecteur-musical" style="
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(0,0,0,0.88);
+        border: 1px solid var(--or-sombre);
+        padding: 8px 14px;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        min-width: 220px;
+    ">
+        <!-- Bouton précédent -->
+        <button onclick="pistePrec()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.9rem; padding:0; transition:0.2s;" title="Piste précédente">◀</button>
+
+        <!-- Bouton play/mute -->
+        <button id="btn-musique" onclick="toggleMusique()" style="
+            background:none; border:none; cursor:pointer;
+            font-size:1.2rem; line-height:1; padding:0;
+            color:var(--or-royal); transition:0.2s;
+        " title="Activer la musique royale">🔇</button>
+
+        <!-- Bouton suivant -->
+        <button onclick="pisteSuiv()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:0.9rem; padding:0; transition:0.2s;" title="Piste suivante">▶</button>
+
+        <!-- Infos piste -->
+        <div style="display:flex; flex-direction:column; line-height:1.3; flex:1; min-width:0;">
+            <span style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.1em; text-transform:uppercase;">Musique Royale</span>
+            <span id="label-musique" style="font-family:'Lora',serif; font-size:0.7rem; color:#666; font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">— En silence —</span>
+        </div>
+
+        <!-- Volume -->
+        <input type="range" id="volume-musique" min="0" max="1" step="0.05" value="0.5"
+               oninput="changerVolume(this.value)"
+               style="width:55px; accent-color:var(--or-royal); cursor:pointer; display:none;">
+    </div>
+
+    <!-- Élément audio caché -->
+    <audio id="audio-royal" loop preload="none"></audio>
+
     <script>
-    // ── MUSIQUE MÉDIÉVALE ÉPIQUE (Web Audio API) ──────────────────
-    let audioCtx = null;
+    // ── LECTEUR MP3 ───────────────────────────────────────────────
+    const PISTES = [
+        { nom: "YEAT 130BPM",  fichier: "music/YEAT 130BPM Amin.mp3"   },
+        { nom: "108BPM F#min", fichier: "music/108BPM F#min.mp3"        },
+        { nom: "140BPM Cmin",  fichier: "music/140BPM Cmin.mp3"         },
+    ];
+
+    let pisteActuelle = 0; // YEAT par défaut
     let musiqueActive = false;
-    let masterGain = null;
-    let nodesActifs = [];
-    let timeoutMusique = null;
+    const audio = document.getElementById('audio-royal');
 
-    // Gamme de Ré dorien — typique musique médiévale épique
-    const NOTE = {
-        D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.00,
-        A3: 220.00, Bb3: 233.08, C4: 261.63, D4: 293.66,
-        E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00,
-        Bb4: 466.16, C5: 523.25, D5: 587.33,
-    };
-
-    // ── Créer un oscillateur avec enveloppe ADSR ──────────────────
-    function jouerNote(freq, debut, duree, type = 'sawtooth', volume = 0.15, ctx = audioCtx) {
-        const osc  = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(masterGain);
-
-        osc.type      = type;
-        osc.frequency.setValueAtTime(freq, ctx.currentTime + debut);
-
-        // Enveloppe ADSR
-        const attack  = 0.04;
-        const release = Math.min(0.3, duree * 0.3);
-        gain.gain.setValueAtTime(0, ctx.currentTime + debut);
-        gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + debut + attack);
-        gain.gain.setValueAtTime(volume, ctx.currentTime + debut + duree - release);
-        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + debut + duree);
-
-        osc.start(ctx.currentTime + debut);
-        osc.stop(ctx.currentTime + debut + duree + 0.05);
-        nodesActifs.push(osc);
-        return osc;
+    function chargerPiste(index) {
+        pisteActuelle = (index + PISTES.length) % PISTES.length;
+        const piste   = PISTES[pisteActuelle];
+        audio.src     = piste.fichier;
+        audio.volume  = parseFloat(document.getElementById('volume-musique').value);
+        document.getElementById('label-musique').innerText = '♪ ' + piste.nom;
+        document.getElementById('label-musique').style.color = 'var(--or-sombre)';
+        if (musiqueActive) audio.play();
     }
 
-    // ── Tambour de guerre ─────────────────────────────────────────
-    function tambour(debut, volume = 0.4) {
-        const bufSize = audioCtx.sampleRate * 0.15;
-        const buffer  = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
-        const data    = buffer.getChannelData(0);
-        for (let i = 0; i < bufSize; i++) {
-            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufSize, 4);
-        }
-        const src  = audioCtx.createBufferSource();
-        const gain = audioCtx.createGain();
-        const filter = audioCtx.createBiquadFilter();
-        filter.type            = 'lowpass';
-        filter.frequency.value = 180;
-        src.buffer = buffer;
-        src.connect(filter);
-        filter.connect(gain);
-        gain.connect(masterGain);
-        gain.gain.setValueAtTime(volume, audioCtx.currentTime + debut);
-        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + debut + 0.15);
-        src.start(audioCtx.currentTime + debut);
-        nodesActifs.push(src);
-    }
-
-    // ── Mélodie principale (cor/trompette) ────────────────────────
-    function melodiePrincipale(offset) {
-        const b = 0.45; // durée d'une noire
-        const mélodie = [
-            [NOTE.D4, 0,        b*2],
-            [NOTE.F4, b*2,      b],
-            [NOTE.G4, b*3,      b],
-            [NOTE.A4, b*4,      b*2],
-            [NOTE.G4, b*6,      b],
-            [NOTE.F4, b*7,      b],
-            [NOTE.E4, b*8,      b*2],
-            [NOTE.D4, b*10,     b],
-            [NOTE.E4, b*11,     b],
-            [NOTE.F4, b*12,     b*2],
-            [NOTE.G4, b*14,     b],
-            [NOTE.A4, b*15,     b],
-            [NOTE.Bb4,b*16,     b*3],
-            [NOTE.A4, b*19,     b],
-            [NOTE.G4, b*20,     b*2],
-            [NOTE.F4, b*22,     b],
-            [NOTE.E4, b*23,     b],
-            [NOTE.D4, b*24,     b*3],
-        ];
-        mélodie.forEach(([freq, t, dur]) => jouerNote(freq, offset + t, dur, 'sawtooth', 0.18));
-    }
-
-    // ── Contre-mélodie (flûte) ────────────────────────────────────
-    function flute(offset) {
-        const b = 0.45;
-        const notes = [
-            [NOTE.A3,  0,    b*4],
-            [NOTE.G3,  b*4,  b*2],
-            [NOTE.F3,  b*6,  b*2],
-            [NOTE.G3,  b*8,  b*4],
-            [NOTE.A3,  b*12, b*2],
-            [NOTE.Bb3, b*14, b*2],
-            [NOTE.A3,  b*16, b*4],
-            [NOTE.G3,  b*20, b*2],
-            [NOTE.F3,  b*22, b*2],
-            [NOTE.D3,  b*24, b*3],
-        ];
-        notes.forEach(([freq, t, dur]) => jouerNote(freq, offset + t, dur, 'sine', 0.10));
-    }
-
-    // ── Cordes (bourdons) ─────────────────────────────────────────
-    function cordes(offset) {
-        const dureeTotal = 0.45 * 27;
-        [[NOTE.D3, 0.12], [NOTE.A3, 0.08], [NOTE.F3, 0.06]].forEach(([freq, vol]) => {
-            jouerNote(freq, offset, dureeTotal, 'triangle', vol);
-        });
-    }
-
-    // ── Rythme de tambour ─────────────────────────────────────────
-    function rythme(offset) {
-        const b = 0.45;
-        const total = 27;
-        for (let i = 0; i < total; i += 2) {
-            tambour(offset + i * b, 0.5);
-            if (i + 1 < total) tambour(offset + (i + 1) * b, 0.2);
-        }
-    }
-
-    // ── Composer et boucler ───────────────────────────────────────
-    function jouerPhrase(offset = 0) {
-        if (!musiqueActive) return;
-        const dureePhrase = 0.45 * 27 + 0.5;
-        cordes(offset);
-        melodiePrincipale(offset);
-        flute(offset);
-        rythme(offset);
-        timeoutMusique = setTimeout(() => {
-            if (musiqueActive) jouerPhrase(0);
-        }, dureePhrase * 1000);
-    }
-
-    // ── Contrôles ─────────────────────────────────────────────────
     window.toggleMusique = () => {
-        if (!audioCtx) {
-            audioCtx  = new (window.AudioContext || window.webkitAudioContext)();
-            masterGain = audioCtx.createGain();
-            masterGain.gain.value = 0.35;
-            masterGain.connect(audioCtx.destination);
-        }
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-
-        musiqueActive = !musiqueActive;
         const btn   = document.getElementById('btn-musique');
         const label = document.getElementById('label-musique');
         const vol   = document.getElementById('volume-musique');
 
-        if (musiqueActive) {
-            btn.innerText       = '🔊';
-            btn.title           = 'Couper la musique royale';
-            label.innerText     = '♪ Fanfare du Royaume';
-            label.style.color   = 'var(--or-sombre)';
-            vol.style.display   = 'block';
-            nodesActifs = [];
-            jouerPhrase(0);
+        if (!musiqueActive) {
+            musiqueActive     = true;
+            btn.innerText     = '🔊';
+            btn.title         = 'Couper la musique royale';
+            vol.style.display = 'block';
+            if (!audio.src || audio.src === window.location.href) {
+                chargerPiste(0);
+            } else {
+                audio.play();
+                label.innerText   = '♪ ' + PISTES[pisteActuelle].nom;
+                label.style.color = 'var(--or-sombre)';
+            }
         } else {
-            btn.innerText       = '🔇';
-            btn.title           = 'Activer la musique royale';
-            label.innerText     = '— En silence —';
-            label.style.color   = '#666';
-            vol.style.display   = 'none';
-            clearTimeout(timeoutMusique);
-            nodesActifs.forEach(n => { try { n.stop(); } catch(e) {} });
-            nodesActifs = [];
+            musiqueActive     = false;
+            btn.innerText     = '🔇';
+            btn.title         = 'Activer la musique royale';
+            label.innerText   = '— En silence —';
+            label.style.color = '#666';
+            vol.style.display = 'none';
+            audio.pause();
         }
     };
 
+    window.pisteSuiv = () => {
+        chargerPiste(pisteActuelle + 1);
+        if (!musiqueActive) toggleMusique();
+    };
+
+    window.pistePrec = () => {
+        chargerPiste(pisteActuelle - 1);
+        if (!musiqueActive) toggleMusique();
+    };
+
     window.changerVolume = (val) => {
-        if (masterGain) masterGain.gain.setValueAtTime(parseFloat(val), audioCtx.currentTime);
+        audio.volume = parseFloat(val);
     };
     </script>
 </body>
