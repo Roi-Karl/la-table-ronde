@@ -1758,6 +1758,102 @@
         };
 
         // ── QUIZ D'ALIGNEMENT — SAUVEGARDE FIRESTORE ─────────────
+        const DESCRIPTIONS = {
+            "intros": [
+                "Les astres révèlent votre véritable nature : ",
+                "Le vieux grimoire de la Table Ronde indique que ",
+                "Après mûre réflexion, les sages concluent que ",
+                "Votre aura ne trompe personne au château : ",
+                "Dans le reflet de la lame sacrée, on voit que ",
+                "Les vents du destin murmurent votre nom : ",
+                "Par la volonté des anciens rois, sachez que ",
+                "Votre esprit résonne avec une force antique : ",
+                "La prophétie semble s'accomplir en vous : ",
+                "Sous votre armure bat le cœur d'un être dont ",
+                "Les parchemins oubliés décrivent votre essence : ",
+                "Chaque geste que vous posez confirme que ",
+                "À la taverne comme au conseil, on raconte que ",
+                "La lumière (ou l'ombre) en vous montre que ",
+                "Devant l'autel de la vérité, il apparaît que ",
+                "Le dragon des prophéties a murmuré que ",
+                "Dans les brumes de l'oracle, il est révélé que ",
+                "Le conseil des anciens chevaliers atteste que ",
+                "Votre destinée est tracée depuis longtemps : ",
+                "Les runes gravées sur votre bouclier disent que ",
+                "Le mage de la cour royale a décrypté que ",
+                "Dans les étoiles de cette nuit sans lune, on lit que ",
+                "Votre blason parle pour vous, et il déclare que ",
+                "La sorcière des marais a prédit que ",
+                "Au fond de la coupe enchantée, on distingue que ",
+                "Les fantômes de vos ancêtres témoignent que ",
+                "Le Roi Karl lui-même a jugé que ",
+                "Par les lois sacrées de la Table Ronde, il est établi que ",
+                "Votre réputation vous précède, et elle affirme que ",
+                "Le barde aveugle qui ne ment jamais chante que "
+            ],
+            "conclusions": [
+                " Que votre quête soit glorieuse !",
+                " Le royaume attend vos exploits avec impatience.",
+                " Prenez garde à ne pas vous égarer en chemin.",
+                " Votre destin est désormais scellé dans la pierre.",
+                " Puisse votre épée rester affûtée.",
+                " Allez en paix, brave voyageur.",
+                " Le monde tremble déjà à l'évocation de votre nom.",
+                " Les bardes chanteront vos louanges... ou vos méfaits.",
+                " Que les dieux aient pitié de votre âme.",
+                " Votre place à la Table Ronde est désormais marquée.",
+                " N'oubliez jamais qui vous êtes vraiment.",
+                " L'histoire retiendra chacun de vos actes.",
+                " Que la fortune guide vos pas dans l'ombre.",
+                " Un grand pouvoir implique de grands sacrifices.",
+                " Votre légende ne fait que commencer.",
+                " Le Roi Karl vous observe avec grand intérêt.",
+                " Nul ne peut fuir sa propre nature.",
+                " Que votre lame soit aussi tranchante que votre jugement.",
+                " Les siècles se souviendront de votre passage.",
+                " Portez ce fardeau avec honneur, ou avec délice.",
+                " Même les ombres ont peur de certains destins.",
+                " Votre chemin est long mais votre volonté est de fer.",
+                " Que la Table Ronde vous soit favorable.",
+                " Le temps jugera vos actes avec impartialité.",
+                " Peu importe la route, votre nature vous rattrapera.",
+                " Gardez ce secret précieusement, ou qu'il vous hante.",
+                " Que votre règne soit long, juste, ou terriblement court.",
+                " Ainsi en a décidé le sort inexorable.",
+                " La fin de votre récit reste encore à écrire.",
+                " Méfiez-vous de vous-même, c'est le plus grand ennemi."
+            ],
+            "traits": {
+                "Loyal Bon": [
+                    "vous incarnez la vertu absolue et l'honneur du chevalier.","votre sens du devoir n'a d'égal que votre bonté infinie.","vous êtes le rempart inflexible contre les ténèbres.","votre parole est un serment que rien ne saurait briser.","vous servez la justice avec une rigueur exemplaire.","votre vie est un sacrifice constant pour le bien commun.","vous protégez les faibles en suivant un code sacré.","l'ordre et la morale sont les deux piliers de votre âme.","vous êtes l'exemple que tous les écuyers devraient suivre.","votre noblesse d'esprit illumine les temps les plus sombres.","pour vous, une loi juste est la fondation de toute paix.","vous ne reculez jamais devant une injustice flagrante.","la loyauté envers votre suzerain est votre plus grande fierté.","votre compassion est guidée par une discipline de fer.","vous êtes la main droite de la justice en ce bas monde.","votre courage est aussi célèbre que votre intégrité.","vous refusez de plier même face aux plus grands rois corrompus.","votre honneur vaut plus que tout l'or du royaume.","vous défendez la veuve et l'orphelin sans jamais compter.","votre foi en les lois justes est inébranlable.","vous êtes le bouclier des innocents et le glaive des oppresseurs.","votre dévouement à la cause juste n'a pas de limites connues.","la vertu coule dans vos veines comme un sang royal.","vous portez le poids du monde avec grâce et dignité.","votre code d'honneur est plus solide que les murs de pierre.","chacun de vos actes est guidé par la lumière de la justice.","vous êtes le phare moral que suit toute votre communauté.","votre bienveillance s'étend même à vos ennemis vaincus.","vous vivez et mourrez pour un idéal plus grand que vous-même.","votre âme est pure comme l'acier fraîchement forgé."
+                ],
+                "Neutre Bon": [
+                    "vous faites le bien sans vous soucier des titres ou des lois.","votre cœur vous guide toujours vers l'action la plus humaine.","vous aidez autrui sans rien attendre, ni gloire ni couronne.","votre bienveillance ne connaît aucune frontière politique.","vous êtes une lueur d'espoir pour ceux qui souffrent.","peu importe les règles, seul le soulagement d'autrui compte.","votre morale est pure et libre de toute contrainte sociale.","vous agissez pour le mieux, avec une sagesse tranquille.","le bonheur des autres est votre seule véritable boussole.","vous êtes le guide spirituel dont le royaume a besoin.","votre bonté est naturelle, simple et sans artifice.","vous soignez les plaies du monde avec humilité.","pour vous, une vie sauvée vaut plus que mille lois écrites.","vous naviguez entre les conflits pour semer la paix.","votre âme est un refuge pour les égarés du destin.","vous ignorez les querelles de pouvoir pour aider le peuple.","votre générosité ne demande aucune réciprocité.","vous êtes l'ami impartial que tout le monde mérite d'avoir.","votre sagesse s'exprime dans la simplicité de vos actes.","vous voyez la beauté dans chaque âme, même les plus perdues.","votre compassion transcende les lois des hommes.","vous aidez par instinct, pas par obligation ni par gloire.","votre cœur ouvert est votre plus grande force et faiblesse.","vous trouvez toujours le moyen de faire le bien discrètement.","votre présence rassure et inspire sans que vous le sachiez.","vous agissez pour le bien sans attendre que les lois vous y obligent.","votre bonté est une force tranquille mais irrésistible.","vous refusez de vous endurcir même dans un monde cruel.","votre humanité demeure intacte après toutes les épreuves.","vous croyez que chaque personne mérite une seconde chance."
+                ],
+                "Chaotique Bon": [
+                    "votre cœur est pur, même si vous brisez toutes les règles.","vous êtes un rebelle luttant pour la liberté des opprimés.","la liberté est votre cri de guerre, et la bonté votre guide.","vous n'obéissez qu'à votre conscience, jamais aux tyrans.","votre esprit libre ne tolère aucune chaîne, même dorée.","vous volez aux riches pour donner aux pauvres avec joie.","votre sens de la justice est sauvage et imprévisible.","vous êtes le vent de changement qui balaie la corruption.","les lois vous importent peu tant que l'innocent est sauvé.","votre courage est aussi désordonné qu'il est héroïque.","vous agissez par instinct pour le plus grand bien de tous.","votre loyauté va aux individus, jamais aux institutions.","vous êtes l'étincelle de révolte contre l'injustice établie.","votre générosité s'exprime dans le chaos des batailles.","vous êtes un électron libre dévoué à la cause du Bien.","vous renversez les tables des puissants pour nourrir les pauvres.","votre désordre apparent cache un cœur d'une rare pureté.","vous êtes l'ami inattendu qui surgit au pire moment.","votre liberté est sacrée mais jamais au détriment des autres.","vous refusez les règles qui servent à opprimer les faibles.","votre énergie chaotique est toujours mise au service du bien.","vous êtes imprévisible mais jamais cruel envers l'innocent.","votre rébellion est une forme d'amour pour l'humanité.","vous brisez les chaînes avec la même ferveur que vous aidez.","votre désordre créatif produit plus de bien que mille lois.","vous êtes le héros malgré lui que le peuple attendait.","votre spontanéité sauve plus de vies que la planification.","vous suivez votre cœur même quand la raison dit le contraire.","votre chaos est une danse entre liberté et compassion.","vous incarnez la révolte joyeuse contre toute oppression."
+                ],
+                "Loyal Neutre": [
+                    "votre dévotion à la loi dépasse toute considération morale.","vous êtes le juge impartial qui ne connaît pas la pitié.","pour vous, l'ordre est la seule barrière contre le chaos.","votre vie est régie par un protocole immuable et strict.","vous appliquez le règlement sans jamais faillir ni douter.","la structure de la société est votre unique préoccupation.","vous êtes le gardien des traditions, quoi qu'il en coûte.","votre loyauté va au système, pas à ceux qui le dirigent.","le monde doit être rangé, classé et régi par la logique.","vous n'écoutez ni votre cœur ni votre haine, seule la Loi.","votre neutralité est une forteresse de discipline.","vous êtes le rouage parfait d'une machine administrative.","le châtiment doit tomber si la règle a été enfreinte.","votre sens de l'organisation est votre trait le plus saillant.","vous servez l'État avec une froideur mathématique.","vous ne jugez pas le contenu des lois, seulement leur respect.","votre impartialité est totale et parfois déconcertante.","vous suivez la procédure même quand elle semble absurde.","votre fiabilité est légendaire dans tous les cercles officiels.","vous êtes le soldat parfait qui ne questionne pas ses ordres.","la règle est votre dieu et l'ordre votre temple.","vous traitez ami et ennemi avec la même froide égalité.","votre respect des hiérarchies est absolu et sans faille.","vous n'agissez que dans le cadre strict de vos attributions.","votre constance dans l'application des lois force le respect.","vous êtes l'arbitre incontestable de tout conflit juridique.","la jurisprudence est votre livre sacré quotidien.","vous maintenez l'ordre avec une efficacité redoutable.","votre logique froide écarte toute considération émotionnelle.","vous êtes la colonne vertébrale rigide d'une société ordonnée."
+                ],
+                "Neutre Strict": [
+                    "vous maintenez l'équilibre fragile entre toutes les forces.","votre esprit est comme l'eau calme, sans aucune inclinaison.","vous observez le monde sans chercher à le transformer.","le cycle naturel de la vie est votre seule véritable loi.","vous ne prenez parti que pour préserver l'harmonie globale.","votre sagesse réside dans votre détachement des passions.","pour vous, le Bien et le Mal ne sont que deux faces d'une pièce.","vous avancez sur le fil du rasoir entre l'ordre et le chaos.","votre route est celle du milieu, loin des extrêmes bruyants.","vous comprenez que chaque force doit avoir son contraire.","votre silence en dit long sur votre compréhension du monde.","vous êtes le pivot central autour duquel tout gravite.","ni héros ni vilain, vous êtes simplement un témoin du temps.","votre neutralité est le bouclier qui protège votre esprit.","vous vivez en harmonie avec les lois secrètes de l'univers.","vous refusez d'être instrumentalisé par quelque camp que ce soit.","votre équilibre intérieur rayonne sur tout ce qui vous entoure.","vous comprenez que toute victoire cache une future défaite.","votre détachement n'est pas de l'indifférence mais de la sagesse.","vous voyez les deux faces de chaque situation avec clarté.","votre neutralité est une position philosophique profonde.","vous transcendez les conflits par votre vision panoramique.","votre sérénité face au chaos est une forme de puissance.","vous comprenez que ni le bien ni le mal ne sont absolus.","votre équanimité est votre force la plus redoutable.","vous ne choisissez jamais un camp sans considérer l'autre.","votre sagesse tient dans le refus des certitudes absolues.","vous êtes le médiateur naturel entre toutes les extrémités.","votre âme est un miroir parfait de l'équilibre universel.","vous habitez le centre calme de l'œil de la tempête."
+                ],
+                "Chaotique Neutre": [
+                    "vous êtes un esprit libre ne suivant que ses propres envies.","votre imprévisibilité est votre plus grande force de caractère.","vous vivez l'instant présent sans vous soucier des lendemains.","les règles des hommes n'ont aucune prise sur votre volonté.","votre liberté individuelle est le trésor que vous chérissez le plus.","vous êtes comme la tempête : sauvage, changeante et indomptable.","pour vous, la vie est un jeu dont vous fixez vos propres règles.","vous changez de cap selon les caprices du vent et de l'envie.","votre loyauté est une denrée rare et très versatile.","vous refusez toute étiquette et toute attente de la société.","votre parcours est un labyrinthe que vous seul comprenez.","vous agissez par pure curiosité, sans plan ni méthode.","votre indépendance est totale et parfois même effrayante.","vous êtes un voyageur sans attaches et sans regrets.","le chaos est le terrain de jeu où vous vous sentez le mieux.","vous suivez votre instinct avec une confiance absolue.","votre liberté est sacrée au point de repousser tout engagement.","vous vivez d'imprévus et périssez d'ennui dans la routine.","votre existence est une série d'aventures sans fil directeur.","vous êtes insaisissable comme le vent entre les doigts.","votre spontanéité déroute alliés et ennemis à parts égales.","vous refusez catégoriquement toute définition de vous-même.","votre liberté est votre seule véritable religion.","vous changez d'avis avec la même facilité que de chemise.","votre chaos personnel est une forme d'art incompris.","vous êtes le joueur imprévisible dans toute partie d'échecs.","votre absence de plan est en soi une stratégie redoutable.","vous vivez intensément chaque moment sans vous attarder.","votre nature rebelle transcende tout alignement fixe.","vous êtes la variable folle dans toute équation humaine."
+                ],
+                "Loyal Mauvais": [
+                    "vous utilisez les lois comme des armes pour votre propre gain.","votre tyrannie est masquée par un vernis de légalité.","vous croyez en un ordre où vous seriez le seul maître.","votre cruauté est méthodique, froide et calculée.","vous ne rompez jamais un contrat, mais vous en abusez.","le pouvoir est une structure que vous gravissez sans pitié.","votre sens de la hiérarchie n'a d'égal que votre ambition.","vous manipulez les règles pour écraser toute opposition.","votre honneur est une façade servant vos sombres desseins.","vous êtes le bureaucrate impitoyable d'un empire corrompu.","la peur est le ciment avec lequel vous bâtissez votre ordre.","vous servez le mal avec une discipline militaire terrifiante.","chaque punition que vous infligez est justifiée par un décret.","votre autorité est absolue et ne tolère aucun écart.","vous êtes l'architecte d'un système d'oppression parfait.","vous respectez les lois que vous avez vous-même écrites.","votre ordre personnel est le seul que vous reconnaissez.","vous écrasez vos rivaux en restant dans les limites légales.","votre discipline de fer dissimule une âme sans merci.","vous utilisez la justice comme instrument de vengeance.","votre empire repose sur la terreur organisée et le protocole.","vous excellez à trouver des justifications légales à vos crimes.","votre loyauté est exclusive et terrifiante dans ses exigences.","vous construisez votre pouvoir sur des fondations de peur.","votre code personnel ne tolère pas la trahison mais encourage la cruauté.","vous êtes le tyran éclairé que personne n'ose défier ouvertement.","votre respect des formes cache un mépris total pour les individus.","vous transformez chaque loi en outil de domination personnelle.","votre ordre est impeccable, votre morale inexistante.","vous êtes la preuve que la légalité et la moralité sont distinctes."
+                ],
+                "Neutre Mauvais": [
+                    "votre égoïsme pur vous pousse à toutes les trahisons.","vous ne cherchez que votre profit, sans aucune morale.","vous trahissez vos alliés dès que le vent tourne en votre faveur.","votre manque de remords est le trait le plus sombre de votre âme.","vous êtes un prédateur silencieux dans la jungle du royaume.","le mal que vous faites n'est qu'un moyen pour arriver à vos fins.","vous ne servez que vos propres intérêts, sans aucune haine.","votre ambition dévorante ne laisse aucune place à la pitié.","vous êtes prêt à tout pour obtenir ce que vous désirez.","votre cœur est de pierre face à la souffrance d'autrui.","vous utilisez les gens comme des outils jetables.","votre neutralité cache une malveillance opportuniste.","vous glissez entre les ombres pour dérober ce qui vous manque.","votre seul credo est votre propre survie et votre confort.","vous ne connaissez ni la loyauté ni le pardon.","vous changez de maître comme d'autres changent de manteau.","votre indifférence à la souffrance est votre arme secrète.","vous vendrez n'importe qui pour le bon prix.","votre pragmatisme malveillant vous rend dangereux et versatile.","vous n'avez pas d'ennemis permanents, seulement des obstacles.","votre malice est froide et calculée, sans passion ni haine.","vous survivez grâce à la trahison élevée au rang d'art.","votre manque de principes est votre plus grande liberté.","vous exploitez les bonnes intentions des autres sans remords.","votre neutralité morale vous permet de vous adapter à tout.","vous ne faites le mal que si c'est profitable, pas par plaisir.","votre absence d'idéologie vous rend imprévisible et redoutable.","vous êtes le mercenaire parfait sans âme ni loyauté.","votre opportunisme est une science que vous pratiquez avec art.","vous naviguez entre le bien et le mal selon vos intérêts du moment."
+                ],
+                "Chaotique Mauvais": [
+                    "vous êtes une force de destruction pure et imprévisible.","le chaos est votre allié dans votre soif de souffrance.","vous ne cherchez qu'à voir le monde brûler pour votre plaisir.","votre méchanceté est gratuite, sauvage et sans aucune limite.","vous êtes la bête tapie dans l'ombre de chaque ruelle.","aucune loi et aucune morale ne peuvent contenir votre rage.","votre passage n'est marqué que par les ruines et les pleurs.","vous agissez selon vos pulsions les plus sombres et violentes.","vous êtes un monstre sous forme humaine, avide de tourments.","votre esprit est un vortex de folie et de cruauté.","vous ne respectez rien, pas même vos propres paroles.","votre haine du monde est votre seul moteur quotidien.","vous êtes le cauchemar qui hante les nuits des justes.","votre présence seule suffit à corrompre l'air ambiant.","vous êtes l'incarnation du désastre et de la désolation.","votre destruction est artistique dans sa totale absence de sens.","vous brisez les choses précieuses par pur plaisir nihiliste.","votre violence n'a pas de cible précise, tout est sa victime.","vous êtes le chaos incarné qui dévore même ses propres alliés.","votre cruauté n'obéit à aucune logique sinon celle du plaisir.","vous consumez tout sur votre passage comme un feu incontrôlable.","votre folie est le miroir brisé d'un monde que vous haïssez.","vous ne connaissez ni pitié ni limite ni remords d'aucune sorte.","votre rage aveugle est plus terrifiante que toute stratégie.","vous êtes la tempête que même les dieux redoutent d'affronter.","votre existence est une menace constante pour toute civilisation.","vous détruisez ce que vous ne pouvez pas posséder ni contrôler.","votre mal est absolu, sans nuance, sans raison et sans fin.","vous êtes le prédateur ultime dans un monde de proies.","votre chaos dévastateur fait pâlir même les plus sombres légendes."
+                ]
+            }
+        };
+
         window.calculerAlignement = async () => {
             const noms = ['q1','q2','q3','q4'];
             for (const nom of noms) {
@@ -1784,9 +1880,16 @@
             const cle    = (axe1 === "Neutre" && axe2 === "Neutre") ? "Neutre Strict" : `${axe1} ${axe2}`;
             const result = ALIGNEMENTS_DATA[cle];
 
+            // Composer description aléatoire
+            const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+            const intro  = rand(DESCRIPTIONS.intros);
+            const trait  = rand(DESCRIPTIONS.traits[cle] || ["votre destin reste encore mystérieux."]);
+            const outro  = rand(DESCRIPTIONS.conclusions);
+            const descDynamique = `${intro}${trait}${outro}`;
+
             document.getElementById('quiz-icone').innerText       = result.icone;
             document.getElementById('quiz-nom').innerText         = cle;
-            document.getElementById('quiz-description').innerText = result.desc;
+            document.getElementById('quiz-description').innerText = descDynamique;
             document.getElementById('quiz-container').style.display = 'none';
             document.getElementById('quiz-resultat').style.display  = 'block';
 
