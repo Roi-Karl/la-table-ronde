@@ -1692,7 +1692,7 @@
                     <div style="text-align: left; font-size: 0.85rem; line-height: 1.8; padding-left: 10px;">
                         <p>🛡️ <strong>Progression :</strong> Chaque lever de soleil vous rapproche du rang supérieur.</p>
                         <p>📈 <strong>Niveaux :</strong> Votre niveau augmente tous les 1.5 jours d'allégeance.</p>
-                        <p>⭐ <strong>Expérience (XP) :</strong> +12 XP par jour au donjon, +bonus unique du quiz d'alignement.</p>
+                        <p>⭐ <strong>Expérience (XP) :</strong> +12 XP par jour au donjon · +50 XP bonus à la complétion du quiz d'alignement (+ bonus selon réponses) · +100 XP pour abonnement à la newsletter.</p>
                         <p>📜 <strong>Noblesse :</strong> 10 grades, du Serf à la Main du Roi (365 jours).</p>
                     </div>
                     <div style="margin-top: 15px; padding: 12px; background: rgba(139,0,0,0.05); border-left: 3px solid var(--rouge-blason); font-size: 0.8rem; text-align: left;">
@@ -2231,6 +2231,19 @@
             btn.disabled   = true;
             btn.innerText  = "⏳ Envoi au royaume...";
 
+            // ── XP Newsletter : 100 XP si abonné, 0 si désabonné ──
+            const estAbonne = document.getElementById('notif-videos')?.checked   ||
+                              document.getElementById('notif-exclusif')?.checked ||
+                              document.getElementById('notif-annonces')?.checked || false;
+
+            // Lire l'état précédent depuis Firestore pour détecter le changement
+            let xpNewsletterActuel = 0;
+            try {
+                const snap = await getDoc(doc(db, "membres", user.uid));
+                if (snap.exists()) xpNewsletterActuel = snap.data().xp_newsletter || 0;
+            } catch(e) {}
+            const xpNewsletterNouv = estAbonne ? 100 : 0;
+
             const infos = {
                 pseudo:         document.getElementById('profil-pseudo')?.value        || "",
                 royaume:        document.getElementById('profil-royaume')?.value       || "",
@@ -2244,6 +2257,7 @@
                     exclusif:  document.getElementById('notif-exclusif')?.checked  || false,
                     annonces:  document.getElementById('notif-annonces')?.checked  || false,
                 },
+                xp_newsletter: xpNewsletterNouv,
                 email:        user.email,
                 mis_a_jour:   serverTimestamp()
             };
@@ -2253,6 +2267,19 @@
                 btn.innerText          = "✨ Sceau Apposé !";
                 btn.style.borderColor  = "green";
                 btn.style.color        = "green";
+
+                // Mettre à jour l'affichage XP si la newsletter a changé
+                if (xpNewsletterNouv !== xpNewsletterActuel) {
+                    const elXP = document.getElementById('profil-puissance');
+                    if (elXP) {
+                        const diff = xpNewsletterNouv - xpNewsletterActuel;
+                        elXP.innerText = parseInt(elXP.innerText) + diff;
+                        const msg = diff > 0
+                            ? `📜 +${diff} XP pour votre allégeance à la newsletter !`
+                            : `📜 -${Math.abs(diff)} XP — allégeance à la newsletter retirée.`;
+                        afficherNotifXP(msg);
+                    }
+                }
             } catch (e) {
                 console.error("Erreur Firestore :", e);
                 btn.innerText         = "❌ Échec de l'envoi";
@@ -2328,7 +2355,8 @@
 
                 const niveau       = Math.floor(joursAncien / 1.5) + 1;
                 const xpQuiz       = profilData.xp_quiz || 0;
-                const puissance    = 10 + (joursAncien * 12) + xpQuiz;
+                const xpNewsletter = profilData.xp_newsletter || 0;
+                const puissance    = 10 + (joursAncien * 12) + xpQuiz + xpNewsletter;
                 // Exposer pour le modal
                 window._xpQuizActuel = xpQuiz;
                 if (profilData.quiz_xp_attribue) {
@@ -2928,18 +2956,19 @@
             : '';
 
         // ── Calculer le bonus XP du quiz (une seule fois à vie) ──
-        // +5 XP par réponse Loyale, +10 XP par réponse Bonne
+        // +5 XP par réponse Loyale, +10 XP par réponse Bonne, +50 XP pour complétion
         const dejaRecompense = window._firebaseAuth.currentUser._xpQuizDejaAttribue || false;
         let xpGagne = 0;
         let msgXP = '';
         if (!dejaRecompense) {
+            xpGagne += 50; // bonus de complétion unique
             qs.forEach((q, i) => {
                 const val = document.querySelector(`input[name="mq${i}"]:checked`).value;
                 if (val === 'L') xpGagne += 5;
                 if (val === 'B') xpGagne += 10;
             });
             window._firebaseAuth.currentUser._xpQuizDejaAttribue = true;
-            if (xpGagne > 0) msgXP = `⭐ +${xpGagne} XP bonus accordés pour ce quiz !`;
+            msgXP = `⭐ +${xpGagne} XP accordés (50 complétion + bonus alignement) !`;
         }
 
         // Afficher résultat dans le modal
@@ -3087,7 +3116,31 @@
         wrapper.appendChild(iframe);
     }
 
-    // ── COUR DU ROI — LEADERBOARD ─────────────────────────
+    // ── NOTIFICATION XP ────────────────────────────────────
+    function afficherNotifXP(msg) {
+        let notif = document.getElementById('notif-xp-toast');
+        if (!notif) {
+            notif = document.createElement('div');
+            notif.id = 'notif-xp-toast';
+            notif.style.cssText = `
+                position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+                background:linear-gradient(135deg,#1a0e02,#2a1a04);
+                border:1px solid var(--or-royal); color:var(--or-royal);
+                font-family:'Cinzel',serif; font-size:0.78rem; letter-spacing:0.08em;
+                padding:10px 22px; border-radius:4px; z-index:99999;
+                box-shadow:0 4px 20px rgba(0,0,0,0.6);
+                transition:opacity 0.5s; pointer-events:none;
+            `;
+            document.body.appendChild(notif);
+        }
+        notif.textContent = msg;
+        notif.style.opacity = '1';
+        clearTimeout(notif._timeout);
+        notif._timeout = setTimeout(() => notif.style.opacity = '0', 3500);
+    }
+    window.afficherNotifXP = afficherNotifXP;
+
+    
     let _courDonneesGrades   = null;
     let _courDonneesInscrits = null;
 
@@ -3114,7 +3167,7 @@
     }
 
     function calcXPTotal(data) {
-        return 10 + (calcJours(data) * 12) + (data.xp_quiz || 0);
+        return 10 + (calcJours(data) * 12) + (data.xp_quiz || 0) + (data.xp_newsletter || 0);
     }
 
     function getRangFromJours(jours) {
