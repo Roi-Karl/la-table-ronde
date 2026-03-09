@@ -2106,6 +2106,36 @@
             { seuil: 365, nom: "Main du Roi Karl",     icone: "👑", coul: "#d4af37" }
         ];
 
+        // ── NIVEAUX (basés sur XP total) ─────────
+        const NIVEAUX = [
+            { niveau: 1,  xpMin: 0,       maitrise: 2 },
+            { niveau: 2,  xpMin: 300,      maitrise: 2 },
+            { niveau: 3,  xpMin: 900,      maitrise: 2 },
+            { niveau: 4,  xpMin: 2700,     maitrise: 2 },
+            { niveau: 5,  xpMin: 6500,     maitrise: 3 },
+            { niveau: 6,  xpMin: 14000,    maitrise: 3 },
+            { niveau: 7,  xpMin: 23000,    maitrise: 3 },
+            { niveau: 8,  xpMin: 34000,    maitrise: 3 },
+            { niveau: 9,  xpMin: 48000,    maitrise: 4 },
+            { niveau: 10, xpMin: 64000,    maitrise: 4 },
+            { niveau: 11, xpMin: 85000,    maitrise: 4 },
+            { niveau: 12, xpMin: 100000,   maitrise: 4 },
+            { niveau: 13, xpMin: 120000,   maitrise: 5 },
+            { niveau: 14, xpMin: 140000,   maitrise: 5 },
+            { niveau: 15, xpMin: 165000,   maitrise: 5 },
+            { niveau: 16, xpMin: 195000,   maitrise: 5 },
+            { niveau: 17, xpMin: 225000,   maitrise: 6 },
+            { niveau: 18, xpMin: 265000,   maitrise: 6 },
+            { niveau: 19, xpMin: 305000,   maitrise: 6 },
+            { niveau: 20, xpMin: 355000,   maitrise: 6 },
+        ];
+
+        function getNiveauFromXP(xp) {
+            let actuel = NIVEAUX[0];
+            for (const n of NIVEAUX) { if (xp >= n.xpMin) actuel = n; else break; }
+            return actuel;
+        }
+
         // ── ALIGNEMENTS ──────────────────────────
         const ALIGNEMENTS_DATA = {
             "Loyal Bon":        { icone: "😇", desc: "Vous êtes un paladin dans l'âme. Vous défendez la loi et protégez les innocents avec ferveur. Le Code de l'Honneur est votre bouclier." },
@@ -2353,10 +2383,13 @@
                 const joursAncien   = Math.floor((aujourd_hui - dateCreation) / (1000 * 60 * 60 * 24));
                 if (document.getElementById('profil-anciennete')) document.getElementById('profil-anciennete').innerText = joursAncien + (joursAncien > 1 ? " jours" : " jour");
 
-                const niveau       = Math.floor(joursAncien / 1.5) + 1;
                 const xpQuiz       = profilData.xp_quiz || 0;
                 const xpNewsletter = profilData.xp_newsletter || 0;
                 const puissance    = 10 + (joursAncien * 12) + xpQuiz + xpNewsletter;
+
+                const niveauData   = getNiveauFromXP(puissance);
+                const niveau       = niveauData.niveau;
+                const maitrise     = niveauData.maitrise;
                 // Exposer pour le modal
                 window._xpQuizActuel = xpQuiz;
                 if (profilData.quiz_xp_attribue) {
@@ -2475,11 +2508,13 @@
         window._firebaseQuery     = query;
         window._firebaseOrderBy   = orderBy;
         window._firebaseLimit     = limit;
+        window.GRADES_DATA        = GRADES;
+        window.NIVEAUX_DATA       = NIVEAUX;
+        window.getNiveauFromXP    = getNiveauFromXP;
         window._alignementsIcones = Object.fromEntries(
             Object.entries(ALIGNEMENTS_DATA).map(([k, v]) => [k, v.icone])
         );
         window._descriptions = () => DESCRIPTIONS;
-        window.GRADES_DATA   = GRADES;
 
         const DESCRIPTIONS = {
             "intros": [
@@ -3317,7 +3352,7 @@
             ? new Date(data.cree_le.seconds * 1000).toLocaleDateString('fr-CA', {day:'2-digit', month:'long', year:'numeric'})
             : '—';
 
-        const niveau = Math.floor(jours / 1.5) + 1;
+        const niveau = (window.getNiveauFromXP ? window.getNiveauFromXP(xp).niveau : 1);
 
         // Lignes de détails
         const lignes = [
