@@ -865,46 +865,73 @@
             <h2>📜 Votre Titre de Chevalier</h2>
 
             <!-- Fiche de personnage -->
-            <div style="margin-top:1.5rem; margin-bottom:1.5rem; text-align:left; padding:16px 20px; border:2px solid var(--or-sombre); background:rgba(212,175,55,0.04);">
-                <p style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin:0 0 12px 0;">✦ Fiche de Personnage ✦</p>
+            <div style="margin-top:1.5rem; margin-bottom:1.5rem; text-align:left; padding:20px 24px; border:2px solid var(--or-sombre); background:rgba(212,175,55,0.04);">
+                <p style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.25em; text-transform:uppercase; margin:0 0 16px 0; text-align:center;">✦ Fiche de Personnage ✦</p>
 
-                <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; flex-direction:column; gap:12px;">
 
+                    <!-- Rang -->
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.8rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em; min-width:110px;">Rang :</span>
+                        <span style="font-family:'Cinzel',serif; font-size:0.78rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em; min-width:115px;">Rang :</span>
                         <span id="rang-chevalier" style="font-family:'Cinzel',serif; font-size:1rem; color:var(--rouge-blason); font-weight:bold;">Chargement...</span>
-                        <button onclick="ouvrirCodeChevalerie()" title="Le Code de la Chevalerie" style="
-                            background: none;
-                            border: 1px solid var(--or-sombre);
-                            color: var(--or-royal);
-                            font-size: 1.1rem;
-                            cursor: pointer;
-                            padding: 2px 7px;
-                            border-radius: 4px;
-                            transition: 0.2s;
-                            line-height: 1;
-                        " onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">📖</button>
+                        <button onclick="ouvrirCodeChevalerie()" title="Le Code de la Chevalerie" style="background:none; border:1px solid var(--or-sombre); color:var(--or-royal); font-size:1rem; cursor:pointer; padding:2px 7px; border-radius:4px; transition:0.2s; line-height:1;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">📖</button>
                     </div>
 
+                    <!-- Alignement -->
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.8rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em; min-width:110px;">Alignement :</span>
+                        <span style="font-family:'Cinzel',serif; font-size:0.78rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em; min-width:115px;">Alignement :</span>
                         <span id="profil-alignement" style="font-family:'Cinzel',serif; font-size:1rem; color:var(--rouge-blason); font-weight:bold;">—</span>
-                        <button onclick="ouvrirQuizModal()" title="Déterminer votre alignement" style="
-                            background: none;
-                            border: 1px solid var(--or-sombre);
-                            color: var(--or-royal);
-                            font-size: 1.1rem;
-                            cursor: pointer;
-                            padding: 2px 7px;
-                            border-radius: 4px;
-                            transition: 0.2s;
-                            line-height: 1;
-                        " onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">⏳</button>
+                        <button onclick="ouvrirQuizModal()" title="Déterminer votre alignement" style="background:none; border:1px solid var(--or-sombre); color:var(--or-royal); font-size:1rem; cursor:pointer; padding:2px 7px; border-radius:4px; transition:0.2s; line-height:1;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">⏳</button>
                     </div>
 
+                    <!-- Histoire -->
                     <div id="bloc-histoire" style="display:none; flex-direction:column; gap:4px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.8rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em;">Histoire :</span>
+                        <span style="font-family:'Cinzel',serif; font-size:0.78rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em;">Histoire :</span>
                         <span id="profil-histoire" style="font-family:'Lora',serif; font-size:0.82rem; color:#4a3010; font-style:italic; line-height:1.6;">—</span>
+                    </div>
+
+                    <!-- Séparateur Caractéristiques -->
+                    <div style="border-top:1px solid rgba(212,175,55,0.4); margin-top:6px; padding-top:14px;">
+                        <p style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin:0 0 12px 0; text-align:center;">⚔ Caractéristiques ⚔</p>
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                                <div style="font-size:1.3rem; margin-bottom:4px;">💪</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Force</div>
+                                <div id="carac-force" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                            </div>
+
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                                <div style="font-size:1.3rem; margin-bottom:4px;">🏹</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Dextérité</div>
+                                <div id="carac-dexterite" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                            </div>
+
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                                <div style="font-size:1.3rem; margin-bottom:4px;">🛡️</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Constitution</div>
+                                <div id="carac-constitution" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                            </div>
+
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                                <div style="font-size:1.3rem; margin-bottom:4px;">📚</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Intelligence</div>
+                                <div id="carac-intelligence" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                            </div>
+
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                                <div style="font-size:1.3rem; margin-bottom:4px;">🔮</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Sagesse</div>
+                                <div id="carac-sagesse" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                            </div>
+
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                                <div style="font-size:1.3rem; margin-bottom:4px;">✨</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Charisme</div>
+                                <div id="carac-charisme" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                            </div>
+
+                        </div>
                     </div>
 
                 </div>
