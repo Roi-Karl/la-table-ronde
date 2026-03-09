@@ -2120,7 +2120,7 @@
                 <div id="modal-icone" style="font-size:3rem; margin-bottom:10px;"></div>
                 <h3 id="modal-nom" style="font-family:'Cinzel',serif; color:var(--rouge-blason); font-size:1.5rem; margin-bottom:10px;"></h3>
                 <p id="modal-desc" style="font-family:'Lora',serif; font-style:italic; color:#3a2a0a; font-size:0.88rem; max-width:480px; margin:0 auto 20px; line-height:1.7;"></p>
-                <button onclick="ouvrirQuizModal()" style="
+                <button onclick="ouvrirQuizModal(true)" style="
                     background: none; border: 1px solid var(--or-sombre);
                     color: #5a3e1b; font-family:'Cinzel',serif; font-size:0.75rem;
                     letter-spacing:0.1em; padding:8px 20px; cursor:pointer; transition:0.2s;
@@ -2132,12 +2132,53 @@
     </div>
 
     <script>
-    function ouvrirQuizModal() {
+    function ouvrirQuizModal(forcer) {
         const overlay = document.getElementById('quiz-modal-overlay');
         overlay.style.display = 'flex';
         document.body.style.overflow = 'hidden';
 
-        // Réinitialiser
+        // Si un alignement existe déjà et qu'on ne force pas le requiz → afficher le résultat
+        const alignementExistant = document.getElementById('profil-alignement')?.innerText?.trim();
+        const aUnAlignement = alignementExistant && alignementExistant !== '—' && alignementExistant !== '';
+
+        if (aUnAlignement && !forcer) {
+            document.getElementById('modal-quiz-form').style.display = 'none';
+            document.getElementById('modal-quiz-resultat').style.display = 'block';
+
+            // Récupérer icône + nom depuis le span alignement
+            const texte = alignementExistant;
+            document.getElementById('modal-nom').textContent = texte;
+
+            // Icône depuis ALIGNEMENTS_DATA si dispo
+            if (window.ALIGNEMENTS_DATA && window.ALIGNEMENTS_DATA[texte.replace(/^.+\s/, '')]) {
+                // Essayer de trouver la clé exacte
+            }
+            // Chercher dans window._alignementsIcones
+            let icone = '';
+            if (window._alignementsIcones) {
+                // Chercher une clé dont le texte contient la valeur affichée
+                for (const [cle, val] of Object.entries(window._alignementsIcones)) {
+                    if (alignementExistant.includes(cle) || alignementExistant.includes(val)) {
+                        icone = val; break;
+                    }
+                    // Si l'icône est déjà dans le span
+                    if (alignementExistant.startsWith(val)) { icone = val; break; }
+                }
+                if (!icone) {
+                    // Extraire le premier caractère emoji du texte
+                    const match = alignementExistant.match(/^\S+/);
+                    if (match) icone = match[0];
+                }
+            }
+            document.getElementById('modal-icone').textContent = icone || '🔮';
+
+            // Histoire depuis profil-histoire
+            const histoire = document.getElementById('profil-histoire')?.innerText?.trim();
+            document.getElementById('modal-desc').textContent = (histoire && histoire !== '—') ? histoire : '';
+            return;
+        }
+
+        // Sinon : afficher le quiz normalement
         document.getElementById('modal-quiz-form').style.display = 'block';
         document.getElementById('modal-quiz-resultat').style.display = 'none';
 
