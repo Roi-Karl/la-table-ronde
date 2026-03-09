@@ -2346,8 +2346,8 @@
         0%   { transform: rotateX(0deg)   rotateY(0deg); }
         20%  { transform: rotateX(200deg) rotateY(100deg); }
         50%  { transform: rotateX(400deg) rotateY(220deg); }
-        80%  { transform: rotateX(500deg) rotateY(320deg); }
-        100% { transform: rotateX(540deg) rotateY(360deg); }
+        80%  { transform: rotateX(560deg) rotateY(320deg); }
+        100% { transform: rotateX(720deg) rotateY(360deg); }
     }
     .de-face {
         position: absolute;
@@ -2465,34 +2465,46 @@
         btnLancer.disabled = true;
         btnGarder.style.display = 'none';
 
-        // Lancer les 6 dés
+        // Tirage des 6 dés AVANT l'animation
         const resultats = Array.from({length:6}, () => Math.floor(Math.random() * 6) + 1);
 
-        // Créer les cubes et lancer l'animation
+        // Créer les cubes avec les valeurs finales
         const zone = document.getElementById('des-zone');
         zone.innerHTML = '';
+        zone.style.cssText = 'display:flex;justify-content:center;gap:8px;margin-bottom:1.2rem;min-height:64px;align-items:center;flex-wrap:wrap;';
+
         const cubes = resultats.map(v => {
             const { wrapper, cube } = creerDeCube(v);
             zone.appendChild(wrapper);
             return { wrapper, cube, v };
         });
 
-        // Déclencher l'animation avec léger délai par dé
+        // Déclencher l'animation avec délai décalé
         cubes.forEach(({ cube }, i) => {
-            setTimeout(() => cube.classList.add('roule'), i * 80);
+            setTimeout(() => cube.classList.add('roule'), i * 70);
         });
 
-        // Après animation : colorier gardés/rejetés + afficher résultat
+        // Après animation : retirer la classe roule (revient à 0°), colorier, afficher résultat
         setTimeout(() => {
-            const sorted = [...resultats].map((v,i) => ({v,i})).sort((a,b) => b.v - a.v);
-            const gardesIdx = new Set(sorted.slice(0,3).map(x => x.i));
-            const tries   = sorted.slice(0,3).map(x => x.v);
-            const rejetes = sorted.slice(3).map(x => x.v);
-            const total   = tries.reduce((s,v) => s + v, 0);
-
-            cubes.forEach(({ wrapper }, i) => {
-                wrapper.classList.add(gardesIdx.has(i) ? 'garde' : 'rejete');
+            // Retirer l'animation — le cube revient à sa position initiale (face-avant visible)
+            cubes.forEach(({ cube }) => {
+                cube.classList.remove('roule');
+                // Forcer le retour à 0° sans transition
+                cube.style.transform = 'rotateX(0deg) rotateY(0deg)';
             });
+
+            const sorted   = [...resultats].map((v,i) => ({v,i})).sort((a,b) => b.v - a.v);
+            const gardesIdx = new Set(sorted.slice(0,3).map(x => x.i));
+            const tries    = sorted.slice(0,3).map(x => x.v);
+            const rejetes  = sorted.slice(3).map(x => x.v);
+            const total    = tries.reduce((s,v) => s + v, 0);
+
+            // Colorier après un court délai pour que le reset soit appliqué
+            setTimeout(() => {
+                cubes.forEach(({ wrapper }, i) => {
+                    wrapper.classList.add(gardesIdx.has(i) ? 'garde' : 'rejete');
+                });
+            }, 50);
 
             document.getElementById('des-detail').innerHTML = `
                 <span style="font-family:'Lora',serif;font-size:0.78rem;color:#5a3e1b;">
@@ -2504,18 +2516,16 @@
             document.getElementById('des-score').innerText = total;
             btnLancer.disabled = false;
 
-            // Mettre à jour compteur dans la fiche
             const elJets = document.getElementById('jets-restants-' + _desCarac);
             if (elJets) elJets.innerText = _desJetsLeft > 0 ? `${_desJetsLeft} jet${_desJetsLeft > 1 ? 's' : ''} restant` : 'épuisé';
 
-            // Dernier jet → sauvegarde automatique
             if (_desJetsLeft <= 0) {
                 mettreAJourBoutonsDes();
                 sauvegarderCarac(_desCarac, total, 0, true);
             } else {
                 mettreAJourBoutonsDes();
             }
-        }, 1100);
+        }, 1150);
     }
 
     async function garderScore() {
