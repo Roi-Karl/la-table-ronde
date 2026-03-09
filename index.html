@@ -1188,11 +1188,11 @@
             transform: translateY(-50%);
             z-index: 9999;
             width: 300px;
-            background: linear-gradient(145deg, #1a0e02, #2d1a04);
-            border: 1px solid rgba(212,175,55,0.5);
+            background: #f5ead8;
+            border: 1px solid var(--or-sombre);
             border-radius: 4px;
             padding: 14px 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.7), inset 0 0 20px rgba(212,175,55,0.03);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
             pointer-events: none;
         }
         .rpg-tooltip-wrap:hover .rpg-tooltip-box {
@@ -1213,7 +1213,7 @@
             gap: 10px;
             margin-bottom: 10px;
             padding-bottom: 8px;
-            border-bottom: 1px solid rgba(212,175,55,0.3);
+            border-bottom: 1px solid rgba(139,0,0,0.2);
         }
         .rpg-tt-header-icone {
             font-size: 2rem;
@@ -1223,14 +1223,14 @@
             font-family: 'Cinzel', serif;
             font-size: 0.85rem;
             font-weight: bold;
-            color: var(--or-royal);
+            color: var(--rouge-blason);
             letter-spacing: 0.08em;
         }
         .rpg-tt-header-accroche {
             font-family: 'Lora', serif;
             font-style: italic;
             font-size: 0.68rem;
-            color: #c8a96e;
+            color: #5a3e1b;
             margin-top: 2px;
         }
         .rpg-tt-section {
@@ -1247,7 +1247,7 @@
         .rpg-tt-texte {
             font-family: 'Lora', serif;
             font-size: 0.7rem;
-            color: #d4c4a0;
+            color: #3a2a0a;
             line-height: 1.5;
         }
         .rpg-tt-bonus {
@@ -1259,9 +1259,9 @@
         .rpg-tt-bonus-pill {
             font-family: 'Cinzel', serif;
             font-size: 0.6rem;
-            background: rgba(212,175,55,0.12);
-            border: 1px solid rgba(212,175,55,0.3);
-            color: var(--or-royal);
+            background: rgba(139,0,0,0.08);
+            border: 1px solid rgba(139,0,0,0.25);
+            color: var(--rouge-blason);
             padding: 2px 7px;
             border-radius: 2px;
         }
@@ -1833,24 +1833,20 @@
 
                     <!-- Race -->
                     <div class="fiche-ligne">
-                        <span class="rpg-tooltip-wrap" id="fiche-wrap-race" style="display:none; margin-right:4px;">
-                            <span id="fiche-race-icone" class="rpg-tooltip-icone" style="font-size:1.3rem; cursor:pointer;"
-                                  onclick="ouvrirModalRPG('race')"></span>
+                        <span class="fiche-label">Race :</span>
+                        <span id="fiche-race" class="fiche-valeur rpg-tooltip-wrap" style="cursor:default;">
+                            <span id="fiche-race-texte">—</span>
                             <div class="rpg-tooltip-box" id="tooltip-race-fiche"></div>
                         </span>
-                        <span class="fiche-label">Race :</span>
-                        <span id="fiche-race" class="fiche-valeur">—</span>
                     </div>
 
                     <!-- Classe -->
                     <div class="fiche-ligne">
-                        <span class="rpg-tooltip-wrap" id="fiche-wrap-classe" style="display:none; margin-right:4px;">
-                            <span id="fiche-classe-icone" class="rpg-tooltip-icone" style="font-size:1.3rem; cursor:pointer;"
-                                  onclick="ouvrirModalRPG('classe')"></span>
+                        <span class="fiche-label">Classe :</span>
+                        <span id="fiche-classe" class="fiche-valeur rpg-tooltip-wrap" style="cursor:default;">
+                            <span id="fiche-classe-texte">—</span>
                             <div class="rpg-tooltip-box" id="tooltip-classe-fiche"></div>
                         </span>
-                        <span class="fiche-label">Classe :</span>
-                        <span id="fiche-classe" class="fiche-valeur">—</span>
                     </div>
 
                     <!-- Alignement -->
@@ -2281,7 +2277,7 @@
                     Se Connecter
                 </button>
                 <p style="margin-top:12px; font-size:0.85rem;">
-                    <a href="#" onclick="basculerMode(); return false;" id="lienBascule" style="color:var(--rouge-blason); text-decoration:underline; font-weight:bold;">Pas encore membre ? S'inscrire</a>
+                    <a href="#" onclick="basculerModeAuth(); return false;" id="lienBascule" style="color:var(--rouge-blason); text-decoration:underline; font-weight:bold;">Pas encore membre ? S'inscrire</a>
                 </p>
             </div>
         </div>
@@ -2571,7 +2567,7 @@
 
         window.deconnexion = () => signOut(auth);
 
-        window.basculerMode = () => {
+        window.basculerModeAuth = () => {
             modeInscription = !modeInscription;
             document.getElementById('titreModal').innerText   = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
             document.getElementById('btnAction').innerText    = modeInscription ? "S'inscrire" : "Se Connecter";
@@ -2734,8 +2730,8 @@
                         const parseRC = val => val ? { icone: val.split('|')[1] || '', nom: val.split('|')[0] || '' } : null;
                         const raceData   = parseRC(data.race);
                         const classeData = parseRC(data.classe);
-                        const elRace   = document.getElementById('fiche-race');
-                        const elClasse = document.getElementById('fiche-classe');
+                        const elRace   = document.getElementById('fiche-race-texte');
+                        const elClasse = document.getElementById('fiche-classe-texte');
                         if (elRace)   elRace.innerHTML   = raceData   ? `${raceData.icone} ${raceData.nom}`   : '—';
                         if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${classeData.nom}` : '—';
 
@@ -3619,15 +3615,17 @@
             if (el) el.innerHTML = construireTooltipHTML(cData, 'classe');
         });
 
-        // Afficher/masquer les wraps dans la fiche
-        const wrRace   = document.getElementById('fiche-wrap-race');
-        const wrClasse = document.getElementById('fiche-wrap-classe');
-        const icRace   = document.getElementById('fiche-race-icone');
-        const icClasse = document.getElementById('fiche-classe-icone');
-        if (wrRace)   wrRace.style.display   = rData ? 'inline-flex' : 'none';
-        if (wrClasse) wrClasse.style.display  = cData ? 'inline-flex' : 'none';
-        if (icRace   && rData)   icRace.textContent   = rData.icone;
-        if (icClasse && cData)   icClasse.textContent = cData.icone;
+        // Activer/désactiver cursor + onclick sur les valeurs de la fiche
+        const elRaceFiche   = document.getElementById('fiche-race');
+        const elClasseFiche = document.getElementById('fiche-classe');
+        if (elRaceFiche) {
+            elRaceFiche.style.cursor = rData ? 'pointer' : 'default';
+            elRaceFiche.onclick = rData ? () => ouvrirModalRPG('race') : null;
+        }
+        if (elClasseFiche) {
+            elClasseFiche.style.cursor = cData ? 'pointer' : 'default';
+            elClasseFiche.onclick = cData ? () => ouvrirModalRPG('classe') : null;
+        }
     }
     window.mettreAJourTooltips = mettreAJourTooltips;
 
@@ -3652,8 +3650,8 @@
         mettreAJourTooltips(raceNom, classeNom);
 
         // Mettre à jour la fiche en temps réel
-        const elRace   = document.getElementById('fiche-race');
-        const elClasse = document.getElementById('fiche-classe');
+        const elRace   = document.getElementById('fiche-race-texte');
+        const elClasse = document.getElementById('fiche-classe-texte');
         if (elRace)   elRace.innerHTML   = raceVal   ? `${raceIcone} ${raceNom}`     : '—';
         if (elClasse) elClasse.innerHTML = classeVal ? `${classeIcone} ${classeNom}` : '—';
     }
