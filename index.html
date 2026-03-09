@@ -84,7 +84,7 @@
             flex-wrap: wrap;
         }
 
-        nav a {
+        nav a, #nav-liens a {
             color: var(--or-royal);
             text-decoration: none;
             font-family: 'Cinzel', serif;
@@ -95,8 +95,7 @@
             padding: 4px 0;
             border-bottom: 1px solid transparent;
         }
-
-        nav a:hover {
+        nav a:hover, #nav-liens a:hover {
             color: white;
             border-bottom-color: var(--or-royal);
         }
@@ -105,58 +104,73 @@
         #nav-hamburger {
             display: none;
             background: none;
-            border: none;
+            border: 1px solid var(--or-sombre);
             cursor: pointer;
-            flex-direction: column;
-            gap: 5px;
-            padding: 6px;
-            z-index: 1100;
+            padding: 5px 10px;
+            color: var(--or-royal);
+            font-size: 1.2rem;
+            line-height: 1;
+            border-radius: 3px;
+            transition: 0.2s;
         }
-        #nav-hamburger span {
-            display: block;
-            width: 24px; height: 2px;
-            background: var(--or-royal);
-            border-radius: 2px;
-            transition: 0.3s;
-        }
-        #nav-hamburger.ouvert span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        #nav-hamburger.ouvert span:nth-child(2) { opacity: 0; }
-        #nav-hamburger.ouvert span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        #nav-hamburger:hover { background: rgba(212,175,55,0.1); }
 
-        #nav-liens {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
+        /* ── Dropdown mobile ── */
+        #nav-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0; right: 0;
+            background: rgba(5,5,5,0.98);
+            border-bottom: 2px solid var(--or-royal);
+            flex-direction: column;
+            align-items: stretch;
+            z-index: 998;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            /* Animation slide down */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+            opacity: 0;
+            display: flex; /* toujours flex, contrôlé par max-height */
+        }
+        #nav-dropdown.ouvert {
+            max-height: 500px;
+            opacity: 1;
+        }
+        #nav-dropdown a {
+            color: var(--or-royal);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.82rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(212,175,55,0.12);
+            transition: background 0.2s;
+            display: block;
+        }
+        #nav-dropdown a:hover { background: rgba(212,175,55,0.08); color: white; }
+        #nav-dropdown .nav-auth-mobile {
+            padding: 14px 20px;
+            border-top: 1px solid rgba(212,175,55,0.2);
         }
 
         @media (max-width: 700px) {
             nav {
                 justify-content: space-between;
-                padding: 0.7rem 1.2rem;
+                padding: 0.6rem 1rem;
                 flex-wrap: nowrap;
+                position: sticky;
             }
-            #nav-hamburger { display: flex; }
-            #nav-liens {
-                display: none;
-                position: fixed;
-                top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(0,0,0,0.97);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 28px;
-                z-index: 999;
-            }
-            #nav-liens.ouvert { display: flex; }
-            #nav-liens a { font-size: 1.1rem; letter-spacing: 0.18em; }
-            #nav-liens #btn-nav-auth { margin: 0; }
+            #nav-titre-mobile { display: inline !important; }
+            #nav-hamburger { display: block; }
+            #nav-liens { display: none; }
             #lecteur-musical { display: none !important; }
-            header { min-height: 55vh; padding: 3rem 1rem; }
-            .parchemin-box { padding: 2rem 1.2rem; }
-            .modal-legal-inner { margin: 0; padding: 32px 20px; }
+            header { min-height: 50vh; padding: 2.5rem 1rem; }
+            .parchemin-box { padding: 1.5rem 1rem; }
+            .modal-legal-inner { margin: 0; padding: 24px 16px; }
             .grid { grid-template-columns: 1fr !important; }
+            .carac-grid { grid-template-columns: 1fr 1fr !important; }
         }
 
         /* ─── HEADER ─────────────────────────────── */
@@ -863,17 +877,32 @@
 
     <!-- ─── NAVIGATION ─────────────────────── -->
     <nav>
-        <button id="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
-            <span></span><span></span><span></span>
-        </button>
+        <!-- Titre visible sur mobile -->
+        <span style="font-family:'Cinzel',serif; font-size:0.85rem; color:var(--or-royal); letter-spacing:0.1em; display:none;" id="nav-titre-mobile">⚔ La Table Ronde</span>
+
+        <!-- Liens desktop -->
         <div id="nav-liens">
+            <a href="#accueil">Accueil</a>
+            <a href="#video">Dernière Quête</a>
+            <a href="#grimoire">Grimoire</a>
+            <a href="#echoppe">Échoppe</a>
+            <a href="#registre">Registre</a>
+            <a href="#audience">FAQ</a>
+            <span id="btn-nav-auth" style="margin-left:10px;"></span>
+        </div>
+
+        <!-- Bouton hamburger (mobile seulement) -->
+        <button id="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+
+        <!-- Dropdown mobile -->
+        <div id="nav-dropdown">
             <a href="#accueil" onclick="fermerMenu()">Accueil</a>
             <a href="#video" onclick="fermerMenu()">Dernière Quête</a>
             <a href="#grimoire" onclick="fermerMenu()">Grimoire</a>
             <a href="#echoppe" onclick="fermerMenu()">Échoppe</a>
             <a href="#registre" onclick="fermerMenu()">Registre</a>
             <a href="#audience" onclick="fermerMenu()">FAQ</a>
-            <span id="btn-nav-auth" style="margin-left: 10px;"></span>
+            <div class="nav-auth-mobile" id="btn-nav-auth-mobile"></div>
         </div>
     </nav>
 
@@ -948,7 +977,7 @@
                     <!-- Séparateur Caractéristiques -->
                     <div style="border-top:1px solid rgba(212,175,55,0.4); margin-top:6px; padding-top:14px;">
                         <p style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin:0 0 12px 0; text-align:center;">⚔ Caractéristiques ⚔</p>
-                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;" class="carac-grid">
 
                             <div style="padding:10px 8px 8px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative; display:flex; flex-direction:column; align-items:center;">
                                 <div style="width:100%; text-align:left; font-size:1.6rem; line-height:1; margin-bottom:6px;">💪</div>
@@ -1744,11 +1773,15 @@
                 }
 
                 if (btnNav) btnNav.innerHTML = `<button onclick="deconnexion()" style="background:none; border:none; color:var(--rouge-blason); font-weight:bold; font-family:'Cinzel',serif; font-size:0.8rem; cursor:pointer; letter-spacing:0.05em;">QUITTER LE DONJON</button>`;
+                const btnMobile = document.getElementById('btn-nav-auth-mobile');
+                if (btnMobile) btnMobile.innerHTML = `<button onclick="deconnexion();fermerMenu();" style="background:none; border:none; color:var(--rouge-blason); font-weight:bold; font-family:'Cinzel',serif; font-size:0.9rem; cursor:pointer; letter-spacing:0.05em; padding:0;">⚔ QUITTER LE DONJON</button>`;
 
             } else {
                 if (zonePrivée)    zonePrivée.style.display    = 'none';
                 if (sectionProfil) sectionProfil.style.display = 'none';
                 if (btnNav) btnNav.innerHTML = `<button onclick="ouvrirPorte()" style="background:var(--or-royal); color:black; padding:7px 14px; border-radius:2px; font-weight:bold; font-family:'Cinzel',serif; font-size:0.8rem; cursor:pointer; border:none; letter-spacing:0.05em;">ACCÈS MEMBRE</button>`;
+                const btnMobile = document.getElementById('btn-nav-auth-mobile');
+                if (btnMobile) btnMobile.innerHTML = `<button onclick="ouvrirPorte();fermerMenu();" style="background:var(--or-royal); color:black; padding:10px 20px; border:none; font-weight:bold; font-family:'Cinzel',serif; font-size:0.9rem; cursor:pointer; letter-spacing:0.05em; width:100%; text-align:left;">🏰 ACCÈS MEMBRE</button>`;
             }
         });
 
@@ -2627,18 +2660,25 @@
 
     <script>
     function toggleMenu() {
-        const btn = document.getElementById('nav-hamburger');
-        const liens = document.getElementById('nav-liens');
-        btn.classList.toggle('ouvert');
-        liens.classList.toggle('ouvert');
+        const btn      = document.getElementById('nav-hamburger');
+        const dropdown = document.getElementById('nav-dropdown');
+        const ouvert   = dropdown.classList.toggle('ouvert');
+        btn.innerText  = ouvert ? '✕' : '☰';
+        btn.style.borderColor = ouvert ? 'var(--rouge-blason)' : 'var(--or-sombre)';
+        btn.style.color       = ouvert ? 'var(--rouge-blason)' : 'var(--or-royal)';
     }
     function fermerMenu() {
-        document.getElementById('nav-hamburger').classList.remove('ouvert');
-        document.getElementById('nav-liens').classList.remove('ouvert');
+        const btn      = document.getElementById('nav-hamburger');
+        const dropdown = document.getElementById('nav-dropdown');
+        dropdown.classList.remove('ouvert');
+        btn.innerText       = '☰';
+        btn.style.borderColor = 'var(--or-sombre)';
+        btn.style.color       = 'var(--or-royal)';
     }
-    // Fermer le menu si clic sur overlay
-    document.getElementById('nav-liens').addEventListener('click', function(e) {
-        if (e.target === this) fermerMenu();
+    // Fermer en cliquant en dehors de la nav
+    document.addEventListener('click', function(e) {
+        const nav = document.querySelector('nav');
+        if (nav && !nav.contains(e.target)) fermerMenu();
     });
     </script>
 </body>
