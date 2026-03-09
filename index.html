@@ -932,7 +932,7 @@
                         <strong id="profil-niveau" style="font-size: 1.2rem;">1</strong>
                     </div>
                     <div style="background: rgba(0,0,0,0.05); padding: 5px 10px; border: 1px solid var(--or-sombre); min-width: 90px;">
-                        <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">PUISSANCE</span>
+                        <span style="font-size: 0.7rem; display: block; color: var(--rouge-blason);">EXPÉRIENCE (XP)</span>
                         <strong id="profil-puissance" style="font-size: 1.2rem;">10</strong>
                     </div>
                 </div>
@@ -954,11 +954,11 @@
                     <div style="text-align: left; font-size: 0.85rem; line-height: 1.8; padding-left: 10px;">
                         <p>🛡️ <strong>Progression :</strong> Chaque lever de soleil vous rapproche du rang supérieur.</p>
                         <p>📈 <strong>Niveaux :</strong> Votre niveau augmente tous les 1.5 jours d'allégeance.</p>
-                        <p>⚔️ <strong>Puissance :</strong> +12 points de force par jour passé au donjon.</p>
+                        <p>⭐ <strong>Expérience (XP) :</strong> +12 XP par jour au donjon, +bonus unique du quiz d'alignement.</p>
                         <p>📜 <strong>Noblesse :</strong> 10 grades, du Serf à la Main du Roi (365 jours).</p>
                     </div>
                     <div style="margin-top: 15px; padding: 12px; background: rgba(139,0,0,0.05); border-left: 3px solid var(--rouge-blason); font-size: 0.8rem; text-align: left;">
-                        <p><strong>Note du Sénéchal :</strong> Quitter le donjon efface vos titres à jamais des registres. Réfléchissez avant de poser les armes !</p>
+                        <p><strong>Note du Sénéchal :</strong> Le bonus XP du quiz d'alignement n'est accordé qu'une seule fois à vie. Quitter le donjon efface vos titres à jamais !</p>
                     </div>
                 </div>
 
@@ -1574,12 +1574,18 @@
                 const options     = { year: 'numeric', month: 'long', day: 'numeric' };
                 if (document.getElementById('profil-date')) document.getElementById('profil-date').innerText = dateCreation.toLocaleDateString('fr-FR', options);
 
-                const aujourdhui    = new Date();
-                const joursAncien   = Math.floor((aujourdhui - dateCreation) / (1000 * 60 * 60 * 24));
+                const aujourd_hui    = new Date();
+                const joursAncien   = Math.floor((aujourd_hui - dateCreation) / (1000 * 60 * 60 * 24));
                 if (document.getElementById('profil-anciennete')) document.getElementById('profil-anciennete').innerText = joursAncien + (joursAncien > 1 ? " jours" : " jour");
 
-                const niveau    = Math.floor(joursAncien / 1.5) + 1;
-                const puissance = 10 + (joursAncien * 12);
+                const niveau       = Math.floor(joursAncien / 1.5) + 1;
+                const xpQuiz       = profilData.xp_quiz || 0;
+                const puissance    = 10 + (joursAncien * 12) + xpQuiz;
+                // Exposer pour le modal
+                window._xpQuizActuel = xpQuiz;
+                if (profilData.quiz_xp_attribue) {
+                    window._firebaseAuth.currentUser._xpQuizDejaAttribue = true;
+                }
 
                 let rangActuel = GRADES[0];
                 let prochainRang = null;
@@ -2057,10 +2063,35 @@
             ? `${rand(DESC.intros)}${rand(DESC.traits[cle] || ["votre destin reste mystérieux."])}${rand(DESC.conclusions)}`
             : '';
 
+        // ── Calculer le bonus XP du quiz (une seule fois à vie) ──
+        // +5 XP par réponse Loyale, +10 XP par réponse Bonne
+        const dejaRecompense = window._firebaseAuth.currentUser._xpQuizDejaAttribue || false;
+        let xpGagne = 0;
+        let msgXP = '';
+        if (!dejaRecompense) {
+            qs.forEach((q, i) => {
+                const val = document.querySelector(`input[name="mq${i}"]:checked`).value;
+                if (val === 'L') xpGagne += 5;
+                if (val === 'B') xpGagne += 10;
+            });
+            window._firebaseAuth.currentUser._xpQuizDejaAttribue = true;
+            if (xpGagne > 0) msgXP = `⭐ +${xpGagne} XP bonus accordés pour ce quiz !`;
+        }
+
         // Afficher résultat dans le modal
         document.getElementById('modal-icone').innerText = icone;
         document.getElementById('modal-nom').innerText   = cle;
         document.getElementById('modal-desc').innerText  = desc;
+        if (msgXP) {
+            let msgEl = document.getElementById('modal-xp-msg');
+            if (!msgEl) {
+                msgEl = document.createElement('p');
+                msgEl.id = 'modal-xp-msg';
+                msgEl.style.cssText = "font-family:'Cinzel',serif; font-size:0.85rem; color:#6b3a0f; font-weight:bold; margin-top:10px;";
+                document.getElementById('modal-quiz-resultat').appendChild(msgEl);
+            }
+            msgEl.innerText = msgXP;
+        }
         document.getElementById('modal-quiz-form').style.display    = 'none';
         document.getElementById('modal-questions-container').style.display = 'none';
         document.getElementById('modal-quiz-resultat').style.display = 'block';
@@ -2074,12 +2105,22 @@
             if (elHistoire) elHistoire.innerText = desc;
             if (blocHistoire) blocHistoire.style.display = 'flex';
         }
+        // Mettre à jour l'affichage XP en temps réel
+        if (xpGagne > 0) {
+            const elXP = document.getElementById('profil-puissance');
+            if (elXP) elXP.innerText = parseInt(elXP.innerText) + xpGagne;
+        }
 
         // Sauvegarder dans Firestore — l'utilisateur est forcément connecté ici
         try {
+            const saveData = { alignement: cle, histoire: desc };
+            if (xpGagne > 0) {
+                saveData.xp_quiz = (window._xpQuizActuel || 0) + xpGagne;
+                saveData.quiz_xp_attribue = true;
+            }
             await window._firebaseSetDoc(
                 window._firebaseDoc(window._firebaseDb, "membres", window._firebaseAuth.currentUser.uid),
-                { alignement: cle, histoire: desc }, { merge: true }
+                saveData, { merge: true }
             );
         } catch(e) { console.warn("Erreur sauvegarde alignement modal:", e); }
     }
