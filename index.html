@@ -1100,61 +1100,6 @@
             </div>
         </section>
 
-        <!-- QUIZ D'ALIGNEMENT — Membres seulement -->
-        <section id="alignement" class="parchemin-box" style="display:none;">
-            <h2>⚔️ La Quête d'Alignement</h2>
-            <p style="text-align:center; font-style:italic; color:var(--gris-clair); margin-bottom:2rem;">
-                Répondez avec honneur et franchise, voyageur. Votre âme sera jugée.
-            </p>
-
-            <div id="quiz-container">
-
-                <!-- Questions générées dynamiquement depuis questions.js -->
-                <div id="questions-container"></div>
-
-                <div style="text-align:center; margin-top:2rem;">
-                    <button onclick="calculerAlignement()" style="
-                        background:var(--rouge-blason);
-                        color:white;
-                        border:2px solid var(--or-royal);
-                        padding:14px 36px;
-                        font-family:'Cinzel',serif;
-                        font-size:0.9rem;
-                        letter-spacing:0.15em;
-                        text-transform:uppercase;
-                        cursor:pointer;
-                        transition:0.3s;
-                    " onmouseover="this.style.background='var(--or-royal)';this.style.color='black';"
-                       onmouseout="this.style.background='var(--rouge-blason)';this.style.color='white';">
-                        ⚔️ Révéler mon Alignement
-                    </button>
-                </div>
-            </div>
-
-            <!-- Résultat -->
-            <div id="quiz-resultat" style="display:none; margin-top:2.5rem; text-align:center;">
-                <div style="border:2px solid var(--or-royal); padding:28px; background:rgba(212,175,55,0.05);">
-                    <p style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:12px;">✦ Le Parchemin du Destin révèle ✦</p>
-                    <div id="quiz-icone" style="font-size:3rem; margin-bottom:12px;"></div>
-                    <h3 id="quiz-nom" style="font-family:'Cinzel',serif; color:var(--or-royal); font-size:1.6rem; margin-bottom:12px;"></h3>
-                    <p id="quiz-description" style="color:#ccc; font-style:italic; font-size:0.9rem; max-width:480px; margin:0 auto 20px;"></p>
-                    <button onclick="recommencerQuiz()" style="
-                        background:transparent;
-                        color:var(--or-sombre);
-                        border:1px solid var(--or-sombre);
-                        padding:8px 20px;
-                        font-family:'Cinzel',serif;
-                        font-size:0.75rem;
-                        letter-spacing:0.1em;
-                        cursor:pointer;
-                        transition:0.3s;
-                    " onmouseover="this.style.borderColor='var(--or-royal)';this.style.color='var(--or-royal)';"
-                       onmouseout="this.style.borderColor='var(--or-sombre)';this.style.color='var(--or-sombre)';">
-                        ↺ Refaire la quête
-                    </button>
-                </div>
-            </div>
-        </section>
 
         <!-- REGISTRE / NEWSLETTER -->
         <section id="registre" class="parchemin-box" style="text-align: center;">
@@ -1287,7 +1232,7 @@
             <a href="#video">Dernière Quête</a>
             <a href="#grimoire">Grimoire</a>
             <a href="#echoppe">Échoppe</a>
-            <a href="#alignement" id="nav-alignement" style="display:none;">Alignement</a>
+
             <a href="#registre">Registre</a>
             <a href="#audience">FAQ</a>
         </div>
@@ -1648,10 +1593,6 @@
                 if (zonePrivée)    zonePrivée.style.display    = 'block';
                 if (sectionProfil) sectionProfil.style.display = 'block';
                 if (sectionRegles) { sectionRegles.style.display = 'block'; remplirTableauRangs(); }
-                const sectionAlignement = document.getElementById('alignement');
-                if (sectionAlignement) sectionAlignement.style.display = 'block';
-                const navAlign = document.getElementById('nav-alignement');
-                if (navAlign) navAlign.style.display = 'inline';
 
                 if (document.getElementById('profil-email')) document.getElementById('profil-email').innerText = user.email;
                 const options     = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -1704,10 +1645,6 @@
                 if (zonePrivée)    zonePrivée.style.display    = 'none';
                 if (sectionProfil) sectionProfil.style.display = 'none';
                 if (sectionRegles) sectionRegles.style.display = 'none';
-                const sectionAlignement = document.getElementById('alignement');
-                if (sectionAlignement) sectionAlignement.style.display = 'none';
-                const navAlign = document.getElementById('nav-alignement');
-                if (navAlign) navAlign.style.display = 'none';
                 if (btnNav) btnNav.innerHTML = `<button onclick="ouvrirPorte()" style="background:var(--or-royal); color:black; padding:7px 14px; border-radius:2px; font-weight:bold; font-family:'Cinzel',serif; font-size:0.8rem; cursor:pointer; border:none; letter-spacing:0.05em;">ACCÈS MEMBRE</button>`;
             }
         });
@@ -1735,61 +1672,6 @@
             }
         };
 
-        // ── QUIZ D'ALIGNEMENT — GÉNÉRATION + SAUVEGARDE FIRESTORE ──
-
-        // Questions tirées au sort au chargement (5 ordre + 5 morale)
-        let questionsActuelles = [];
-
-        function genererQuestionnaire() {
-            const container = document.getElementById('questions-container');
-            if (!container || typeof banqueQuestions === 'undefined') return;
-
-            const melanger = arr => [...arr].sort(() => 0.5 - Math.random());
-            const ordreChoix  = melanger(banqueQuestions.ordre).slice(0, 5);
-            const moraleChoix = melanger(banqueQuestions.morale).slice(0, 5);
-            questionsActuelles = [...ordreChoix, ...moraleChoix];
-
-            container.innerHTML = '';
-
-            // Titre axe Ordre
-            const titreOrdre = document.createElement('h3');
-            titreOrdre.style.cssText = "color:var(--or-sombre);font-family:'Cinzel',serif;letter-spacing:0.1em;border-bottom:1px solid var(--or-sombre);padding-bottom:8px;margin-bottom:1.5rem;";
-            titreOrdre.textContent = 'I. L\'Axe de l\'Ordre';
-            container.appendChild(titreOrdre);
-
-            ordreChoix.forEach((data, i) => {
-                container.appendChild(creerBloc(data, i, i + 1));
-            });
-
-            // Titre axe Morale
-            const titreMorale = document.createElement('h3');
-            titreMorale.style.cssText = "color:var(--or-sombre);font-family:'Cinzel',serif;letter-spacing:0.1em;border-bottom:1px solid var(--or-sombre);padding-bottom:8px;margin:2rem 0 1.5rem;";
-            titreMorale.textContent = 'II. L\'Axe de la Morale';
-            container.appendChild(titreMorale);
-
-            moraleChoix.forEach((data, i) => {
-                container.appendChild(creerBloc(data, 5 + i, i + 6));
-            });
-        }
-
-        function creerBloc(data, index, numero) {
-            const div = document.createElement('div');
-            div.className = 'quiz-question';
-            // Mélanger les réponses
-            const keys = Object.keys(data.r).sort(() => 0.5 - Math.random());
-            const optionsHtml = keys.map(key => `
-                <label class="quiz-label">
-                    <input type="radio" name="q${index}" value="${key}">
-                    <span>${data.r[key]}</span>
-                </label>`).join('');
-            div.innerHTML = `
-                <p class="quiz-q-texte">📜 ${numero}. ${data.q}</p>
-                <div class="quiz-options">${optionsHtml}</div>`;
-            return div;
-        }
-
-        // Appel au chargement
-        document.addEventListener('DOMContentLoaded', genererQuestionnaire);
 
         // ── Exposer sur window pour le modal (hors module) ───────
         window._firebaseAuth   = auth;
@@ -1799,70 +1681,7 @@
         window._alignementsIcones = Object.fromEntries(
             Object.entries(ALIGNEMENTS_DATA).map(([k, v]) => [k, v.icone])
         );
-        // Rendre DESCRIPTIONS accessible hors module
         window._descriptions = () => DESCRIPTIONS;
-
-        window.calculerAlignement = async () => {
-            // Vérifier que toutes les questions ont une réponse
-            for (let i = 0; i < questionsActuelles.length; i++) {
-                if (!document.querySelector(`input[name="q${i}"]:checked`)) {
-                    alert("⚔️ Vous devez répondre à toutes les questions, noble voyageur !");
-                    return;
-                }
-            }
-
-            // Compter les votes sur chaque axe
-            let ordre = { L: 0, N: 0, C: 0 };
-            let moral  = { B: 0, N: 0, M: 0 };
-
-            questionsActuelles.forEach((q, i) => {
-                const val = document.querySelector(`input[name="q${i}"]:checked`).value;
-                if (val === 'L' || val === 'C') ordre[val]++;
-                else if (val === 'N') {
-                    // N peut être ordre ou morale selon l'axe de la question
-                    const keys = Object.keys(q.r);
-                    if (keys.includes('L')) ordre.N++;
-                    else moral.N++;
-                }
-                else if (val === 'B' || val === 'M') moral[val]++;
-            });
-
-            let axe1 = "Neutre";
-            if (ordre.L > ordre.C && ordre.L > ordre.N) axe1 = "Loyal";
-            else if (ordre.C > ordre.L && ordre.C > ordre.N) axe1 = "Chaotique";
-
-            let axe2 = "Neutre";
-            if (moral.B > moral.M && moral.B > moral.N) axe2 = "Bon";
-            else if (moral.M > moral.B && moral.M > moral.N) axe2 = "Mauvais";
-
-            const cle    = (axe1 === "Neutre" && axe2 === "Neutre") ? "Neutre Strict" : `${axe1} ${axe2}`;
-            const result = ALIGNEMENTS_DATA[cle];
-
-            // Composer description aléatoire
-            const rand = arr => arr[Math.floor(Math.random() * arr.length)];
-            const intro  = rand(DESCRIPTIONS.intros);
-            const trait  = rand(DESCRIPTIONS.traits[cle] || ["votre destin reste encore mystérieux."]);
-            const outro  = rand(DESCRIPTIONS.conclusions);
-            const descDynamique = `${intro}${trait}${outro}`;
-
-            document.getElementById('quiz-icone').innerText       = result.icone;
-            document.getElementById('quiz-nom').innerText         = cle;
-            document.getElementById('quiz-description').innerText = descDynamique;
-            document.getElementById('quiz-container').style.display = 'none';
-            document.getElementById('quiz-resultat').style.display  = 'block';
-
-            // Sauvegarder dans Firestore si connecté
-            const user = auth.currentUser;
-            if (user) {
-                try {
-                    await setDoc(doc(db, "membres", user.uid), { alignement: cle }, { merge: true });
-                    const elAlign = document.getElementById('profil-alignement');
-                    if (elAlign) elAlign.innerText = `${result.icone} ${cle}`;
-                } catch(e) {
-                    console.warn("Erreur sauvegarde alignement :", e);
-                }
-            }
-        };
 
         const DESCRIPTIONS = {
             "intros": [
@@ -2001,23 +1820,6 @@
     <audio id="audio-royal" loop preload="none"></audio>
 
     <script>
-    window.recommencerQuiz = () => {
-        document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-        document.querySelectorAll('.quiz-label').forEach(l => l.classList.remove('selected'));
-        document.getElementById('quiz-container').style.display = 'block';
-        document.getElementById('quiz-resultat').style.display  = 'none';
-    };
-
-    // Effet visuel sur sélection
-    document.querySelectorAll('.quiz-label').forEach(label => {
-        label.addEventListener('click', () => {
-            const name = label.querySelector('input').name;
-            document.querySelectorAll(`input[name="${name}"]`).forEach(i => {
-                i.closest('.quiz-label').classList.remove('selected');
-            });
-            label.classList.add('selected');
-        });
-    });
     const PISTES = [
         { nom: "YEAT 130BPM Amin",  fichier: "music/YEAT 130BPM Amin.mp3"   },
         { nom: "108BPM Fmin",       fichier: "music/108BPM Fmin.mp3"            },
