@@ -904,6 +904,20 @@
             <a href="#registre" onclick="fermerMenu()">Registre</a>
             <a href="#audience" onclick="fermerMenu()">FAQ</a>
             <div class="nav-auth-mobile" id="btn-nav-auth-mobile"></div>
+            <!-- Lecteur musical mobile — bas du menu -->
+            <div style="padding:14px 20px; border-top:1px solid rgba(212,175,55,0.25); display:flex; align-items:center; gap:10px;">
+                <button onclick="pistePrec()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:1.1rem; padding:0; flex-shrink:0;">◀</button>
+                <button id="btn-musique-mobile" onclick="toggleMusique(); syncBtnMusiquesMobile();" style="background:none; border:none; cursor:pointer; font-size:1.2rem; line-height:1; padding:0; color:var(--or-royal); flex-shrink:0; font-family:monospace;">▶</button>
+                <button onclick="pisteSuiv()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:1.1rem; padding:0; flex-shrink:0;">▶▶</button>
+                <div style="flex:1; overflow:hidden;">
+                    <div style="overflow:hidden; white-space:nowrap;">
+                        <span id="label-musique-mobile" style="font-family:'Lora',serif; font-size:0.75rem; color:var(--or-sombre); font-style:italic; display:inline-block;">— En silence —</span>
+                    </div>
+                    <span style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); opacity:0.6;">par ZRD_DIODGE</span>
+                </div>
+                <button onclick="baisserVolume()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:1.1rem; padding:0; flex-shrink:0; line-height:1;">−</button>
+                <button onclick="monterVolume()" style="background:none; border:none; cursor:pointer; color:var(--or-sombre); font-size:1.1rem; padding:0; flex-shrink:0; line-height:1;">+</button>
+            </div>
         </div>
     </nav>
 
@@ -1965,24 +1979,35 @@
     const audio = document.getElementById('audio-royal');
 
     function demarrerDefilement(texte) {
-        const label = document.getElementById('label-musique');
-        label.style.color = 'var(--or-sombre)';
-        label.innerText   = '♪ ' + texte;
-        label.style.animation = 'none';
-        label.offsetHeight;
-        const largeurTexte     = label.scrollWidth;
-        const largeurContainer = label.parentElement.offsetWidth;
-        if (largeurTexte > largeurContainer) {
-            const duree = largeurTexte / 30;
-            label.style.animation = `defiler ${duree}s linear infinite`;
-        }
+        ['label-musique', 'label-musique-mobile'].forEach(id => {
+            const label = document.getElementById(id);
+            if (!label) return;
+            label.style.color = 'var(--or-sombre)';
+            label.innerText   = '♪ ' + texte;
+            label.style.animation = 'none';
+            label.offsetHeight;
+            const largeurTexte     = label.scrollWidth;
+            const largeurContainer = label.parentElement.offsetWidth;
+            if (largeurTexte > largeurContainer) {
+                const duree = largeurTexte / 30;
+                label.style.animation = `defiler ${duree}s linear infinite`;
+            }
+        });
     }
 
     function arreterDefilement() {
-        const label = document.getElementById('label-musique');
-        label.style.animation = 'none';
-        label.innerText       = '— En silence —';
-        label.style.color     = '#666';
+        ['label-musique', 'label-musique-mobile'].forEach(id => {
+            const label = document.getElementById(id);
+            if (!label) return;
+            label.style.animation = 'none';
+            label.innerText       = '— En silence —';
+            label.style.color     = '#666';
+        });
+    }
+
+    function syncBtnMusiquesMobile() {
+        const btnMobile = document.getElementById('btn-musique-mobile');
+        if (btnMobile) btnMobile.textContent = musiqueActive ? '❚❚' : '▶';
     }
 
     function chargerPiste(index) {
@@ -1998,7 +2023,7 @@
         const btn = document.getElementById('btn-musique');
         if (!musiqueActive) {
             musiqueActive   = true;
-            btn.textContent = '❚❚';
+            if (btn) btn.textContent = '❚❚';
             if (!audio.src || audio.src === window.location.href) {
                 chargerPiste(0);
             } else {
@@ -2007,14 +2032,15 @@
             }
         } else {
             musiqueActive   = false;
-            btn.textContent = '▶';
+            if (btn) btn.textContent = '▶';
             audio.pause();
             arreterDefilement();
         }
+        syncBtnMusiquesMobile();
     };
 
-    window.pisteSuiv  = () => { chargerPiste(pisteActuelle + 1); if (!musiqueActive) toggleMusique(); };
-    window.pistePrec  = () => { chargerPiste(pisteActuelle - 1); if (!musiqueActive) toggleMusique(); };
+    window.pisteSuiv  = () => { chargerPiste(pisteActuelle + 1); if (!musiqueActive) toggleMusique(); syncBtnMusiquesMobile(); };
+    window.pistePrec  = () => { chargerPiste(pisteActuelle - 1); if (!musiqueActive) toggleMusique(); syncBtnMusiquesMobile(); };
 
     window.monterVolume = () => {
         volumeActuel = Math.min(1, volumeActuel + 0.1);
