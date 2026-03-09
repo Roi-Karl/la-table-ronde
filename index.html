@@ -167,10 +167,11 @@
             #nav-liens { display: none; }
             #lecteur-musical { display: none !important; }
             header { min-height: 50vh; padding: 2.5rem 1rem; }
-            .parchemin-box { padding: 1.5rem 1rem; }
+            .parchemin-box { padding: 1.2rem 0.8rem; }
             .modal-legal-inner { margin: 0; padding: 24px 16px; }
             .grid { grid-template-columns: 1fr !important; }
-            .carac-grid { grid-template-columns: 1fr 1fr !important; }
+            /* Caractéristiques : 3 colonnes compactes sur mobile */
+            .carac-grid { grid-template-columns: repeat(3,1fr) !important; gap: 5px !important; }
         }
 
         /* ─── HEADER ─────────────────────────────── */
@@ -949,82 +950,77 @@
             <h2>📜 Votre Titre de Chevalier</h2>
 
             <!-- Fiche de personnage -->
-            <div style="margin-top:1.5rem; margin-bottom:1.5rem; text-align:left; padding:20px 24px; border:2px solid var(--or-sombre); background:rgba(212,175,55,0.04);">
-                <p style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.25em; text-transform:uppercase; margin:0 0 16px 0; text-align:center;">✦ Fiche de Personnage ✦</p>
+            <div style="margin-top:1.5rem; margin-bottom:1.5rem; text-align:left; padding:14px; border:2px solid var(--or-sombre); background:rgba(212,175,55,0.04);">
+                <p style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.25em; text-transform:uppercase; margin:0 0 14px 0; text-align:center;">✦ Fiche de Personnage ✦</p>
 
-                <div style="display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; flex-direction:column; gap:10px;">
 
                     <!-- Rang -->
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.78rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em; min-width:115px;">Rang :</span>
-                        <span id="rang-chevalier" style="font-family:'Cinzel',serif; font-size:1rem; color:var(--rouge-blason); font-weight:bold;">Chargement...</span>
-                        <button onclick="ouvrirCodeChevalerie()" title="Le Code de la Chevalerie" style="background:none; border:1px solid var(--or-sombre); color:var(--or-royal); font-size:1rem; cursor:pointer; padding:2px 7px; border-radius:4px; transition:0.2s; line-height:1;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">📖</button>
+                    <div style="display:flex; align-items:flex-start; gap:8px;">
+                        <span style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.06em; white-space:nowrap; padding-top:2px; flex-shrink:0;">Rang :</span>
+                        <span id="rang-chevalier" style="font-family:'Cinzel',serif; font-size:0.92rem; color:var(--rouge-blason); font-weight:bold; flex:1; min-width:0; word-break:break-word;">Chargement...</span>
+                        <button onclick="ouvrirCodeChevalerie()" title="Le Code de la Chevalerie" style="background:none; border:1px solid var(--or-sombre); color:var(--or-royal); font-size:0.85rem; cursor:pointer; padding:2px 5px; border-radius:4px; line-height:1; flex-shrink:0;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">📖</button>
                     </div>
 
                     <!-- Alignement -->
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.78rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em; min-width:115px;">Alignement :</span>
-                        <span id="profil-alignement" style="font-family:'Cinzel',serif; font-size:1rem; color:var(--rouge-blason); font-weight:bold;">—</span>
-                        <button onclick="ouvrirQuizModal()" title="Déterminer votre alignement" style="background:none; border:1px solid var(--or-sombre); color:var(--or-royal); font-size:1rem; cursor:pointer; padding:2px 7px; border-radius:4px; transition:0.2s; line-height:1;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">⏳</button>
+                    <div style="display:flex; align-items:flex-start; gap:8px;">
+                        <span style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.06em; white-space:nowrap; padding-top:2px; flex-shrink:0;">Alignement :</span>
+                        <span id="profil-alignement" style="font-family:'Cinzel',serif; font-size:0.92rem; color:var(--rouge-blason); font-weight:bold; flex:1; min-width:0; word-break:break-word;">—</span>
+                        <button onclick="ouvrirQuizModal()" title="Déterminer votre alignement" style="background:none; border:1px solid var(--or-sombre); color:var(--or-royal); font-size:0.85rem; cursor:pointer; padding:2px 5px; border-radius:4px; line-height:1; flex-shrink:0;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">⏳</button>
                     </div>
 
                     <!-- Histoire -->
                     <div id="bloc-histoire" style="display:none; flex-direction:column; gap:4px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.78rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em;">Histoire :</span>
+                        <span style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.06em;">Histoire :</span>
                         <span id="profil-histoire" style="font-family:'Lora',serif; font-size:0.82rem; color:#4a3010; font-style:italic; line-height:1.6;">—</span>
                     </div>
 
                     <!-- Séparateur Caractéristiques -->
-                    <div style="border-top:1px solid rgba(212,175,55,0.4); margin-top:6px; padding-top:14px;">
-                        <p style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin:0 0 12px 0; text-align:center;">⚔ Caractéristiques ⚔</p>
-                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;" class="carac-grid">
+                    <div style="border-top:1px solid rgba(212,175,55,0.4); margin-top:4px; padding-top:12px;">
+                        <p style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin:0 0 10px 0; text-align:center;">⚔ Caractéristiques ⚔</p>
+                        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;" class="carac-grid">
 
-                            <div style="padding:10px 8px 8px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative; display:flex; flex-direction:column; align-items:center;">
-                                <div style="width:100%; text-align:left; font-size:1.6rem; line-height:1; margin-bottom:6px;">💪</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">Force</div>
-                                <div id="carac-force" style="font-family:'Cinzel',serif; font-size:1.5rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:8px;">—</div>
-                                <button onclick="ouvrirDes('force','Force','💪')" id="btn-des-force" style="background:none; border:none; color:var(--or-sombre); font-size:1.3rem; cursor:pointer; padding:0; transition:0.2s; line-height:1;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-force" style="font-family:'Cinzel',serif; font-size:0.62rem; color:#3a2a0a; font-weight:bold; margin-top:5px;"></div>
+                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
+                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">💪</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Force</div>
+                                <div id="carac-force" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
+                                <button onclick="ouvrirDes('force','Force','💪')" id="btn-des-force" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-force" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
                             </div>
-
-                            <div style="padding:10px 8px 8px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative; display:flex; flex-direction:column; align-items:center;">
-                                <div style="width:100%; text-align:left; font-size:1.6rem; line-height:1; margin-bottom:6px;">🏹</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">Dextérité</div>
-                                <div id="carac-dexterite" style="font-family:'Cinzel',serif; font-size:1.5rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:8px;">—</div>
-                                <button onclick="ouvrirDes('dexterite','Dextérité','🏹')" id="btn-des-dexterite" style="background:none; border:none; color:var(--or-sombre); font-size:1.3rem; cursor:pointer; padding:0; transition:0.2s; line-height:1;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-dexterite" style="font-family:'Cinzel',serif; font-size:0.62rem; color:#3a2a0a; font-weight:bold; margin-top:5px;"></div>
+                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
+                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">🏹</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Dextérité</div>
+                                <div id="carac-dexterite" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
+                                <button onclick="ouvrirDes('dexterite','Dextérité','🏹')" id="btn-des-dexterite" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-dexterite" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
                             </div>
-
-                            <div style="padding:10px 8px 8px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative; display:flex; flex-direction:column; align-items:center;">
-                                <div style="width:100%; text-align:left; font-size:1.6rem; line-height:1; margin-bottom:6px;">🛡️</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">Constitution</div>
-                                <div id="carac-constitution" style="font-family:'Cinzel',serif; font-size:1.5rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:8px;">—</div>
-                                <button onclick="ouvrirDes('constitution','Constitution','🛡️')" id="btn-des-constitution" style="background:none; border:none; color:var(--or-sombre); font-size:1.3rem; cursor:pointer; padding:0; transition:0.2s; line-height:1;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-constitution" style="font-family:'Cinzel',serif; font-size:0.62rem; color:#3a2a0a; font-weight:bold; margin-top:5px;"></div>
+                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
+                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">🛡️</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Constit.</div>
+                                <div id="carac-constitution" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
+                                <button onclick="ouvrirDes('constitution','Constitution','🛡️')" id="btn-des-constitution" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-constitution" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
                             </div>
-
-                            <div style="padding:10px 8px 8px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative; display:flex; flex-direction:column; align-items:center;">
-                                <div style="width:100%; text-align:left; font-size:1.6rem; line-height:1; margin-bottom:6px;">📚</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">Intelligence</div>
-                                <div id="carac-intelligence" style="font-family:'Cinzel',serif; font-size:1.5rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:8px;">—</div>
-                                <button onclick="ouvrirDes('intelligence','Intelligence','📚')" id="btn-des-intelligence" style="background:none; border:none; color:var(--or-sombre); font-size:1.3rem; cursor:pointer; padding:0; transition:0.2s; line-height:1;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-intelligence" style="font-family:'Cinzel',serif; font-size:0.62rem; color:#3a2a0a; font-weight:bold; margin-top:5px;"></div>
+                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
+                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">📚</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Intellig.</div>
+                                <div id="carac-intelligence" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
+                                <button onclick="ouvrirDes('intelligence','Intelligence','📚')" id="btn-des-intelligence" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-intelligence" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
                             </div>
-
-                            <div style="padding:10px 8px 8px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative; display:flex; flex-direction:column; align-items:center;">
-                                <div style="width:100%; text-align:left; font-size:1.6rem; line-height:1; margin-bottom:6px;">🔮</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">Sagesse</div>
-                                <div id="carac-sagesse" style="font-family:'Cinzel',serif; font-size:1.5rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:8px;">—</div>
-                                <button onclick="ouvrirDes('sagesse','Sagesse','🔮')" id="btn-des-sagesse" style="background:none; border:none; color:var(--or-sombre); font-size:1.3rem; cursor:pointer; padding:0; transition:0.2s; line-height:1;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-sagesse" style="font-family:'Cinzel',serif; font-size:0.62rem; color:#3a2a0a; font-weight:bold; margin-top:5px;"></div>
+                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
+                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">🔮</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Sagesse</div>
+                                <div id="carac-sagesse" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
+                                <button onclick="ouvrirDes('sagesse','Sagesse','🔮')" id="btn-des-sagesse" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-sagesse" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
                             </div>
-
-                            <div style="padding:10px 8px 8px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative; display:flex; flex-direction:column; align-items:center;">
-                                <div style="width:100%; text-align:left; font-size:1.6rem; line-height:1; margin-bottom:6px;">✨</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">Charisme</div>
-                                <div id="carac-charisme" style="font-family:'Cinzel',serif; font-size:1.5rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:8px;">—</div>
-                                <button onclick="ouvrirDes('charisme','Charisme','✨')" id="btn-des-charisme" style="background:none; border:none; color:var(--or-sombre); font-size:1.3rem; cursor:pointer; padding:0; transition:0.2s; line-height:1;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-charisme" style="font-family:'Cinzel',serif; font-size:0.62rem; color:#3a2a0a; font-weight:bold; margin-top:5px;"></div>
+                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
+                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">✨</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Charisme</div>
+                                <div id="carac-charisme" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
+                                <button onclick="ouvrirDes('charisme','Charisme','✨')" id="btn-des-charisme" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-charisme" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
                             </div>
 
                         </div>
