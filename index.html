@@ -1042,6 +1042,36 @@
             font-style: italic;
             line-height: 1.6;
         }
+        /* ── PV / Initiative ─────────────────────── */
+        .fiche-stat-box {
+            flex: 1;
+            text-align: center;
+            padding: 8px 6px;
+            border: 1px solid rgba(212,175,55,0.3);
+            background: rgba(212,175,55,0.04);
+        }
+        .fiche-stat-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.58rem;
+            color: var(--or-sombre);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .fiche-stat-val {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--rouge-blason);
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+        .fiche-stat-note {
+            font-family: 'Lora', serif;
+            font-size: 0.52rem;
+            font-style: italic;
+            color: #9a7a50;
+        }
         .fiche-carac-sep {
             border-top: 1px solid rgba(212,175,55,0.4);
             margin-top: 4px;
@@ -1575,6 +1605,18 @@
                         <button onclick="ouvrirCodeChevalerie()" title="Le Code de la Chevalerie" class="fiche-btn-icone">📖</button>
                     </div>
 
+                    <!-- Race -->
+                    <div class="fiche-ligne">
+                        <span class="fiche-label">Race :</span>
+                        <span id="fiche-race" class="fiche-valeur">—</span>
+                    </div>
+
+                    <!-- Classe -->
+                    <div class="fiche-ligne">
+                        <span class="fiche-label">Classe :</span>
+                        <span id="fiche-classe" class="fiche-valeur">—</span>
+                    </div>
+
                     <!-- Alignement -->
                     <div class="fiche-ligne">
                         <span class="fiche-label">Alignement :</span>
@@ -1586,6 +1628,20 @@
                     <div id="bloc-histoire" class="fiche-histoire">
                         <span class="fiche-histoire-label">Histoire :</span>
                         <span id="profil-histoire" class="fiche-histoire-texte">—</span>
+                    </div>
+
+                    <!-- PV + Initiative (côte à côte) -->
+                    <div style="display:flex; gap:10px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
+                        <div class="fiche-stat-box">
+                            <div class="fiche-stat-label">❤️ Points de Vie</div>
+                            <div id="fiche-pv" class="fiche-stat-val">—</div>
+                            <div class="fiche-stat-note">calcul à venir</div>
+                        </div>
+                        <div class="fiche-stat-box">
+                            <div class="fiche-stat-label">⚡ Initiative</div>
+                            <div id="fiche-initiative" class="fiche-stat-val">—</div>
+                            <div class="fiche-stat-note">calcul à venir</div>
+                        </div>
                     </div>
 
                     <!-- Séparateur Caractéristiques -->
@@ -1733,6 +1789,60 @@
                             <option value="🍺 Chope de cervoise">🍺 Chope de cervoise</option>
                         </select>
                     </div>
+
+                    <!-- ── Race ── -->
+                    <div class="ligne-info">
+                        <span class="label">Race :</span>
+                        <select id="profil-race"
+                                onchange="aperçuRaceClasse()"
+                                style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%; color:var(--noir-encre); cursor:pointer;">
+                            <option value="">— Choisir —</option>
+                            <option value="Humain|🧑">🧑 Humain</option>
+                            <option value="Elfe|🧝">🧝 Elfe</option>
+                            <option value="Nain|⛏️">⛏️ Nain</option>
+                            <option value="Halfelin|🦶">🦶 Halfelin</option>
+                            <option value="Gnome|🍄">🍄 Gnome</option>
+                            <option value="Semi-Elfe|🌗">🌗 Semi-Elfe</option>
+                            <option value="Semi-Orc|💀">💀 Semi-Orc</option>
+                            <option value="Tieffelin|😈">😈 Tieffelin</option>
+                            <option value="Dragonide|🐉">🐉 Dragonide</option>
+                        </select>
+                    </div>
+
+                    <!-- ── Classe ── -->
+                    <div class="ligne-info">
+                        <span class="label">Classe :</span>
+                        <select id="profil-classe"
+                                onchange="aperçuRaceClasse()"
+                                style="background:transparent; border:none; border-bottom:1px solid var(--or-sombre); font-family:'Lora'; font-weight:bold; width:60%; color:var(--noir-encre); cursor:pointer;">
+                            <option value="">— Choisir —</option>
+                            <option value="Barbare|🪓">🪓 Barbare</option>
+                            <option value="Barde|🎭">🎭 Barde</option>
+                            <option value="Clerc|✝️">✝️ Clerc</option>
+                            <option value="Druide|🌿">🌿 Druide</option>
+                            <option value="Guerrier|⚔️">⚔️ Guerrier</option>
+                            <option value="Moine|☯️">☯️ Moine</option>
+                            <option value="Paladin|🛡️">🛡️ Paladin</option>
+                            <option value="Rôdeur|🏹">🏹 Rôdeur</option>
+                            <option value="Roublard|🗡️">🗡️ Roublard</option>
+                            <option value="Ensorceleur|✨">✨ Ensorceleur</option>
+                            <option value="Sorcier|🌑">🌑 Sorcier</option>
+                            <option value="Magicien|📜">📜 Magicien</option>
+                        </select>
+                    </div>
+
+                    <!-- Aperçu Race + Classe -->
+                    <div id="apercu-race-classe" style="display:none; justify-content:center; gap:24px; padding:10px 0 4px; border-top:1px dashed rgba(212,175,55,0.3); margin-top:4px;">
+                        <div style="text-align:center;">
+                            <div id="apercu-race-icone" style="font-size:2.8rem; line-height:1;">🧑</div>
+                            <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); letter-spacing:0.1em; margin-top:4px;">RACE</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div id="apercu-classe-icone" style="font-size:2.8rem; line-height:1;">⚔️</div>
+                            <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); letter-spacing:0.1em; margin-top:4px;">CLASSE</div>
+                        </div>
+                    </div>
+
                     <div class="ligne-info">
                         <span class="label">Jour de Naissance :</span>
                         <input type="date" id="profil-naissance"
@@ -2280,6 +2390,8 @@
                 devise:         document.getElementById('profil-devise')?.value        || "",
                 province:       document.getElementById('profil-province')?.value      || "",
                 arme:           document.getElementById('profil-arme')?.value          || "",
+                race:           document.getElementById('profil-race')?.value          || "",
+                classe:         document.getElementById('profil-classe')?.value        || "",
                 naissance:      document.getElementById('profil-naissance')?.value     || "",
                 couleur_blason: document.getElementById('profil-couleur-blason')?.value || "#8B0000",
                 notifications: {
@@ -2351,6 +2463,23 @@
                         if (document.getElementById('profil-province'))  document.getElementById('profil-province').value  = data.province  || "";
                         if (document.getElementById('profil-arme'))      document.getElementById('profil-arme').value      = data.arme      || "";
                         if (document.getElementById('profil-naissance')) document.getElementById('profil-naissance').value = data.naissance || "";
+                        if (document.getElementById('profil-race')) {
+                            document.getElementById('profil-race').value = data.race || "";
+                        }
+                        if (document.getElementById('profil-classe')) {
+                            document.getElementById('profil-classe').value = data.classe || "";
+                        }
+                        // Mettre à jour aperçu + fiche race/classe
+                        aperçuRaceClasse();
+
+                        // Afficher race et classe dans la fiche
+                        const parseRC = val => val ? { icone: val.split('|')[1] || '', nom: val.split('|')[0] || '' } : null;
+                        const raceData   = parseRC(data.race);
+                        const classeData = parseRC(data.classe);
+                        const elRace   = document.getElementById('fiche-race');
+                        const elClasse = document.getElementById('fiche-classe');
+                        if (elRace)   elRace.innerHTML   = raceData   ? `${raceData.icone} ${raceData.nom}`   : '—';
+                        if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${classeData.nom}` : '—';
                         if (document.getElementById('profil-couleur-blason')) {
                             const couleur = data.couleur_blason || "#8B0000";
                             document.getElementById('profil-couleur-blason').value = couleur;
@@ -3151,7 +3280,33 @@
         wrapper.appendChild(iframe);
     }
 
-    // ── NOTIFICATION XP ────────────────────────────────────
+    // ── RACE & CLASSE ─────────────────────────────────────
+    function aperçuRaceClasse() {
+        const raceVal   = document.getElementById('profil-race')?.value   || '';
+        const classeVal = document.getElementById('profil-classe')?.value || '';
+        const apercu    = document.getElementById('apercu-race-classe');
+        if (!apercu) return;
+
+        const [raceNom,  raceIcone]  = raceVal   ? raceVal.split('|')   : ['', ''];
+        const [classeNom, classeIcone] = classeVal ? classeVal.split('|') : ['', ''];
+
+        if (raceVal || classeVal) {
+            apercu.style.display = 'flex';
+            document.getElementById('apercu-race-icone').textContent   = raceIcone   || '?';
+            document.getElementById('apercu-classe-icone').textContent = classeIcone || '?';
+        } else {
+            apercu.style.display = 'none';
+        }
+
+        // Mettre à jour la fiche en temps réel
+        const elRace   = document.getElementById('fiche-race');
+        const elClasse = document.getElementById('fiche-classe');
+        if (elRace)   elRace.innerHTML   = raceVal   ? `${raceIcone} ${raceNom}`   : '—';
+        if (elClasse) elClasse.innerHTML = classeVal ? `${classeIcone} ${classeNom}` : '—';
+    }
+    window.aperçuRaceClasse = aperçuRaceClasse;
+
+    
     function afficherNotifXP(msg) {
         let notif = document.getElementById('notif-xp-toast');
         if (!notif) {
@@ -3361,6 +3516,8 @@
             { clé: 'Expérience',   val: `${xp.toLocaleString('fr-CA')} XP` },
             data.royaume   ? { clé: 'Royaume',    val: `🏰 ${data.royaume}` }   : null,
             data.province  ? { clé: 'Province',   val: `📍 ${data.province}` }  : null,
+            data.race      ? { clé: 'Race',        val: data.race.split('|')[1] + ' ' + data.race.split('|')[0] } : null,
+            data.classe    ? { clé: 'Classe',      val: data.classe.split('|')[1] + ' ' + data.classe.split('|')[0] } : null,
             data.arme      ? { clé: 'Arme',       val: `⚔️ ${data.arme}` }       : null,
             align          ? { clé: 'Alignement', val: `${iconeAlign} ${align}` } : null,
             data.devise    ? { clé: 'Devise',      val: `« ${data.devise} »` }   : null,
