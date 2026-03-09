@@ -2997,15 +2997,20 @@
     let _courDonneesGrades   = null;
     let _courDonneesInscrits = null;
 
-    function tronquerPseudo(pseudo) {
-        if (!pseudo || pseudo.length <= 3) return pseudo || '???';
-        return pseudo.slice(0, 3) + '*'.repeat(Math.min(pseudo.length - 3, 3));
+    function tronquerCourriel(email) {
+        if (!email) return '';
+        const [local, domaine] = email.split('@');
+        if (!domaine) return email;
+        const debut = local.slice(0, 3);
+        return `${debut}***@${domaine}`;
     }
 
     function nomGuerre(data) {
-        const ng = (data.nom_de_guerre || '').trim();
-        const ps = tronquerPseudo(data.pseudo);
-        return ng ? `${ng} <span style="opacity:0.6;font-size:0.65rem;">(${ps})</span>` : ps;
+        const pseudo  = (data.pseudo || '').trim();
+        const courriel = tronquerCourriel(data.email || '');
+        const ligne1 = pseudo || courriel || '???';
+        const ligne2 = pseudo && courriel ? `<span style="opacity:0.55; font-size:0.65rem; font-family:'Lora',serif; font-style:italic;">${courriel}</span>` : '';
+        return ligne2 ? `${ligne1}<br>${ligne2}` : ligne1;
     }
 
     function calcJours(data) {
@@ -3082,12 +3087,12 @@
             snap.forEach(d => tous.push({ id: d.id, ...d.data() }));
 
             _courDonneesGrades = [...tous]
-                .filter(d => d.pseudo || d.nom_de_guerre)
-                .sort((a, b) => calcJours(b) - calcJours(a))   // tri par ancienneté = rang
+                .filter(d => d.pseudo || d.email)
+                .sort((a, b) => calcJours(b) - calcJours(a))
                 .slice(0, 10);
 
             _courDonneesInscrits = [...tous]
-                .filter(d => d.cree_le && (d.pseudo || d.nom_de_guerre))
+                .filter(d => d.cree_le && (d.pseudo || d.email))
                 .sort((a, b) => (b.cree_le?.seconds || 0) - (a.cree_le?.seconds || 0))
                 .slice(0, 10);
 
