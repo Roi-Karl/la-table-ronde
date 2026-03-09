@@ -1042,6 +1042,112 @@
             font-style: italic;
             line-height: 1.6;
         }
+        /* ── TOOLTIP RPG ──────────────────────────────────── */
+        .rpg-tooltip-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: help;
+        }
+        .rpg-tooltip-icone {
+            font-size: 1.6rem;
+            line-height: 1;
+            transition: transform 0.2s ease;
+            filter: drop-shadow(0 0 0px rgba(212,175,55,0));
+            transition: transform 0.2s, filter 0.2s;
+        }
+        .rpg-tooltip-wrap:hover .rpg-tooltip-icone {
+            transform: scale(1.18);
+            filter: drop-shadow(0 0 6px rgba(212,175,55,0.7));
+        }
+        .rpg-tooltip-box {
+            display: none;
+            position: absolute;
+            left: 110%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 9999;
+            width: 300px;
+            background: linear-gradient(145deg, #1a0e02, #2d1a04);
+            border: 1px solid rgba(212,175,55,0.5);
+            border-radius: 4px;
+            padding: 14px 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.7), inset 0 0 20px rgba(212,175,55,0.03);
+            pointer-events: none;
+        }
+        .rpg-tooltip-wrap:hover .rpg-tooltip-box {
+            display: block;
+        }
+        /* Sur mobile : tooltip en dessous */
+        @media (max-width: 600px) {
+            .rpg-tooltip-box {
+                left: 50%;
+                top: 120%;
+                transform: translateX(-50%);
+                width: 260px;
+            }
+        }
+        .rpg-tt-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(212,175,55,0.3);
+        }
+        .rpg-tt-header-icone {
+            font-size: 2rem;
+            line-height: 1;
+        }
+        .rpg-tt-header-nom {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--or-royal);
+            letter-spacing: 0.08em;
+        }
+        .rpg-tt-header-accroche {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 0.68rem;
+            color: #c8a96e;
+            margin-top: 2px;
+        }
+        .rpg-tt-section {
+            margin-bottom: 8px;
+        }
+        .rpg-tt-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.55rem;
+            color: var(--or-sombre);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+        .rpg-tt-texte {
+            font-family: 'Lora', serif;
+            font-size: 0.7rem;
+            color: #d4c4a0;
+            line-height: 1.5;
+        }
+        .rpg-tt-bonus {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 2px;
+        }
+        .rpg-tt-bonus-pill {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            background: rgba(212,175,55,0.12);
+            border: 1px solid rgba(212,175,55,0.3);
+            color: var(--or-royal);
+            padding: 2px 7px;
+            border-radius: 2px;
+        }
+        /* ── FIN TOOLTIP ──────────────────────────────────── */
+
         /* ── PV / Initiative ─────────────────────── */
         .fiche-stat-box {
             flex: 1;
@@ -1447,6 +1553,7 @@
     </style>
     <!-- Banque de questions du Quiz d'Alignement -->
     <script src="questions.js"></script>
+    <script src="rpg-data.js"></script>
 </head>
 <body>
 
@@ -1609,12 +1716,20 @@
                     <div class="fiche-ligne">
                         <span class="fiche-label">Race :</span>
                         <span id="fiche-race" class="fiche-valeur">—</span>
+                        <span class="rpg-tooltip-wrap" id="fiche-wrap-race" style="display:none;">
+                            <span id="fiche-race-icone" class="rpg-tooltip-icone" style="font-size:1.2rem;"></span>
+                            <div class="rpg-tooltip-box" id="tooltip-race-fiche"></div>
+                        </span>
                     </div>
 
                     <!-- Classe -->
                     <div class="fiche-ligne">
                         <span class="fiche-label">Classe :</span>
                         <span id="fiche-classe" class="fiche-valeur">—</span>
+                        <span class="rpg-tooltip-wrap" id="fiche-wrap-classe" style="display:none;">
+                            <span id="fiche-classe-icone" class="rpg-tooltip-icone" style="font-size:1.2rem;"></span>
+                            <div class="rpg-tooltip-box" id="tooltip-classe-fiche"></div>
+                        </span>
                     </div>
 
                     <!-- Alignement -->
@@ -1831,15 +1946,21 @@
                         </select>
                     </div>
 
-                    <!-- Aperçu Race + Classe -->
-                    <div id="apercu-race-classe" style="display:none; justify-content:center; gap:24px; padding:10px 0 4px; border-top:1px dashed rgba(212,175,55,0.3); margin-top:4px;">
+                    <!-- Aperçu Race + Classe avec tooltips -->
+                    <div id="apercu-race-classe" style="display:none; justify-content:center; gap:32px; padding:12px 0 6px; border-top:1px dashed rgba(212,175,55,0.3); margin-top:4px;">
                         <div style="text-align:center;">
-                            <div id="apercu-race-icone" style="font-size:2.8rem; line-height:1;">🧑</div>
-                            <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); letter-spacing:0.1em; margin-top:4px;">RACE</div>
+                            <div class="rpg-tooltip-wrap" id="apercu-wrap-race">
+                                <div id="apercu-race-icone" class="rpg-tooltip-icone">🧑</div>
+                                <div class="rpg-tooltip-box" id="tooltip-race-profil"></div>
+                            </div>
+                            <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); letter-spacing:0.1em; margin-top:6px;">RACE</div>
                         </div>
                         <div style="text-align:center;">
-                            <div id="apercu-classe-icone" style="font-size:2.8rem; line-height:1;">⚔️</div>
-                            <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); letter-spacing:0.1em; margin-top:4px;">CLASSE</div>
+                            <div class="rpg-tooltip-wrap" id="apercu-wrap-classe">
+                                <div id="apercu-classe-icone" class="rpg-tooltip-icone">⚔️</div>
+                                <div class="rpg-tooltip-box" id="tooltip-classe-profil"></div>
+                            </div>
+                            <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); letter-spacing:0.1em; margin-top:6px;">CLASSE</div>
                         </div>
                     </div>
 
@@ -2480,6 +2601,11 @@
                         const elClasse = document.getElementById('fiche-classe');
                         if (elRace)   elRace.innerHTML   = raceData   ? `${raceData.icone} ${raceData.nom}`   : '—';
                         if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${classeData.nom}` : '—';
+
+                        // Tooltips fiche personnage
+                        const raceNomPur   = data.race   ? data.race.split('|')[0]   : '';
+                        const classeNomPur = data.classe ? data.classe.split('|')[0] : '';
+                        mettreAJourTooltips(raceNomPur, classeNomPur);
                         if (document.getElementById('profil-couleur-blason')) {
                             const couleur = data.couleur_blason || "#8B0000";
                             document.getElementById('profil-couleur-blason').value = couleur;
@@ -3281,13 +3407,70 @@
     }
 
     // ── RACE & CLASSE ─────────────────────────────────────
+
+    function construireTooltipHTML(data, type) {
+        if (!data) return '';
+        const caracNoms = { force:'Force', dexterite:'Dextérité', constitution:'Constitution', intelligence:'Intelligence', sagesse:'Sagesse', charisme:'Charisme' };
+        const bonusPills = Object.entries(data.bonus || {})
+            .map(([k, v]) => `<span class="rpg-tt-bonus-pill">+${v} ${caracNoms[k]}</span>`)
+            .join('');
+
+        // Extraire la première section du description_joueur (avant les Traits raciaux / Capacités)
+        const descRaw = (data.description_joueur || '').trim();
+        const descCourt = descRaw.split(/\n\n/)[0].replace(/\n/g,' ').trim();
+
+        return `
+            <div class="rpg-tt-header">
+                <div class="rpg-tt-header-icone">${data.icone}</div>
+                <div>
+                    <div class="rpg-tt-header-nom">${data.tooltip?.split('—')[0]?.trim() || ''}</div>
+                    <div class="rpg-tt-header-accroche">${data.tooltip?.split('—').slice(1).join('—').trim() || ''}</div>
+                </div>
+            </div>
+            <div class="rpg-tt-section">
+                <div class="rpg-tt-label">Description</div>
+                <div class="rpg-tt-texte">${descCourt.substring(0, 220)}${descCourt.length > 220 ? '…' : ''}</div>
+            </div>
+            <div class="rpg-tt-section">
+                <div class="rpg-tt-label">Bonus de caractéristiques</div>
+                <div class="rpg-tt-bonus">${bonusPills || '<span class="rpg-tt-texte">Aucun</span>'}</div>
+            </div>
+        `;
+    }
+
+    function mettreAJourTooltips(raceNom, classeNom) {
+        if (typeof RPG_RACES === 'undefined') return;
+        const rData = RPG_RACES[raceNom]   || null;
+        const cData = RPG_CLASSES[classeNom] || null;
+
+        ['tooltip-race-profil','tooltip-race-fiche'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = construireTooltipHTML(rData, 'race');
+        });
+        ['tooltip-classe-profil','tooltip-classe-fiche'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = construireTooltipHTML(cData, 'classe');
+        });
+
+        // Afficher/masquer les wraps dans la fiche
+        const wrRace   = document.getElementById('fiche-wrap-race');
+        const wrClasse = document.getElementById('fiche-wrap-classe');
+        const icRace   = document.getElementById('fiche-race-icone');
+        const icClasse = document.getElementById('fiche-classe-icone');
+        if (wrRace)   wrRace.style.display   = rData ? 'inline-flex' : 'none';
+        if (wrClasse) wrClasse.style.display  = cData ? 'inline-flex' : 'none';
+        if (icRace   && rData)   icRace.textContent   = rData.icone;
+        if (icClasse && cData)   icClasse.textContent = cData.icone;
+    }
+    window.mettreAJourTooltips = mettreAJourTooltips;
+
     function aperçuRaceClasse() {
         const raceVal   = document.getElementById('profil-race')?.value   || '';
         const classeVal = document.getElementById('profil-classe')?.value || '';
         const apercu    = document.getElementById('apercu-race-classe');
         if (!apercu) return;
 
-        const [raceNom,  raceIcone]  = raceVal   ? raceVal.split('|')   : ['', ''];
+        const [raceNom,   raceIcone]   = raceVal   ? raceVal.split('|')   : ['', ''];
         const [classeNom, classeIcone] = classeVal ? classeVal.split('|') : ['', ''];
 
         if (raceVal || classeVal) {
@@ -3298,10 +3481,13 @@
             apercu.style.display = 'none';
         }
 
+        // Tooltips aperçu profil
+        mettreAJourTooltips(raceNom, classeNom);
+
         // Mettre à jour la fiche en temps réel
         const elRace   = document.getElementById('fiche-race');
         const elClasse = document.getElementById('fiche-classe');
-        if (elRace)   elRace.innerHTML   = raceVal   ? `${raceIcone} ${raceNom}`   : '—';
+        if (elRace)   elRace.innerHTML   = raceVal   ? `${raceIcone} ${raceNom}`     : '—';
         if (elClasse) elClasse.innerHTML = classeVal ? `${classeIcone} ${classeNom}` : '—';
     }
     window.aperçuRaceClasse = aperçuRaceClasse;
