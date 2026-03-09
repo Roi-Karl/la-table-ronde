@@ -1827,7 +1827,10 @@
                     <!-- Rang -->
                     <div class="fiche-ligne">
                         <span class="fiche-label">Rang :</span>
-                        <span id="rang-chevalier" class="fiche-valeur"><span class="skeleton skeleton-rang"></span></span>
+                        <span id="rang-chevalier" class="fiche-valeur rpg-tooltip-wrap" style="cursor:default;">
+                            <span id="rang-chevalier-texte"><span class="skeleton skeleton-rang"></span></span>
+                            <div class="rpg-tooltip-box" id="tooltip-rang-fiche"></div>
+                        </span>
                         <button onclick="ouvrirCodeChevalerie()" title="Le Code de la Chevalerie" class="fiche-btn-icone">📖</button>
                     </div>
 
@@ -2458,16 +2461,56 @@
 
         // ── GRADES ───────────────────────────────
         const GRADES = [
-            { seuil: 0,   nom: "Serf Égaré",          icone: "🪵", coul: "#7f8c8d" },
-            { seuil: 2,   nom: "Vilein Courageux",     icone: "🌾", coul: "#95a5a6" },
-            { seuil: 5,   nom: "Écuyer Novice",        icone: "🛡️", coul: "#bc8f8f" },
-            { seuil: 10,  nom: "Vassal du Fief",       icone: "🏰", coul: "#cd7f32" },
-            { seuil: 20,  nom: "Chevalier Errant",     icone: "🐎", coul: "#bdc3c7" },
-            { seuil: 40,  nom: "Héraut Royal",         icone: "🎺", coul: "#f1c40f" },
-            { seuil: 70,  nom: "Baron de la Carrée",   icone: "🍷", coul: "#e67e22" },
-            { seuil: 120, nom: "Maître d'Armes",       icone: "⚔️", coul: "#8b0000" },
-            { seuil: 200, nom: "Haut Connétable",      icone: "🚩", coul: "#4a0404" },
-            { seuil: 365, nom: "Main du Roi Karl",     icone: "👑", coul: "#d4af37" }
+            {
+                seuil: 0, nom: "Serf Égaré", icone: "🪵", coul: "#7f8c8d",
+                tooltip: "Un inconnu qui a poussé la porte du royaume pour la première fois.",
+                description: `Vous venez d'arriver. La route est longue, votre nom est inconnu et votre cape est poussiéreuse. Mais vous êtes là — c'est déjà plus que la plupart.\n\nLe Serf Égaré n'a pas encore de place à la Table, mais la porte lui est ouverte. Chaque jour passé dans le royaume forge un peu plus sa réputation.\n\nPrivilèges : accès aux archives publiques du royaume.\nProchain rang dans : 2 jours de présence.`
+            },
+            {
+                seuil: 2, nom: "Vilein Courageux", icone: "🌾", coul: "#95a5a6",
+                tooltip: "Le paysan qui ose lever les yeux vers l'horizon.",
+                description: `Deux jours dans le royaume, et vous êtes toujours là. Ce n'est pas rien. Là où beaucoup fuient dès le premier défi, vous avez choisi de rester.\n\nLe Vilein Courageux est la première marche d'un long escalier. Il travaille dur, apprend vite et regarde les chevaliers avec des étoiles dans les yeux — et un peu d'envie dans le cœur.\n\nPrivilèges : participation aux débats publics.\nProchain rang dans : 5 jours de présence.`
+            },
+            {
+                seuil: 5, nom: "Écuyer Novice", icone: "🛡️", coul: "#bc8f8f",
+                tooltip: "Apprenti prometteur qui porte l'écu avec fierté.",
+                description: `Cinq jours et vous avez déjà la posture d'un combattant. L'Écuyer Novice a pris les armes — symboliquement — et s'entraîne chaque jour à mériter sa place.\n\nIl suit les chevaliers, apprend leurs gestes, écoute leurs récits de bataille. Le métal de son bouclier est encore brillant car il n'a pas encore servi — mais cela ne saurait tarder.\n\nPrivilèges : accès aux parchemins de formation.\nProchain rang dans : 10 jours de présence.`
+            },
+            {
+                seuil: 10, nom: "Vassal du Fief", icone: "🏰", coul: "#cd7f32",
+                tooltip: "Homme de fief lié par serment à la Table.",
+                description: `Dix jours. Vous avez prêté serment — tacitement — en restant. Le Vassal du Fief a choisi son camp : celui de la Table Ronde (mais carrée).\n\nIl possède désormais une terre symbolique dans le royaume et une voix dans les affaires courantes. Les chevaliers le reconnaissent. Son nom commence à circuler dans les couloirs du château.\n\nPrivilèges : droit de vote sur les sujets royaux.\nProchain rang dans : 20 jours de présence.`
+            },
+            {
+                seuil: 20, nom: "Chevalier Errant", icone: "🐎", coul: "#bdc3c7",
+                tooltip: "Chevalier libre qui sillonne le royaume en quête de gloire.",
+                description: `Vingt jours, et vous avez franchi le seuil de la chevalerie. L'épée est à votre ceinture, la monture sous vos pieds. Le Chevalier Errant n'est attaché à aucune cause fixe — il cherche encore sa voie — mais son courage est reconnu de tous.\n\nOn dit que les meilleurs chevaliers du Roi Karl ont tous commencé comme ça : sans destination, mais avec une volonté de fer.\n\nPrivilèges : accès aux tournois et défis mensuels.\nProchain rang dans : 40 jours de présence.`
+            },
+            {
+                seuil: 40, nom: "Héraut Royal", icone: "🎺", coul: "#f1c40f",
+                tooltip: "Voix officielle du royaume, porteur des annonces du Roi.",
+                description: `Quarante jours de fidélité — vous avez mérité la trompette dorée. Le Héraut Royal est la voix du royaume. C'est lui qu'on entend annoncer les grandes nouvelles, les tournois, les décrets du Roi Karl.\n\nSon prestige lui vient non pas de la force de son épée, mais de la force de sa parole. Dans une cour, une voix qui porte est parfois plus puissante qu'une armée.\n\nPrivilèges : mention spéciale dans les annonces royales.\nProchain rang dans : 70 jours de présence.`
+            },
+            {
+                seuil: 70, nom: "Baron de la Carrée", icone: "🍷", coul: "#e67e22",
+                tooltip: "Noble de la Table, hôte des grands festins royaux.",
+                description: `Soixante-dix jours. Vous êtes maintenant un noble à part entière — le Baron de la Carrée. La Table (ronde mais carrée, rappelons-le) a une place réservée à votre nom.\n\nLes festins royaux ne sont pas complets sans vous. Votre opinion pèse dans les conseils. Le Roi Karl vous consulte — pas toujours, mais parfois — et c'est déjà un honneur immense.\n\nPrivilèges : accès aux archives secrètes du royaume.\nProchain rang dans : 120 jours de présence.`
+            },
+            {
+                seuil: 120, nom: "Maître d'Armes", icone: "⚔️", coul: "#8b0000",
+                tooltip: "Guerrier d'élite, formateur des futures générations.",
+                description: `Cent vingt jours de présence forgent un Maître d'Armes. Vous n'apprenez plus : vous enseignez. Les jeunes serfs et vilains vous regardent avec admiration. Vos gestes sont précis, votre jugement sûr, votre loyauté éprouvée.\n\nLe Maître d'Armes est le pilier militaire du royaume. Quand la Table a besoin d'un bras armé, c'est vers vous qu'on se tourne en premier.\n\nPrivilèges : droit de former des recrues et d'organiser des tournois.\nProchain rang dans : 200 jours de présence.`
+            },
+            {
+                seuil: 200, nom: "Haut Connétable", icone: "🚩", coul: "#4a0404",
+                tooltip: "Grand commandant des armées, second du Roi.",
+                description: `Deux cents jours de fidélité absolue. Le Haut Connétable est le commandant suprême des armées du Roi Karl. Au-dessus de lui, il n'y a qu'une seule personne.\n\nSon bannière rouge sang flotte sur les murs du château. Sa parole a force de loi dans les affaires militaires. Les ennemis du royaume ont appris à redouter son nom.\n\nPrivilèges : siège permanent au Conseil de la Table.\nProchain rang dans : 365 jours de présence.`
+            },
+            {
+                seuil: 365, nom: "Main du Roi Karl", icone: "👑", coul: "#d4af37",
+                tooltip: "Le bras droit du Roi, gardien du royaume en son absence.",
+                description: `Un an. Trois cent soixante-cinq jours de présence, de loyauté et d'engagement. Vous êtes la Main du Roi Karl.\n\nCe titre n'est pas seulement un honneur — c'est une responsabilité. En l'absence du Roi, vous parlez en son nom. Votre sagesse guide le royaume, votre jugement tranche les conflits, votre vision façonne l'avenir de la Table Ronde (mais carrée).\n\nOn dit que derrière chaque grand roi, il y a une grande main. Soyez digne de cette confiance.\n\nPrivilèges : titre permanent, accès complet à toutes les archives du royaume, honneur éternel gravé dans les chroniques.`
+            }
         ];
 
         // ── NIVEAUX (basés sur XP total) ─────────
@@ -2799,8 +2842,80 @@
 
                 if (document.getElementById('profil-niveau'))    document.getElementById('profil-niveau').innerText    = niveau;
                 if (document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
-                const elRang = document.getElementById('rang-chevalier');
-                if (elRang) elRang.innerHTML = `${rangActuel.icone} ${rangActuel.nom}`;
+                const elRang     = document.getElementById('rang-chevalier');
+                const elRangTxt  = document.getElementById('rang-chevalier-texte');
+                if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${rangActuel.nom}`;
+                if (elRang) {
+                    elRang.style.cursor = 'pointer';
+                    elRang.style.color  = rangActuel.coul;
+
+                    // ── Tooltip rang (inline, sans dépendance externe) ──
+                    const ttRang = document.getElementById('tooltip-rang-fiche');
+                    if (ttRang) {
+                        const prochainTxt = prochainRang
+                            ? `<span class="rpg-tt-bonus-pill">→ ${prochainRang.icone} ${prochainRang.nom} à ${prochainRang.seuil}j</span>`
+                            : `<span class="rpg-tt-bonus-pill">👑 Rang suprême atteint</span>`;
+                        ttRang.innerHTML = `
+                            <div class="rpg-tt-header">
+                                <div class="rpg-tt-header-icone">${rangActuel.icone}</div>
+                                <div>
+                                    <div class="rpg-tt-header-nom" style="color:${rangActuel.coul};">${rangActuel.nom}</div>
+                                    <div class="rpg-tt-header-accroche">${rangActuel.tooltip || ''}</div>
+                                </div>
+                            </div>
+                            <div class="rpg-tt-section">
+                                <div class="rpg-tt-label">Progression</div>
+                                <div class="rpg-tt-bonus">${prochainTxt}</div>
+                            </div>`;
+                    }
+
+                    // ── Modal rang (inline, sans dépendance externe) ──
+                    elRang.onclick = () => {
+                        const descBrut = (rangActuel.description_joueur || rangActuel.description || '').trim();
+                        const corps = descBrut.split(/\n\n+/).map(p =>
+                            `<p style="font-family:'Lora',serif;font-size:0.82rem;color:#3a2a0a;line-height:1.65;margin:0 0 12px;">${p.trim().replace(/\n/g,' ')}</p>`
+                        ).join('');
+                        const prochainBadge = prochainRang
+                            ? `<span style="font-family:'Cinzel',serif;font-size:0.7rem;
+                                background:rgba(139,0,0,0.08);border:1px solid rgba(139,0,0,0.25);
+                                color:var(--rouge-blason);padding:3px 10px;border-radius:2px;">
+                                → ${prochainRang.icone} ${prochainRang.nom} · à partir de ${prochainRang.seuil} jours</span>`
+                            : `<span style="font-family:'Cinzel',serif;font-size:0.7rem;
+                                background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.4);
+                                color:var(--or-sombre);padding:3px 10px;border-radius:2px;">
+                                👑 Rang suprême — vous êtes la légende</span>`;
+                        const contenu = document.getElementById('rpg-modal-contenu');
+                        if (!contenu) return;
+                        contenu.innerHTML = `
+                            <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;
+                                        padding-bottom:14px;border-bottom:1px solid rgba(139,0,0,0.25);">
+                                <div style="font-size:3.5rem;line-height:1;">${rangActuel.icone}</div>
+                                <div>
+                                    <div style="font-family:'Cinzel',serif;font-size:0.55rem;color:var(--or-sombre);
+                                         letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">RANG</div>
+                                    <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:bold;
+                                         color:${rangActuel.coul};letter-spacing:0.05em;">${rangActuel.nom}</div>
+                                    <div style="font-family:'Lora',serif;font-style:italic;font-size:0.75rem;
+                                         color:#5a3e1b;margin-top:4px;">${rangActuel.tooltip || ''}</div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom:16px;">
+                                <div style="font-family:'Cinzel',serif;font-size:0.58rem;color:var(--or-sombre);
+                                     letter-spacing:0.12em;text-transform:uppercase;margin-bottom:7px;">⏳ Prochain rang</div>
+                                <div style="display:flex;flex-wrap:wrap;gap:6px;">${prochainBadge}</div>
+                            </div>
+                            <div>
+                                <div style="font-family:'Cinzel',serif;font-size:0.58rem;color:var(--or-sombre);
+                                     letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;
+                                     padding-bottom:5px;border-bottom:1px solid rgba(139,0,0,0.2);">
+                                    📜 Chroniques du royaume
+                                </div>
+                                ${corps}
+                            </div>`;
+                        document.getElementById('rpg-modal-overlay').style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    };
+                }
                 if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = rangActuel.nom;
                 if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
 
@@ -3775,6 +3890,88 @@
         document.body.style.overflow = '';
     }
     window.fermerModalRPG = fermerModalRPG;
+
+    // ── RANG — TOOLTIP & MODAL ────────────────────────────
+    function construireTooltipRang(grade) {
+        if (!grade) return '';
+        const allGrades   = window.GRADES_DATA || window.RPG_GRADES || [];
+        const prochainIdx = allGrades.findIndex(g => g.nom === grade.nom) + 1;
+        const prochain    = allGrades[prochainIdx];
+        const prochainTxt = prochain
+            ? `<span class="rpg-tt-bonus-pill">→ ${prochain.icone} ${prochain.nom} à ${prochain.seuil}j</span>`
+            : `<span class="rpg-tt-bonus-pill">👑 Rang suprême atteint</span>`;
+        return `
+            <div class="rpg-tt-header">
+                <div class="rpg-tt-header-icone">${grade.icone}</div>
+                <div>
+                    <div class="rpg-tt-header-nom" style="color:${grade.coul};">${grade.nom}</div>
+                    <div class="rpg-tt-header-accroche">${grade.tooltip || ''}</div>
+                </div>
+            </div>
+            <div class="rpg-tt-section">
+                <div class="rpg-tt-label">Progression</div>
+                <div class="rpg-tt-bonus">${prochainTxt}</div>
+            </div>
+        `;
+    }
+    window.construireTooltipRang = construireTooltipRang;
+
+    window.ouvrirModalRang = function(grade) {
+        if (!grade) return;
+        const allGrades   = window.GRADES_DATA || window.RPG_GRADES || [];
+        const prochainIdx = allGrades.findIndex(g => g.nom === grade.nom) + 1;
+        const prochain    = allGrades[prochainIdx];
+
+        // Utilise description_joueur (rpg-data.js) ou description (GRADES inline)
+        const descBrut = (grade.description_joueur || grade.description || '').trim();
+        const corps = descBrut.split(/\n\n+/).map(p => {
+            const t = p.trim().replace(/\n/g, ' ');
+            return `<p style="font-family:'Lora',serif; font-size:0.82rem; color:#3a2a0a;
+                        line-height:1.65; margin:0 0 12px;">${t}</p>`;
+        }).join('');
+
+        const prochainBadge = prochain
+            ? `<span style="font-family:'Cinzel',serif; font-size:0.7rem;
+                background:rgba(139,0,0,0.08); border:1px solid rgba(139,0,0,0.25);
+                color:var(--rouge-blason); padding:3px 10px; border-radius:2px;">
+                → ${prochain.icone} ${prochain.nom} · ${prochain.seuil} jours</span>`
+            : `<span style="font-family:'Cinzel',serif; font-size:0.7rem;
+                background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.4);
+                color:var(--or-sombre); padding:3px 10px; border-radius:2px;">
+                👑 Rang suprême</span>`;
+
+        document.getElementById('rpg-modal-contenu').innerHTML = `
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;
+                        padding-bottom:14px; border-bottom:1px solid rgba(139,0,0,0.25);">
+                <div style="font-size:3.5rem; line-height:1;">${grade.icone}</div>
+                <div>
+                    <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre);
+                         letter-spacing:0.15em; text-transform:uppercase; margin-bottom:3px;">RANG</div>
+                    <div style="font-family:'Cinzel',serif; font-size:1.1rem; font-weight:bold;
+                         color:${grade.coul}; letter-spacing:0.05em;">${grade.nom}</div>
+                    <div style="font-family:'Lora',serif; font-style:italic; font-size:0.75rem;
+                         color:#5a3e1b; margin-top:4px;">${grade.tooltip || ''}</div>
+                </div>
+            </div>
+            <div style="margin-bottom:16px;">
+                <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--or-sombre);
+                     letter-spacing:0.12em; text-transform:uppercase; margin-bottom:7px;">
+                    ⏳ Prochain rang
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">${prochainBadge}</div>
+            </div>
+            <div>
+                <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--or-sombre);
+                     letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;
+                     padding-bottom:5px; border-bottom:1px solid rgba(139,0,0,0.2);">
+                    📜 Chroniques du royaume
+                </div>
+                ${corps}
+            </div>
+        `;
+        document.getElementById('rpg-modal-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
 
     // ── MODE SOMBRE / CLAIR ───────────────────────────────
     function appliquerMode(modeClair) {
