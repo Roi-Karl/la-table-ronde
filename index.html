@@ -1201,77 +1201,94 @@
         /* ─── COUR DU ROI — LEADERBOARD ─────────────────── */
         .cour-onglets {
             display: flex;
-            gap: 0;
-            margin-bottom: 0;
+            margin: 1.5rem 0 0;
             border-bottom: 2px solid var(--or-sombre);
         }
         .cour-onglet {
             flex: 1;
-            padding: 9px 0;
+            padding: 10px 0;
             font-family: 'Cinzel', serif;
-            font-size: 0.7rem;
-            letter-spacing: 0.12em;
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             cursor: pointer;
             border: 1px solid var(--or-sombre);
             border-bottom: none;
-            background: rgba(0,0,0,0.08);
+            background: rgba(0,0,0,0.06);
             color: #8a6a2a;
             transition: background 0.2s, color 0.2s;
             text-align: center;
         }
         .cour-onglet:first-child { border-right: none; }
         .cour-onglet.actif {
-            background: rgba(212,175,55,0.12);
+            background: rgba(212,175,55,0.1);
             color: var(--or-royal);
             border-bottom: 2px solid var(--or-royal);
             margin-bottom: -2px;
         }
-        .cour-onglet:hover:not(.actif) { background: rgba(212,175,55,0.06); color: var(--or-royal); }
+        .cour-onglet:hover:not(.actif) {
+            background: rgba(212,175,55,0.06);
+            color: var(--or-royal);
+        }
 
         .cour-liste {
             display: none;
             flex-direction: column;
-            gap: 0;
-            margin-top: 0;
         }
         .cour-liste.actif { display: flex; }
 
+        /* Ligne chevalier */
         .cour-chevalier {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 12px;
-            border-bottom: 1px dashed rgba(212,175,55,0.2);
+            padding: 11px 10px;
+            border-bottom: 1px solid rgba(212,175,55,0.12);
             transition: background 0.2s;
+            position: relative;
         }
         .cour-chevalier:last-child { border-bottom: none; }
         .cour-chevalier:hover { background: rgba(212,175,55,0.05); }
 
-        .cour-rang-num {
-            font-family: 'Cinzel', serif;
-            font-size: 0.75rem;
-            color: var(--or-sombre);
-            font-weight: bold;
-            min-width: 22px;
-            text-align: right;
+        /* Top 3 — légère distinction */
+        .cour-chevalier.cour-top {
+            background: rgba(212,175,55,0.04);
         }
-        .cour-rang-num.top1 { color: #ffd700; font-size: 0.9rem; }
-        .cour-rang-num.top2 { color: #c0c0c0; }
-        .cour-rang-num.top3 { color: #cd7f32; }
+        .cour-chevalier.cour-top:hover { background: rgba(212,175,55,0.09); }
 
-        .cour-icone {
-            font-size: 1.4rem;
+        /* Médaille / numéro */
+        .cour-medaille {
+            font-size: 1.2rem;
             min-width: 28px;
             text-align: center;
+            line-height: 1;
         }
+
+        /* Badge rang (icône dans cercle coloré) */
+        .cour-rang-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.15);
+        }
+
+        /* Infos texte */
         .cour-info {
             flex: 1;
             min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
         }
         .cour-pseudo {
             font-family: 'Cinzel', serif;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             color: var(--or-royal);
             font-weight: bold;
             white-space: nowrap;
@@ -1280,26 +1297,32 @@
         }
         .cour-details {
             font-family: 'Lora', serif;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             color: #7a6040;
-            margin-top: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px;
+            line-height: 1.4;
         }
-        .cour-xp {
-            font-family: 'Cinzel', serif;
-            font-size: 0.72rem;
-            color: var(--rouge-blason);
-            font-weight: bold;
+        .cour-sep { opacity: 0.4; }
+
+        /* Bloc XP à droite */
+        .cour-xp-bloc {
             text-align: right;
-            white-space: nowrap;
+            flex-shrink: 0;
         }
-        .cour-xp span {
-            display: block;
-            font-size: 0.52rem;
+        .cour-xp-val {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--rouge-blason);
+        }
+        .cour-xp-lab {
+            font-family: 'Lora', serif;
+            font-size: 0.6rem;
             color: #7a6040;
-            font-weight: normal;
+            margin-top: 1px;
         }
 
         .cour-vide {
@@ -1308,19 +1331,14 @@
             font-style: italic;
             color: #8a6a2a;
             font-size: 0.82rem;
-            padding: 24px 0;
+            padding: 28px 0;
         }
-        .cour-loading {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding: 12px 0;
-        }
-        .cour-skeleton-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 12px;
+        .cour-loading { display: flex; flex-direction: column; gap: 6px; padding: 10px 0; }
+        .cour-skeleton-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; }
+
+        @media (max-width: 700px) {
+            .cour-rang-badge { width: 32px; height: 32px; font-size: 1rem; }
+            .cour-xp-val { font-size: 0.75rem; }
         }
 
     </style>
@@ -2985,79 +3003,91 @@
     }
 
     function nomGuerre(data) {
-        if (data.nom_de_guerre && data.nom_de_guerre.trim()) {
-            return `${data.nom_de_guerre.trim()} (${tronquerPseudo(data.pseudo)})`;
-        }
-        return tronquerPseudo(data.pseudo);
+        const ng = (data.nom_de_guerre || '').trim();
+        const ps = tronquerPseudo(data.pseudo);
+        return ng ? `${ng} <span style="opacity:0.6;font-size:0.65rem;">(${ps})</span>` : ps;
     }
 
-    function calcXP(data) {
+    function calcJours(data) {
         const cree = data.cree_le?.seconds || 0;
-        const maintenant = Date.now() / 1000;
-        const jours = Math.max(0, Math.floor((maintenant - cree) / 86400));
-        return 10 + (jours * 12) + (data.xp_quiz || 0);
+        if (!cree) return 0;
+        return Math.max(0, Math.floor((Date.now() / 1000 - cree) / 86400));
     }
 
-    function getRang(xp) {
+    function calcXPTotal(data) {
+        return 10 + (calcJours(data) * 12) + (data.xp_quiz || 0);
+    }
+
+    function getRangFromJours(jours) {
         const grades = window.GRADES_DATA || [];
         let rang = grades[0];
-        for (const g of grades) { if (xp >= g.seuil) rang = g; else break; }
+        for (const g of grades) { if (jours >= g.seuil) rang = g; else break; }
         return rang;
     }
 
     function rendreChevalier(data, index, mode) {
-        const xp    = calcXP(data);
-        const rang  = getRang(xp);
+        const jours = calcJours(data);
+        const xp    = calcXPTotal(data);
+        const rang  = getRangFromJours(jours);
         const align = data.alignement || '';
         const iconeAlign = (window._alignementsIcones && align) ? (window._alignementsIcones[align] || '') : '';
-        const numClasse = index === 0 ? 'top1' : index === 1 ? 'top2' : index === 2 ? 'top3' : '';
-        const numLabel  = index === 0 ? '👑' : `#${index + 1}`;
 
-        const details = [
-            rang.icone + ' ' + rang.nom,
-            align ? (iconeAlign + ' ' + align) : ''
-        ].filter(Boolean).join('  ·  ');
+        // Médaille top 3
+        const medaille = ['🥇','🥈','🥉'][index] || '';
+        const numLabel = medaille || `<span style="font-size:0.7rem;color:var(--or-sombre)">#${index+1}</span>`;
+        const isTop = index < 3;
 
-        const dateLabel = mode === 'inscrits' && data.cree_le?.seconds
+        // Couleur rang
+        const coulRang = rang.coul || '#d4af37';
+
+        // Date inscription
+        const dateStr = data.cree_le?.seconds
             ? new Date(data.cree_le.seconds * 1000).toLocaleDateString('fr-CA', {day:'2-digit', month:'short', year:'numeric'})
             : '';
 
+        // Royaume
+        const royaume = data.royaume ? `🏰 ${data.royaume}` : '';
+
         return `
-        <div class="cour-chevalier">
-            <div class="cour-rang-num ${numClasse}">${numLabel}</div>
-            <div class="cour-icone">${rang.icone}</div>
+        <div class="cour-chevalier${isTop ? ' cour-top' : ''}">
+            <div class="cour-medaille">${numLabel}</div>
+            <div class="cour-rang-badge" style="color:${coulRang}; border-color:${coulRang}33;">${rang.icone}</div>
             <div class="cour-info">
                 <div class="cour-pseudo">${nomGuerre(data)}</div>
-                <div class="cour-details">${details}${dateLabel ? ' · ' + dateLabel : ''}</div>
+                <div class="cour-details">
+                    <span style="color:${coulRang}">${rang.nom}</span>
+                    ${align ? `<span class="cour-sep">·</span><span>${iconeAlign} ${align}</span>` : ''}
+                    ${mode === 'inscrits' && dateStr ? `<span class="cour-sep">·</span><span>📅 ${dateStr}</span>` : ''}
+                    ${royaume ? `<span class="cour-sep">·</span><span>${royaume}</span>` : ''}
+                </div>
             </div>
-            <div class="cour-xp">${xp.toLocaleString('fr-CA')} XP<span>${rang.nom}</span></div>
+            <div class="cour-xp-bloc">
+                <div class="cour-xp-val">${xp.toLocaleString('fr-CA')}</div>
+                <div class="cour-xp-lab">XP · ${jours}j</div>
+            </div>
         </div>`;
     }
 
     async function chargerCour() {
-        const db          = window._firebaseDb;
-        const col         = window._firebaseCollection;
-        const qFn         = window._firebaseQuery;
-        const getDocs     = window._firebaseGetDocs;
-        const orderByFn   = window._firebaseOrderBy;
-        const limitFn     = window._firebaseLimit;
+        const db        = window._firebaseDb;
+        const col       = window._firebaseCollection;
+        const qFn       = window._firebaseQuery;
+        const getDocs   = window._firebaseGetDocs;
+        const limitFn   = window._firebaseLimit;
         if (!db || !col) return;
 
         try {
-            // Hauts gradés — tri par cree_le DESC pour calculer XP côté client (pas de champ xp calculé en DB)
-            // On charge 20 membres et on trie côté client par XP calculé
-            const snapAll = await getDocs(qFn(col(db, 'membres'), limitFn(50)));
+            const snap = await getDocs(qFn(col(db, 'membres'), limitFn(50)));
             const tous = [];
-            snapAll.forEach(d => tous.push({ id: d.id, ...d.data() }));
+            snap.forEach(d => tous.push({ id: d.id, ...d.data() }));
 
-            // Hauts gradés : trier par XP calculé
             _courDonneesGrades = [...tous]
-                .sort((a, b) => calcXP(b) - calcXP(a))
+                .filter(d => d.pseudo || d.nom_de_guerre)
+                .sort((a, b) => calcJours(b) - calcJours(a))   // tri par ancienneté = rang
                 .slice(0, 10);
 
-            // Derniers inscrits : trier par date création
             _courDonneesInscrits = [...tous]
-                .filter(d => d.cree_le)
+                .filter(d => d.cree_le && (d.pseudo || d.nom_de_guerre))
                 .sort((a, b) => (b.cree_le?.seconds || 0) - (a.cree_le?.seconds || 0))
                 .slice(0, 10);
 
@@ -3065,9 +3095,11 @@
             afficherCourListe('inscrits');
 
         } catch (e) {
-            console.warn('Cour du Roi — erreur Firestore:', e);
-            document.getElementById('cour-liste-grades').innerHTML   = '<p class="cour-vide">⚔️ Les archives royales sont inaccessibles.</p>';
-            document.getElementById('cour-liste-inscrits').innerHTML = '<p class="cour-vide">⚔️ Les archives royales sont inaccessibles.</p>';
+            console.warn('Cour du Roi — erreur:', e);
+            ['cour-liste-grades','cour-liste-inscrits'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = '<p class="cour-vide">⚔️ Les archives royales sont inaccessibles.</p>';
+            });
         }
     }
 
@@ -3075,7 +3107,6 @@
         const données = type === 'gradés' ? _courDonneesGrades : _courDonneesInscrits;
         const el      = document.getElementById(type === 'gradés' ? 'cour-liste-grades' : 'cour-liste-inscrits');
         if (!el || !données) return;
-
         if (données.length === 0) {
             el.innerHTML = '<p class="cour-vide">Aucun chevalier recensé pour l\'instant.</p>';
             return;
@@ -3087,11 +3118,9 @@
         document.querySelectorAll('.cour-onglet').forEach(b => b.classList.remove('actif'));
         document.querySelectorAll('.cour-liste').forEach(l => l.classList.remove('actif'));
         btn.classList.add('actif');
-        const id = type === 'gradés' ? 'cour-liste-grades' : 'cour-liste-inscrits';
-        document.getElementById(id).classList.add('actif');
+        document.getElementById(type === 'gradés' ? 'cour-liste-grades' : 'cour-liste-inscrits').classList.add('actif');
     }
 
-    // Charger au démarrage dès que Firebase est prêt
     document.addEventListener('DOMContentLoaded', () => {
         const attendre = setInterval(() => {
             if (window._firebaseDb && window._firebaseCollection && window.GRADES_DATA) {
