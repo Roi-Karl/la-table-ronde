@@ -37,7 +37,126 @@
             --rouge-vif: #a01010;
             --gris-pierre: #333333;
             --gris-clair: #888;
+
+            /* Variables de mode (sombre par défaut) */
+            --fond-body: var(--noir-encre);
+            --texte-body: var(--parchemin);
+            --fond-parchemin-box: rgba(255,255,255,0.03);
+            --bord-parchemin-box: var(--or-sombre);
+            --texte-parchemin: var(--parchemin);
+            --fond-nav: rgba(0,0,0,0.92);
+            --fond-profil: rgba(255,255,255,0.03);
+            --texte-label: var(--or-sombre);
+            --texte-input: var(--parchemin);
+            --fond-input-border: var(--or-sombre);
         }
+
+        /* ── MODE CLAIR ─────────────────────────────── */
+        body.mode-clair {
+            --fond-body: #f0e8d0;
+            --texte-body: #1a0e02;
+            --fond-parchemin-box: rgba(255,255,255,0.7);
+            --bord-parchemin-box: #c8a850;
+            --texte-parchemin: #1a0e02;
+            --fond-nav: rgba(240,230,200,0.97);
+            --fond-profil: rgba(255,255,255,0.6);
+            --texte-label: #7a5a10;
+            --texte-input: #1a0e02;
+            --fond-input-border: #a07820;
+        }
+        body.mode-clair {
+            background-color: var(--fond-body);
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.015) 4px, rgba(0,0,0,0.015) 5px);
+            color: var(--texte-body);
+        }
+        body.mode-clair nav {
+            background: var(--fond-nav);
+            border-bottom-color: var(--or-sombre);
+        }
+        body.mode-clair nav a, body.mode-clair .nav-logo {
+            color: var(--rouge-blason) !important;
+        }
+        body.mode-clair nav a:hover { color: var(--or-sombre) !important; }
+        body.mode-clair .parchemin-box {
+            background: var(--fond-parchemin-box);
+            border-color: var(--bord-parchemin-box);
+            color: var(--texte-parchemin);
+        }
+        body.mode-clair .parchemin-box h2,
+        body.mode-clair .parchemin-box h3 { color: var(--rouge-blason); }
+        body.mode-clair .parchemin-box p,
+        body.mode-clair .parchemin-box li { color: #2a1a06; }
+        body.mode-clair header {
+            background: linear-gradient(180deg, #d4b87a 0%, #e8d5a8 60%, #f0e8d0 100%);
+        }
+        body.mode-clair header h1,
+        body.mode-clair header p { color: var(--rouge-blason); text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        body.mode-clair .fiche-container {
+            background: rgba(255,255,255,0.55);
+            border-color: var(--bord-parchemin-box);
+        }
+        body.mode-clair .fiche-label { color: var(--texte-label); }
+        body.mode-clair .fiche-valeur { color: #1a0e02; }
+        body.mode-clair .fiche-histoire { background: rgba(255,255,255,0.4); border-color: #c8a850; }
+        body.mode-clair .fiche-histoire-label { color: var(--rouge-blason); }
+        body.mode-clair .fiche-histoire-texte { color: #2a1a06; }
+        body.mode-clair .carac-card {
+            background: rgba(255,255,255,0.5);
+            border-color: #c8a850;
+        }
+        body.mode-clair .carac-card-label { color: var(--texte-label); }
+        body.mode-clair .carac-card-valeur { color: var(--rouge-blason); }
+        body.mode-clair .ligne-info .label { color: var(--texte-label); }
+        body.mode-clair input, body.mode-clair select, body.mode-clair textarea {
+            color: var(--texte-input) !important;
+            border-bottom-color: var(--fond-input-border) !important;
+        }
+        body.mode-clair footer { background: rgba(0,0,0,0.08); color: #5a3e1b; }
+        body.mode-clair footer a { color: var(--rouge-blason); }
+
+        /* Toggle switch */
+        .mode-toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mode-toggle-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            color: var(--or-sombre);
+            letter-spacing: 0.08em;
+            min-width: 80px;
+        }
+        .mode-toggle {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+        .mode-toggle input { display: none; }
+        .mode-toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: #2a1a04;
+            border: 1px solid var(--or-sombre);
+            border-radius: 26px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .mode-toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            left: 3px; top: 3px;
+            background: var(--or-sombre);
+            border-radius: 50%;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .mode-toggle input:checked + .mode-toggle-slider { background: #e8d5a8; border-color: #c8a850; }
+        .mode-toggle input:checked + .mode-toggle-slider::before { transform: translateX(22px); background: var(--rouge-blason); }
+        .mode-toggle-icone { font-size: 1rem; line-height: 1; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -1992,6 +2111,20 @@
                                   style="background:rgba(0,0,0,0.03); border:1px dashed var(--or-sombre); font-family:'Lora'; font-style:italic; width:100%; margin-top:5px; padding:5px; height:55px; resize:none;"></textarea>
                     </div>
 
+                    <!-- ── Apparence ── -->
+                    <div style="margin: 12px 0 8px; padding: 10px 0; border-top: 1px dashed rgba(212,175,55,0.25);">
+                        <span class="label" style="display:block; margin-bottom:10px;">🎨 Apparence :</span>
+                        <div class="mode-toggle-wrap">
+                            <span class="mode-toggle-icone">🌙</span>
+                            <label class="mode-toggle" title="Basculer mode sombre / clair">
+                                <input type="checkbox" id="toggle-mode-clair" onchange="basculerMode(this.checked)">
+                                <span class="mode-toggle-slider"></span>
+                            </label>
+                            <span class="mode-toggle-icone">☀️</span>
+                            <span class="mode-toggle-label" id="label-mode-affiche">Mode Sombre</span>
+                        </div>
+                    </div>
+
                     <!-- ── Préférences de notifications ── -->
                     <div style="margin: 12px 0 8px;">
                         <span class="label" style="display:block; margin-bottom:8px;">🔔 Notifications Royales :</span>
@@ -2618,6 +2751,10 @@
                             if (document.getElementById('notif-videos'))   document.getElementById('notif-videos').checked   = data.notifications.videos   || false;
                             if (document.getElementById('notif-exclusif')) document.getElementById('notif-exclusif').checked = data.notifications.exclusif || false;
                             if (document.getElementById('notif-annonces')) document.getElementById('notif-annonces').checked = data.notifications.annonces || false;
+                        }
+                        // Charger le mode sombre/clair
+                        if (typeof data.mode_clair !== 'undefined') {
+                            appliquerMode(data.mode_clair);
                         }
                         if (data.cree_le) dateCreation = data.cree_le.toDate();
                     } else {
@@ -3322,16 +3459,16 @@
         justify-content:center; align-items:center; padding:20px;
     ">
         <div onclick="event.stopPropagation()" style="
-            background:linear-gradient(160deg,#1e1005,#2d1a04);
-            border:1px solid rgba(212,175,55,0.55);
+            background:#f5ead8;
+            border:2px solid var(--or-sombre);
             border-radius:4px; max-width:520px; width:100%;
             max-height:90vh; overflow-y:auto; position:relative;
-            box-shadow:0 12px 60px rgba(0,0,0,0.85), inset 0 0 40px rgba(212,175,55,0.03);
+            box-shadow:0 8px 40px rgba(0,0,0,0.7);
         ">
             <button onclick="fermerModalRPG()" style="
                 position:absolute; top:12px; right:16px;
                 background:none; border:none; font-size:1.3rem;
-                cursor:pointer; color:var(--or-sombre); line-height:1; z-index:1;
+                cursor:pointer; color:var(--rouge-blason); line-height:1; z-index:1;
             ">✕</button>
             <div id="rpg-modal-contenu" style="padding:32px 28px 28px;"></div>
         </div>
@@ -3563,8 +3700,8 @@
         const bonusPills = Object.entries(data.bonus || {})
             .map(([k, v]) => `<span style="
                 font-family:'Cinzel',serif; font-size:0.7rem;
-                background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.4);
-                color:#f0d080; padding:3px 10px; border-radius:2px;
+                background:rgba(139,0,0,0.08); border:1px solid rgba(139,0,0,0.3);
+                color:var(--rouge-blason); padding:3px 10px; border-radius:2px;
             ">+${v} ${caracNoms[k]}</span>`)
             .join('');
 
@@ -3573,20 +3710,19 @@
         const paragraphes = descBrut.split(/\n\n+/).map(p => {
             const lignes = p.trim().split('\n');
             if (lignes.length === 1) {
-                return `<p style="font-family:'Lora',serif; font-size:0.82rem; color:#d4c4a0; line-height:1.65; margin:0 0 10px;">${lignes[0]}</p>`;
+                return `<p style="font-family:'Lora',serif; font-size:0.82rem; color:#3a2a0a; line-height:1.65; margin:0 0 10px;">${lignes[0]}</p>`;
             }
-            // Titre de section + items
             const titre = lignes[0];
             const items = lignes.slice(1).map(l =>
                 l.startsWith('•')
-                    ? `<li style="font-family:'Lora',serif; font-size:0.78rem; color:#c8b896; line-height:1.55; margin-bottom:3px;">${l.slice(1).trim()}</li>`
-                    : `<p style="font-family:'Lora',serif; font-size:0.78rem; color:#d4c4a0; line-height:1.55; margin:0 0 4px;">${l}</p>`
+                    ? `<li style="font-family:'Lora',serif; font-size:0.78rem; color:#4a3010; line-height:1.55; margin-bottom:3px;">${l.slice(1).trim()}</li>`
+                    : `<p style="font-family:'Lora',serif; font-size:0.78rem; color:#3a2a0a; line-height:1.55; margin:0 0 4px;">${l}</p>`
             ).join('');
             const hasList = lignes.slice(1).some(l => l.startsWith('•'));
             return `<div style="margin-bottom:12px;">
-                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:var(--or-sombre);
+                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:var(--rouge-blason);
                      letter-spacing:0.1em; text-transform:uppercase; margin-bottom:5px;
-                     padding-bottom:3px; border-bottom:1px solid rgba(212,175,55,0.2);">${titre}</div>
+                     padding-bottom:3px; border-bottom:1px solid rgba(139,0,0,0.2);">${titre}</div>
                 ${hasList ? `<ul style="margin:0; padding-left:14px;">${items}</ul>` : items}
             </div>`;
         }).join('');
@@ -3597,15 +3733,15 @@
         document.getElementById('rpg-modal-contenu').innerHTML = `
             <!-- En-tête -->
             <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;
-                        padding-bottom:14px; border-bottom:1px solid rgba(212,175,55,0.35);">
+                        padding-bottom:14px; border-bottom:1px solid rgba(139,0,0,0.25);">
                 <div style="font-size:3.5rem; line-height:1;">${data.icone}</div>
                 <div>
                     <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre);
                          letter-spacing:0.15em; text-transform:uppercase; margin-bottom:3px;">${typeLabel}</div>
                     <div style="font-family:'Cinzel',serif; font-size:1.1rem; font-weight:bold;
-                         color:var(--or-royal); letter-spacing:0.05em;">${nomAffiche}</div>
+                         color:var(--rouge-blason); letter-spacing:0.05em;">${nomAffiche}</div>
                     <div style="font-family:'Lora',serif; font-style:italic; font-size:0.75rem;
-                         color:#c8a96e; margin-top:4px;">${data.tooltip || ''}</div>
+                         color:#5a3e1b; margin-top:4px;">${data.tooltip || ''}</div>
                 </div>
             </div>
 
@@ -3622,7 +3758,7 @@
             <div style="margin-bottom:4px;">
                 <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--or-sombre);
                      letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;
-                     padding-bottom:5px; border-bottom:1px solid rgba(212,175,55,0.2);">
+                     padding-bottom:5px; border-bottom:1px solid rgba(139,0,0,0.2);">
                     📖 Fiche du Joueur
                 </div>
                 ${paragraphes}
@@ -3641,6 +3777,28 @@
         document.body.style.overflow = '';
     }
     window.fermerModalRPG = fermerModalRPG;
+
+    // ── MODE SOMBRE / CLAIR ───────────────────────────────
+    function appliquerMode(modeClair) {
+        document.body.classList.toggle('mode-clair', modeClair);
+        const toggle = document.getElementById('toggle-mode-clair');
+        const label  = document.getElementById('label-mode-affiche');
+        if (toggle) toggle.checked = modeClair;
+        if (label)  label.textContent = modeClair ? 'Mode Clair' : 'Mode Sombre';
+    }
+
+    window.basculerMode = async function(modeClair) {
+        appliquerMode(modeClair);
+        // Sauvegarder dans Firestore si connecté
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+        try {
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, 'membres', user.uid),
+                { mode_clair: modeClair }, { merge: true }
+            );
+        } catch(e) { console.warn('Erreur sauvegarde mode:', e); }
+    };
 
     
     let _courDonneesGrades   = null;
