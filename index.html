@@ -1198,6 +1198,131 @@
             .carac-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; }
             .fiche-container { padding: 10px 8px; }
         }
+        /* ─── COUR DU ROI — LEADERBOARD ─────────────────── */
+        .cour-onglets {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+            border-bottom: 2px solid var(--or-sombre);
+        }
+        .cour-onglet {
+            flex: 1;
+            padding: 9px 0;
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 1px solid var(--or-sombre);
+            border-bottom: none;
+            background: rgba(0,0,0,0.08);
+            color: #8a6a2a;
+            transition: background 0.2s, color 0.2s;
+            text-align: center;
+        }
+        .cour-onglet:first-child { border-right: none; }
+        .cour-onglet.actif {
+            background: rgba(212,175,55,0.12);
+            color: var(--or-royal);
+            border-bottom: 2px solid var(--or-royal);
+            margin-bottom: -2px;
+        }
+        .cour-onglet:hover:not(.actif) { background: rgba(212,175,55,0.06); color: var(--or-royal); }
+
+        .cour-liste {
+            display: none;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 0;
+        }
+        .cour-liste.actif { display: flex; }
+
+        .cour-chevalier {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-bottom: 1px dashed rgba(212,175,55,0.2);
+            transition: background 0.2s;
+        }
+        .cour-chevalier:last-child { border-bottom: none; }
+        .cour-chevalier:hover { background: rgba(212,175,55,0.05); }
+
+        .cour-rang-num {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: var(--or-sombre);
+            font-weight: bold;
+            min-width: 22px;
+            text-align: right;
+        }
+        .cour-rang-num.top1 { color: #ffd700; font-size: 0.9rem; }
+        .cour-rang-num.top2 { color: #c0c0c0; }
+        .cour-rang-num.top3 { color: #cd7f32; }
+
+        .cour-icone {
+            font-size: 1.4rem;
+            min-width: 28px;
+            text-align: center;
+        }
+        .cour-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .cour-pseudo {
+            font-family: 'Cinzel', serif;
+            font-size: 0.78rem;
+            color: var(--or-royal);
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cour-details {
+            font-family: 'Lora', serif;
+            font-size: 0.7rem;
+            color: #7a6040;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cour-xp {
+            font-family: 'Cinzel', serif;
+            font-size: 0.72rem;
+            color: var(--rouge-blason);
+            font-weight: bold;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .cour-xp span {
+            display: block;
+            font-size: 0.52rem;
+            color: #7a6040;
+            font-weight: normal;
+        }
+
+        .cour-vide {
+            text-align: center;
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: #8a6a2a;
+            font-size: 0.82rem;
+            padding: 24px 0;
+        }
+        .cour-loading {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px 0;
+        }
+        .cour-skeleton-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 12px;
+        }
+
     </style>
     <!-- Banque de questions du Quiz d'Alignement -->
     <script src="questions.js"></script>
@@ -1222,6 +1347,7 @@
         <div id="nav-liens">
             <a href="#accueil">Accueil</a>
             <a href="#video">Dernière Quête</a>
+            <a href="#cour-du-roi">La Cour</a>
             <a href="#grimoire">Grimoire</a>
             <a href="#echoppe">Échoppe</a>
             <a href="#registre">Registre</a>
@@ -1236,6 +1362,7 @@
         <div id="nav-dropdown">
             <a href="#accueil" onclick="fermerMenu()">Accueil</a>
             <a href="#video" onclick="fermerMenu()">Dernière Quête</a>
+            <a href="#cour-du-roi" onclick="fermerMenu()">La Cour</a>
             <a href="#grimoire" onclick="fermerMenu()">Grimoire</a>
             <a href="#echoppe" onclick="fermerMenu()">Échoppe</a>
             <a href="#registre" onclick="fermerMenu()">Registre</a>
@@ -1289,6 +1416,44 @@
                     <div class="yt-play"></div>
                 </div>
             </div>
+        </section>
+
+        <!-- COUR DU ROI — LEADERBOARD -->
+        <section id="cour-du-roi" class="parchemin-box">
+            <h2>⚜ La Cour du Roi</h2>
+            <p>Les plus nobles chevaliers ayant prêté allégeance au Roi Karl.</p>
+
+            <!-- Onglets -->
+            <div class="cour-onglets" style="margin-top:1.5rem;">
+                <button class="cour-onglet actif" onclick="basculerCourOnglet('gradés', this)">
+                    👑 Hauts Gradés
+                </button>
+                <button class="cour-onglet" onclick="basculerCourOnglet('inscrits', this)">
+                    🕯 Derniers Inscrits
+                </button>
+            </div>
+
+            <!-- Liste hauts gradés -->
+            <div id="cour-liste-grades" class="cour-liste actif">
+                <div class="cour-loading" id="cour-loading-grades">
+                    <div class="cour-skeleton-row"><span class="skeleton" style="width:20px;height:14px"></span><span class="skeleton" style="width:30px;height:28px;border-radius:50%"></span><span class="skeleton" style="width:60%;height:14px"></span><span class="skeleton" style="width:40px;height:14px"></span></div>
+                    <div class="cour-skeleton-row"><span class="skeleton" style="width:20px;height:14px"></span><span class="skeleton" style="width:30px;height:28px;border-radius:50%"></span><span class="skeleton" style="width:50%;height:14px"></span><span class="skeleton" style="width:40px;height:14px"></span></div>
+                    <div class="cour-skeleton-row"><span class="skeleton" style="width:20px;height:14px"></span><span class="skeleton" style="width:30px;height:28px;border-radius:50%"></span><span class="skeleton" style="width:55%;height:14px"></span><span class="skeleton" style="width:40px;height:14px"></span></div>
+                </div>
+            </div>
+
+            <!-- Liste derniers inscrits -->
+            <div id="cour-liste-inscrits" class="cour-liste">
+                <div class="cour-loading" id="cour-loading-inscrits">
+                    <div class="cour-skeleton-row"><span class="skeleton" style="width:20px;height:14px"></span><span class="skeleton" style="width:30px;height:28px;border-radius:50%"></span><span class="skeleton" style="width:60%;height:14px"></span><span class="skeleton" style="width:40px;height:14px"></span></div>
+                    <div class="cour-skeleton-row"><span class="skeleton" style="width:20px;height:14px"></span><span class="skeleton" style="width:30px;height:28px;border-radius:50%"></span><span class="skeleton" style="width:50%;height:14px"></span><span class="skeleton" style="width:40px;height:14px"></span></div>
+                    <div class="cour-skeleton-row"><span class="skeleton" style="width:20px;height:14px"></span><span class="skeleton" style="width:30px;height:28px;border-radius:50%"></span><span class="skeleton" style="width:55%;height:14px"></span><span class="skeleton" style="width:40px;height:14px"></span></div>
+                </div>
+            </div>
+
+            <p style="font-family:'Lora',serif;font-style:italic;font-size:0.7rem;color:#8a6a2a;text-align:center;margin-top:14px;border-top:1px dashed rgba(212,175,55,0.2);padding-top:10px;">
+                ✦ Les données sont actualisées à chaque visite ✦
+            </p>
         </section>
 
         <!-- GRIMOIRE -->
@@ -1705,6 +1870,7 @@
         <div class="footer-liens">
             <a href="#accueil">Accueil</a>
             <a href="#video">Dernière Quête</a>
+            <a href="#cour-du-roi">La Cour</a>
             <a href="#grimoire">Grimoire</a>
             <a href="#echoppe">Échoppe</a>
 
@@ -1827,7 +1993,12 @@
             getDoc,
             setDoc,
             deleteDoc,
-            serverTimestamp
+            serverTimestamp,
+            collection,
+            getDocs,
+            query,
+            orderBy,
+            limit
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // ── GRADES ───────────────────────────────
@@ -2176,10 +2347,15 @@
 
 
         // ── Exposer sur window pour les modals (hors module) ─────
-        window._firebaseAuth   = auth;
-        window._firebaseDb     = db;
-        window._firebaseSetDoc = setDoc;
-        window._firebaseDoc    = doc;
+        window._firebaseAuth      = auth;
+        window._firebaseDb        = db;
+        window._firebaseSetDoc    = setDoc;
+        window._firebaseDoc       = doc;
+        window._firebaseCollection = collection;
+        window._firebaseGetDocs   = getDocs;
+        window._firebaseQuery     = query;
+        window._firebaseOrderBy   = orderBy;
+        window._firebaseLimit     = limit;
         window._alignementsIcones = Object.fromEntries(
             Object.entries(ALIGNEMENTS_DATA).map(([k, v]) => [k, v.icone])
         );
@@ -2798,6 +2974,132 @@
         iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
         wrapper.appendChild(iframe);
     }
+
+    // ── COUR DU ROI — LEADERBOARD ─────────────────────────
+    let _courDonneesGrades   = null;
+    let _courDonneesInscrits = null;
+
+    function tronquerPseudo(pseudo) {
+        if (!pseudo || pseudo.length <= 3) return pseudo || '???';
+        return pseudo.slice(0, 3) + '*'.repeat(Math.min(pseudo.length - 3, 3));
+    }
+
+    function nomGuerre(data) {
+        if (data.nom_de_guerre && data.nom_de_guerre.trim()) {
+            return `${data.nom_de_guerre.trim()} (${tronquerPseudo(data.pseudo)})`;
+        }
+        return tronquerPseudo(data.pseudo);
+    }
+
+    function calcXP(data) {
+        const cree = data.cree_le?.seconds || 0;
+        const maintenant = Date.now() / 1000;
+        const jours = Math.max(0, Math.floor((maintenant - cree) / 86400));
+        return 10 + (jours * 12) + (data.xp_quiz || 0);
+    }
+
+    function getRang(xp) {
+        const grades = window.GRADES_DATA || [];
+        let rang = grades[0];
+        for (const g of grades) { if (xp >= g.seuil) rang = g; else break; }
+        return rang;
+    }
+
+    function rendreChevalier(data, index, mode) {
+        const xp    = calcXP(data);
+        const rang  = getRang(xp);
+        const align = data.alignement || '';
+        const iconeAlign = (window._alignementsIcones && align) ? (window._alignementsIcones[align] || '') : '';
+        const numClasse = index === 0 ? 'top1' : index === 1 ? 'top2' : index === 2 ? 'top3' : '';
+        const numLabel  = index === 0 ? '👑' : `#${index + 1}`;
+
+        const details = [
+            rang.icone + ' ' + rang.nom,
+            align ? (iconeAlign + ' ' + align) : ''
+        ].filter(Boolean).join('  ·  ');
+
+        const dateLabel = mode === 'inscrits' && data.cree_le?.seconds
+            ? new Date(data.cree_le.seconds * 1000).toLocaleDateString('fr-CA', {day:'2-digit', month:'short', year:'numeric'})
+            : '';
+
+        return `
+        <div class="cour-chevalier">
+            <div class="cour-rang-num ${numClasse}">${numLabel}</div>
+            <div class="cour-icone">${rang.icone}</div>
+            <div class="cour-info">
+                <div class="cour-pseudo">${nomGuerre(data)}</div>
+                <div class="cour-details">${details}${dateLabel ? ' · ' + dateLabel : ''}</div>
+            </div>
+            <div class="cour-xp">${xp.toLocaleString('fr-CA')} XP<span>${rang.nom}</span></div>
+        </div>`;
+    }
+
+    async function chargerCour() {
+        const db          = window._firebaseDb;
+        const col         = window._firebaseCollection;
+        const qFn         = window._firebaseQuery;
+        const getDocs     = window._firebaseGetDocs;
+        const orderByFn   = window._firebaseOrderBy;
+        const limitFn     = window._firebaseLimit;
+        if (!db || !col) return;
+
+        try {
+            // Hauts gradés — tri par cree_le DESC pour calculer XP côté client (pas de champ xp calculé en DB)
+            // On charge 20 membres et on trie côté client par XP calculé
+            const snapAll = await getDocs(qFn(col(db, 'membres'), limitFn(50)));
+            const tous = [];
+            snapAll.forEach(d => tous.push({ id: d.id, ...d.data() }));
+
+            // Hauts gradés : trier par XP calculé
+            _courDonneesGrades = [...tous]
+                .sort((a, b) => calcXP(b) - calcXP(a))
+                .slice(0, 10);
+
+            // Derniers inscrits : trier par date création
+            _courDonneesInscrits = [...tous]
+                .filter(d => d.cree_le)
+                .sort((a, b) => (b.cree_le?.seconds || 0) - (a.cree_le?.seconds || 0))
+                .slice(0, 10);
+
+            afficherCourListe('gradés');
+            afficherCourListe('inscrits');
+
+        } catch (e) {
+            console.warn('Cour du Roi — erreur Firestore:', e);
+            document.getElementById('cour-liste-grades').innerHTML   = '<p class="cour-vide">⚔️ Les archives royales sont inaccessibles.</p>';
+            document.getElementById('cour-liste-inscrits').innerHTML = '<p class="cour-vide">⚔️ Les archives royales sont inaccessibles.</p>';
+        }
+    }
+
+    function afficherCourListe(type) {
+        const données = type === 'gradés' ? _courDonneesGrades : _courDonneesInscrits;
+        const el      = document.getElementById(type === 'gradés' ? 'cour-liste-grades' : 'cour-liste-inscrits');
+        if (!el || !données) return;
+
+        if (données.length === 0) {
+            el.innerHTML = '<p class="cour-vide">Aucun chevalier recensé pour l\'instant.</p>';
+            return;
+        }
+        el.innerHTML = données.map((d, i) => rendreChevalier(d, i, type === 'inscrits' ? 'inscrits' : 'grades')).join('');
+    }
+
+    function basculerCourOnglet(type, btn) {
+        document.querySelectorAll('.cour-onglet').forEach(b => b.classList.remove('actif'));
+        document.querySelectorAll('.cour-liste').forEach(l => l.classList.remove('actif'));
+        btn.classList.add('actif');
+        const id = type === 'gradés' ? 'cour-liste-grades' : 'cour-liste-inscrits';
+        document.getElementById(id).classList.add('actif');
+    }
+
+    // Charger au démarrage dès que Firebase est prêt
+    document.addEventListener('DOMContentLoaded', () => {
+        const attendre = setInterval(() => {
+            if (window._firebaseDb && window._firebaseCollection && window.GRADES_DATA) {
+                clearInterval(attendre);
+                chargerCour();
+            }
+        }, 300);
+    });
 
     function ouvrirCodeChevalerie() {
         document.getElementById('chevalerie-modal-overlay').style.display = 'flex';
