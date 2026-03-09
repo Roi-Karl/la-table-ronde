@@ -3124,7 +3124,13 @@
         return rang;
     }
 
+    let _courRegistre = []; // stockage des données membres pour le modal
+    window._courRegistre = _courRegistre;
+
     function rendreChevalier(data, index, mode) {
+        // Stocker dans le registre pour le modal
+        _courRegistre[index + (mode === 'inscrits' ? 100 : 0)] = data;
+        const registreKey = index + (mode === 'inscrits' ? 100 : 0);
         const jours = calcJours(data);
         const xp    = calcXPTotal(data);
         const rang  = getRangFromJours(jours);
@@ -3152,7 +3158,7 @@
             <div class="cour-medaille">${numLabel}</div>
             <div class="cour-rang-badge" style="color:${coulRang}; border-color:${coulRang}33;">${rang.icone}</div>
             <div class="cour-info">
-                <div class="cour-pseudo cour-pseudo-cliquable" onclick='ouvrirFicheModal(${JSON.stringify(data)})' title="Voir la fiche">${nomGuerre(data)}</div>
+                <div class="cour-pseudo cour-pseudo-cliquable" onclick="ouvrirFicheModal(_courRegistre[${registreKey}])" title="Voir la fiche">${nomGuerre(data)}</div>
                 <div class="cour-details">
                     <span style="color:${coulRang}">${rang.nom}</span>
                     ${align ? `<span class="cour-sep">·</span><span>${iconeAlign} ${align}</span>` : ''}
