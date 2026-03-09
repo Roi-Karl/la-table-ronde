@@ -1325,7 +1325,10 @@
             margin-top: 1px;
         }
 
-        .cour-vide {
+        @media (max-width: 700px) {
+            .cour-rang-badge { width: 32px; height: 32px; font-size: 1rem; }
+            .cour-xp-val { font-size: 0.75rem; }
+        }
             text-align: center;
             font-family: 'Lora', serif;
             font-style: italic;
@@ -1336,9 +1339,79 @@
         .cour-loading { display: flex; flex-direction: column; gap: 6px; padding: 10px 0; }
         .cour-skeleton-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; }
 
-        @media (max-width: 700px) {
-            .cour-rang-badge { width: 32px; height: 32px; font-size: 1rem; }
-            .cour-xp-val { font-size: 0.75rem; }
+        .cour-pseudo-cliquable {
+            cursor: pointer;
+            text-decoration: underline dotted rgba(212,175,55,0.5);
+            transition: color 0.2s;
+        }
+        .cour-pseudo-cliquable:hover { color: var(--rouge-blason); }
+
+        /* ─── FICHE MODAL CHEVALIER ──────────────────────── */
+        .fiche-modal-entete {
+            text-align: center;
+            border-bottom: 1px solid rgba(120,80,10,0.25);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+        .fiche-modal-rang-icone {
+            font-size: 2.8rem;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .fiche-modal-pseudo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--rouge-blason);
+            margin-bottom: 4px;
+        }
+        .fiche-modal-courriel {
+            font-family: 'Lora', serif;
+            font-size: 0.72rem;
+            font-style: italic;
+            color: #7a6040;
+        }
+        .fiche-modal-rang-nom {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+        .fiche-modal-ligne {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            padding: 7px 0;
+            border-bottom: 1px dashed rgba(120,80,10,0.15);
+            font-size: 0.82rem;
+        }
+        .fiche-modal-ligne:last-child { border-bottom: none; }
+        .fiche-modal-clé {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            color: #8a6020;
+            font-weight: bold;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+            min-width: 90px;
+        }
+        .fiche-modal-val {
+            font-family: 'Lora', serif;
+            color: #3a2a0a;
+            flex: 1;
+            line-height: 1.5;
+        }
+        .fiche-modal-histoire {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 0.78rem;
+            color: #4a3010;
+            line-height: 1.7;
+            text-align: center;
+            padding: 12px 4px 4px;
+            border-top: 1px dashed rgba(120,80,10,0.2);
+            margin-top: 8px;
         }
 
     </style>
@@ -2918,6 +2991,27 @@
     }
     </script>
 
+    <!-- MODAL FICHE CHEVALIER (Cour du Roi) -->
+    <div id="fiche-modal-overlay" onclick="fermerFicheModal(event)" style="
+        display:none; position:fixed; inset:0;
+        background:rgba(0,0,0,0.78); z-index:9600;
+        justify-content:center; align-items:center; padding:20px;
+    ">
+        <div onclick="event.stopPropagation()" style="
+            background:#f5ead8; border:2px solid var(--or-sombre);
+            border-radius:4px; max-width:420px; width:100%;
+            max-height:88vh; overflow-y:auto; position:relative;
+            box-shadow:0 8px 40px rgba(0,0,0,0.7);
+        ">
+            <button onclick="fermerFicheModal()" style="
+                position:absolute; top:10px; right:14px;
+                background:none; border:none; font-size:1.3rem;
+                cursor:pointer; color:var(--rouge-blason); line-height:1;
+            ">✕</button>
+            <div id="fiche-modal-contenu" style="padding:28px 28px 24px;"></div>
+        </div>
+    </div>
+
     <!-- ─── MODAL CODE DE LA CHEVALERIE ────────────────────── -->
     <div id="chevalerie-modal-overlay" onclick="fermerCodeChevalerie(event)" style="
         display: none;
@@ -3058,7 +3152,7 @@
             <div class="cour-medaille">${numLabel}</div>
             <div class="cour-rang-badge" style="color:${coulRang}; border-color:${coulRang}33;">${rang.icone}</div>
             <div class="cour-info">
-                <div class="cour-pseudo">${nomGuerre(data)}</div>
+                <div class="cour-pseudo cour-pseudo-cliquable" onclick='ouvrirFicheModal(${JSON.stringify(data)})' title="Voir la fiche">${nomGuerre(data)}</div>
                 <div class="cour-details">
                     <span style="color:${coulRang}">${rang.nom}</span>
                     ${align ? `<span class="cour-sep">·</span><span>${iconeAlign} ${align}</span>` : ''}
@@ -3135,7 +3229,77 @@
         }, 300);
     });
 
-    function ouvrirCodeChevalerie() {
+    // ── FICHE CHEVALIER MODAL (Cour du Roi) ───────────────
+    function ouvrirFicheModal(data) {
+        const overlay = document.getElementById('fiche-modal-overlay');
+        const contenu = document.getElementById('fiche-modal-contenu');
+        if (!overlay || !contenu) return;
+
+        const jours   = calcJours(data);
+        const xp      = calcXPTotal(data);
+        const rang    = getRangFromJours(jours);
+        const coulRang = rang.coul || '#d4af37';
+
+        const align    = data.alignement || '';
+        const alignData = (window._alignementsIcones && align) ? window._alignementsIcones[align] : '';
+        const iconeAlign = alignData || '';
+
+        const pseudo   = (data.pseudo || '').trim();
+        const courriel = tronquerCourriel(data.email || '');
+
+        const dateInscr = data.cree_le?.seconds
+            ? new Date(data.cree_le.seconds * 1000).toLocaleDateString('fr-CA', {day:'2-digit', month:'long', year:'numeric'})
+            : '—';
+
+        const niveau = Math.floor(jours / 1.5) + 1;
+
+        // Lignes de détails
+        const lignes = [
+            { clé: 'Ancienneté',   val: `${jours} jour${jours > 1 ? 's' : ''} d'allégeance` },
+            { clé: 'Niveau',       val: `${niveau}` },
+            { clé: 'Expérience',   val: `${xp.toLocaleString('fr-CA')} XP` },
+            data.royaume   ? { clé: 'Royaume',    val: `🏰 ${data.royaume}` }   : null,
+            data.province  ? { clé: 'Province',   val: `📍 ${data.province}` }  : null,
+            data.arme      ? { clé: 'Arme',       val: `⚔️ ${data.arme}` }       : null,
+            align          ? { clé: 'Alignement', val: `${iconeAlign} ${align}` } : null,
+            data.devise    ? { clé: 'Devise',      val: `« ${data.devise} »` }   : null,
+            { clé: 'Inscrit le',   val: dateInscr },
+        ].filter(Boolean);
+
+        contenu.innerHTML = `
+            <div class="fiche-modal-entete">
+                <div class="fiche-modal-rang-icone">${rang.icone}</div>
+                <div class="fiche-modal-pseudo">${pseudo || courriel}</div>
+                ${pseudo ? `<div class="fiche-modal-courriel">${courriel}</div>` : ''}
+                <div class="fiche-modal-rang-nom" style="color:${coulRang}">
+                    ${rang.nom}
+                </div>
+            </div>
+
+            <div>
+                ${lignes.map(l => `
+                <div class="fiche-modal-ligne">
+                    <span class="fiche-modal-clé">${l.clé} :</span>
+                    <span class="fiche-modal-val">${l.val}</span>
+                </div>`).join('')}
+            </div>
+
+            ${data.histoire ? `<div class="fiche-modal-histoire">✦ ${data.histoire} ✦</div>` : ''}
+        `;
+
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        // Scroll haut
+        overlay.querySelector('div').scrollTop = 0;
+    }
+
+    function fermerFicheModal(event) {
+        if (event && event.target !== document.getElementById('fiche-modal-overlay')) return;
+        document.getElementById('fiche-modal-overlay').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    
         document.getElementById('chevalerie-modal-overlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
         // Remplir le tableau si vide
