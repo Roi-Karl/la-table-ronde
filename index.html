@@ -902,6 +902,11 @@
                         " onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'">⏳</button>
                     </div>
 
+                    <div id="bloc-histoire" style="display:none; flex-direction:column; gap:4px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
+                        <span style="font-family:'Cinzel',serif; font-size:0.8rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.08em;">Histoire :</span>
+                        <span id="profil-histoire" style="font-family:'Lora',serif; font-size:0.82rem; color:#ccc; font-style:italic; line-height:1.6;">—</span>
+                    </div>
+
                 </div>
             </div>
 
@@ -1591,7 +1596,7 @@
                 if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = rangActuel.nom;
                 if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
 
-                // Alignement depuis Firestore
+                // Alignement + Histoire depuis Firestore
                 const alignement = profilData.alignement || null;
                 const elAlign = document.getElementById('profil-alignement');
                 if (elAlign) {
@@ -1600,6 +1605,13 @@
                     } else {
                         elAlign.innerText = alignement || '— Non déterminé —';
                     }
+                }
+                const histoire = profilData.histoire || null;
+                const elHistoire = document.getElementById('profil-histoire');
+                const blocHistoire = document.getElementById('bloc-histoire');
+                if (elHistoire && histoire) {
+                    elHistoire.innerText = histoire;
+                    if (blocHistoire) blocHistoire.style.display = 'flex';
                 }
 
                 const barre = document.getElementById('barre-xp');
@@ -2056,12 +2068,18 @@
         // Mettre à jour la fiche de personnage en temps réel
         const elAlign = document.getElementById('profil-alignement');
         if (elAlign) elAlign.innerText = `${icone} ${cle}`;
+        if (desc) {
+            const elHistoire = document.getElementById('profil-histoire');
+            const blocHistoire = document.getElementById('bloc-histoire');
+            if (elHistoire) elHistoire.innerText = desc;
+            if (blocHistoire) blocHistoire.style.display = 'flex';
+        }
 
         // Sauvegarder dans Firestore — l'utilisateur est forcément connecté ici
         try {
             await window._firebaseSetDoc(
                 window._firebaseDoc(window._firebaseDb, "membres", window._firebaseAuth.currentUser.uid),
-                { alignement: cle }, { merge: true }
+                { alignement: cle, histoire: desc }, { merge: true }
             );
         } catch(e) { console.warn("Erreur sauvegarde alignement modal:", e); }
     }
