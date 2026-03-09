@@ -2181,6 +2181,11 @@
         // Sinon : afficher le quiz normalement
         document.getElementById('modal-quiz-form').style.display = 'block';
         document.getElementById('modal-quiz-resultat').style.display = 'none';
+        document.getElementById('modal-questions-container').style.display = 'block';
+
+        // Remonter le scroll en haut du modal
+        const modalBox = overlay.querySelector('div');
+        if (modalBox) modalBox.scrollTop = 0;
 
         // Générer les questions dans le modal
         const container = document.getElementById('modal-questions-container');
