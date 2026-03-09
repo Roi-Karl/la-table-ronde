@@ -861,6 +861,240 @@
             font-size: 2.5rem !important;
         }
 
+
+        /* ─── FICHE DE PERSONNAGE ────────────────────────── */
+        .fiche-container {
+            margin: 1.5rem 0;
+            padding: 14px;
+            border: 2px solid var(--or-sombre);
+            background: rgba(212,175,55,0.04);
+        }
+        .fiche-titre {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            color: var(--or-sombre);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin: 0 0 14px 0;
+            text-align: center;
+        }
+        .fiche-corps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .fiche-ligne {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .fiche-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: var(--or-royal);
+            font-weight: bold;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+            padding-top: 2px;
+            flex-shrink: 0;
+        }
+        .fiche-valeur {
+            font-family: 'Cinzel', serif;
+            font-size: 0.92rem;
+            color: var(--rouge-blason);
+            font-weight: bold;
+            min-width: 0;
+            word-break: break-word;
+        }
+        .fiche-btn-icone {
+            background: none;
+            border: none;
+            color: var(--or-royal);
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+            padding-top: 1px;
+            opacity: 1;
+            transition: opacity 0.2s;
+        }
+        .fiche-btn-icone:hover { opacity: 0.65; }
+
+        .fiche-histoire {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            border-top: 1px dashed rgba(212,175,55,0.3);
+            padding-top: 10px;
+            margin-top: 2px;
+        }
+        .fiche-histoire-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: var(--or-royal);
+            font-weight: bold;
+            letter-spacing: 0.06em;
+        }
+        .fiche-histoire-texte {
+            font-family: 'Lora', serif;
+            font-size: 0.82rem;
+            color: #4a3010;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        .fiche-carac-sep {
+            border-top: 1px solid rgba(212,175,55,0.4);
+            margin-top: 4px;
+            padding-top: 12px;
+        }
+        .fiche-carac-titre {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            color: var(--or-sombre);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+
+        /* ─── CARTES CARACTÉRISTIQUES ────────────────────── */
+        .carac-card {
+            padding: 7px 4px 6px;
+            border: 1px solid rgba(212,175,55,0.35);
+            background: rgba(212,175,55,0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            transition: border-color 0.4s, background 0.4s;
+        }
+        .carac-card-icone {
+            width: 100%;
+            text-align: left;
+            font-size: 1.3rem;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+        .carac-card-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.52rem;
+            color: #5a3e1b;
+            font-weight: bold;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        .carac-card-valeur {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--rouge-blason);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .carac-card-des {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: transform 0.2s;
+        }
+        .carac-card-des:hover { transform: scale(1.2); }
+        .carac-card-des:disabled { opacity: 0.35; cursor: default; transform: none; }
+        .carac-card-jets {
+            font-family: 'Cinzel', serif;
+            font-size: 0.48rem;
+            color: #3a2a0a;
+            font-weight: bold;
+            margin-top: 2px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* ─── SKELETON SCREEN ────────────────────────────── */
+        @keyframes skeleton-pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.9; }
+        }
+        .skeleton {
+            display: inline-block;
+            background: linear-gradient(90deg, rgba(212,175,55,0.15), rgba(212,175,55,0.35), rgba(212,175,55,0.15));
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.5s infinite;
+            border-radius: 3px;
+            height: 0.9em;
+            vertical-align: middle;
+        }
+        @keyframes skeleton-shimmer {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+        .skeleton-rang   { width: 130px; }
+        .skeleton-align  { width: 110px; }
+        .skeleton-carac  { width: 28px; height: 1.3rem; }
+
+        /* ─── COULEURS D'ALIGNEMENT ──────────────────────── */
+        /* Appliquées sur body via classe JS */
+        body.align-loyal       { --accent-align: #d4af37; --accent-align-bg: rgba(212,175,55,0.08); }
+        body.align-neutre      { --accent-align: #9e9e9e; --accent-align-bg: rgba(158,158,158,0.08); }
+        body.align-chaotique   { --accent-align: #9c27b0; --accent-align-bg: rgba(156,39,176,0.08); }
+        body.align-bon         { --accent-align: #4fc3f7; --accent-align-bg: rgba(79,195,247,0.07); }
+        body.align-mauvais     { --accent-align: #e53935; --accent-align-bg: rgba(229,57,53,0.08); }
+
+        .fiche-container.has-align {
+            border-color: var(--accent-align, var(--or-sombre));
+            background: var(--accent-align-bg, rgba(212,175,55,0.04));
+            transition: border-color 0.6s, background 0.6s;
+        }
+        .fiche-valeur.has-align {
+            color: var(--accent-align, var(--rouge-blason));
+            transition: color 0.6s;
+        }
+
+        /* ─── FAÇADE YOUTUBE ─────────────────────────────── */
+        .yt-facade {
+            position: relative;
+            cursor: pointer;
+            background: #000;
+            overflow: hidden;
+        }
+        .yt-facade img {
+            width: 100%;
+            display: block;
+            opacity: 0.85;
+            transition: opacity 0.3s;
+        }
+        .yt-facade:hover img { opacity: 1; }
+        .yt-facade .yt-play {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 68px; height: 48px;
+            background: rgba(180,0,0,0.9);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .yt-facade:hover .yt-play {
+            background: #ff0000;
+            transform: translate(-50%, -50%) scale(1.08);
+        }
+        .yt-facade .yt-play::after {
+            content: '';
+            border-style: solid;
+            border-width: 11px 0 11px 20px;
+            border-color: transparent transparent transparent #fff;
+            margin-left: 4px;
+        }
+
+        @media (max-width: 700px) {
+            .carac-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; }
+            .fiche-container { padding: 10px 8px; }
+        }
     </style>
     <!-- Banque de questions du Quiz d'Alignement -->
     <script src="questions.js"></script>
@@ -944,7 +1178,10 @@
             <h2>La Lucarne Magique</h2>
             <p>Le dernier exploit du Roi Karl en images :</p>
             <div class="video-wrapper">
-                <iframe src="https://www.youtube-nocookie.com/embed/1Cv8GLnS5BM" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                <div class="yt-facade" onclick="this.innerHTML='<iframe src=\'https://www.youtube-nocookie.com/embed/1Cv8GLnS5BM?autoplay=1\' frameborder=\'0\' allowfullscreen allow=\'autoplay\' style=\'position:absolute;top:0;left:0;width:100%;height:100%\'></iframe>';this.style.cursor='default';">
+                    <img src="https://i.ytimg.com/vi/1Cv8GLnS5BM/hqdefault.jpg" alt="Dernière vidéo du Roi Karl" loading="lazy">
+                    <div class="yt-play"></div>
+                </div>
             </div>
         </section>
 
@@ -964,77 +1201,77 @@
             <h2>📜 Votre Titre de Chevalier</h2>
 
             <!-- Fiche de personnage -->
-            <div style="margin-top:1.5rem; margin-bottom:1.5rem; text-align:left; padding:14px; border:2px solid var(--or-sombre); background:rgba(212,175,55,0.04);">
-                <p style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.25em; text-transform:uppercase; margin:0 0 14px 0; text-align:center;">✦ Fiche de Personnage ✦</p>
+            <div class="fiche-container" id="fiche-perso">
+                <p class="fiche-titre">✦ Fiche de Personnage ✦</p>
 
-                <div style="display:flex; flex-direction:column; gap:10px;">
+                <div class="fiche-corps">
 
                     <!-- Rang -->
-                    <div style="display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.06em; white-space:nowrap; padding-top:2px; flex-shrink:0;">Rang :</span>
-                        <span id="rang-chevalier" style="font-family:'Cinzel',serif; font-size:0.92rem; color:var(--rouge-blason); font-weight:bold; min-width:0; word-break:break-word;">Chargement...</span>
-                        <button onclick="ouvrirCodeChevalerie()" title="Le Code de la Chevalerie" style="background:none; border:none; color:var(--or-royal); font-size:0.9rem; cursor:pointer; padding:0; line-height:1; flex-shrink:0; padding-top:1px;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">📖</button>
+                    <div class="fiche-ligne">
+                        <span class="fiche-label">Rang :</span>
+                        <span id="rang-chevalier" class="fiche-valeur"><span class="skeleton skeleton-rang"></span></span>
+                        <button onclick="ouvrirCodeChevalerie()" title="Le Code de la Chevalerie" class="fiche-btn-icone">📖</button>
                     </div>
 
                     <!-- Alignement -->
-                    <div style="display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.06em; white-space:nowrap; padding-top:2px; flex-shrink:0;">Alignement :</span>
-                        <span id="profil-alignement" style="font-family:'Cinzel',serif; font-size:0.92rem; color:var(--rouge-blason); font-weight:bold; min-width:0; word-break:break-word;">—</span>
-                        <button onclick="ouvrirQuizModal()" title="Déterminer votre alignement" style="background:none; border:none; color:var(--or-royal); font-size:0.9rem; cursor:pointer; padding:0; line-height:1; flex-shrink:0; padding-top:1px;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">⏳</button>
+                    <div class="fiche-ligne">
+                        <span class="fiche-label">Alignement :</span>
+                        <span id="profil-alignement" class="fiche-valeur"><span class="skeleton skeleton-align"></span></span>
+                        <button onclick="ouvrirQuizModal()" title="Déterminer votre alignement" class="fiche-btn-icone">⏳</button>
                     </div>
 
                     <!-- Histoire -->
-                    <div id="bloc-histoire" style="display:none; flex-direction:column; gap:4px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
-                        <span style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--or-royal); font-weight:bold; letter-spacing:0.06em;">Histoire :</span>
-                        <span id="profil-histoire" style="font-family:'Lora',serif; font-size:0.82rem; color:#4a3010; font-style:italic; line-height:1.6;">—</span>
+                    <div id="bloc-histoire" class="fiche-histoire">
+                        <span class="fiche-histoire-label">Histoire :</span>
+                        <span id="profil-histoire" class="fiche-histoire-texte">—</span>
                     </div>
 
                     <!-- Séparateur Caractéristiques -->
-                    <div style="border-top:1px solid rgba(212,175,55,0.4); margin-top:4px; padding-top:12px;">
-                        <p style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin:0 0 10px 0; text-align:center;">⚔ Caractéristiques ⚔</p>
+                    <div class="fiche-carac-sep">
+                        <p class="fiche-carac-titre">⚔ Caractéristiques ⚔</p>
                         <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;" class="carac-grid">
 
-                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
-                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">💪</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Force</div>
-                                <div id="carac-force" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
-                                <button onclick="ouvrirDes('force','Force','💪')" id="btn-des-force" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-force" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
+                            <div class="carac-card">
+                                <div class="carac-card-icone">💪</div>
+                                <div class="carac-card-label">Force</div>
+                                <div id="carac-force" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
+                                <button onclick="ouvrirDes('force','Force','💪')" id="btn-des-force" class="carac-card-des" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-force" class="carac-card-jets"></div>
                             </div>
-                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
-                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">🏹</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Dextérité</div>
-                                <div id="carac-dexterite" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
-                                <button onclick="ouvrirDes('dexterite','Dextérité','🏹')" id="btn-des-dexterite" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-dexterite" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
+                            <div class="carac-card">
+                                <div class="carac-card-icone">🏹</div>
+                                <div class="carac-card-label">Dextérité</div>
+                                <div id="carac-dexterite" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
+                                <button onclick="ouvrirDes('dexterite','Dextérité','🏹')" id="btn-des-dexterite" class="carac-card-des" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-dexterite" class="carac-card-jets"></div>
                             </div>
-                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
-                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">🛡️</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Constit.</div>
-                                <div id="carac-constitution" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
-                                <button onclick="ouvrirDes('constitution','Constitution','🛡️')" id="btn-des-constitution" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-constitution" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
+                            <div class="carac-card">
+                                <div class="carac-card-icone">🛡️</div>
+                                <div class="carac-card-label">Constit.</div>
+                                <div id="carac-constitution" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
+                                <button onclick="ouvrirDes('constitution','Constitution','🛡️')" id="btn-des-constitution" class="carac-card-des" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-constitution" class="carac-card-jets"></div>
                             </div>
-                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
-                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">📚</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Intellig.</div>
-                                <div id="carac-intelligence" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
-                                <button onclick="ouvrirDes('intelligence','Intelligence','📚')" id="btn-des-intelligence" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-intelligence" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
+                            <div class="carac-card">
+                                <div class="carac-card-icone">📚</div>
+                                <div class="carac-card-label">Intellig.</div>
+                                <div id="carac-intelligence" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
+                                <button onclick="ouvrirDes('intelligence','Intelligence','📚')" id="btn-des-intelligence" class="carac-card-des" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-intelligence" class="carac-card-jets"></div>
                             </div>
-                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
-                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">🔮</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Sagesse</div>
-                                <div id="carac-sagesse" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
-                                <button onclick="ouvrirDes('sagesse','Sagesse','🔮')" id="btn-des-sagesse" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-sagesse" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
+                            <div class="carac-card">
+                                <div class="carac-card-icone">🔮</div>
+                                <div class="carac-card-label">Sagesse</div>
+                                <div id="carac-sagesse" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
+                                <button onclick="ouvrirDes('sagesse','Sagesse','🔮')" id="btn-des-sagesse" class="carac-card-des" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-sagesse" class="carac-card-jets"></div>
                             </div>
-                            <div style="padding:7px 4px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
-                                <div style="width:100%; text-align:left; font-size:1.3rem; line-height:1; margin-bottom:3px;">✨</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.52rem; color:#5a3e1b; font-weight:bold; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px; text-align:center;">Charisme</div>
-                                <div id="carac-charisme" style="font-family:'Cinzel',serif; font-size:1.3rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:4px;">—</div>
-                                <button onclick="ouvrirDes('charisme','Charisme','✨')" id="btn-des-charisme" style="background:none; border:none; font-size:1.1rem; cursor:pointer; padding:0; line-height:1;" title="Lancer les dés">🎲</button>
-                                <div id="jets-restants-charisme" style="font-family:'Cinzel',serif; font-size:0.48rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-align:center; line-height:1.3;"></div>
+                            <div class="carac-card">
+                                <div class="carac-card-icone">✨</div>
+                                <div class="carac-card-label">Charisme</div>
+                                <div id="carac-charisme" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
+                                <button onclick="ouvrirDes('charisme','Charisme','✨')" id="btn-des-charisme" class="carac-card-des" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-charisme" class="carac-card-jets"></div>
                             </div>
 
                         </div>
@@ -1731,7 +1968,8 @@
 
                 if (document.getElementById('profil-niveau'))    document.getElementById('profil-niveau').innerText    = niveau;
                 if (document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
-                if (document.getElementById('rang-chevalier'))   document.getElementById('rang-chevalier').innerText   = `${rangActuel.icone} ${rangActuel.nom}`;
+                const elRang = document.getElementById('rang-chevalier');
+                if (elRang) elRang.innerHTML = `${rangActuel.icone} ${rangActuel.nom}`;
                 if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = rangActuel.nom;
                 if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
 
@@ -1740,10 +1978,11 @@
                 const elAlign = document.getElementById('profil-alignement');
                 if (elAlign) {
                     if (alignement && ALIGNEMENTS_DATA && ALIGNEMENTS_DATA[alignement]) {
-                        elAlign.innerText = `${ALIGNEMENTS_DATA[alignement].icone} ${alignement}`;
+                        elAlign.innerHTML = `${ALIGNEMENTS_DATA[alignement].icone} ${alignement}`;
                     } else {
-                        elAlign.innerText = alignement || '— Non déterminé —';
+                        elAlign.innerHTML = alignement || '— Non déterminé —';
                     }
+                    appliquerCouleurAlignement(alignement);
                 }
                 const histoire = profilData.histoire || null;
                 const elHistoire = document.getElementById('profil-histoire');
@@ -1761,7 +2000,8 @@
                     const jets = profilData['carac_jets_' + c] ?? 3;
                     window._caracJets[c] = jets;
                     const elVal = document.getElementById('carac-' + c);
-                    if (elVal && val !== undefined) elVal.innerText = val;
+                    if (elVal && val !== undefined) elVal.innerHTML = val;
+                    else if (elVal) elVal.innerHTML = '—';
                     const elJets = document.getElementById('jets-restants-' + c);
                     if (elJets) {
                         if (jets <= 0) elJets.innerText = 'épuisé';
@@ -2132,6 +2372,31 @@
     </div>
 
     <script>
+
+    // ── COULEURS D'ALIGNEMENT ─────────────────────────────
+    function appliquerCouleurAlignement(alignement) {
+        const body = document.body;
+        const fiche = document.getElementById('fiche-perso');
+        const elAlign = document.getElementById('profil-alignement');
+
+        // Retirer toutes les classes d'alignement
+        body.classList.remove('align-loyal','align-neutre','align-chaotique','align-bon','align-mauvais');
+
+        if (!alignement) return;
+
+        const a = alignement.toLowerCase();
+        if (a.includes('loyal'))     body.classList.add('align-loyal');
+        else if (a.includes('chaotique')) body.classList.add('align-chaotique');
+        else                         body.classList.add('align-neutre');
+
+        if (a.includes('bon'))       body.classList.add('align-bon');
+        else if (a.includes('mauvais')) body.classList.add('align-mauvais');
+
+        if (fiche)   fiche.classList.add('has-align');
+        if (elAlign) elAlign.classList.add('has-align');
+    }
+    window.appliquerCouleurAlignement = appliquerCouleurAlignement;
+
     function ouvrirQuizModal(forcer) {
         const overlay = document.getElementById('quiz-modal-overlay');
         overlay.style.display = 'flex';
@@ -2314,7 +2579,8 @@
 
         // Mettre à jour la fiche de personnage en temps réel
         const elAlign = document.getElementById('profil-alignement');
-        if (elAlign) elAlign.innerText = `${icone} ${cle}`;
+        if (elAlign) elAlign.innerHTML = `${icone} ${cle}`;
+        appliquerCouleurAlignement(cle);
         if (desc) {
             const elHistoire = document.getElementById('profil-histoire');
             const blocHistoire = document.getElementById('bloc-histoire');
