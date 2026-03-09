@@ -3176,15 +3176,19 @@
     async function chargerCour() {
         const db        = window._firebaseDb;
         const col       = window._firebaseCollection;
-        const qFn       = window._firebaseQuery;
         const getDocs   = window._firebaseGetDocs;
-        const limitFn   = window._firebaseLimit;
-        if (!db || !col) return;
+        if (!db || !col || !getDocs) {
+            console.warn('Cour du Roi — Firebase non prêt');
+            return;
+        }
 
         try {
-            const snap = await getDocs(qFn(col(db, 'membres'), limitFn(50)));
+            // Lecture directe sans query/limit pour éviter les problèmes de règles
+            const snap = await getDocs(col(db, 'membres'));
             const tous = [];
             snap.forEach(d => tous.push({ id: d.id, ...d.data() }));
+
+            console.log(`Cour du Roi — ${tous.length} membres chargés`);
 
             _courDonneesGrades = [...tous]
                 .filter(d => d.pseudo || d.email)
@@ -3200,10 +3204,13 @@
             afficherCourListe('inscrits');
 
         } catch (e) {
-            console.warn('Cour du Roi — erreur:', e);
+            console.error('Cour du Roi — erreur Firestore:', e.code, e.message);
+            const msg = e.code === 'permission-denied'
+                ? '🔒 Accès refusé — vérifiez les règles Firestore (lecture publique requise).'
+                : '⚔️ Les archives royales sont inaccessibles.';
             ['cour-liste-grades','cour-liste-inscrits'].forEach(id => {
                 const el = document.getElementById(id);
-                if (el) el.innerHTML = '<p class="cour-vide">⚔️ Les archives royales sont inaccessibles.</p>';
+                if (el) el.innerHTML = `<p class="cour-vide">${msg}</p>`;
             });
         }
     }
