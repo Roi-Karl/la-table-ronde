@@ -1714,22 +1714,24 @@
 
                     <!-- Race -->
                     <div class="fiche-ligne">
-                        <span class="fiche-label">Race :</span>
-                        <span id="fiche-race" class="fiche-valeur">—</span>
-                        <span class="rpg-tooltip-wrap" id="fiche-wrap-race" style="display:none;">
-                            <span id="fiche-race-icone" class="rpg-tooltip-icone" style="font-size:1.2rem;"></span>
+                        <span class="rpg-tooltip-wrap" id="fiche-wrap-race" style="display:none; margin-right:4px;">
+                            <span id="fiche-race-icone" class="rpg-tooltip-icone" style="font-size:1.3rem; cursor:pointer;"
+                                  onclick="ouvrirModalRPG('race')"></span>
                             <div class="rpg-tooltip-box" id="tooltip-race-fiche"></div>
                         </span>
+                        <span class="fiche-label">Race :</span>
+                        <span id="fiche-race" class="fiche-valeur">—</span>
                     </div>
 
                     <!-- Classe -->
                     <div class="fiche-ligne">
-                        <span class="fiche-label">Classe :</span>
-                        <span id="fiche-classe" class="fiche-valeur">—</span>
-                        <span class="rpg-tooltip-wrap" id="fiche-wrap-classe" style="display:none;">
-                            <span id="fiche-classe-icone" class="rpg-tooltip-icone" style="font-size:1.2rem;"></span>
+                        <span class="rpg-tooltip-wrap" id="fiche-wrap-classe" style="display:none; margin-right:4px;">
+                            <span id="fiche-classe-icone" class="rpg-tooltip-icone" style="font-size:1.3rem; cursor:pointer;"
+                                  onclick="ouvrirModalRPG('classe')"></span>
                             <div class="rpg-tooltip-box" id="tooltip-classe-fiche"></div>
                         </span>
+                        <span class="fiche-label">Classe :</span>
+                        <span id="fiche-classe" class="fiche-valeur">—</span>
                     </div>
 
                     <!-- Alignement -->
@@ -1950,14 +1952,16 @@
                     <div id="apercu-race-classe" style="display:none; justify-content:center; gap:32px; padding:12px 0 6px; border-top:1px dashed rgba(212,175,55,0.3); margin-top:4px;">
                         <div style="text-align:center;">
                             <div class="rpg-tooltip-wrap" id="apercu-wrap-race">
-                                <div id="apercu-race-icone" class="rpg-tooltip-icone">🧑</div>
+                                <div id="apercu-race-icone" class="rpg-tooltip-icone" style="cursor:pointer;"
+                                     onclick="ouvrirModalRPG('race')">🧑</div>
                                 <div class="rpg-tooltip-box" id="tooltip-race-profil"></div>
                             </div>
                             <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); letter-spacing:0.1em; margin-top:6px;">RACE</div>
                         </div>
                         <div style="text-align:center;">
                             <div class="rpg-tooltip-wrap" id="apercu-wrap-classe">
-                                <div id="apercu-classe-icone" class="rpg-tooltip-icone">⚔️</div>
+                                <div id="apercu-classe-icone" class="rpg-tooltip-icone" style="cursor:pointer;"
+                                     onclick="ouvrirModalRPG('classe')">⚔️</div>
                                 <div class="rpg-tooltip-box" id="tooltip-classe-profil"></div>
                             </div>
                             <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); letter-spacing:0.1em; margin-top:6px;">CLASSE</div>
@@ -3311,6 +3315,28 @@
     </script>
 
     <!-- MODAL FICHE CHEVALIER (Cour du Roi) -->
+    <!-- ─── MODAL RPG RACE / CLASSE ───────────────────────── -->
+    <div id="rpg-modal-overlay" onclick="fermerModalRPG(event)" style="
+        display:none; position:fixed; inset:0;
+        background:rgba(0,0,0,0.82); z-index:9700;
+        justify-content:center; align-items:center; padding:20px;
+    ">
+        <div onclick="event.stopPropagation()" style="
+            background:linear-gradient(160deg,#1e1005,#2d1a04);
+            border:1px solid rgba(212,175,55,0.55);
+            border-radius:4px; max-width:520px; width:100%;
+            max-height:90vh; overflow-y:auto; position:relative;
+            box-shadow:0 12px 60px rgba(0,0,0,0.85), inset 0 0 40px rgba(212,175,55,0.03);
+        ">
+            <button onclick="fermerModalRPG()" style="
+                position:absolute; top:12px; right:16px;
+                background:none; border:none; font-size:1.3rem;
+                cursor:pointer; color:var(--or-sombre); line-height:1; z-index:1;
+            ">✕</button>
+            <div id="rpg-modal-contenu" style="padding:32px 28px 28px;"></div>
+        </div>
+    </div>
+
     <div id="fiche-modal-overlay" onclick="fermerFicheModal(event)" style="
         display:none; position:fixed; inset:0;
         background:rgba(0,0,0,0.78); z-index:9600;
@@ -3440,8 +3466,12 @@
 
     function mettreAJourTooltips(raceNom, classeNom) {
         if (typeof RPG_RACES === 'undefined') return;
-        const rData = RPG_RACES[raceNom]   || null;
+        const rData = RPG_RACES[raceNom]    || null;
         const cData = RPG_CLASSES[classeNom] || null;
+
+        // Stocker pour le modal
+        _rpgModalCourant.race   = raceNom;
+        _rpgModalCourant.classe = classeNom;
 
         ['tooltip-race-profil','tooltip-race-fiche'].forEach(id => {
             const el = document.getElementById(id);
@@ -3515,6 +3545,102 @@
         notif._timeout = setTimeout(() => notif.style.opacity = '0', 3500);
     }
     window.afficherNotifXP = afficherNotifXP;
+
+    // ── MODAL RPG RACE / CLASSE ───────────────────────────
+    let _rpgModalCourant = { race: null, classe: null }; // stocké par mettreAJourTooltips
+
+    function ouvrirModalRPG(type) {
+        if (typeof RPG_RACES === 'undefined') return;
+        const data = type === 'race'
+            ? RPG_RACES[_rpgModalCourant.race]
+            : RPG_CLASSES[_rpgModalCourant.classe];
+        if (!data) return;
+
+        const caracNoms = {
+            force:'Force', dexterite:'Dextérité', constitution:'Constitution',
+            intelligence:'Intelligence', sagesse:'Sagesse', charisme:'Charisme'
+        };
+        const bonusPills = Object.entries(data.bonus || {})
+            .map(([k, v]) => `<span style="
+                font-family:'Cinzel',serif; font-size:0.7rem;
+                background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.4);
+                color:#f0d080; padding:3px 10px; border-radius:2px;
+            ">+${v} ${caracNoms[k]}</span>`)
+            .join('');
+
+        // Formater la description_joueur : sections séparées par lignes vides
+        const descBrut = (data.description_joueur || '').trim();
+        const paragraphes = descBrut.split(/\n\n+/).map(p => {
+            const lignes = p.trim().split('\n');
+            if (lignes.length === 1) {
+                return `<p style="font-family:'Lora',serif; font-size:0.82rem; color:#d4c4a0; line-height:1.65; margin:0 0 10px;">${lignes[0]}</p>`;
+            }
+            // Titre de section + items
+            const titre = lignes[0];
+            const items = lignes.slice(1).map(l =>
+                l.startsWith('•')
+                    ? `<li style="font-family:'Lora',serif; font-size:0.78rem; color:#c8b896; line-height:1.55; margin-bottom:3px;">${l.slice(1).trim()}</li>`
+                    : `<p style="font-family:'Lora',serif; font-size:0.78rem; color:#d4c4a0; line-height:1.55; margin:0 0 4px;">${l}</p>`
+            ).join('');
+            const hasList = lignes.slice(1).some(l => l.startsWith('•'));
+            return `<div style="margin-bottom:12px;">
+                <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:var(--or-sombre);
+                     letter-spacing:0.1em; text-transform:uppercase; margin-bottom:5px;
+                     padding-bottom:3px; border-bottom:1px solid rgba(212,175,55,0.2);">${titre}</div>
+                ${hasList ? `<ul style="margin:0; padding-left:14px;">${items}</ul>` : items}
+            </div>`;
+        }).join('');
+
+        const typeLabel = type === 'race' ? 'RACE' : 'CLASSE';
+        const nomAffiche = type === 'race' ? _rpgModalCourant.race : _rpgModalCourant.classe;
+
+        document.getElementById('rpg-modal-contenu').innerHTML = `
+            <!-- En-tête -->
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;
+                        padding-bottom:14px; border-bottom:1px solid rgba(212,175,55,0.35);">
+                <div style="font-size:3.5rem; line-height:1;">${data.icone}</div>
+                <div>
+                    <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre);
+                         letter-spacing:0.15em; text-transform:uppercase; margin-bottom:3px;">${typeLabel}</div>
+                    <div style="font-family:'Cinzel',serif; font-size:1.1rem; font-weight:bold;
+                         color:var(--or-royal); letter-spacing:0.05em;">${nomAffiche}</div>
+                    <div style="font-family:'Lora',serif; font-style:italic; font-size:0.75rem;
+                         color:#c8a96e; margin-top:4px;">${data.tooltip || ''}</div>
+                </div>
+            </div>
+
+            <!-- Bonus -->
+            <div style="margin-bottom:16px;">
+                <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--or-sombre);
+                     letter-spacing:0.12em; text-transform:uppercase; margin-bottom:7px;">
+                    ⚡ Bonus de caractéristiques
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">${bonusPills}</div>
+            </div>
+
+            <!-- Description joueur -->
+            <div style="margin-bottom:4px;">
+                <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--or-sombre);
+                     letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;
+                     padding-bottom:5px; border-bottom:1px solid rgba(212,175,55,0.2);">
+                    📖 Fiche du Joueur
+                </div>
+                ${paragraphes}
+            </div>
+        `;
+
+        const overlay = document.getElementById('rpg-modal-overlay');
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    window.ouvrirModalRPG = ouvrirModalRPG;
+
+    function fermerModalRPG(event) {
+        if (event && event.target !== document.getElementById('rpg-modal-overlay')) return;
+        document.getElementById('rpg-modal-overlay').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    window.fermerModalRPG = fermerModalRPG;
 
     
     let _courDonneesGrades   = null;
