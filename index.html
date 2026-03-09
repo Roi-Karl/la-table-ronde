@@ -1100,8 +1100,8 @@
             </div>
         </section>
 
-        <!-- QUIZ D'ALIGNEMENT -->
-        <section id="alignement" class="parchemin-box">
+        <!-- QUIZ D'ALIGNEMENT — Membres seulement -->
+        <section id="alignement" class="parchemin-box" style="display:none;">
             <h2>⚔️ La Quête d'Alignement</h2>
             <p style="text-align:center; font-style:italic; color:var(--gris-clair); margin-bottom:2rem;">
                 Répondez avec honneur et franchise, voyageur. Votre âme sera jugée.
@@ -1287,7 +1287,7 @@
             <a href="#video">Dernière Quête</a>
             <a href="#grimoire">Grimoire</a>
             <a href="#echoppe">Échoppe</a>
-            <a href="#alignement">Alignement</a>
+            <a href="#alignement" id="nav-alignement" style="display:none;">Alignement</a>
             <a href="#registre">Registre</a>
             <a href="#audience">FAQ</a>
         </div>
@@ -1648,6 +1648,10 @@
                 if (zonePrivée)    zonePrivée.style.display    = 'block';
                 if (sectionProfil) sectionProfil.style.display = 'block';
                 if (sectionRegles) { sectionRegles.style.display = 'block'; remplirTableauRangs(); }
+                const sectionAlignement = document.getElementById('alignement');
+                if (sectionAlignement) sectionAlignement.style.display = 'block';
+                const navAlign = document.getElementById('nav-alignement');
+                if (navAlign) navAlign.style.display = 'inline';
 
                 if (document.getElementById('profil-email')) document.getElementById('profil-email').innerText = user.email;
                 const options     = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -1700,6 +1704,10 @@
                 if (zonePrivée)    zonePrivée.style.display    = 'none';
                 if (sectionProfil) sectionProfil.style.display = 'none';
                 if (sectionRegles) sectionRegles.style.display = 'none';
+                const sectionAlignement = document.getElementById('alignement');
+                if (sectionAlignement) sectionAlignement.style.display = 'none';
+                const navAlign = document.getElementById('nav-alignement');
+                if (navAlign) navAlign.style.display = 'none';
                 if (btnNav) btnNav.innerHTML = `<button onclick="ouvrirPorte()" style="background:var(--or-royal); color:black; padding:7px 14px; border-radius:2px; font-weight:bold; font-family:'Cinzel',serif; font-size:0.8rem; cursor:pointer; border:none; letter-spacing:0.05em;">ACCÈS MEMBRE</button>`;
             }
         });
@@ -2276,16 +2284,13 @@
         const elAlign = document.getElementById('profil-alignement');
         if (elAlign) elAlign.innerText = `${icone} ${cle}`;
 
-        // Sauvegarder dans Firestore
-        // (auth, db, setDoc, doc sont accessibles via window depuis le module)
-        if (window._firebaseAuth?.currentUser) {
-            try {
-                await window._firebaseSetDoc(
-                    window._firebaseDoc(window._firebaseDb, "membres", window._firebaseAuth.currentUser.uid),
-                    { alignement: cle }, { merge: true }
-                );
-            } catch(e) { console.warn("Erreur sauvegarde alignement modal:", e); }
-        }
+        // Sauvegarder dans Firestore — l'utilisateur est forcément connecté ici
+        try {
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, "membres", window._firebaseAuth.currentUser.uid),
+                { alignement: cle }, { merge: true }
+            );
+        } catch(e) { console.warn("Erreur sauvegarde alignement modal:", e); }
     }
     </script>
 
