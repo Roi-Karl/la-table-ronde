@@ -895,40 +895,52 @@
                         <p style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin:0 0 12px 0; text-align:center;">⚔ Caractéristiques ⚔</p>
                         <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
 
-                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative;">
                                 <div style="font-size:1.3rem; margin-bottom:4px;">💪</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Force</div>
-                                <div id="carac-force" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Force</div>
+                                <div id="carac-force" style="font-family:'Cinzel',serif; font-size:1.2rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:6px;">—</div>
+                                <button onclick="ouvrirDes('force','Force','💪')" id="btn-des-force" style="background:none; border:1px solid rgba(212,175,55,0.4); color:var(--or-sombre); font-size:0.85rem; cursor:pointer; padding:2px 6px; border-radius:3px; transition:0.2s;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-force" style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); margin-top:4px; opacity:0.7;"></div>
                             </div>
 
-                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative;">
                                 <div style="font-size:1.3rem; margin-bottom:4px;">🏹</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Dextérité</div>
-                                <div id="carac-dexterite" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Dextérité</div>
+                                <div id="carac-dexterite" style="font-family:'Cinzel',serif; font-size:1.2rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:6px;">—</div>
+                                <button onclick="ouvrirDes('dexterite','Dextérité','🏹')" id="btn-des-dexterite" style="background:none; border:1px solid rgba(212,175,55,0.4); color:var(--or-sombre); font-size:0.85rem; cursor:pointer; padding:2px 6px; border-radius:3px; transition:0.2s;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-dexterite" style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); margin-top:4px; opacity:0.7;"></div>
                             </div>
 
-                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative;">
                                 <div style="font-size:1.3rem; margin-bottom:4px;">🛡️</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Constitution</div>
-                                <div id="carac-constitution" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Constitution</div>
+                                <div id="carac-constitution" style="font-family:'Cinzel',serif; font-size:1.2rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:6px;">—</div>
+                                <button onclick="ouvrirDes('constitution','Constitution','🛡️')" id="btn-des-constitution" style="background:none; border:1px solid rgba(212,175,55,0.4); color:var(--or-sombre); font-size:0.85rem; cursor:pointer; padding:2px 6px; border-radius:3px; transition:0.2s;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-constitution" style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); margin-top:4px; opacity:0.7;"></div>
                             </div>
 
-                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative;">
                                 <div style="font-size:1.3rem; margin-bottom:4px;">📚</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Intelligence</div>
-                                <div id="carac-intelligence" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Intelligence</div>
+                                <div id="carac-intelligence" style="font-family:'Cinzel',serif; font-size:1.2rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:6px;">—</div>
+                                <button onclick="ouvrirDes('intelligence','Intelligence','📚')" id="btn-des-intelligence" style="background:none; border:1px solid rgba(212,175,55,0.4); color:var(--or-sombre); font-size:0.85rem; cursor:pointer; padding:2px 6px; border-radius:3px; transition:0.2s;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-intelligence" style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); margin-top:4px; opacity:0.7;"></div>
                             </div>
 
-                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative;">
                                 <div style="font-size:1.3rem; margin-bottom:4px;">🔮</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Sagesse</div>
-                                <div id="carac-sagesse" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Sagesse</div>
+                                <div id="carac-sagesse" style="font-family:'Cinzel',serif; font-size:1.2rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:6px;">—</div>
+                                <button onclick="ouvrirDes('sagesse','Sagesse','🔮')" id="btn-des-sagesse" style="background:none; border:1px solid rgba(212,175,55,0.4); color:var(--or-sombre); font-size:0.85rem; cursor:pointer; padding:2px 6px; border-radius:3px; transition:0.2s;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-sagesse" style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); margin-top:4px; opacity:0.7;"></div>
                             </div>
 
-                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04);">
+                            <div style="text-align:center; padding:10px 6px; border:1px solid rgba(212,175,55,0.35); background:rgba(212,175,55,0.04); position:relative;">
                                 <div style="font-size:1.3rem; margin-bottom:4px;">✨</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Charisme</div>
-                                <div id="carac-charisme" style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--rouge-blason); font-weight:bold;">—</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Charisme</div>
+                                <div id="carac-charisme" style="font-family:'Cinzel',serif; font-size:1.2rem; color:var(--rouge-blason); font-weight:bold; margin-bottom:6px;">—</div>
+                                <button onclick="ouvrirDes('charisme','Charisme','✨')" id="btn-des-charisme" style="background:none; border:1px solid rgba(212,175,55,0.4); color:var(--or-sombre); font-size:0.85rem; cursor:pointer; padding:2px 6px; border-radius:3px; transition:0.2s;" onmouseover="this.style.background='rgba(212,175,55,0.15)'" onmouseout="this.style.background='none'" title="Lancer les dés">🎲</button>
+                                <div id="jets-restants-charisme" style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre); margin-top:4px; opacity:0.7;"></div>
                             </div>
 
                         </div>
@@ -1647,6 +1659,27 @@
                     if (blocHistoire) blocHistoire.style.display = 'flex';
                 }
 
+                // Caractéristiques depuis Firestore
+                window._caracJets = {};
+                const CARACS = ['force','dexterite','constitution','intelligence','sagesse','charisme'];
+                CARACS.forEach(c => {
+                    const val  = profilData['carac_' + c];
+                    const jets = profilData['carac_jets_' + c] ?? 3;
+                    window._caracJets[c] = jets;
+                    const elVal = document.getElementById('carac-' + c);
+                    if (elVal && val !== undefined) elVal.innerText = val;
+                    const elJets = document.getElementById('jets-restants-' + c);
+                    if (elJets) {
+                        if (jets <= 0) elJets.innerText = 'épuisé';
+                        else if (val !== undefined) elJets.innerText = `${jets} jet${jets > 1 ? 's' : ''} restant`;
+                    }
+                    // Désactiver le bouton si jets épuisés
+                    if (jets <= 0) {
+                        const btn = document.getElementById('btn-des-' + c);
+                        if (btn) { btn.disabled = true; btn.style.opacity = '0.35'; btn.style.cursor = 'default'; }
+                    }
+                });
+
                 const barre = document.getElementById('barre-xp');
                 if (barre) {
                     let xpPct = 100;
@@ -2231,6 +2264,234 @@
         if (event && event.target !== document.getElementById('chevalerie-modal-overlay')) return;
         document.getElementById('chevalerie-modal-overlay').style.display = 'none';
         document.body.style.overflow = '';
+    }
+    </script>
+
+    <!-- ─── MODAL JET DE DÉS ─────────────────────────────── -->
+    <div id="des-modal-overlay" onclick="fermerDes(event)" style="
+        display:none; position:fixed; inset:0;
+        background:rgba(0,0,0,0.8); z-index:9600;
+        justify-content:center; align-items:center; padding:20px;
+    ">
+        <div onclick="event.stopPropagation()" style="
+            background:#f5ead8; border:2px solid var(--or-sombre);
+            border-radius:4px; max-width:460px; width:100%;
+            padding:28px 32px; position:relative;
+            box-shadow:0 8px 40px rgba(0,0,0,0.7);
+        ">
+            <button onclick="fermerDes()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--rouge-blason);">✕</button>
+
+            <!-- En-tête -->
+            <div style="text-align:center; margin-bottom:1.2rem; border-bottom:1px solid rgba(120,80,10,0.3); padding-bottom:1rem;">
+                <p id="des-modal-icone" style="font-size:2rem; margin:0;"></p>
+                <h2 id="des-modal-titre" style="font-family:'Cinzel',serif; color:var(--rouge-blason); font-size:1.2rem; margin:6px 0 4px; letter-spacing:0.1em;"></h2>
+                <p style="font-family:'Lora',serif; font-style:italic; color:#5a3e1b; font-size:0.8rem; margin:0;">6D6 — On garde les 3 meilleurs</p>
+            </div>
+
+            <!-- Dés animés -->
+            <div id="des-zone" style="display:flex; justify-content:center; gap:8px; margin-bottom:1.2rem; min-height:54px; align-items:center;">
+                <span style="font-family:'Lora',serif; font-style:italic; color:#7a5a2a; font-size:0.85rem;">Cliquez sur 🎲 pour lancer</span>
+            </div>
+
+            <!-- Détail du résultat -->
+            <div id="des-detail" style="text-align:center; min-height:32px; margin-bottom:1rem;"></div>
+
+            <!-- Score final -->
+            <div style="text-align:center; margin-bottom:1.2rem;">
+                <div style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:4px;">Résultat</div>
+                <div id="des-score" style="font-family:'Cinzel',serif; font-size:2.5rem; color:var(--rouge-blason); font-weight:bold; line-height:1;">—</div>
+            </div>
+
+            <!-- Jets restants + bouton -->
+            <div style="text-align:center;">
+                <p id="des-jets-info" style="font-family:'Cinzel',serif; font-size:0.72rem; color:#6b3a0f; margin-bottom:10px;"></p>
+                <button id="des-btn-lancer" onclick="lancerDes()" style="
+                    background:var(--rouge-blason); color:white;
+                    border:2px solid var(--or-royal); padding:10px 28px;
+                    font-family:'Cinzel',serif; font-size:0.8rem;
+                    letter-spacing:0.12em; text-transform:uppercase;
+                    cursor:pointer; transition:0.3s;
+                " onmouseover="this.style.background='var(--or-royal)';this.style.color='#1a0a00';"
+                   onmouseout="this.style.background='var(--rouge-blason)';this.style.color='white';">
+                    🎲 Lancer les dés
+                </button>
+                <button id="des-btn-garder" onclick="garderScore()" style="display:none;
+                    background:none; border:1px solid #6b3a0f; color:#6b3a0f;
+                    padding:8px 20px; font-family:'Cinzel',serif; font-size:0.75rem;
+                    letter-spacing:0.1em; cursor:pointer; transition:0.2s; margin-top:8px;
+                " onmouseover="this.style.background='rgba(120,80,10,0.1)'" onmouseout="this.style.background='none'">
+                    ✔ Conserver ce score
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    @keyframes rouler { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-15deg)} 75%{transform:rotate(15deg)} }
+    .de-anime { animation: rouler 0.1s infinite; display:inline-block; }
+    .de-garde  { filter: saturate(2); }
+    .de-rejete { opacity: 0.35; }
+    </style>
+
+    <script>
+    // ── État du modal dés ──────────────────────────────────
+    let _desCarac     = null; // clé ex: 'force'
+    let _desJetsLeft  = 3;
+    let _desScoreActuel = null;
+    const FACES_DES = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+
+    function ouvrirDes(cle, nom, icone) {
+        // Vérifier jets restants depuis window
+        const jets = (window._caracJets || {})[cle] ?? 3;
+        const scoreExist = document.getElementById('carac-' + cle).innerText !== '—';
+
+        _desCarac = cle;
+        _desJetsLeft = jets;
+        _desScoreActuel = scoreExist ? parseInt(document.getElementById('carac-' + cle).innerText) : null;
+
+        document.getElementById('des-modal-icone').innerText = icone;
+        document.getElementById('des-modal-titre').innerText = nom;
+        document.getElementById('des-score').innerText = _desScoreActuel ?? '—';
+        document.getElementById('des-zone').innerHTML = '<span style="font-family:\'Lora\',serif;font-style:italic;color:#7a5a2a;font-size:0.85rem;">Cliquez sur 🎲 pour lancer</span>';
+        document.getElementById('des-detail').innerHTML = '';
+        mettreAJourBoutonsDes();
+
+        document.getElementById('des-modal-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fermerDes(event) {
+        if (event && event.target !== document.getElementById('des-modal-overlay')) return;
+        document.getElementById('des-modal-overlay').style.display = 'none';
+        document.body.style.overflow = '';
+        _desCarac = null;
+    }
+
+    function mettreAJourBoutonsDes() {
+        const info = document.getElementById('des-jets-info');
+        const btnLancer = document.getElementById('des-btn-lancer');
+        const btnGarder = document.getElementById('des-btn-garder');
+
+        if (_desJetsLeft <= 0) {
+            info.innerText = '✦ Tous vos jets sont épuisés pour cette caractéristique.';
+            btnLancer.style.display = 'none';
+            btnGarder.style.display = 'none';
+        } else if (_desScoreActuel !== null) {
+            info.innerText = `Jets restants : ${_desJetsLeft} sur 3`;
+            btnLancer.style.display = 'inline-block';
+            btnLancer.innerText = '🎲 Relancer';
+            btnGarder.style.display = 'block';
+        } else {
+            info.innerText = `Jets restants : ${_desJetsLeft} sur 3`;
+            btnLancer.style.display = 'inline-block';
+            btnLancer.innerText = '🎲 Lancer les dés';
+            btnGarder.style.display = 'none';
+        }
+    }
+
+    function lancerDes() {
+        if (_desJetsLeft <= 0) return;
+        _desJetsLeft--;
+        if (!window._caracJets) window._caracJets = {};
+        window._caracJets[_desCarac] = _desJetsLeft;
+
+        const btnLancer = document.getElementById('des-btn-lancer');
+        btnLancer.disabled = true;
+
+        // Animation
+        const zone = document.getElementById('des-zone');
+        zone.innerHTML = '';
+        const spans = [];
+        for (let i = 0; i < 6; i++) {
+            const s = document.createElement('span');
+            s.style.cssText = 'font-size:2rem; display:inline-block;';
+            s.classList.add('de-anime');
+            zone.appendChild(s);
+            spans.push(s);
+        }
+
+        let tick = 0;
+        const interval = setInterval(() => {
+            spans.forEach(s => s.innerText = FACES_DES[Math.floor(Math.random() * 6)]);
+            tick++;
+        }, 60);
+
+        setTimeout(() => {
+            clearInterval(interval);
+
+            // Lancer réel
+            const resultats = Array.from({length:6}, () => Math.floor(Math.random() * 6) + 1);
+            const tries = [...resultats].sort((a,b) => b - a).slice(0, 3);
+            const rejetes = [...resultats].sort((a,b) => b - a).slice(3);
+            const total = tries.reduce((s,v) => s + v, 0);
+
+            // Afficher avec distinction gardés/rejetés
+            zone.innerHTML = '';
+            resultats.forEach(v => {
+                const s = document.createElement('span');
+                s.style.cssText = 'font-size:2rem; display:inline-block; transition:0.3s;';
+                s.innerText = FACES_DES[v - 1];
+                zone.appendChild(s);
+            });
+
+            // Trier pour colorer
+            const sorted = [...resultats].map((v,i) => ({v,i})).sort((a,b) => b.v - a.v);
+            const gardesIdx = new Set(sorted.slice(0,3).map(x => x.i));
+            Array.from(zone.children).forEach((el, i) => {
+                if (gardesIdx.has(i)) el.classList.add('de-garde');
+                else el.classList.add('de-rejete');
+            });
+
+            // Détail
+            document.getElementById('des-detail').innerHTML = `
+                <span style="font-family:'Lora',serif; font-size:0.78rem; color:#5a3e1b;">
+                    Gardés : <strong>${tries.join(' + ')}</strong> &nbsp;|&nbsp; Rejetés : <span style="opacity:0.5;">${rejetes.join(', ')}</span>
+                </span>`;
+
+            _desScoreActuel = total;
+            document.getElementById('des-score').innerText = total;
+            btnLancer.disabled = false;
+            mettreAJourBoutonsDes();
+
+            // Mettre à jour compteur dans la fiche
+            const elJets = document.getElementById('jets-restants-' + _desCarac);
+            if (elJets) elJets.innerText = _desJetsLeft > 0 ? `${_desJetsLeft} jet${_desJetsLeft > 1 ? 's' : ''} restant` : 'épuisé';
+
+        }, 900);
+    }
+
+    async function garderScore() {
+        if (_desScoreActuel === null || !_desCarac) return;
+
+        // Mettre à jour la fiche en temps réel
+        const elCarac = document.getElementById('carac-' + _desCarac);
+        if (elCarac) elCarac.innerText = _desScoreActuel;
+        const elJets = document.getElementById('jets-restants-' + _desCarac);
+        if (elJets) {
+            elJets.innerText = _desJetsLeft > 0 ? `${_desJetsLeft} jet${_desJetsLeft > 1 ? 's' : ''} restant` : 'épuisé';
+        }
+
+        // Désactiver le bouton si plus de jets
+        if (_desJetsLeft <= 0) {
+            const btn = document.getElementById('btn-des-' + _desCarac);
+            if (btn) { btn.disabled = true; btn.style.opacity = '0.35'; btn.style.cursor = 'default'; }
+        }
+
+        // Sauvegarder dans Firestore
+        try {
+            const saveData = {};
+            saveData['carac_' + _desCarac] = _desScoreActuel;
+            saveData['carac_jets_' + _desCarac] = _desJetsLeft;
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, "membres", window._firebaseAuth.currentUser.uid),
+                saveData, { merge: true }
+            );
+        } catch(e) { console.warn("Erreur sauvegarde caractéristique:", e); }
+
+        // Fermer
+        document.getElementById('des-modal-overlay').style.display = 'none';
+        document.body.style.overflow = '';
+        _desCarac = null;
     }
     </script>
 
