@@ -4017,7 +4017,7 @@
                 (profilData.xp_quiz || 0) +
                 (profilData.xp_newsletter || 0)
             ) : { niveau: 1 };
-            window.mettreAJourPV(profilData, classeNomPur, niveauData.niveau);
+            window.mettreAJourPV(profilData, classeNomPur, niveauData.niveau, bonusTotal);
         }
     }
     window.mettreAJourFicheCaracs = mettreAJourFicheCaracs;
@@ -4117,10 +4117,16 @@
     /**
      * Initialise/met à jour la section PV depuis les données profil
      */
-    function mettreAJourPV(profilData, classeNomPur, niveauActuel) {
+    function mettreAJourPV(profilData, classeNomPur, niveauActuel, bonusTotal) {
+        bonusTotal = bonusTotal || {};
         const classe = window.RPG_CLASSES?.[classeNomPur];
         const deFaces = classe?.de_vie || 8;
-        const bonusConst = Math.floor(((profilData.carac_constitution || 10) - 10) / 2);
+
+        // Modificateur CON = floor((score_total - 10) / 2)
+        // score_total = base Firestore + bonus race + bonus classe + bonus futurs
+        const bonusConst = window.getModifCarac
+            ? window.getModifCarac('constitution', profilData.carac_constitution || 10, bonusTotal)
+            : Math.floor(((profilData.carac_constitution || 10) + (bonusTotal.constitution || 0) - 10) / 2);
         const niveauxLances = profilData.pv_niveaux_lances || {};
 
         // Calcul PV total
