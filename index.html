@@ -2461,7 +2461,17 @@
         // ── GRADES → source unique : rpg-data.js (window.RPG_GRADES) ─
         // La définition complète avec description_joueur et description_maitre
         // est dans rpg-data.js. On attend qu'elle soit disponible.
-        const GRADES = window.RPG_GRADES || [];
+        // ── GRADES → source unique : rpg-data.js (window.RPG_GRADES) ─
+        // Getter dynamique — lu à chaque accès, jamais capturé au démarrage du module
+        const GRADES = new Proxy([], {
+            get(_, key) {
+                const src = window.RPG_GRADES || [];
+                if (key === 'length') return src.length;
+                if (typeof key === 'string' && !isNaN(key)) return src[+key];
+                if (key in Array.prototype) return (...a) => src[key](...a);
+                return src[key];
+            }
+        });
 
         // ── NIVEAUX (basés sur XP total) ─────────
         const NIVEAUX = [
@@ -2494,9 +2504,15 @@
         }
 
         // ── ALIGNEMENTS → source unique : rpg-data.js (window.RPG_ALIGNEMENTS) ─
-        // Les 9 alignements avec icone, titre, famille, couleur, tooltip,
-        // description_joueur et description_maitre sont dans rpg-data.js.
-        const ALIGNEMENTS_DATA = window.RPG_ALIGNEMENTS || {};
+        // Getter dynamique — lu à chaque accès, jamais capturé au démarrage du module
+        const ALIGNEMENTS_DATA = new Proxy({}, {
+            get(_, key) {
+                return (window.RPG_ALIGNEMENTS || {})[key];
+            },
+            has(_, key) {
+                return key in (window.RPG_ALIGNEMENTS || {});
+            }
+        });
 
         // ── ERREURS TRADUITES ─────────────────────
         function traduireErreur(code) {
@@ -3333,8 +3349,9 @@
     // Lit l'alignement courant depuis le DOM au moment du clic
     // → pas de closure capturée, toujours à jour après quiz
     function ouvrirModalAlignement() {
-        const nomAlign = document.getElementById('profil-alignement-texte')
-            ?.innerText?.replace(/^.\s*/, '').trim(); // retirer l'icône
+        const raw = document.getElementById('profil-alignement-texte')?.innerText?.trim() || '';
+        // Retirer l'icône emoji en tête (peut être 1 ou 2 unités JS) + espace
+        const nomAlign = raw.replace(/^[\p{Emoji}\s]+/u, '').trim();
         if (!nomAlign || nomAlign === '— Non déterminé —') return;
 
         const ad = window.RPG_ALIGNEMENTS?.[nomAlign] || window.ALIGNEMENTS_DATA?.[nomAlign];
