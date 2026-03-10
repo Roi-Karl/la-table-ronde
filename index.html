@@ -4135,6 +4135,26 @@
     /**
      * Initialise/met à jour la section PV depuis les données profil
      */
+    // Formate l'affichage d'un résultat de lancer de dé de vie
+    // ex: (8, +2, d8) → "8 + mod(+2) = +10 PV"
+    // ex: (8,  0, d8) → "8 = +8 PV"
+    // ex: (8, -1, d8) → "8 − 1 = +7 PV"
+    function formatResultatDeVie(resultat, modif, deFaces, estMax) {
+        const total = Math.max(1, resultat + modif);
+        let expr = '';
+        if (estMax) {
+            expr = modif > 0  ? `d${deFaces}(max) + mod(${modif > 0 ? '+' : ''}${modif})`
+                 : modif < 0  ? `d${deFaces}(max) − mod(${Math.abs(modif)})`
+                 :               `d${deFaces}(max)`;
+        } else {
+            expr = modif > 0  ? `${resultat} + mod(+${modif})`
+                 : modif < 0  ? `${resultat} − mod(${Math.abs(modif)})`
+                 :               `${resultat}`;
+        }
+        return `${expr} = +${total} PV`;
+    }
+    window.formatResultatDeVie = formatResultatDeVie;
+
     function mettreAJourPV(profilData, classeNomPur, niveauActuel, bonusTotal) {
         bonusTotal = bonusTotal || {};
         const classe = window.RPG_CLASSES?.[classeNomPur];
@@ -4208,11 +4228,11 @@
             // Résultat
             if (elRes) {
                 if (niveauActuel === 1) {
-                    elRes.textContent = `d${deFaces} max = +${Math.max(1, deFaces + bonusConst)} PV`;
+                    elRes.textContent = formatResultatDeVie(deFaces, bonusConst, deFaces, true);
                 } else if (niveauxLances[String(niveauActuel)] !== undefined) {
                     const res      = niveauxLances[String(niveauActuel)];
                     const bonusStr = bonusConst >= 0 ? `+${bonusConst}` : `${bonusConst}`;
-                    elRes.textContent = `${res} ${bonusStr} = +${Math.max(1, res + bonusConst)} PV`;
+                    elRes.textContent = formatResultatDeVie(res, bonusConst, deFaces, false);
                 } else {
                     elRes.textContent = '';
                 }
@@ -4262,7 +4282,7 @@
         // Passer en état épuisé
         if (elSVG)   { elSVG.innerHTML = getSVGDe(deFaces, '#2a2a2a'); elSVG.style.opacity = '0.35'; }
         if (elEpuise) elEpuise.style.display = 'block';
-        if (elRes)   elRes.textContent = `${resultat} ${bonusStr} = +${pvGagnes} PV`;
+        if (elRes)   elRes.textContent = formatResultatDeVie(resultat, bonusConst, deFaces, false);
 
         // Mettre à jour l'état
         const niveauxLancesMaj = { ..._pvState.niveaux_lances, [String(niveau)]: resultat };
