@@ -1869,30 +1869,30 @@
                     <div style="display:flex; gap:10px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
                         <div class="fiche-stat-box" style="flex:1;">
                             <div class="fiche-stat-label">❤️ Points de Vie</div>
-                            <div id="fiche-pv" class="fiche-stat-val">—</div>
-                            <!-- Dé de vie par niveau -->
-                            <div id="bloc-de-vie" style="display:none; margin-top:10px; text-align:center;">
-                                <!-- Label niveau -->
-                                <div style="font-family:'Lora',serif; font-size:0.58rem; color:var(--or-sombre); margin-bottom:6px;">
-                                    Niveau <span id="pv-niveau-actuel">1</span>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <div id="fiche-pv" class="fiche-stat-val">—</div>
+                                <!-- Mini dé de vie — même style que les caracs -->
+                                <div id="bloc-de-vie" style="display:none;">
+                                    <button id="btn-de-vie" class="carac-card-des"
+                                        onclick="lancerDeVie()"
+                                        title="Lancer le dé de vie">🎲</button>
                                 </div>
-                                <!-- Dé SVG cliquable -->
-                                <div id="svg-de-vie" style="display:inline-block; transition:opacity 0.3s;"></div>
-                                <!-- Statut : disponible ou épuisé -->
+                            </div>
+                            <!-- Statut + résultat sur une ligne -->
+                            <div id="bloc-de-vie-statut" style="display:none; margin-top:2px;">
                                 <div id="pv-statut-disponible"
-                                    style="display:none; font-family:'Cinzel',serif; font-size:0.58rem;
-                                           color:#4caf50; letter-spacing:0.05em; margin-top:5px;">
+                                    style="display:none; font-family:'Cinzel',serif; font-size:0.48rem;
+                                           color:#4caf50; letter-spacing:0.05em;">
                                     1 jet restant
                                 </div>
                                 <div id="pv-statut-epuise"
-                                    style="display:none; font-family:'Cinzel',serif; font-size:0.58rem;
-                                           color:#888; letter-spacing:0.05em; margin-top:5px;">
+                                    style="display:none; font-family:'Cinzel',serif; font-size:0.48rem;
+                                           color:#888; letter-spacing:0.05em;">
                                     Épuisé
                                 </div>
-                                <!-- Résultat après lancer -->
                                 <div id="pv-resultat-lancer"
-                                    style="font-family:'Cinzel',serif; font-size:0.68rem;
-                                           color:var(--or-royal); margin-top:4px; min-height:16px;">
+                                    style="font-family:'Lora',serif; font-size:0.52rem;
+                                           color:var(--or-sombre); margin-top:1px;">
                                 </div>
                             </div>
                             <div class="fiche-stat-note" id="pv-note">10 PV de base</div>
@@ -4198,27 +4198,23 @@
         }
 
         // ── Affichage du dé de vie ─────────────────────────────
-        const blocDe   = document.getElementById('bloc-de-vie');
-        const elNiv    = document.getElementById('pv-niveau-actuel');
-        const elSVG    = document.getElementById('svg-de-vie');
-        const elRes    = document.getElementById('pv-resultat-lancer');
-        const elDispo  = document.getElementById('pv-statut-disponible');
-        const elEpuise = document.getElementById('pv-statut-epuise');
+        const blocDe      = document.getElementById('bloc-de-vie');
+        const blocStatut  = document.getElementById('bloc-de-vie-statut');
+        const btnDe       = document.getElementById('btn-de-vie');
+        const elRes       = document.getElementById('pv-resultat-lancer');
+        const elDispo     = document.getElementById('pv-statut-disponible');
+        const elEpuise    = document.getElementById('pv-statut-epuise');
 
         if (blocDe) {
-            // Dé visible dès le niveau 1 (épuisé au niv 1 — PV max auto)
-            blocDe.style.display = 'block';
-            if (elNiv) elNiv.textContent = niveauActuel;
+            blocDe.style.display     = 'block';
+            blocStatut.style.display = 'block';
 
             const dejaLance = (niveauActuel === 1) || (niveauxLances[String(niveauActuel)] !== undefined);
 
-            // SVG
-            if (elSVG) {
-                elSVG.innerHTML     = getSVGDe(deFaces, dejaLance ? '#2a2a2a' : '#1a0e02');
-                elSVG.style.opacity = dejaLance ? '0.35' : '1';
-                elSVG.style.cursor  = dejaLance ? 'default' : 'pointer';
-                elSVG.onclick       = dejaLance ? null : lancerDeVie;
-                elSVG.title         = dejaLance ? 'Dé épuisé ce niveau' : 'Lancer le dé de vie';
+            // Bouton mini dé 🎲
+            if (btnDe) {
+                btnDe.disabled = dejaLance;
+                btnDe.title    = dejaLance ? 'Dé épuisé ce niveau' : 'Lancer le dé de vie';
             }
 
             // Statut
@@ -4230,8 +4226,7 @@
                 if (niveauActuel === 1) {
                     elRes.textContent = formatResultatDeVie(deFaces, bonusConst, deFaces, true);
                 } else if (niveauxLances[String(niveauActuel)] !== undefined) {
-                    const res      = niveauxLances[String(niveauActuel)];
-                    const bonusStr = bonusConst >= 0 ? `+${bonusConst}` : `${bonusConst}`;
+                    const res = niveauxLances[String(niveauActuel)];
                     elRes.textContent = formatResultatDeVie(res, bonusConst, deFaces, false);
                 } else {
                     elRes.textContent = '';
@@ -4242,7 +4237,7 @@
     window.mettreAJourPV = mettreAJourPV;
 
     /**
-     * Animation de lancer de dé de vie
+     * Animation de lancer de dé de vie — overlay SVG au centre de l'écran
      */
     async function lancerDeVie() {
         const user = auth.currentUser;
@@ -4252,43 +4247,74 @@
         const deFaces    = _pvState.de_faces;
         const bonusConst = _pvState.bonus_const;
 
-        // Anti-double + niveau 1 bloqué
         if (niveau === 1 || _pvState.niveaux_lances[String(niveau)] !== undefined) return;
 
-        const elSVG    = document.getElementById('svg-de-vie');
-        const elRes    = document.getElementById('pv-resultat-lancer');
-        const elDispo  = document.getElementById('pv-statut-disponible');
-        const elEpuise = document.getElementById('pv-statut-epuise');
+        const btnDe   = document.getElementById('btn-de-vie');
+        const elRes   = document.getElementById('pv-resultat-lancer');
+        const elDispo = document.getElementById('pv-statut-disponible');
+        const elEpuise= document.getElementById('pv-statut-epuise');
 
-        // Verrouiller immédiatement
-        if (elSVG)   { elSVG.style.cursor = 'default'; elSVG.onclick = null; }
+        // Désactiver le bouton immédiatement
+        if (btnDe)   btnDe.disabled = true;
         if (elDispo) elDispo.style.display = 'none';
-        if (elRes)   elRes.textContent = '🎲 ...';
 
-        // Animation
-        const COULEURS_ANIM = ['#8b0000','#d4af37','#4a90d9','#2a7a2a','#a0522d'];
-        for (let i = 0; i < 10; i++) {
-            const fake = Math.floor(Math.random() * deFaces) + 1;
-            if (elSVG) elSVG.innerHTML = getSVGDe(deFaces, COULEURS_ANIM[i % COULEURS_ANIM.length]);
-            if (elRes) elRes.textContent = `🎲 ${fake}`;
-            await new Promise(r => setTimeout(r, 80 + i * 18));
+        // ── Overlay d'animation ───────────────────────────────
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position:fixed; inset:0; z-index:99990;
+            background:rgba(0,0,0,0.75);
+            display:flex; flex-direction:column;
+            align-items:center; justify-content:center; gap:12px;`;
+        const svgWrap = document.createElement('div');
+        svgWrap.style.cssText = 'transition:transform 0.1s;';
+        const labelAnim = document.createElement('div');
+        labelAnim.style.cssText = `font-family:'Cinzel',serif; font-size:1.4rem;
+            color:var(--or-royal); letter-spacing:0.1em;`;
+        const sousTitre = document.createElement('div');
+        sousTitre.style.cssText = `font-family:'Lora',serif; font-size:0.75rem;
+            color:var(--or-sombre);`;
+        sousTitre.textContent = `Dé de vie — d${deFaces}`;
+        overlay.append(sousTitre, svgWrap, labelAnim);
+        document.body.appendChild(overlay);
+
+        // Animation : défile tous les types de dés + valeurs aléatoires
+        const TYPES_DES  = [4, 6, 8, 10, 12, 20, deFaces]; // finit sur le bon dé
+        const COULEURS   = ['#8b0000','#d4af37','#4a90d9','#2a7a2a','#a0522d','#6a0dad'];
+        const TOTAL_FRAMES = 18;
+        for (let i = 0; i < TOTAL_FRAMES; i++) {
+            const isLast   = i >= TOTAL_FRAMES - 4;
+            const faces    = isLast ? deFaces : TYPES_DES[i % TYPES_DES.length];
+            const fake     = Math.floor(Math.random() * faces) + 1;
+            const couleur  = isLast ? '#d4af37' : COULEURS[i % COULEURS.length];
+            const scale    = 1 + Math.random() * 0.15;
+            svgWrap.innerHTML = getSVGDe(faces, couleur).replace('width="48"','width="96"').replace('height="48"','height="96"').replace('viewBox="0 0 48 48"','viewBox="0 0 48 48"');
+            svgWrap.style.transform = `scale(${scale}) rotate(${(Math.random()-0.5)*30}deg)`;
+            labelAnim.textContent = `${fake}`;
+            labelAnim.style.color = isLast ? '#d4af37' : '#aaa';
+            await new Promise(r => setTimeout(r, 60 + i * 12));
         }
 
         // Résultat final
         const resultat = Math.floor(Math.random() * deFaces) + 1;
         const pvGagnes = Math.max(1, resultat + bonusConst);
-        const bonusStr = bonusConst >= 0 ? `+${bonusConst}` : `${bonusConst}`;
+        svgWrap.innerHTML = getSVGDe(deFaces, '#d4af37').replace('width="48"','width="96"').replace('height="48"','height="96"');
+        svgWrap.style.transform = 'scale(1.1) rotate(0deg)';
+        labelAnim.textContent = `${resultat}`;
+        labelAnim.style.color = '#d4af37';
+        labelAnim.style.fontSize = '2rem';
 
-        // Passer en état épuisé
-        if (elSVG)   { elSVG.innerHTML = getSVGDe(deFaces, '#2a2a2a'); elSVG.style.opacity = '0.35'; }
+        // Fermer l'overlay après 1.2s
+        await new Promise(r => setTimeout(r, 1200));
+        overlay.remove();
+
+        // Mettre à jour UI
         if (elEpuise) elEpuise.style.display = 'block';
-        if (elRes)   elRes.textContent = formatResultatDeVie(resultat, bonusConst, deFaces, false);
+        if (elRes)    elRes.textContent = formatResultatDeVie(resultat, bonusConst, deFaces, false);
 
         // Mettre à jour l'état
         const niveauxLancesMaj = { ..._pvState.niveaux_lances, [String(niveau)]: resultat };
         _pvState.niveaux_lances = niveauxLancesMaj;
 
-        // Recalculer PV total
         let pvTotal = _pvState.base;
         for (let n = 2; n <= niveau; n++) {
             const res = niveauxLancesMaj[String(n)];
