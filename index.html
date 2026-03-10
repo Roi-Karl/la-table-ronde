@@ -4244,8 +4244,10 @@ Personnages célèbres : Le Joker, Dabi, Kefka (Final Fantasy VI), Azula dans se
 
         function showTooltip(wrap, e) {
             const box = wrap.querySelector('.rpg-tooltip-box');
-            if (!box || !box.innerHTML.trim()) return;
-            portal.innerHTML = box.innerHTML;
+            if (!box) return;
+            const html = box.innerHTML.trim();
+            if (!html) return;
+            portal.innerHTML = html;
             portal.style.display = 'block';
             positionPortal(e);
         }
@@ -4268,20 +4270,19 @@ Personnages célèbres : Le Joker, Dabi, Kefka (Final Fantasy VI), Azula dans se
             portal.style.display = 'none';
         }
 
-        // Brancher sur les wraps existants + futurs (MutationObserver)
+        // Brancher sur les wraps existants + futurs
         function attachWrap(wrap) {
             if (wrap._rpgTTAttached) return;
             wrap._rpgTTAttached = true;
             wrap.addEventListener('mouseenter', e => showTooltip(wrap, e));
-            wrap.addEventListener('mousemove',  e => positionPortal(e));
+            wrap.addEventListener('mousemove',  e => { if (portal.style.display === 'block') positionPortal(e); });
             wrap.addEventListener('mouseleave', hideTooltip);
         }
         function attachAll() {
             document.querySelectorAll('.rpg-tooltip-wrap').forEach(attachWrap);
         }
+        // Lancer maintenant + après chaque mutation DOM
         attachAll();
-
-        // Observer pour les éléments ajoutés dynamiquement
         const obs = new MutationObserver(attachAll);
         obs.observe(document.body, { childList: true, subtree: true });
 
