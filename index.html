@@ -2709,6 +2709,8 @@
                 // ── Chargement profil + date depuis Firestore (1 seul appel) ──
                 let dateCreation = new Date(user.metadata.creationTime); // fallback Auth
                 let profilData = {};
+                let raceNomPur = '';
+                let classeNomPur = '';
                 try {
                     const snap = await getDoc(doc(db, "membres", user.uid));
                     if (snap.exists()) {
@@ -2742,8 +2744,8 @@
                         if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${classeData.nom}` : '—';
 
                         // Tooltips fiche personnage
-                        const raceNomPur   = data.race   ? data.race.split('|')[0]   : '';
-                        const classeNomPur = data.classe ? data.classe.split('|')[0] : '';
+                        raceNomPur   = data.race   ? data.race.split('|')[0]   : '';
+                        classeNomPur = data.classe ? data.classe.split('|')[0] : '';
                         mettreAJourTooltips(raceNomPur, classeNomPur);
                         if (document.getElementById('profil-couleur-blason')) {
                             const couleur = data.couleur_blason || "#8B0000";
