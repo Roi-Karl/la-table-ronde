@@ -4229,8 +4229,8 @@
         const deFaces    = _pvState.de_faces;
         const bonusConst = _pvState.bonus_const;
 
-        _desJetsLeft = 0;
-        mettreAJourBoutonsDes();
+        window._setDesJetsLeft?.(0);
+        window.mettreAJourBoutonsDes?.();
 
         // ── Animation SVG dans la zone dés ───────────────────
         const zone = document.getElementById('des-zone');
@@ -4309,6 +4309,8 @@
             }, { merge: true });
         } catch(e) { console.warn('Erreur sauvegarde PV:', e); }
     }
+
+    window.lancerDesVieModal = lancerDesVieModal;
 
     // ── TRÉSOR : total live ──────────────────────────────────────
     window.mettreAJourTotalTresor = function() {
@@ -4970,6 +4972,8 @@
     let _desCarac      = null;
     let _desJetsLeft   = 3;
     let _desScoreActuel = null;
+    // Setter cross-script pour lancerDesVieModal (Firebase module scope)
+    window._setDesJetsLeft = (v) => { _desJetsLeft = v; };
 
     function creerDeCube(valeurFinale) {
         // Valeurs différentes sur chaque face — chiffres bien lisibles
@@ -5081,10 +5085,11 @@
             btnGarder.style.display = 'none';
         }
     }
+    window.mettreAJourBoutonsDes = mettreAJourBoutonsDes;
 
     async function lancerDes() {
         if (_desJetsLeft <= 0) return;
-        if (_desMode === 'vie') { await lancerDesVieModal(); return; }
+        if (_desMode === 'vie') { await window.lancerDesVieModal(); return; }
         _desJetsLeft--;
         if (!window._caracJets) window._caracJets = {};
         window._caracJets[_desCarac] = _desJetsLeft;
