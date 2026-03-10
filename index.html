@@ -1864,14 +1864,22 @@
                         <span id="profil-histoire" class="fiche-histoire-texte">—</span>
                     </div>
 
+
                     <!-- PV + Initiative (côte à côte) -->
                     <div style="display:flex; gap:10px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
-                        <div class="fiche-stat-box">
+                        <div class="fiche-stat-box" style="flex:1;">
                             <div class="fiche-stat-label">❤️ Points de Vie</div>
                             <div id="fiche-pv" class="fiche-stat-val">—</div>
-                            <div class="fiche-stat-note">calcul à venir</div>
+                            <!-- Dé de vie par niveau -->
+                            <div id="bloc-de-vie" style="display:none; margin-top:8px; text-align:center;">
+                                <div style="font-family:'Lora',serif; font-size:0.58rem; color:var(--or-sombre); margin-bottom:5px;">Niveau <span id="pv-niveau-actuel">1</span> — lancez votre dé de vie</div>
+                                <div id="svg-de-vie" style="cursor:pointer; display:inline-block;" onclick="lancerDeVie()" title="Lancer le dé de vie"></div>
+                                <div id="pv-resultat-lancer" style="font-family:'Cinzel',serif; font-size:0.7rem; color:var(--or-royal); margin-top:4px; min-height:16px;"></div>
+                                <div id="pv-deja-lance" style="display:none; font-family:'Lora',serif; font-size:0.55rem; color:#888; margin-top:3px;">✓ Dé lancé ce niveau</div>
+                            </div>
+                            <div class="fiche-stat-note" id="pv-note">10 PV de base</div>
                         </div>
-                        <div class="fiche-stat-box">
+                        <div class="fiche-stat-box" style="flex:1;">
                             <div class="fiche-stat-label">⚡ Initiative</div>
                             <div id="fiche-initiative" class="fiche-stat-val">—</div>
                             <div class="fiche-stat-note">calcul à venir</div>
@@ -2833,6 +2841,8 @@
                             if (el) el.value = data['tresor_' + abrev] || 0;
                         });
                         window.mettreAJourTotalTresor?.();
+                        // pv_niveaux_lances est chargé via profilData dans mettreAJourFicheCaracs
+                        profilData.pv_niveaux_lances = data.pv_niveaux_lances || {};
                         if (data.cree_le) dateCreation = data.cree_le.toDate();
                     } else {
                         await setDoc(doc(db, "membres", user.uid), {
@@ -3999,6 +4009,16 @@
                 blocTraits.style.display = 'none';
             }
         }
+
+        // ── Mise à jour Points de Vie ──────────────────────────
+        if (window.mettreAJourPV && profilData) {
+            const niveauData = window.getNiveauFromXP ? window.getNiveauFromXP(
+                10 + ((profilData.jours_anciennete || 0) * 12) +
+                (profilData.xp_quiz || 0) +
+                (profilData.xp_newsletter || 0)
+            ) : { niveau: 1 };
+            window.mettreAJourPV(profilData, classeNomPur, niveauData.niveau);
+        }
     }
     window.mettreAJourFicheCaracs = mettreAJourFicheCaracs;
 
@@ -4027,6 +4047,215 @@
         notif._timeout = setTimeout(() => notif.style.opacity = '0', 3500);
     }
     window.afficherNotifXP = afficherNotifXP;
+
+    // ══════════════════════════════════════════════════════════════
+    //  SYSTÈME DE DÉS — SVG tous les polyèdres D&D
+    //  d4, d6, d8, d10, d12, d20, d100
+    // ══════════════════════════════════════════════════════════════
+
+    const DES_SVG = {
+        d4: (couleur) => `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="24,4 44,40 4,40" fill="${couleur}" stroke="#d4af37" stroke-width="1.5"/>
+            <polygon points="24,4 44,40 34,22" fill="${couleur}" stroke="#d4af37" stroke-width="0.8" opacity="0.6"/>
+            <text x="24" y="36" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#d4af37" font-weight="bold">d4</text>
+        </svg>`,
+        d6: (couleur) => `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="36" height="36" rx="4" fill="${couleur}" stroke="#d4af37" stroke-width="1.5"/>
+            <line x1="6" y1="16" x2="42" y2="16" stroke="#d4af37" stroke-width="0.6" opacity="0.4"/>
+            <line x1="6" y1="32" x2="42" y2="32" stroke="#d4af37" stroke-width="0.6" opacity="0.4"/>
+            <text x="24" y="30" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#d4af37" font-weight="bold">d6</text>
+        </svg>`,
+        d8: (couleur) => `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="24,3 45,24 24,45 3,24" fill="${couleur}" stroke="#d4af37" stroke-width="1.5"/>
+            <polygon points="24,3 45,24 24,24" fill="${couleur}" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+            <text x="24" y="30" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#d4af37" font-weight="bold">d8</text>
+        </svg>`,
+        d10: (couleur) => `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="24,3 44,18 38,42 10,42 4,18" fill="${couleur}" stroke="#d4af37" stroke-width="1.5"/>
+            <polygon points="24,3 44,18 24,22 4,18" fill="${couleur}" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+            <text x="24" y="34" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="#d4af37" font-weight="bold">d10</text>
+        </svg>`,
+        d12: (couleur) => `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="24,3 36,8 44,20 44,28 36,40 24,45 12,40 4,28 4,20 12,8" fill="${couleur}" stroke="#d4af37" stroke-width="1.5"/>
+            <polygon points="24,3 36,8 30,18 18,18 12,8" fill="${couleur}" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+            <text x="24" y="31" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="#d4af37" font-weight="bold">d12</text>
+        </svg>`,
+        d20: (couleur) => `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="24,2 46,16 43,40 5,40 2,16" fill="${couleur}" stroke="#d4af37" stroke-width="1.5"/>
+            <polygon points="24,2 46,16 35,14 24,8 13,14 2,16" fill="${couleur}" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+            <line x1="24" y1="8" x2="24" y2="40" stroke="#d4af37" stroke-width="0.5" opacity="0.3"/>
+            <text x="24" y="33" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="#d4af37" font-weight="bold">d20</text>
+        </svg>`,
+        d100: (couleur) => `<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="21" fill="${couleur}" stroke="#d4af37" stroke-width="1.5"/>
+            <circle cx="24" cy="24" r="14" fill="none" stroke="#d4af37" stroke-width="0.6" opacity="0.4"/>
+            <text x="24" y="28" text-anchor="middle" font-family="Cinzel,serif" font-size="9" fill="#d4af37" font-weight="bold">d100</text>
+        </svg>`,
+    };
+
+    // Rendu SVG d'un dé avec couleur selon classe
+    function getSVGDe(faces, couleurFond) {
+        const key = 'd' + faces;
+        const fn = DES_SVG[key] || DES_SVG['d6'];
+        return fn(couleurFond || '#2a1f0e');
+    }
+    window.getSVGDe = getSVGDe;
+
+    // ══════════════════════════════════════════════════════════════
+    //  POINTS DE VIE — Calcul et dé de vie par niveau
+    // ══════════════════════════════════════════════════════════════
+
+    // État PV (rechargé depuis Firestore)
+    let _pvState = {
+        base:        10,
+        bonus_const: 0,
+        niveaux_lances: {},  // { "1": 8, "2": 5, ... } — résultats par niveau
+        de_faces:    8,
+        niveau_actuel: 1,
+    };
+
+    /**
+     * Initialise/met à jour la section PV depuis les données profil
+     */
+    function mettreAJourPV(profilData, classeNomPur, niveauActuel) {
+        const classe = window.RPG_CLASSES?.[classeNomPur];
+        const deFaces = classe?.de_vie || 8;
+        const bonusConst = Math.floor(((profilData.carac_constitution || 10) - 10) / 2);
+        const niveauxLances = profilData.pv_niveaux_lances || {};
+
+        // Calcul PV total
+        // Niveau 1 : PV max = de_faces + bonus_const (pas de lancer)
+        // Niveaux 2+ : PV += résultat lancé + bonus_const à chaque niveau
+        let pvTotal = deFaces + bonusConst; // niveau 1 toujours max
+        for (let n = 2; n <= niveauActuel; n++) {
+            const res = niveauxLances[String(n)];
+            if (res !== undefined) pvTotal += res + bonusConst;
+        }
+
+        // Mettre à jour l'état global
+        _pvState = {
+            base: deFaces + bonusConst,
+            bonus_const: bonusConst,
+            niveaux_lances: niveauxLances,
+            de_faces: deFaces,
+            niveau_actuel: niveauActuel,
+            pv_total: pvTotal,
+        };
+
+        // Afficher le total
+        const elPV = document.getElementById('fiche-pv');
+        if (elPV) elPV.textContent = pvTotal;
+
+        // Note explicative
+        const elNote = document.getElementById('pv-note');
+        if (elNote) {
+            const bonusStr = bonusConst >= 0 ? `+${bonusConst}` : `${bonusConst}` ;
+            elNote.textContent = `d${deFaces} par niveau (CON ${bonusStr})`;
+        }
+
+        // Afficher le dé si niveau > 1 et pas encore lancé ce niveau
+        const blocDe = document.getElementById('bloc-de-vie');
+        const elNiv  = document.getElementById('pv-niveau-actuel');
+        const elSVG  = document.getElementById('svg-de-vie');
+        const elDeja = document.getElementById('pv-deja-lance');
+        const elRes  = document.getElementById('pv-resultat-lancer');
+
+        if (niveauActuel >= 1 && blocDe) {
+            // Niveau 1 = toujours max, pas de dé à lancer
+            if (niveauActuel === 1) {
+                blocDe.style.display = 'none';
+            } else {
+                blocDe.style.display = 'block';
+                if (elNiv) elNiv.textContent = niveauActuel;
+
+                const dejaLance = niveauxLances[String(niveauActuel)] !== undefined;
+                if (elSVG) {
+                    // Couleur du dé selon la valeur (rouge=bas, vert=haut)
+                    const couleur = dejaLance ? '#3a3a3a' : '#1a0e02';
+                    elSVG.innerHTML = getSVGDe(deFaces, couleur);
+                    elSVG.style.opacity  = dejaLance ? '0.4' : '1';
+                    elSVG.style.cursor   = dejaLance ? 'default' : 'pointer';
+                    elSVG.onclick        = dejaLance ? null : lancerDeVie;
+                }
+                if (elDeja) elDeja.style.display = dejaLance ? 'block' : 'none';
+                if (elRes && dejaLance) {
+                    const res = niveauxLances[String(niveauActuel)];
+                    const bonusStr = bonusConst >= 0 ? `+${bonusConst}` : `${bonusConst}`;
+                    elRes.textContent = `${res} ${bonusStr} = +${res + bonusConst} PV`;
+                }
+            }
+        }
+    }
+    window.mettreAJourPV = mettreAJourPV;
+
+    /**
+     * Animation de lancer de dé avec résultat final
+     */
+    async function lancerDeVie() {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const niveau    = _pvState.niveau_actuel;
+        const deFaces   = _pvState.de_faces;
+        const bonusConst = _pvState.bonus_const;
+
+        // Vérif anti-double lancer
+        if (_pvState.niveaux_lances[String(niveau)] !== undefined) return;
+
+        const elSVG  = document.getElementById('svg-de-vie');
+        const elRes  = document.getElementById('pv-resultat-lancer');
+        const elDeja = document.getElementById('pv-deja-lance');
+        if (elSVG) elSVG.style.cursor = 'default';
+        if (elSVG) elSVG.onclick = null;
+
+        // Animation : dé qui "tourne" en affichant des valeurs aléatoires
+        if (elRes) elRes.textContent = '🎲 ...';
+        const COULEURS_ANIM = ['#8b0000','#d4af37','#4a90d9','#2a7a2a','#8b0000'];
+        for (let i = 0; i < 10; i++) {
+            const fake  = Math.floor(Math.random() * deFaces) + 1;
+            const coul  = COULEURS_ANIM[i % COULEURS_ANIM.length];
+            if (elSVG) elSVG.innerHTML = getSVGDe(deFaces, coul);
+            if (elRes) elRes.textContent = `🎲 ${fake}`;
+            await new Promise(r => setTimeout(r, 80 + i * 18));
+        }
+
+        // Résultat final
+        const resultat  = Math.floor(Math.random() * deFaces) + 1;
+        const pvGagnes  = resultat + bonusConst;
+        const bonusStr  = bonusConst >= 0 ? `+${bonusConst}` : `${bonusConst}`;
+
+        if (elSVG) elSVG.innerHTML = getSVGDe(deFaces, '#1a0e02');
+        if (elSVG) elSVG.style.opacity = '0.4';
+        if (elRes) elRes.textContent = `${resultat} ${bonusStr} = +${pvGagnes > 0 ? pvGagnes : 1} PV`;
+        if (elDeja) elDeja.style.display = 'block';
+
+        // Sauvegarder dans Firestore
+        const niveauxLancesMaj = { ..._pvState.niveaux_lances, [String(niveau)]: resultat };
+        _pvState.niveaux_lances = niveauxLancesMaj;
+
+        // Recalculer le total PV
+        let pvTotal = _pvState.base;
+        for (let n = 2; n <= niveau; n++) {
+            const res = niveauxLancesMaj[String(n)];
+            if (res !== undefined) pvTotal += Math.max(1, res + bonusConst);
+        }
+        _pvState.pv_total = pvTotal;
+        const elPV = document.getElementById('fiche-pv');
+        if (elPV) elPV.textContent = pvTotal;
+
+        // Notif
+        window.afficherNotifXP?.(`❤️ +${Math.max(1, pvGagnes)} PV au niveau ${niveau} !`);
+
+        try {
+            await setDoc(doc(db, 'membres', user.uid), {
+                pv_niveaux_lances: niveauxLancesMaj,
+                mis_a_jour: serverTimestamp()
+            }, { merge: true });
+        } catch(e) {
+            console.warn('Erreur sauvegarde PV:', e);
+        }
+    }
+    window.lancerDeVie = lancerDeVie;
 
     // ── TRÉSOR : total live ──────────────────────────────────────
     window.mettreAJourTotalTresor = function() {
