@@ -2901,66 +2901,7 @@
                         }
 
                         // ── Modal alignement ────────────────────────
-                        elAlign.onclick = () => {
-                            const catCouleurs = { "Bien": "#4a90d9", "Neutre": "#aab7b8", "Mal": "#c0392b" };
-                            const catCol   = catCouleurs[aCategorie] || '#aa8222';
-                            const catLabel = aCategorie === "Bien" ? "⚪ Alignement du Bien"
-                                           : aCategorie === "Mal"  ? "🔴 Alignement du Mal"
-                                           : "⚫ Alignement Neutre";
-                            const descBrut = aDesc.trim();
-                            const corps = descBrut.split(/\n\n+/).map(p => {
-                                const t = p.trim();
-                                if (t.startsWith('•') || t.includes('\n•')) {
-                                    const lignes = t.split('\n');
-                                    const items = lignes.map(l =>
-                                        l.startsWith('•')
-                                            ? `<li style="font-family:'Lora',serif;font-size:0.78rem;color:#4a3010;line-height:1.55;margin-bottom:3px;">${l.slice(1).trim()}</li>`
-                                            : `<p style="font-family:'Cinzel',serif;font-size:0.62rem;color:var(--rouge-blason);letter-spacing:0.08em;text-transform:uppercase;margin:8px 0 4px;">${l}</p>`
-                                    ).join('');
-                                    return `<ul style="margin:0 0 10px;padding-left:14px;">${items}</ul>`;
-                                }
-                                return `<p style="font-family:'Lora',serif;font-size:0.82rem;color:#3a2a0a;line-height:1.65;margin:0 0 12px;">${t.replace(/\n/g,' ')}</p>`;
-                            }).join('');
-
-                            const contenu = document.getElementById('rpg-modal-contenu');
-                            if (!contenu) return;
-                            contenu.innerHTML = `
-                                <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;
-                                            padding-bottom:14px;border-bottom:1px solid rgba(139,0,0,0.25);">
-                                    <div style="font-size:3.5rem;line-height:1;">${aData.icone}</div>
-                                    <div>
-                                        <div style="font-family:'Cinzel',serif;font-size:0.55rem;color:var(--or-sombre);
-                                             letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">ALIGNEMENT</div>
-                                        <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:bold;
-                                             color:${aData.couleur || catCol};letter-spacing:0.05em;">${alignement}</div>
-                                        <div style="font-family:'Lora',serif;font-size:0.8rem;font-weight:bold;
-                                             color:#5a3e1b;margin-top:2px;">${aData.titre || ''}</div>
-                                        <div style="font-family:'Lora',serif;font-style:italic;font-size:0.72rem;
-                                             color:#7a5a30;margin-top:3px;">${aData.tooltip || ''}</div>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom:16px;">
-                                    <div style="font-family:'Cinzel',serif;font-size:0.58rem;color:var(--or-sombre);
-                                         letter-spacing:0.12em;text-transform:uppercase;margin-bottom:7px;">
-                                        Famille morale
-                                    </div>
-                                    <span style="font-family:'Cinzel',serif;font-size:0.7rem;
-                                        background:rgba(139,0,0,0.07);border:1px solid rgba(139,0,0,0.2);
-                                        color:var(--rouge-blason);padding:3px 12px;border-radius:2px;">
-                                        ${catLabel}
-                                    </span>
-                                </div>
-                                <div>
-                                    <div style="font-family:'Cinzel',serif;font-size:0.58rem;color:var(--or-sombre);
-                                         letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;
-                                         padding-bottom:5px;border-bottom:1px solid rgba(139,0,0,0.2);">
-                                        📖 Portrait moral
-                                    </div>
-                                    ${corps}
-                                </div>`;
-                            if(window._hideRPGTooltip) window._hideRPGTooltip(); document.getElementById('rpg-modal-overlay').style.display = 'flex';
-                            document.body.style.overflow = 'hidden';
-                        };
+                        elAlign.onclick = () => window.ouvrirModalAlignement();
                     } else {
                         elAlign.style.cursor = 'default';
                         elAlign.onclick = null;
@@ -3388,6 +3329,77 @@
     }
     window.appliquerCouleurAlignement = appliquerCouleurAlignement;
 
+    // ── MODAL ALIGNEMENT ─────────────────────────────────────
+    // Lit l'alignement courant depuis le DOM au moment du clic
+    // → pas de closure capturée, toujours à jour après quiz
+    function ouvrirModalAlignement() {
+        const nomAlign = document.getElementById('profil-alignement-texte')
+            ?.innerText?.replace(/^.\s*/, '').trim(); // retirer l'icône
+        if (!nomAlign || nomAlign === '— Non déterminé —') return;
+
+        const ad = window.RPG_ALIGNEMENTS?.[nomAlign] || window.ALIGNEMENTS_DATA?.[nomAlign];
+        if (!ad) return;
+
+        const categorie   = ad.famille || ad.categorie || '';
+        const catCouleurs = { "Bien": "#4a90d9", "Neutre": "#aab7b8", "Mal": "#c0392b" };
+        const catCol      = catCouleurs[categorie] || '#aa8222';
+        const catLabel    = categorie === "Bien" ? "⚪ Alignement du Bien"
+                          : categorie === "Mal"  ? "🔴 Alignement du Mal"
+                          : "⚫ Alignement Neutre";
+        const descBrut    = (ad.description_joueur || ad.description || ad.desc || '').trim();
+
+        const corps = descBrut.split(/\n\n+/).map(p => {
+            const t = p.trim();
+            if (t.startsWith('•') || t.includes('\n•')) {
+                const lignes = t.split('\n');
+                const items = lignes.map(l =>
+                    l.startsWith('•')
+                        ? `<li style="font-family:'Lora',serif;font-size:0.78rem;color:#4a3010;line-height:1.55;margin-bottom:3px;">${l.slice(1).trim()}</li>`
+                        : `<p style="font-family:'Cinzel',serif;font-size:0.62rem;color:var(--rouge-blason);letter-spacing:0.08em;text-transform:uppercase;margin:8px 0 4px;">${l}</p>`
+                ).join('');
+                return `<ul style="margin:0 0 10px;padding-left:14px;">${items}</ul>`;
+            }
+            return `<p style="font-family:'Lora',serif;font-size:0.82rem;color:#3a2a0a;line-height:1.65;margin:0 0 12px;">${t.replace(/\n/g,' ')}</p>`;
+        }).join('');
+
+        const contenu = document.getElementById('rpg-modal-contenu');
+        if (!contenu) return;
+        contenu.innerHTML = `
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;
+                        padding-bottom:14px;border-bottom:1px solid rgba(139,0,0,0.25);">
+                <div style="font-size:3.5rem;line-height:1;">${ad.icone}</div>
+                <div>
+                    <div style="font-family:'Cinzel',serif;font-size:0.55rem;color:var(--or-sombre);
+                         letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">ALIGNEMENT</div>
+                    <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:bold;
+                         color:${ad.couleur || catCol};letter-spacing:0.05em;">${nomAlign}</div>
+                    <div style="font-family:'Lora',serif;font-size:0.8rem;font-weight:bold;
+                         color:#5a3e1b;margin-top:2px;">${ad.titre || ''}</div>
+                    <div style="font-family:'Lora',serif;font-style:italic;font-size:0.72rem;
+                         color:#7a5a30;margin-top:3px;">${ad.tooltip || ''}</div>
+                </div>
+            </div>
+            <div style="margin-bottom:16px;">
+                <div style="font-family:'Cinzel',serif;font-size:0.58rem;color:var(--or-sombre);
+                     letter-spacing:0.12em;text-transform:uppercase;margin-bottom:7px;">Famille morale</div>
+                <span style="font-family:'Cinzel',serif;font-size:0.7rem;
+                    background:rgba(139,0,0,0.07);border:1px solid rgba(139,0,0,0.2);
+                    color:var(--rouge-blason);padding:3px 12px;border-radius:2px;">${catLabel}</span>
+            </div>
+            <div>
+                <div style="font-family:'Cinzel',serif;font-size:0.58rem;color:var(--or-sombre);
+                     letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;
+                     padding-bottom:5px;border-bottom:1px solid rgba(139,0,0,0.2);">
+                    📖 Portrait moral
+                </div>
+                ${corps}
+            </div>`;
+        if (window._hideRPGTooltip) window._hideRPGTooltip();
+        document.getElementById('rpg-modal-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    window.ouvrirModalAlignement = ouvrirModalAlignement;
+
     function ouvrirQuizModal(forcer) {
         const overlay = document.getElementById('quiz-modal-overlay');
         overlay.style.display = 'flex';
@@ -3572,14 +3584,16 @@
         // Mettre à jour la fiche de personnage en temps réel
         const elAlign    = document.getElementById('profil-alignement');
         const elAlignTxt = document.getElementById('profil-alignement-texte');
-        const aDataFresh = window._alignementsIcones && ALIGNEMENTS_DATA ? ALIGNEMENTS_DATA[cle] : null;
+        const aDataFresh = window.RPG_ALIGNEMENTS?.[cle] || window.ALIGNEMENTS_DATA?.[cle] || null;
         if (elAlignTxt) elAlignTxt.innerHTML = `${icone} ${cle}`;
         if (elAlign && aDataFresh) {
             elAlign.style.cursor = 'pointer';
+            elAlign.onclick = () => window.ouvrirModalAlignement();
             const ttAlign = document.getElementById('tooltip-alignement-fiche');
             if (ttAlign) {
+                const categorie   = aDataFresh.famille || aDataFresh.categorie || '';
                 const catCouleurs = { "Bien": "#4a90d9", "Neutre": "#aab7b8", "Mal": "#c0392b" };
-                const catCol = catCouleurs[aDataFresh.categorie] || '#aa8222';
+                const catCol = catCouleurs[categorie] || '#aa8222';
                 ttAlign.innerHTML = `
                     <div class="rpg-tt-header">
                         <div class="rpg-tt-header-icone">${aDataFresh.icone}</div>
@@ -3590,7 +3604,7 @@
                     </div>
                     <div class="rpg-tt-section">
                         <div class="rpg-tt-label">Catégorie morale</div>
-                        <div class="rpg-tt-bonus"><span class="rpg-tt-bonus-pill">${aDataFresh.categorie || ''}</span></div>
+                        <div class="rpg-tt-bonus"><span class="rpg-tt-bonus-pill" style="border-color:${catCol}33; color:${catCol};">${categorie}</span></div>
                     </div>`;
             }
         }
