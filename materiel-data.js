@@ -1,2134 +1,1708 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- *  LA TABLE RONDE (MAIS CARRÉE) — Données Matériel
- *  Armes, Armures, Équipement, Montures, Objets
- *  Usage : fiche personnage, échoppe, Livre du Joueur/Maître
+ *  LA TABLE RONDE (MAIS CARRÉE) — Données RPG
+ *  Races, Classes, Bonus de caractéristiques, Descriptions
+ *  Usage : tooltips in-game + génération Livre du Joueur/Maître
  * ═══════════════════════════════════════════════════════════════
  */
 
-// ═══════════════════════════════════════════════════════════════
-//  ARMES
-//  Structure : { icone, categorie, degats, type_degats, poids,
-//               prix, proprietes[], description }
-//  Catégories : "Corps à corps courante" | "Distance courante" |
-//               "Corps à corps de guerre" | "Distance de guerre"
-// ═══════════════════════════════════════════════════════════════
+const RPG_RACES = {
 
-const MATERIEL_ARMES = {
+    "Humain": {
+        icone: "🧑",
+        bonus: { force: 1, dexterite: 1, constitution: 1, intelligence: 1, sagesse: 1, charisme: 1 },
+        traits: [
+            { nom: 'Polyvalence', icone: '🔄', desc: 'Peut choisir une compétence ou un outil supplémentaire à la création.' },
+            { nom: 'Ambition', icone: '🔥', desc: 'Une fois par repos long, peut relancer un jet de compétence raté.' },
+            { nom: 'Héritage varié', icone: '🌍', desc: 'Accès à un talent racial au choix parmi trois options.' },
+        ],
+        tooltip: "Adaptable et ambitieux — maître de toutes les disciplines.",
+        description_joueur: `
+Les Humains sont la race la plus répandue et la plus diverse du royaume.
+Ni les plus forts, ni les plus agiles, ni les plus sages — mais les plus adaptables.
+Là où d'autres races excellent dans un domaine unique, l'Humain progresse dans tous.
+Cette polyvalence en fait des aventuriers redoutables sur le long terme.
 
-    // ── ARMES COURANTES DE CORPS À CORPS ────────────────────────
+Bonus : +1 à TOUTES les caractéristiques.
 
-    "Bâton": {
-        icone:       "🪄",
-        categorie:   "Corps à corps courante",
-        degats:      "1d6",
-        type_degats: "contondant",
-        poids:       "2 kg",
-        prix:        "2 pa",
-        proprietes:  ["Polyvalente (1d8)"],
-        description: "Un bâton de bois solide, arme humble mais polyvalente. Tenu à deux mains, il inflige davantage de dégâts. Favori des moines, des voyageurs et des druides."
+Traits raciaux :
+• Polyvalence — Peut choisir une compétence ou un outil supplémentaire à la création.
+• Ambition — Une fois par repos long, peut relancer un jet de compétence raté.
+• Héritage varié — Accès à un talent racial au choix parmi trois options.
+
+Apparence : Extrêmement variable selon les régions. Taille et corpulence moyennes.
+Durée de vie : 70 à 100 ans.
+Alignements fréquents : Tous, sans prédominance particulière.
+        `,
+        description_maitre: `
+Les Humains sont le miroir du joueur lui-même : imprévisibles, ambitieux, capables du meilleur comme du pire.
+En tant que Maître, utilisez les PNJ humains pour introduire la corruption, la trahison, mais aussi l'héroïsme inattendu.
+Leur courte durée de vie les rend urgents dans leurs actes — ils veulent laisser une trace.
+
+Motivations typiques : gloire, richesse, héritage familial, vengeance, amour, foi.
+Factions : présents dans toutes les factions sans exception.
+Rôle narratif : archétype du héros ordinaire qui accomplit l'extraordinaire.
+Conseil au Maître : ne sous-estimez jamais un PNJ humain — leur adaptabilité en fait souvent la surprise de la session.
+        `
     },
 
-    "Dague": {
-        icone:       "🗡️",
-        categorie:   "Corps à corps courante",
-        degats:      "1d4",
-        type_degats: "perforant",
-        poids:       "500 g",
-        prix:        "2 po",
-        proprietes:  ["Finesse", "Légère", "Lancer (portée 6 m/18 m)"],
-        description: "Lame courte et discrète, idéale pour le combat rapproché ou le lancer furtif. L'arme de prédilection des roublards et des assassins."
+    "Elfe": {
+        icone: "🧝",
+        bonus: { dexterite: 2, intelligence: 1 },
+        traits: [
+            { nom: 'Vision dans le noir', icone: '🌑', desc: 'Voit clairement jusqu\'à 18 mètres dans l\'obscurité totale.' },
+            { nom: 'Sens aiguisés', icone: '👁️', desc: 'Avantage aux tests de Perception basés sur la vue ou l\'ouïe.' },
+            { nom: 'Transe elfique', icone: '💤', desc: '4 heures de méditation remplacent un repos long complet.' },
+            { nom: 'Immunité au sommeil', icone: '🛡️', desc: 'Les sorts de sommeil magique n\'ont aucun effet.' },
+        ],
+        tooltip: "Grâce millénaire et acuité intellectuelle — l'élégance faite chair.",
+        description_joueur: `
+Les Elfes sont une race ancienne, liée à la magie primordiale du monde.
+Ils perçoivent le monde avec une finesse sensorielle unique : leur ouïe capte les murmures à cent pas,
+leurs yeux percent l'obscurité, et leur esprit retient chaque détail avec une précision cristalline.
+Leur longévité leur permet d'accumuler un savoir encyclopédique, mais les rend parfois distants
+vis-à-vis des races éphémères.
+
+Bonus : +2 Dextérité, +1 Intelligence.
+
+Traits raciaux :
+• Vision dans le noir — Voit clairement jusqu'à 18 mètres dans l'obscurité totale.
+• Sens aiguisés — Avantage aux tests de Perception basés sur la vue ou l'ouïe.
+• Transe elfique — 4 heures de méditation remplacent un repos long complet.
+• Immunité au sommeil magique — Les sorts de sommeil n'ont aucun effet.
+
+Apparence : Grands et élancés, oreilles pointues, traits fins, yeux aux couleurs inhabituelles.
+Durée de vie : 700 à 1000 ans.
+Alignements fréquents : Chaotique Bon, Neutre Bon.
+        `,
+        description_maitre: `
+Les Elfes sont des gardiens de la mémoire du monde. Ils ont vu des empires naître et mourir.
+En tant que Maître, les PNJ elfes représentent la sagesse ancienne — mais aussi l'arrogance
+d'une race qui se croit supérieure. Utilisez leur perspective millénaire pour offrir des informations
+que nul autre PNJ ne pourrait fournir.
+
+Motivations typiques : préservation de la nature, quête de savoir interdit, deuil d'un monde disparu.
+Factions : Grands Cercles de Mages, Confréries des Forêts, Gardiens des Anciens.
+Rôle narratif : mentor mystérieux, antagoniste froid et calculateur, ou allié imprévisible.
+Conseil au Maître : un Elfe qui s'implique dans les affaires humaines a une raison très personnelle — explorez-la.
+        `
     },
 
-    "Gourdin": {
-        icone:       "🪵",
-        categorie:   "Corps à corps courante",
-        degats:      "1d4",
-        type_degats: "contondant",
-        poids:       "1 kg",
-        prix:        "1 pa",
-        proprietes:  ["Légère"],
-        description: "Un morceau de bois robuste, l'arme la plus primitive qui soit. Peu coûteuse, facile à trouver, et redoutable dans les bonnes mains."
+    "Nain": {
+        icone: "⛏️",
+        bonus: { constitution: 2, force: 1 },
+        traits: [
+            { nom: 'Résistance au poison', icone: '☠️', desc: 'Avantage aux jets contre le poison, résistance aux dégâts de poison.' },
+            { nom: 'Solidité naine', icone: '💪', desc: '+1 PV supplémentaire par niveau.' },
+            { nom: 'Maîtrise des armes', icone: '🪓', desc: 'Hache de guerre, hachette, marteau léger et marteau de guerre.' },
+            { nom: 'Vision dans le noir', icone: '🌑', desc: '18 mètres en obscurité totale.' },
+            { nom: 'Connaissance de la pierre', icone: '🪨', desc: 'Avantage aux tests d\'Histoire liés aux structures et mines.' },
+        ],
+        tooltip: "Indestructible et tenace — la montagne a trouvé sa forme humaine.",
+        description_joueur: `
+Les Nains sont forgés dans la pierre et le feu des profondeurs. Compacts, robustes,
+et d'une endurance légendaire, ils sont les maîtres incontestés de la forge, de la mine et de la guerre de tranchées.
+Leur parole est un serment gravé dans la roche — ils ne reviennent jamais sur leur engagement.
+Cette loyauté indéfectible en fait des alliés précieux, mais des ennemis redoutables et tenaces.
+
+Bonus : +2 Constitution, +1 Force.
+
+Traits raciaux :
+• Résistance au poison — Avantage aux jets de sauvegarde contre le poison, résistance aux dégâts de poison.
+• Solidité naine — +1 PV supplémentaire par niveau.
+• Maîtrise des armes naines — Hache de guerre, hachette, marteau léger et marteau de guerre.
+• Vision dans le noir — 18 mètres en obscurité totale.
+• Connaissance de la pierre — Avantage aux tests d'Histoire liés aux structures et mines.
+
+Apparence : 1,20 à 1,50 m, corpulents, barbe longue (fierté culturelle).
+Durée de vie : 350 à 450 ans.
+Alignements fréquents : Loyal Bon, Loyal Neutre.
+        `,
+        description_maitre: `
+Les Nains incarnent la valeur du travail, de l'honneur et de la tradition.
+Un PNJ nain sera méfiant envers les inconnus, mais d'une loyauté absolue envers ceux qui ont prouvé leur valeur.
+Utilisez leurs rancunes générationnelles — les Nains n'oublient jamais une offense.
+
+Motivations typiques : honneur du clan, vengeance d'un affront ancestral, récupération d'une relique.
+Factions : Guildes de Forgerons, Armées Souterraines, Clans montagnards.
+Rôle narratif : allié bourru mais fiable, maître artisan avec des secrets, gardien d'une forteresse oubliée.
+Conseil au Maître : donnez à chaque Nain une rancune et un point d'honneur — sa personnalité en découlera naturellement.
+        `
     },
 
-    "Hachette": {
-        icone:       "🪓",
-        categorie:   "Corps à corps courante",
-        degats:      "1d6",
-        type_degats: "tranchant",
-        poids:       "1 kg",
-        prix:        "5 po",
-        proprietes:  ["Légère", "Lancer (portée 6 m/18 m)"],
-        description: "Petite hache maniable, aussi efficace au corps à corps qu'en lancer. Outil et arme à la fois, compagne indispensable des bûcherons et des guerriers nomades."
+    "Halfelin": {
+        icone: "🦶",
+        bonus: { dexterite: 2, charisme: 1 },
+        traits: [
+            { nom: 'Chance halfeline', icone: '🎲', desc: 'Quand un jet naturel donne 1, relancez le dé (obligatoire).' },
+            { nom: 'Bravoure', icone: '💛', desc: 'Avantage aux jets de sauvegarde contre la peur.' },
+            { nom: 'Discrétion naturelle', icone: '👣', desc: 'Peut se cacher derrière une créature d\'une taille supérieure.' },
+            { nom: 'Agilité halfeline', icone: '💨', desc: 'Peut traverser l\'espace d\'une créature plus grande sans désavantage.' },
+        ],
+        tooltip: "Chanceux et insaisissable — petit par la taille, immense par la fortune.",
+        description_joueur: `
+Les Halfelins sont une race de petits êtres joyeux, discrets et incroyablement chanceux.
+Ils évitent rarement les problèmes par la force — ils les contournent avec grâce, humour et un sourire désarmant.
+Leur taille leur vaut souvent d'être sous-estimés, une erreur que leurs adversaires ne commettent généralement qu'une fois.
+La chance semble couler dans leurs veines : même dans les situations les plus désespérées, ils trouvent une issue.
+
+Bonus : +2 Dextérité, +1 Charisme.
+
+Traits raciaux :
+• Chance halfeline — Quand un jet naturel donne 1, relancez le dé (obligatoire).
+• Bravoure — Avantage aux jets de sauvegarde contre la peur.
+• Discrétion naturelle — Peut se cacher derrière une créature d'une catégorie de taille supérieure.
+• Agilité halfeline — Peut traverser l'espace d'une créature plus grande sans désavantage.
+
+Apparence : 90 cm à 1,20 m, pieds larges et poilus, traits ronds et expressifs.
+Durée de vie : 150 à 200 ans.
+Alignements fréquents : Neutre Bon, Chaotique Bon.
+        `,
+        description_maitre: `
+Les Halfelins sont des survivants nés. Ils ont traversé des siècles d'histoire en restant invisibles
+aux yeux des grandes races. Un PNJ halfelin sera rarement celui qu'on remarque — mais celui qui
+a tout entendu, tout vu, et qui revend l'information au bon moment.
+
+Motivations typiques : confort de la communauté, protéger les leurs, curiosité d'aventure inattendue.
+Factions : Réseaux marchands, espions, aubergistes et informateurs.
+Rôle narratif : informateur inattendu, voleur au grand cœur, guide local irremplaçable.
+Conseil au Maître : un Halfelin en difficulté est toujours plus dangereux qu'il n'y paraît — sa chance le sort toujours.
+        `
     },
 
-    "Javeline": {
-        icone:       "🏹",
-        categorie:   "Corps à corps courante",
-        degats:      "1d6",
-        type_degats: "perforant",
-        poids:       "1 kg",
-        prix:        "5 pa",
-        proprietes:  ["Lancer (portée 9 m/36 m)"],
-        description: "Lance légère conçue pour être projetée à distance ou utilisée en mêlée. Arme polyvalente des soldats d'infanterie et des chasseurs."
+    "Gnome": {
+        icone: "🍄",
+        bonus: { intelligence: 2, sagesse: 1 },
+        traits: [
+            { nom: 'Ruse gnome', icone: '🧠', desc: 'Avantage aux jets de sauvegarde Int, Sag et Cha contre la magie.' },
+            { nom: 'Vision dans le noir', icone: '🌑', desc: '18 mètres en obscurité totale.' },
+            { nom: 'Connaissance naturelle', icone: '📚', desc: 'Maîtrise de l\'Arcane, de l\'Histoire ou de la Nature (au choix).' },
+            { nom: 'Mémoire photographique', icone: '📷', desc: 'Peut mémoriser n\'importe quel texte ou carte en 10 minutes.' },
+        ],
+        tooltip: "Inventeur compulsif et philosophe discret — le génie à l'état brut.",
+        description_joueur: `
+Les Gnomes sont les esprits les plus curieux et inventifs du royaume.
+Là où un Humain voit un problème, un Gnome voit dix solutions — dont sept sont follement dangereuses
+et deux sont brillantes. Leur rapport au monde est fondamentalement intellectuel :
+tout est une énigme à résoudre, un mécanisme à démonter, un phénomène à cataloguer.
+Leur sagesse innée leur permet de ne pas trop se perdre dans leurs propres théories.
+
+Bonus : +2 Intelligence, +1 Sagesse.
+
+Traits raciaux :
+• Ruse gnome — Avantage aux jets de sauvegarde de Int, Sag et Cha contre la magie.
+• Vision dans le noir — 18 mètres en obscurité totale.
+• Connaissance naturelle — Maîtrise de l'Arcane, de l'Histoire ou de la Nature (au choix).
+• Mémoire photographique — Peut mémoriser n'importe quel texte ou carte en 10 minutes.
+
+Apparence : 90 cm à 1,15 m, nez proéminent, yeux vifs et curieux, souvent tachés d'encre ou de graisse.
+Durée de vie : 350 à 500 ans.
+Alignements fréquents : Neutre Bon, Chaotique Neutre.
+        `,
+        description_maitre: `
+Les Gnomes sont l'incarnation de la curiosité sans limites. Ils s'intéressent à tout,
+posent des questions embarrassantes et ont tendance à démontrer les choses au mauvais moment.
+En tant que Maître, les PNJ gnomes sont d'excellents fournisseurs d'informations ésotériques
+— mais ils exigent toujours quelque chose en échange : une découverte, un mystère, une réponse.
+
+Motivations typiques : comprendre l'incompréhensible, inventer l'inutile nécessaire, cataloguer le monde.
+Factions : Guildes des Inventeurs, Académies de Magie, Bibliothèques secrètes.
+Rôle narratif : inventeur génial et inadapté, sage détenteur d'une connaissance cruciale, espion discret.
+Conseil au Maître : laissez le PNJ gnome parler — il révèlera souvent plus que prévu par excitation intellectuelle.
+        `
     },
 
-    "Lance": {
-        icone:       "⚔️",
-        categorie:   "Corps à corps courante",
-        degats:      "1d6",
-        type_degats: "perforant",
-        poids:       "1,5 kg",
-        prix:        "1 po",
-        proprietes:  ["Lancer (portée 6 m/18 m)", "Polyvalente (1d8)"],
-        description: "Arme d'hast simple et efficace. Tenue à deux mains, elle perfore les armures légères avec aisance. Utilisée depuis l'aube des civilisations."
+    "Semi-Elfe": {
+        icone: "🌗",
+        bonus: { charisme: 1, dexterite: 1, intelligence: 1 },
+        traits: [
+            { nom: 'Vision dans le noir', icone: '🌑', desc: '18 mètres en obscurité totale.' },
+            { nom: 'Héritage féerique', icone: '🌺', desc: 'Avantage contre les charmes et sommeil magique.' },
+            { nom: 'Polyvalence semi-elfique', icone: '⭐', desc: 'Maîtrise de deux compétences supplémentaires au choix.' },
+            { nom: 'Diplomatie naturelle', icone: '🕊️', desc: 'Avantage aux tests de Persuasion et de Tromperie envers les humains.' },
+        ],
+        tooltip: "Pont entre deux mondes — ni tout à fait l'un, ni tout à fait l'autre.",
+        description_joueur: `
+Les Semi-Elfes naissent de l'union entre un Humain et un Elfe, héritant du meilleur des deux races
+— et parfois du pire. Trop humains pour les Elfes, trop elfiques pour les Humains,
+ils apprennent tôt à naviguer entre les mondes et à se faire accepter grâce à leur charme naturel.
+Cette marginalité les rend exceptionnellement empathiques et adaptables.
+
+Bonus : +1 Charisme, +1 Dextérité, +1 Intelligence.
+
+Traits raciaux :
+• Vision dans le noir — 18 mètres en obscurité totale.
+• Héritage féerique — Avantage aux jets contre le charme, immunité au sommeil magique.
+• Polyvalence semi-elfique — Maîtrise de deux compétences supplémentaires au choix.
+• Diplomatie naturelle — Avantage aux tests de Persuasion avec des créatures d'Intelligence ≥ 8.
+
+Apparence : Traits intermédiaires, légèrement plus grands que les Humains, oreilles discrètement pointues.
+Durée de vie : 180 à 250 ans.
+Alignements fréquents : Chaotique Bon, Neutre Bon, Chaotique Neutre.
+        `,
+        description_maitre: `
+Les Semi-Elfes sont des personnages de l'entre-deux — ni appartenance pleine nulle part.
+Cette dualité en fait des PNJ fascinants, tiraillés entre deux identités.
+Ils sont d'excellents diplomates, espions ou médiateurs — ils comprennent instinctivement les deux camps.
+
+Motivations typiques : trouver sa place, prouver sa valeur, réconcilier deux factions en conflit.
+Factions : Aucune faction exclusive — présents partout comme intermédiaires.
+Rôle narratif : messager entre factions, personnage à double identité, traître ou héros selon le contexte.
+Conseil au Maître : jouez sur leur sentiment de ne jamais appartenir — c'est leur force et leur blessure.
+        `
     },
 
-    "Marteau léger": {
-        icone:       "🔨",
-        categorie:   "Corps à corps courante",
-        degats:      "1d4",
-        type_degats: "contondant",
-        poids:       "1 kg",
-        prix:        "2 po",
-        proprietes:  ["Légère", "Lancer (portée 6 m/18 m)"],
-        description: "Petit marteau de combat ou d'artisan détourné en arme. Compact et lanceable, apprécié des nains et des clercs de divinités forgeronnes."
+    "Semi-Orc": {
+        icone: "💀",
+        bonus: { force: 2, constitution: 1 },
+        traits: [
+            { nom: 'Endurance implacable', icone: '💀', desc: 'Tombe à 1 PV au lieu de 0 une fois par repos long.' },
+            { nom: 'Attaque sauvage', icone: '⚔️', desc: 'Un critique aux armes inflige un dé de dégâts supplémentaire.' },
+            { nom: 'Intimidation naturelle', icone: '😤', desc: 'Maîtrise automatique de la compétence Intimidation.' },
+            { nom: 'Vision dans le noir', icone: '🌑', desc: '18 mètres en obscurité totale.' },
+        ],
+        tooltip: "Puissance brute et survie instinctive — le combat est sa langue natale.",
+        description_joueur: `
+Les Semi-Orcs portent l'héritage des Orcs avec une puissance physique hors du commun.
+Souvent jugés sur leur apparence, ils doivent se forger une réputation par leurs actes.
+Leur instinct de survie est légendaire — même à l'agonie, un Semi-Orc peut encore se battre.
+Ceux qui les côtoient découvrent souvent une loyauté féroce et une détermination sans faille.
+
+Bonus : +2 Force, +1 Constitution.
+
+Traits raciaux :
+• Endurance implacable — Une fois par repos long, quand réduit à 0 PV, tombe à 1 PV à la place.
+• Attaque sauvage — Quand un coup critique est porté avec une arme de mêlée, ajoutez un dé de dégâts.
+• Intimidation naturelle — Maîtrise de la compétence Intimidation.
+• Vision dans le noir — 18 mètres en obscurité totale.
+
+Apparence : 1,80 à 2,10 m, mâchoires proéminentes, teint grisâtre ou verdâtre, musculature impressionnante.
+Durée de vie : 75 à 90 ans.
+Alignements fréquents : Chaotique Neutre, Neutre Strict, Loyal Neutre.
+        `,
+        description_maitre: `
+Les Semi-Orcs sont des survivants d'un monde qui ne voulait pas d'eux.
+Chaque PNJ Semi-Orc a une histoire de rejet, de préjugé surmonté — ou pas.
+Utilisez cette tension pour créer des personnages profonds, ni purement bons ni purement mauvais.
+
+Motivations typiques : prouver sa valeur, protéger les marginaux, vengeance contre ceux qui méprisent les "monstres".
+Factions : Bandes de mercenaires, tribus frontalières, armées d'élite comme briseurs de lignes.
+Rôle narratif : guerrier au grand cœur incompris, garde du corps loyal, antagoniste tragique.
+Conseil au Maître : ne réduisez jamais un Semi-Orc à sa seule violence — sa vraie force est sa résilience.
+        `
     },
 
-    "Masse d'armes": {
-        icone:       "⚒️",
-        categorie:   "Corps à corps courante",
-        degats:      "1d6",
-        type_degats: "contondant",
-        poids:       "2 kg",
-        prix:        "5 po",
-        proprietes:  [],
-        description: "Arme lourde à tête métallique, redoutable contre les armures. Arme de prédilection des clercs qui refusent de verser du sang avec une lame."
+    "Tieffelin": {
+        icone: "😈",
+        bonus: { charisme: 2, intelligence: 1 },
+        traits: [
+            { nom: 'Résistance infernale', icone: '🔥', desc: 'Résistance aux dégâts de feu.' },
+            { nom: 'Héritage infernal', icone: '😈', desc: 'Accès à des sorts innés (Thaumaturgie, Mains brûlantes, Ténèbres).' },
+            { nom: 'Vision dans le noir', icone: '🌑', desc: '18 mètres en obscurité totale.' },
+            { nom: 'Mémoire démoniaque', icone: '💭', desc: 'Avantage aux tests d\'Arcane liés aux démons et fiélons.' },
+        ],
+        tooltip: "Héritage infernal et charme vénéneux — la séduction comme arme absolue.",
+        description_joueur: `
+Les Tiefelins portent en eux le sang d'un démon ou d'un diable lointain.
+Leurs cornes, leur queue et leurs yeux incandescents les condamnent à la méfiance des autres.
+Mais là où les autres voient une malédiction, les Tiefelins voient un pouvoir.
+Leur charisme surnaturel et leur intellect acéré en font des manipulateurs redoutables —
+ou des alliés d'une loyauté fanatique envers ceux qui les acceptent sans jugement.
+
+Bonus : +2 Charisme, +1 Intelligence.
+
+Traits raciaux :
+• Résistance infernale — Résistance aux dégâts de feu.
+• Héritage infernal — Accès à des sorts innés selon la lignée (lumières, ténèbres, feu infernal).
+• Vision dans le noir — 18 mètres en obscurité totale.
+• Mémoire démoniaque — Avantage aux tests d'Arcane liés aux plans inférieurs et aux démons.
+
+Apparence : Cornes, queue, peau de couleur inhabituelle (rouge, violette, bleue), yeux sans pupilles.
+Durée de vie : 90 à 120 ans.
+Alignements fréquents : Chaotique Neutre, Neutre Mauvais, Chaotique Mauvais — mais aussi Loyal Bon (rédemption).
+        `,
+        description_maitre: `
+Les Tiefelins sont des personnages de rédemption ou de damnation — rarement entre les deux.
+La société les a rejetés, et ils ont appris à utiliser cela comme moteur.
+En tant que Maître, jouez sur leur dualité : l'héritage infernal tire vers le bas, leur volonté tire vers le haut.
+
+Motivations typiques : rédemption, prouve que l'héritage ne définit pas l'âme, vengeance contre ceux qui jugent.
+Factions : Guildes de voleurs, cultes infernaux (pour les corrompus), ou solitaires errants.
+Rôle narratif : anti-héros magnétique, informateur des bas-fonds, antagoniste tragiquement lucide.
+Conseil au Maître : un Tieffelin qui fait confiance à quelqu'un lui donne tout — c'est sa grande vulnérabilité.
+        `
     },
 
-    "Massue": {
-        icone:       "🏏",
-        categorie:   "Corps à corps courante",
-        degats:      "1d8",
-        type_degats: "contondant",
-        poids:       "5 kg",
-        prix:        "2 pa",
-        proprietes:  ["À deux mains"],
-        description: "Gros bloc de bois renforcé, arme brute par excellence. Lourde et encombrante, mais ses dégâts écrasants font reculer les plus braves."
-    },
+    "Dragonide": {
+        icone: "🐉",
+        bonus: { force: 2, charisme: 1 },
+        traits: [
+            { nom: 'Souffle draconique', icone: '🐉', desc: 'Attaque de souffle utilisable une fois par repos court.' },
+            { nom: 'Résistance élémentaire', icone: '🛡️', desc: 'Résistance au type d\'énergie de sa lignée draconique.' },
+            { nom: 'Intimidation draconique', icone: '😤', desc: 'Avantage aux tests d\'Intimidation contre les créatures de taille M ou inférieure.' },
+            { nom: 'Présence draconique', icone: '👑', desc: 'Une fois par jour, impose un désavantage à un jet de sauvegarde ennemi.' },
+        ],
+        tooltip: "Sang de dragon et prestance royale — né pour dominer les champs de bataille.",
+        description_joueur: `
+Les Dragonides descendent directement des dragons — les créatures les plus puissantes du monde connu.
+Ils héritent de la force colossale de leurs ancêtres, de leur souffle dévastateur
+et d'une présence naturelle qui impose le respect — ou la terreur.
+Leur culture valorise l'excellence et l'honneur au combat, et un Dragonide sans clan est un être perdu.
 
-    "Serpe": {
-        icone:       "🌙",
-        categorie:   "Corps à corps courante",
-        degats:      "1d4",
-        type_degats: "tranchant",
-        poids:       "1 kg",
-        prix:        "1 po",
-        proprietes:  ["Légère"],
-        description: "Outil agricole reconverti en arme de poing. Sa lame incurvée accroche et lacère. Les druides en font parfois un symbole sacré de la récolte et du cycle naturel."
-    },
+Bonus : +2 Force, +1 Charisme.
 
-    // ── ARMES COURANTES À DISTANCE ───────────────────────────────
+Traits raciaux :
+• Souffle draconique — Une attaque de souffle (type selon la lignée) utilisable une fois par repos court.
+  Cônes ou lignes de 4,5 m ou 9 m, jet de sauvegarde (Con ou Dex selon le type).
+• Résistance élémentaire — Résistance au type d'énergie de sa lignée.
+• Intimidation draconique — Avantage aux tests d'Intimidation contre les créatures de taille M ou inférieure.
+• Présence draconique — Une fois par jour, peut imposer un désavantage à un jet de sauvegarde ennemi.
 
-    "Arbalète légère": {
-        icone:       "🏹",
-        categorie:   "Distance courante",
-        degats:      "1d8",
-        type_degats: "perforant",
-        poids:       "2,5 kg",
-        prix:        "25 po",
-        proprietes:  ["Munitions (portée 24 m/96 m)", "Chargement", "À deux mains"],
-        description: "Arme de jet mécanique, facile à maîtriser sans formation intensive. Elle tire des carreaux avec précision, mais nécessite un temps de rechargement entre chaque tir."
-    },
+Lignées disponibles : Or (feu), Argent (froid), Bronze (foudre), Cuivre (acide), Rouge (feu), Bleu (foudre).
+Apparence : 1,90 à 2,20 m, écailles colorées selon la lignée, museau reptilien, queue puissante.
+Durée de vie : 80 à 120 ans.
+Alignements fréquents : Loyal Bon, Loyal Neutre, Neutre Strict.
+        `,
+        description_maitre: `
+Les Dragonides sont des êtres de clan et d'honneur draconique. Sans clan, ils errent.
+Avec un clan, ils meurent pour lui. Cette loyauté absolue en fait des PNJ extrêmement fiables
+— ou des adversaires implacables si leur honneur a été bafoué.
 
-    "Arc court": {
-        icone:       "🏹",
-        categorie:   "Distance courante",
-        degats:      "1d6",
-        type_degats: "perforant",
-        poids:       "1 kg",
-        prix:        "25 po",
-        proprietes:  ["Munitions (portée 24 m/96 m)", "À deux mains"],
-        description: "Arc compact et maniable, idéal pour les miliciens et les éclaireurs. Sa cadence de tir en fait une arme efficace pour harceler l'ennemi à distance moyenne."
-    },
-
-    "Fléchette": {
-        icone:       "🎯",
-        categorie:   "Distance courante",
-        degats:      "1d4",
-        type_degats: "perforant",
-        poids:       "100 g",
-        prix:        "5 pc",
-        proprietes:  ["Finesse", "Lancer (portée 6 m/18 m)"],
-        description: "Petit projectile fin et léger, discret et bon marché. Utilisé en combat, comme distraction ou pour délivrer du poison avec précision."
-    },
-
-    "Fronde": {
-        icone:       "🌀",
-        categorie:   "Distance courante",
-        degats:      "1d4",
-        type_degats: "contondant",
-        poids:       "-",
-        prix:        "1 pa",
-        proprietes:  ["Munitions (portée 9 m/36 m)"],
-        description: "Simple lanière de cuir qui propulse des pierres ou des billes de plomb. Arme de berger ou d'insurgé, elle est silencieuse et ses munitions sont gratuites."
-    },
-
-    // ── ARMES DE GUERRE DE CORPS À CORPS ────────────────────────
-
-    "Cimeterre": {
-        icone:       "⚔️",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d6",
-        type_degats: "tranchant",
-        poids:       "1,5 kg",
-        prix:        "25 po",
-        proprietes:  ["Finesse", "Légère"],
-        description: "Lame recourbée originaire des terres désertiques. Sa forme optimise le tranchant des coups balayés. Arme des cavaliers, des marchands armés et des pirates."
-    },
-
-    "Coutille": {
-        icone:       "🪖",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d10",
-        type_degats: "tranchant",
-        poids:       "3 kg",
-        prix:        "20 po",
-        proprietes:  ["Lourde", "Allonge", "À deux mains"],
-        description: "Longue lame fixée sur un manche, ancêtre de la faux de guerre. Son allonge permet de frapper avant que l'adversaire n'atteigne son porteur."
-    },
-
-    "Épée à deux mains": {
-        icone:       "🗡️",
-        categorie:   "Corps à corps de guerre",
-        degats:      "2d6",
-        type_degats: "tranchant",
-        poids:       "3 kg",
-        prix:        "50 po",
-        proprietes:  ["Lourde", "À deux mains"],
-        description: "L'arme de guerre par excellence. Sa lame massive exige force et formation, mais ses dégâts dévastateurs font trembler les lignes ennemies. Symbole du guerrier d'élite."
-    },
-
-    "Épée courte": {
-        icone:       "🗡️",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d6",
-        type_degats: "perforant",
-        poids:       "1 kg",
-        prix:        "10 po",
-        proprietes:  ["Finesse", "Légère"],
-        description: "Lame droite et compacte, équilibre parfait entre discrétion et efficacité. Arme des roublards, des paladins à cheval et des combattants à deux armes."
-    },
-
-    "Épée longue": {
-        icone:       "⚔️",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d8",
-        type_degats: "tranchant",
-        poids:       "1,5 kg",
-        prix:        "15 po",
-        proprietes:  ["Polyvalente (1d10)"],
-        description: "L'arme emblématique du chevalier. Polyvalente, équilibrée, elle peut être tenue à une ou deux mains. La lame préférée des guerriers et des paladins du royaume."
-    },
-
-    "Fléau d'armes": {
-        icone:       "⛓️",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d8",
-        type_degats: "contondant",
-        poids:       "1 kg",
-        prix:        "10 po",
-        proprietes:  [],
-        description: "Masse reliée à un manche par une chaîne. Contourne les boucliers en frappant par-dessus ou par le côté. Difficile à parer, redouté des défenseurs."
-    },
-
-    "Fouet": {
-        icone:       "🪢",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d4",
-        type_degats: "tranchant",
-        poids:       "1,5 kg",
-        prix:        "2 po",
-        proprietes:  ["Finesse", "Allonge"],
-        description: "Longue lanière de cuir tressé capable de lacérer à distance. Utile pour désarmer ou entraver. Arme atypique des dresseurs, des explorateurs et des combattants habiles."
-    },
-
-    "Hache à deux mains": {
-        icone:       "🪓",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d12",
-        type_degats: "tranchant",
-        poids:       "3,5 kg",
-        prix:        "30 po",
-        proprietes:  ["Lourde", "À deux mains"],
-        description: "Hache massive aux deux tranchants symétriques. Elle fend armures, boucliers et os avec une brutalité sans égale. Arme de prédilection des barbares et des guerriers de front."
-    },
-
-    "Hache d'armes": {
-        icone:       "🪓",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d8",
-        type_degats: "tranchant",
-        poids:       "2 kg",
-        prix:        "10 po",
-        proprietes:  ["Polyvalente (1d10)"],
-        description: "Hache de combat à une main, robuste et fiable. Tenue à deux mains pour plus de dégâts. Arme traditionnelle des guerriers du nord et des gardes de forteresse."
-    },
-
-    "Hallebarde": {
-        icone:       "⚔️",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d10",
-        type_degats: "tranchant",
-        poids:       "3 kg",
-        prix:        "20 po",
-        proprietes:  ["Lourde", "Allonge", "À deux mains"],
-        description: "Combinaison d'une lance, d'une hache et d'un crochet sur une hampe longue. Arme d'infanterie lourde par excellence — frappe, tranche et accroche les cavaliers."
-    },
-
-    "Lance d'arçon": {
-        icone:       "🏇",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d12",
-        type_degats: "perforant",
-        poids:       "3 kg",
-        prix:        "10 po",
-        proprietes:  ["Allonge", "Spécial"],
-        description: "Lance de cavalerie conçue pour la charge montée. Sa longueur et sa rigidité décuplent l'impact d'une charge à pleine vitesse. Inutile à pied."
-    },
-
-    "Maillet": {
-        icone:       "🔨",
-        categorie:   "Corps à corps de guerre",
-        degats:      "2d6",
-        type_degats: "contondant",
-        poids:       "5 kg",
-        prix:        "10 po",
-        proprietes:  ["Lourde", "À deux mains"],
-        description: "Marteau géant à tête de pierre ou de métal. Dévastateur contre les armures lourdes et les constructions. Réservé aux combattants de grande stature et force."
-    },
-
-    "Marteau de guerre": {
-        icone:       "🔨",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d8",
-        type_degats: "contondant",
-        poids:       "1 kg",
-        prix:        "15 po",
-        proprietes:  ["Polyvalente (1d10)"],
-        description: "Marteau de combat à une main, symbole des guerriers divins et des forgerons-soldats. Sa tête de métal brise les os et déforme les armures avec une précision brutale."
-    },
-
-    "Morgenstern": {
-        icone:       "⭐",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d8",
-        type_degats: "perforant",
-        poids:       "2 kg",
-        prix:        "15 po",
-        proprietes:  [],
-        description: "Masse hérissée de pointes métalliques. Combine les dégâts contondants d'une masse et le perforant des épines. Arme crainte pour ses plaies difficiles à soigner."
-    },
-
-    "Pic de guerre": {
-        icone:       "⛏️",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d8",
-        type_degats: "perforant",
-        poids:       "1 kg",
-        prix:        "5 po",
-        proprietes:  [],
-        description: "Arme à pointe recourbée conçue pour percer les armures de plaques. Sa forme accroche et pénètre là où les lames glissent. Outil de siège devenu arme de mêlée."
-    },
-
-    "Pique": {
-        icone:       "🏹",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d10",
-        type_degats: "perforant",
-        poids:       "9 kg",
-        prix:        "5 po",
-        proprietes:  ["Lourde", "Allonge", "À deux mains"],
-        description: "Longue hampe de plusieurs mètres armée d'une pointe d'acier. Arme de formation — inutile seule, dévastatrice en ligne serrée. Brise les charges de cavalerie."
-    },
-
-    "Rapière": {
-        icone:       "🗡️",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d8",
-        type_degats: "perforant",
-        poids:       "1 kg",
-        prix:        "25 po",
-        proprietes:  ["Finesse"],
-        description: "Lame fine et rigide, arme du duelliste et de l'aristocrate. Elle frappe vite, précisément, cherchant les interstices de l'armure plutôt que la force brute."
-    },
-
-    "Trident": {
-        icone:       "🔱",
-        categorie:   "Corps à corps de guerre",
-        degats:      "1d6",
-        type_degats: "perforant",
-        poids:       "2 kg",
-        prix:        "5 po",
-        proprietes:  ["Lancer (portée 6 m/18 m)", "Polyvalente (1d8)"],
-        description: "Fourche à trois dents originaire des côtes maritimes. Efficace pour bloquer, désarmer et piéger l'adversaire. Arme des gladiateurs, des pêcheurs et des dieux de la mer."
-    },
-
-    // ── ARMES DE GUERRE À DISTANCE ───────────────────────────────
-
-    "Arbalète de poing": {
-        icone:       "🏹",
-        categorie:   "Distance de guerre",
-        degats:      "1d6",
-        type_degats: "perforant",
-        poids:       "1,5 kg",
-        prix:        "75 po",
-        proprietes:  ["Munitions (portée 9 m/36 m)", "Légère", "Chargement"],
-        description: "Arbalète miniature dissimulable sous une cape. Arme de prédilection des assassins et des agents de l'ombre. Coûteuse mais imparable en surprise."
-    },
-
-    "Arbalète lourde": {
-        icone:       "🏹",
-        categorie:   "Distance de guerre",
-        degats:      "1d10",
-        type_degats: "perforant",
-        poids:       "9 kg",
-        prix:        "50 po",
-        proprietes:  ["Munitions (portée 30 m/120 m)", "Lourde", "Chargement", "À deux mains"],
-        description: "Arbalète de siège portative. Perfore les armures lourdes à distance considérable, mais le rechargement lent la rend vulnérable en mêlée rapprochée."
-    },
-
-    "Arc long": {
-        icone:       "🏹",
-        categorie:   "Distance de guerre",
-        degats:      "1d8",
-        type_degats: "perforant",
-        poids:       "1 kg",
-        prix:        "50 po",
-        proprietes:  ["Munitions (portée 45 m/180 m)", "Lourde", "À deux mains"],
-        description: "Arc de taille humaine, taillé dans du bois d'if ou de frêne. Portée et puissance supérieures à l'arc court, il exige des années d'entraînement pour être maîtrisé."
-    },
-
-    "Filet": {
-        icone:       "🕸️",
-        categorie:   "Distance de guerre",
-        degats:      "—",
-        type_degats: "—",
-        poids:       "1,5 kg",
-        prix:        "1 po",
-        proprietes:  ["Spécial", "Lancer (portée 1,50 m/4,50 m)"],
-        description: "Filet lesté conçu pour capturer plutôt que tuer. Une cible touchée est entravée. Arme de gladiateur, de chasseur ou de celui qui préfère interroger avant d'abattre."
-    },
-
-    "Sarbacane": {
-        icone:       "💨",
-        categorie:   "Distance de guerre",
-        degats:      "1",
-        type_degats: "perforant",
-        poids:       "500 g",
-        prix:        "10 po",
-        proprietes:  ["Munitions (portée 7,50 m/30 m)", "Chargement"],
-        description: "Tube creux qui projette de fines aiguilles par souffle. Dégâts minimes, mais idéale pour délivrer poisons ou sédatifs sans bruit. L'arme de l'infiltrateur patient."
+Motivations typiques : restaurer l'honneur du clan, retrouver une lignée perdue, venger un ancêtre.
+Factions : Ordres militaires, gardes d'élite, clans draconides nomades.
+Rôle narratif : guerrier d'honneur, chef martial respecté, antagoniste noble et irréconciliable.
+Conseil au Maître : blessez l'honneur d'un Dragonide pour créer le meilleur antagoniste — jamais oublié, jamais pardonné.
+        `
     }
 };
+
+
+// ═══════════════════════════════════════════════════════════════
+//  CLASSES
+// ═══════════════════════════════════════════════════════════════
+
+const RPG_CLASSES = {
+
+    "Barbare": {
+        icone: "🪓",
+        bonus: { force: 2, constitution: 1 },
+        traits: [
+            { nom: 'Rage', icone: '😡', desc: 'Résistance aux dégâts physiques + bonus de dégâts de mêlée. Dure 1 minute.' },
+            { nom: 'Défense sans armure', icone: '🧱', desc: 'Con remplace une partie de la CA sans armure.' },
+            { nom: 'Attaque téméraire', icone: '⚔️', desc: 'Avantage garanti sur l\'attaque, mais l\'ennemi aussi contre vous.' },
+            { nom: 'Sens du danger', icone: '🔮', desc: 'Avantage aux jets de sauvegarde contre les effets visibles.' },
+            { nom: 'Mouvement rapide', icone: '💨', desc: '+3 m de déplacement sans armure lourde.' },
+        ],
+        tooltip: "Rage incontrôlable et corps d'acier — la tempête en forme humaine.",
+        description_joueur: `
+Le Barbare est le guerrier primitif qui puise sa force dans une rage instinctive et sauvage.
+Là où d'autres s'entraînent des années pour maîtriser une technique, le Barbare laisse parler
+son instinct de prédateur. En état de Rage, il dépasse les limites humaines du corps :
+il ignore la douleur, multiplie sa force et se bat jusqu'à la mort sans fléchir.
+
+Caractéristiques clés : Force, Constitution.
+Bonus de classe : +2 Force, +1 Constitution.
+Dé de vie : d12 (le plus élevé du jeu).
+
+Capacités emblématiques :
+• Rage — Résistance aux dégâts physiques + bonus de dégâts de mêlée. Dure 1 minute.
+• Défense sans armure — Con remplace une partie de la CA sans armure.
+• Attaque téméraire — Avantage garanti, mais l'ennemi aussi contre vous.
+• Sens du danger — Avantage aux jets de sauvegarde contre les effets visibles.
+• Mouvement rapide — +3 m de déplacement sans armure lourde.
+
+Style de combat : mêlée rapprochée, encaissement maximum, dégâts bruts.
+Armes favorites : haches, marteaux, armes à deux mains.
+Armure : légère ou aucune (préfère la liberté de mouvement).
+
+Rôle dans le groupe : ligne de front, absorbeur de dégâts, terreur psychologique des ennemis.
+        `,
+        description_maitre: `
+Le Barbare est l'arme vivante du groupe. En tant que Maître, il fonctionne mieux dans
+les combats chaotiques à plusieurs ennemis où sa résistance brille. Évitez les longues rencontres
+de diplomatie où il sera frustré — ou exploitez cette frustration pour créer de la tension dramatique.
+
+Archétypes de voie : Berserker (dégâts purs), Totem (connexion spirituelle animale), Tempête (électricité).
+PNJ Barbare typique : chef de tribu, garde du corps impulsif, guerrier en quête de la mort honorable.
+Défi narratif : l'incontrôlabilité de la Rage peut être une source de complication excellente.
+Conseil au Maître : donnez-lui un code d'honneur tribal — même le Barbare a des règles.
+        `
+    },
+
+    "Barde": {
+        icone: "🎭",
+        bonus: { charisme: 2, dexterite: 1 },
+        traits: [
+            { nom: 'Inspiration bardique', icone: '🎵', desc: 'Donne un dé bonus à un allié pour un jet (d6 → d12 selon niveau).' },
+            { nom: 'Jack-of-all-Trades', icone: '🃏', desc: 'Ajoute la moitié du bonus de maîtrise à tous les jets sans maîtrise.' },
+            { nom: 'Expertise', icone: '🎓', desc: 'Double le bonus de maîtrise dans deux compétences choisies.' },
+            { nom: 'Secrets magiques', icone: '📖', desc: 'Apprend des sorts de n\'importe quelle liste de classe.' },
+            { nom: 'Chant de repos', icone: '🎶', desc: 'Accélère la récupération de PV des alliés pendant les repos courts.' },
+        ],
+        tooltip: "Art et manipulation — chaque mot est une arme, chaque note un sort.",
+        description_joueur: `
+Le Barde est un artiste qui a découvert que la magie et l'art sont la même chose.
+Sa voix, son instrument ou sa plume canalisent des pouvoirs qui altèrent la réalité.
+Il excelle en soutien, en contrôle et en interaction sociale — et n'est jamais aussi dangereux
+que quand on le sous-estime. Sa magie est universelle : il peut apprendre des sorts de n'importe quelle classe.
+
+Caractéristiques clés : Charisme, Dextérité.
+Bonus de classe : +2 Charisme, +1 Dextérité.
+Dé de vie : d8.
+
+Capacités emblématiques :
+• Inspiration bardique — Donne un dé bonus à un allié pour un jet (d6 → d12 selon niveau).
+• Jack-of-all-Trades — Ajoute la moitié du bonus de maîtrise à tous les jets sans maîtrise.
+• Expertise — Double le bonus de maîtrise dans deux compétences choisies.
+• Secrets magiques — Apprend des sorts de n'importe quelle liste de classe.
+• Chant de repos — Accélère la récupération de PV des alliés pendant les repos courts.
+
+Style de jeu : polyvalent, soutien, interaction sociale, contrôle de foule discret.
+Armes favorites : rapières, arbalètes de poing, armes de finesse.
+
+Rôle dans le groupe : couteau suisse, porte-parole, soutien et amplificateur des alliés.
+        `,
+        description_maitre: `
+Le Barde est le personnage le plus social et narratif du jeu. En tant que Maître, offrez-lui
+des situations où la parole est une arme : négociations, infiltrations, interrogatoires.
+Sa maîtrise universelle en fait un personnage difficile à coincer — il aura toujours un outil.
+
+Archétypes de collège : Savoir (sorts bonus, critique amélioré), Vaillance (combat + soutien).
+PNJ Barde typique : ménestrel espion, négociateur de la cour, manipulateur politique.
+Défi narratif : son charme peut créer des complications romantiques ou des jalousies.
+Conseil au Maître : les Bardes récoltent des histoires — donnez-leur des rumeurs vraies et fausses mêlées.
+        `
+    },
+
+    "Clerc": {
+        icone: "✝️",
+        bonus: { sagesse: 2, constitution: 1 },
+        traits: [
+            { nom: 'Sorts divins', icone: '✨', desc: 'Liste complète de sorts préparés selon la Sagesse.' },
+            { nom: 'Renvoi des morts-vivants', icone: '💀', desc: 'Fait fuir ou détruit les morts-vivants.' },
+            { nom: 'Intervention divine', icone: '🙏', desc: 'À haut niveau, appel direct à la déité.' },
+            { nom: 'Domaine divin', icone: '⛪', desc: 'Définit l\'orientation (Vie, Guerre, Lumière, Mort, Nature, Tempête...).' },
+            { nom: 'Armure divine', icone: '🛡️', desc: 'Peut porter armures lourdes selon le domaine.' },
+        ],
+        tooltip: "Canal de la volonté divine — soigne, protège et foudroie au nom des dieux.",
+        description_joueur: `
+Le Clerc n'est pas un simple prêtre — c'est un conduit vivant de la puissance divine.
+Sa foi n'est pas une métaphore : elle se matérialise en sorts de guérison, en boucliers divins
+et en jugements foudroyants contre les ennemis de son dieu. Selon la déité choisie,
+le Clerc peut être soignant pacifique, guerrier sacré, ou nécromancien au service de la mort naturelle.
+
+Caractéristiques clés : Sagesse, Constitution.
+Bonus de classe : +2 Sagesse, +1 Constitution.
+Dé de vie : d8.
+
+Capacités emblématiques :
+• Sorts divins — Liste complète de sorts préparés selon la Sagesse.
+• Renvoi des morts-vivants — Fait fuir ou détruit les morts-vivants.
+• Intervention divine — À haut niveau, appel direct à la déité.
+• Domaine divin — Définit l'orientation du Clerc (Vie, Guerre, Lumière, Mort, Nature, Tempête...).
+• Armure divine — Peut porter armures lourdes selon le domaine.
+
+Style de jeu : soutien, guérison, contrôle moral, combat polyvalent.
+Armes favorites : masses, fléaux, marteaux de guerre (selon domaine).
+
+Rôle dans le groupe : pilier de survie, soutien moral, expert en créatures surnaturelles.
+        `,
+        description_maitre: `
+Le Clerc est le personnage le plus connecté aux forces cosmiques du monde.
+Utilisez sa déité comme fil narratif permanent : l'intervention divine, les signes divins, les missions sacrées.
+Son domaine définit son identité plus que sa classe — un Clerc de la Guerre est radicalement différent d'un Clerc de la Vie.
+
+Domaines emblématiques : Vie (guérison maximale), Guerre (DPS divin), Lumière (sorts de feu/radiance), Mort (nécromancie).
+PNJ Clerc typique : grand prêtre corrompu, inquisiteur zélé, guérisseur de campagne.
+Défi narratif : les conflits entre la volonté divine et l'intérêt du groupe sont riches en drame.
+Conseil au Maître : définissez les tabous de la déité — certains actes lui coûteront ses pouvoirs.
+        `
+    },
+
+    "Druide": {
+        icone: "🌿",
+        bonus: { sagesse: 2, intelligence: 1 },
+        traits: [
+            { nom: 'Métamorphose', icone: '🐻', desc: 'Se transforme en animal selon son niveau (CR limité par niveau).' },
+            { nom: 'Sorts de nature', icone: '🌩️', desc: 'Contrôle du temps, croissance végétale, guérison, foudre.' },
+            { nom: 'Langue primitive', icone: '🌿', desc: 'Comprend les druides de tous les peuples, même sans langue commune.' },
+            { nom: 'Résistance naturelle', icone: '🌱', desc: 'Immunité aux poison et maladie à haut niveau.' },
+            { nom: 'Mille formes', icone: '🌪️', desc: 'À haut niveau, peut prendre des formes élémentaires.' },
+        ],
+        tooltip: "Voix de la nature ancienne — métamorphose, tempête et sagesse des siècles.",
+        description_joueur: `
+Le Druide est le gardien de l'équilibre naturel, héritier d'une tradition plus ancienne que les dieux civilisés.
+Sa magie est celle de la terre, de la pluie, du feu et du vent. Sa capacité la plus redoutable
+est la Métamorphose : il peut prendre la forme de n'importe quel animal, adaptant son corps au besoin.
+Sa sagesse de la nature lui révèle des vérités que les citadins ne soupçonnent pas.
+
+Caractéristiques clés : Sagesse, Intelligence.
+Bonus de classe : +2 Sagesse, +1 Intelligence.
+Dé de vie : d8.
+
+Capacités emblématiques :
+• Métamorphose — Se transforme en animal selon son niveau (CR limité par niveau).
+• Sorts de nature — Contrôle du temps, croissance végétale, guérison, foudre.
+• Langue primitive — Comprend les druides de tous les peuples, même sans langue commune.
+• Résistance naturelle — Immunité aux poison et maladie à haut niveau.
+• Mille formes — À haut niveau, peut prendre des formes élémentaires (air, eau, feu, terre).
+
+Style de jeu : polyvalent, adaptatif, soutien et contrôle.
+Armes favorites : bâton, serpe, fronde. Jamais d'armure métallique.
+
+Rôle dans le groupe : adaptateur de terrain, contrôle environnemental, soignant secondaire.
+        `,
+        description_maitre: `
+Le Druide est le personnage le plus connecté au territoire. Ses pouvoirs varient radicalement
+selon l'environnement — en forêt, il est à son apogée ; en ville ou sous terre, il est bridé.
+Jouez sur cette dimension géographique pour le récompenser ou le défier.
+
+Cercles emblématiques : Lune (Métamorphose puissante), Terre (sorts élargis selon terrain), Spores (nécro végétale).
+PNJ Druide typique : ermite sage, gardien territorial agressif, chef d'un culte naturel.
+Défi narratif : sa priorité à la nature peut entrer en conflit avec les objectifs "civilisés" du groupe.
+Conseil au Maître : les Druides refusent de tuer certains animaux ou plantes — créez des dilemmes autour de ça.
+        `
+    },
+
+    "Guerrier": {
+        icone: "⚔️",
+        bonus: { force: 2, constitution: 1 },
+        traits: [
+            { nom: 'Style de combat', icone: '🗡️', desc: 'Archerie, Combat à deux armes, Défense, Duel, Lutte ou Protection.' },
+            { nom: 'Second souffle', icone: '💉', desc: 'Récupère des PV une fois par repos court (bonus d10 + niveau).' },
+            { nom: 'Ardeur', icone: '⚡', desc: 'Attaque supplémentaire à volonté (récupère sur repos court).' },
+            { nom: 'Attaque multiple', icone: '💥', desc: '2 attaques au niveau 5, 3 au niveau 11, 4 au niveau 20.' },
+            { nom: 'Indomptable', icone: '🔁', desc: 'Peut relancer un jet de sauvegarde raté (1 à 3 fois par repos long).' },
+        ],
+        tooltip: "Maîtrise absolue du combat — chaque arme est une extension de son corps.",
+        description_joueur: `
+Le Guerrier est le maître des armes et du combat. Là où les autres classes ont des gadgets magiques
+ou des pouvoirs spéciaux, le Guerrier a quelque chose de plus fondamental : la maîtrise parfaite
+de l'art du combat. Il frappe plus fort, plus souvent et dans des conditions que les autres ne survivraient pas.
+À haut niveau, il attaque quatre fois par round — aucune autre classe ne l'égale en cadence.
+
+Caractéristiques clés : Force (ou Dextérité), Constitution.
+Bonus de classe : +2 Force, +1 Constitution.
+Dé de vie : d10.
+
+Capacités emblématiques :
+• Style de combat — Archerie, Combat à deux armes, Défense, Duel, Lutte, Protection.
+• Second souffle — Récupère des PV une fois par repos court (bonus d10 + niveau).
+• Ardeur — Attaque supplémentaire à volonté (récupère sur repos court).
+• Attaque multiple — 2 attaques au niveau 5, 3 au niveau 11, 4 au niveau 20.
+• Indomptable — Peut relancer un jet de sauvegarde raté (1 à 3 fois par repos long).
+
+Style de jeu : ligne de front, dégâts soutenus, polyvalent selon le style choisi.
+Armes favorites : toutes — c'est littéralement sa spécialité.
+
+Rôle dans le groupe : colonne vertébrale du groupe, damage dealer fiable, protecteur.
+        `,
+        description_maitre: `
+Le Guerrier est la classe la plus fiable et la moins capricieuse du jeu.
+En tant que Maître, il fonctionnera bien dans presque toutes les situations de combat.
+Son intérêt narratif vient de son archétype militaire : d'où vient-il ? Pour qui a-t-il combattu ?
+
+Archétypes : Champion (critiques élargis), Maître de Bataille (manœuvres tactiques), Chevalier Eldritch (sorts).
+PNJ Guerrier typique : capitaine de garde, mercenaire expérimenté, chevalier reconverti.
+Défi narratif : sans pouvoirs magiques, il peut se sentir dépassé dans des intrigues surnaturelles.
+Conseil au Maître : donnez-lui un rival militaire de valeur égale — la rivalité de combattants est intemporelle.
+        `
+    },
+
+    "Moine": {
+        icone: "☯️",
+        bonus: { dexterite: 2, sagesse: 1 },
+        traits: [
+            { nom: 'Arts martiaux', icone: '👊', desc: 'Les poings font des dégâts croissants (d4 → d10) + attaque bonus.' },
+            { nom: 'Défense sans armure', icone: '🧱', desc: 'CA = 10 + Dex + Sag, souvent supérieure à une armure.' },
+            { nom: 'Flurry of Blows', icone: '💨', desc: 'Deux attaques supplémentaires pour 1 point de ki.' },
+            { nom: 'Pas du vent', icone: '🌪️', desc: 'Désengagement ou dash en action bonus pour 1 ki.' },
+            { nom: 'Frappe étourdissante', icone: '😵', desc: 'Étourdit une créature sur un ki + coup réussi.' },
+            { nom: 'Déflection de projectiles', icone: '🏹', desc: 'Réduit les dégâts de projectiles à mains nues.' },
+        ],
+        tooltip: "Corps comme arme parfaite — ki, vitesse et discipline spirituelle absolue.",
+        description_joueur: `
+Le Moine est la classe la plus disciplinée du jeu. Son corps est son arme, son temple et son outil.
+À travers des années de méditation et d'entraînement, il a appris à canaliser le ki —
+l'énergie vitale universelle — pour accomplir des exploits qui défient la physique normale.
+Il peut courir sur l'eau, tomber sans se blesser, arrêter des projectiles à mains nues et assommer d'un toucher.
+
+Caractéristiques clés : Dextérité, Sagesse.
+Bonus de classe : +2 Dextérité, +1 Sagesse.
+Dé de vie : d8.
+
+Capacités emblématiques :
+• Arts martiaux — Les poings font des dégâts croissants (d4 → d10) + attaque bonus à mains nues.
+• Défense sans armure — CA = 10 + Dex + Sag (souvent plus haute qu'une armure).
+• Flurry of Blows — Deux attaques supplémentaires pour 1 ki.
+• Pas du vent — Désingage ou désengagement + dash pour 1 ki.
+• Frappe étourdissante — Étourdit une créature sur un ki + coup réussi.
+• Déflection de projectiles — Réduit les dégâts de flèches à mains nues.
+
+Style de jeu : mobilité extrême, harcèlement, contrôle par l'étourdissement.
+Armes favorites : kamas, bâton, poings et pieds (principalement).
+
+Rôle dans le groupe : assassin mobile, contrôleur de cibles prioritaires, soutien défensif.
+        `,
+        description_maitre: `
+Le Moine est l'un des personnages les plus cinématiques du jeu — ses combats ressemblent à de la chorégraphie.
+Créez des environnements verticaux et complexes qui valorisent sa mobilité unique.
+Attention : son manque de points de vie et son absence d'armure le rendent vulnérable aux dégâts de zone.
+
+Traditions : Poing Ouvert (contrôle pur), Ombre (ninja furtif), Éléments (sorts de ki élémentaires).
+PNJ Moine typique : maître d'un monastère, assassin silencieux, pèlerin en quête spirituelle.
+Défi narratif : son rapport au ki et à la discipline entre souvent en conflit avec le chaos de l'aventure.
+Conseil au Maître : un Moine dont la concentration est brisée (trahison d'un élève, destruction de son monastère) est un personnage transformé.
+        `
+    },
+
+    "Paladin": {
+        icone: "🛡️",
+        bonus: { force: 1, constitution: 1, charisme: 1 },
+        traits: [
+            { nom: 'Imposition des mains', icone: '🤲', desc: 'Pool de guérison = 5 × niveau, utilisable en segments.' },
+            { nom: 'Frappe Divine', icone: '⚡', desc: 'Ajoute des dégâts de radiance sur n\'importe quelle attaque.' },
+            { nom: 'Aura de protection', icone: '🛡️', desc: 'Ajoute le modificateur de Cha aux jets de sauvegarde de tous les alliés proches.' },
+            { nom: 'Sorts sacrés', icone: '✨', desc: 'Liste mixte de sorts divins préparés selon la Sagesse.' },
+            { nom: 'Serment sacré', icone: '📜', desc: 'Définit des capacités uniques (Dévotion, Anciens, Vengeance...).' },
+        ],
+        tooltip: "Serment sacré et volonté de fer — la foi rendue invincible.",
+        description_joueur: `
+Le Paladin est la classe la plus exigeante moralement — et la plus puissante quand ses convictions tiennent.
+Son serment sacré est le fondement de tout son pouvoir : le briser l'affaiblit considérablement.
+Ce serment peut être de protection des innocents, de conquête sans merci, de dévouement à une déité,
+ou même de vengeance froide. Sa Frappe Divine est l'une des capacités les plus dévastatrices du jeu.
+
+Caractéristiques clés : Force, Charisme, Constitution (équilibre des trois).
+Bonus de classe : +1 Force, +1 Constitution, +1 Charisme.
+Dé de vie : d10.
+
+Capacités emblématiques :
+• Imposition des mains — Pool de guérison = 5 × niveau, utilisable en segments.
+• Frappe Divine — Ajoute des dégâts de radiance (ou autre) sur n'importe quelle attaque.
+• Aura de protection — Ajoute le modificateur de Cha aux jets de sauvegarde de tous les alliés proches.
+• Sorts sacrés — Liste mixte de sorts divins préparés selon la Sagesse.
+• Serment sacré — Définit des capacités uniques selon l'engagement (Dévotion, Anciens, Vengeance...).
+
+Style de jeu : résistance, soutien d'aura, burst de dégâts concentré.
+Armes favorites : épée longue + bouclier, hallebarde, masse d'armes.
+
+Rôle dans le groupe : tank-soutien, leader moral, champion des batailles décisives.
+        `,
+        description_maitre: `
+Le Paladin est le personnage le plus dramatique du jeu — son serment crée des dilemmes permanents.
+Mettez-le face à des situations où respecter son serment coûte quelque chose d'important.
+La rupture du serment est un moment narratif de première ordre — gérez-le comme tel.
+
+Serments emblématiques : Dévotion (paladin classique), Vengeance (chasseur impitoyable), Anciens (nature sacrée), Conquête (tyran justifié).
+PNJ Paladin typique : chevalier d'une ordre sacrée, inquisiteur intransigeant, protecteur d'une relique.
+Défi narratif : la rigidité morale crée inévitablement des conflits avec les alliés moins scrupuleux.
+Conseil au Maître : posez la question centrale — qu'est-ce qui ferait rompre son serment ? Construisez autour.
+        `
+    },
+
+    "Rôdeur": {
+        icone: "🏹",
+        bonus: { dexterite: 2, sagesse: 1 },
+        traits: [
+            { nom: 'Ennemi juré', icone: '🎯', desc: 'Bonus aux jets de pistage, connaissance et dégâts contre un type ennemi.' },
+            { nom: 'Explorateur naturel', icone: '🌲', desc: 'Déplacement et survie optimaux dans un type de terrain.' },
+            { nom: 'Style de combat', icone: '🏹', desc: 'Archerie (+2 aux tirs), Défense, Duel ou Combat à deux armes.' },
+            { nom: 'Compagnon animal', icone: '🐺', desc: 'Un animal lié combat et explore aux côtés du Rôdeur.' },
+            { nom: 'Attaque multiple', icone: '💥', desc: '2 attaques par round dès le niveau 5.' },
+        ],
+        tooltip: "Chasseur sans égal des terres sauvages — l'ennemi juré ne lui échappe jamais.",
+        description_joueur: `
+Le Rôdeur est le maître de la survie et de la chasse dans les territoires sauvages.
+Sa connaissance du terrain, sa précision au tir et son lien spirituel avec la faune en font
+un éclaireur et un chasseur de prime incomparable. Il choisit un ennemi favori et un terrain favori —
+dans son environnement idéal, face à sa proie préférée, il n'a pas d'égal.
+Ses compagnons animaux combattent à ses côtés avec une fidélité absolue.
+
+Caractéristiques clés : Dextérité, Sagesse.
+Bonus de classe : +2 Dextérité, +1 Sagesse.
+Dé de vie : d10.
+
+Capacités emblématiques :
+• Ennemi juré — Bonus aux jets de pistage, connaissance et dégâts contre un type ennemi.
+• Explorateur naturel — Déplacement et survie optimaux dans un type de terrain.
+• Style de combat — Archerie (bonus +2 aux tirs), Défense, Duel, Combat à deux armes.
+• Compagnon animal — Un animal lié combat et explore aux côtés du Rôdeur.
+• Attaque multiple — 2 attaques par round dès le niveau 5.
+
+Style de jeu : harcèlement à distance, mobilité, connaissance du terrain, dégâts précis.
+Armes favorites : arc long, deux lames courtes, arbalète.
+
+Rôle dans le groupe : éclaireur, chasseur de cibles prioritaires, expert de survie.
+        `,
+        description_maitre: `
+Le Rôdeur excelle hors des donjons et des villes — créez des rencontres en pleine nature pour qu'il brille.
+En milieu urbain, il perd une grande partie de ses avantages : exploitez cette vulnérabilité dramatiquement.
+
+Archétypes : Chasseur (dégâts purs), Maître des Bêtes (compagnon animal renforcé), Guetteur (magie de terrain).
+PNJ Rôdeur typique : chasseur de primes solitaire, guide de frontière, éclaireur militaire d'élite.
+Défi narratif : son lien avec un ennemi juré peut créer des conflits si le groupe doit s'allier à cet ennemi.
+Conseil au Maître : le compagnon animal est son talon d'Achille émotionnel — utilisez-le avec précaution.
+        `
+    },
+
+    "Roublard": {
+        icone: "🗡️",
+        bonus: { dexterite: 2, intelligence: 1 },
+        traits: [
+            { nom: 'Attaque sournoise', icone: '🗡️', desc: 'Dégâts bonus massifs (1d6 → 10d6) quand avantage ou allié adjacent.' },
+            { nom: 'Action rusée', icone: '💨', desc: 'Se désengager, se cacher ou foncer en action bonus chaque round.' },
+            { nom: 'Expertise', icone: '🎓', desc: 'Double le bonus de maîtrise dans 4 compétences.' },
+            { nom: 'Esquive instinctive', icone: '🛡️', desc: 'Réduit les dégâts de zone de moitié même en cas d\'échec.' },
+            { nom: 'Évasion', icone: '💨', desc: 'Si jet de sauvegarde réussi sur une zone = aucun dégât.' },
+        ],
+        tooltip: "Précision chirurgicale et discrétion absolue — frappe où ça fait le plus mal.",
+        description_joueur: `
+Le Roublard est le maître de l'opportunisme et de la précision. Il ne frappe pas souvent — il frappe juste.
+Son Attaque sournoise lui permet d'infliger des dégâts massifs sur une cible qui ne s'y attend pas.
+Sa polyvalence en compétences en fait le personnage le plus apte à gérer les situations hors-combat :
+serrures, pièges, infiltration, déguisement, escroquerie. Un groupe sans Roublard manque souvent d'outils.
+
+Caractéristiques clés : Dextérité, Intelligence.
+Bonus de classe : +2 Dextérité, +1 Intelligence.
+Dé de vie : d8.
+
+Capacités emblématiques :
+• Attaque sournoise — Dégâts bonus massifs (1d6 → 10d6) quand avantage ou allié adjacent.
+• Action rusée — Chaque round, peut se désengager, se cacher ou foncer en action bonus.
+• Expertise — Double le bonus de maîtrise dans 4 compétences.
+• Esquive instinctive — Réduit les dégâts de zone de moitié même en cas d'échec.
+• Évasion — Si jet de sauvegarde réussi sur une zone = aucun dégât.
+
+Style de jeu : burst de dégâts, furtivité, compétences hors-combat, mobilité.
+Armes favorites : rapière, dague, arbalète de poing.
+
+Rôle dans le groupe : expert des situations spéciales, assassin de cibles uniques, espion.
+        `,
+        description_maitre: `
+Le Roublard est le couteau suisse non-magique du groupe. Créez des rencontres qui valorisent
+ses compétences hors-combat : infiltration, tromperie, désarmement de pièges complexes.
+Sa furtivité peut complètement transformer la dynamique d'un donjon.
+
+Archétypes : Assassin (burst d'initiative), Escroc arcanique (sorts de Mage), Érudit (compétences intellectuelles).
+PNJ Roublard typique : maître voleur, espion de la couronne, informateur de guilde.
+Défi narratif : sa méfiance naturelle peut compliquer la construction de confiance dans le groupe.
+Conseil au Maître : donnez-lui des accès cachés, des passages secrets — laissez-le briller dans la préparation.
+        `
+    },
+
+    "Ensorceleur": {
+        icone: "✨",
+        bonus: { charisme: 2, constitution: 1 },
+        traits: [
+            { nom: 'Points de Sorcellerie', icone: '⚗️', desc: 'Ressource pour modifier les sorts (intensifier, rapprocher, silencieux...).' },
+            { nom: 'Métamagie', icone: '🔧', desc: 'Modifie les sorts en temps réel (Rapide, Jumeau, Étendu, Empuissanté...).' },
+            { nom: 'Sorts innés', icone: '🧬', desc: 'Accès automatique à des sorts selon l\'Origine, sans préparation.' },
+            { nom: 'Origine de Sorcellerie', icone: '🐉', desc: 'Dragon (PV bonus), Magie Sauvage (imprévisible), Tempête (tonnerre).' },
+        ],
+        tooltip: "Magie dans le sang, non dans les livres — puissance brute canalisée par l'âme.",
+        description_joueur: `
+L'Ensorceleur ne choisit pas la magie — il est né avec elle. Un ancêtre dragon, un événement
+cosmique, une bénédiction ou une malédiction divine : sa magie est inscrite dans ses cellules,
+dans son souffle, dans ses émotions. Quand il est en colère, les objets bougent.
+Quand il est terrifié, des flammes jaillissent. Cette magie impulsive et innée est sa force et son risque.
+Sa ressource principale, les Points de Sorcellerie, lui permet de remodeler ses sorts en temps réel.
+
+Différence fondamentale avec le Magicien et le Sorcier :
+• L'Ensorceleur RESSENT la magie — elle coule en lui comme le sang.
+• Il n'a pas besoin d'étudier ni de pactiser — c'est son ADN.
+• Moins de sorts connus, mais une flexibilité de casting unique.
+
+Caractéristiques clés : Charisme, Constitution.
+Bonus de classe : +2 Charisme, +1 Constitution.
+Dé de vie : d6.
+
+Capacités emblématiques :
+• Points de Sorcellerie — Ressource pour modifier les sorts (intensifier, rapprocher, silencieux...).
+• Métamagie — Modifie les sorts en temps réel (Rapide, Jumeau, Étendu, Empuissanté...).
+• Sorts innés — Accès automatique à des sorts selon l'Origine (sans les préparer).
+• Origine de Sorcellerie — Dragon (dégâts et PV bonus), Magie Sauvage (imprévisible), Tempête (tonnerre/foudre).
+
+Style de jeu : explosif, flexible, spécialisé par l'Origine.
+Armes favorites : aucune (lancer de sorts exclusivement).
+
+Rôle dans le groupe : lance-sort polyvalent, spécialiste du burst magique, adaptateur de style.
+        `,
+        description_maitre: `
+L'Ensorceleur est le mage le plus instable et le plus dramatique. La Magie Sauvage peut déclencher
+des effets aléatoires à chaque sort — source de chaos et d'humour garantie.
+Son lien émotionnel à la magie crée des scènes riches : la peur qui déclenche une explosion involontaire.
+
+Origines : Héritage Dragon (stabilité, dégâts), Magie Sauvage (chaos, tables aléatoires), Tempête (contrôle météo).
+PNJ Ensorceleur typique : noble à la magie instable, enfant prodige incontrôlable, héritier d'une malédiction draconique.
+Défi narratif : son manque de contrôle peut mettre le groupe en danger involontairement.
+Conseil au Maître : demandez un jet de Magie Sauvage dans les moments de stress émotionnel intense — pas seulement au combat.
+        `
+    },
+
+    "Sorcier": {
+        icone: "🌑",
+        bonus: { charisme: 2, sagesse: 1 },
+        traits: [
+            { nom: 'Eldritch Blast', icone: '⚡', desc: 'Attaque à distance infinie, personnalisable avec des Invocations.' },
+            { nom: 'Invocations occultes', icone: '📿', desc: 'Capacités permanentes variées (vision des ténèbres, armure de sorts...).' },
+            { nom: 'Sorts de pacte', icone: '🔗', desc: 'Toujours au niveau maximum, récupérés sur repos court.' },
+            { nom: 'Bénédiction de pacte', icone: '📦', desc: 'Lame (arme liée), Tome (sorts bonus) ou Chaîne (familier puissant).' },
+        ],
+        tooltip: "Pouvoir obtenu par un pacte obscur — l'entité donne, l'entité reprend.",
+        description_joueur: `
+Le Sorcier n'est pas né avec la magie et ne l'a pas étudiée. Il l'a négociée.
+Quelque part dans son passé, il a conclu un pacte avec une Entité — un Grand Ancien,
+un Fiélon, une Fée archétypale — et en a reçu des pouvoirs en échange d'un service indéterminé.
+Cette relation de pouvoir déséquilibrée est le cœur de sa psychologie : il est puissant, mais redevable.
+Sa magie est ciblée, efficace et récupère rapidement (sur repos court, pas long).
+
+Différence fondamentale avec l'Ensorceleur et le Magicien :
+• Le Sorcier NÉGOCIE la magie — elle lui est accordée par une entité.
+• Peu de sorts, mais toujours au niveau maximum disponible.
+• Il est le seul dont la magie a une personnalité propre (celle de l'Entité).
+• Son Eldritch Blast est sa signature — une attaque magique infinie et personnalisable.
+
+Caractéristiques clés : Charisme, Sagesse.
+Bonus de classe : +2 Charisme, +1 Sagesse.
+Dé de vie : d8.
+
+Capacités emblématiques :
+• Eldritch Blast — Attaque à distance infinie, personnalisable avec des Invocations.
+• Invocations occultes — Capacités permanentes très variées (vision des ténèbres, armure de sorts, répulsion...).
+• Sorts de pacte — Toujours au niveau de sort maximum, récupérés sur repos court.
+• Bénédiction de pacte — Lame (arme liée), Tome (sorts bonus), Chaîne (familier puissant).
+
+Style de jeu : économe en ressources, efficace au long terme, personnalisable à l'extrême.
+
+Rôle dans le groupe : damage dealer magique polyvalent, utilitaire hors-combat, négociateur mystique.
+        `,
+        description_maitre: `
+Le Sorcier est le personnage avec le lien NPC le plus intégré mécaniquement — son Entité.
+Utilisez cette Entité comme fil narratif permanent : elle a des objectifs, elle communique (ou pas),
+elle exige des actes. C'est une source de quêtes, de conflits et de révélations inépuisable.
+
+Entités emblématiques : Grand Ancien (horreur cosmique), Fiélon (diable ou démon), Archefée (fée puissante et capricieuse).
+PNJ Sorcier typique : politicien qui a vendu son âme, mystique en dette avec une entité, héros corrompu progressivement.
+Défi narratif : l'Entité peut contacter le Sorcier au pire moment et exiger quelque chose d'impossible.
+Conseil au Maître : l'Entité n'explique jamais tout — cultivez le mystère de ce qu'elle veut réellement.
+        `
+    },
+
+    "Magicien": {
+        icone: "📜",
+        bonus: { intelligence: 2, sagesse: 1 },
+        traits: [
+            { nom: 'Grimoire', icone: '📚', desc: 'Contient tous les sorts connus, copiables depuis d\'autres sources.' },
+            { nom: 'Récupération arcanique', icone: '🔋', desc: 'Récupère des emplacements de sorts sur repos court.' },
+            { nom: 'École de magie', icone: '🏫', desc: 'Spécialisation (Évocation, Illusion, Divination, Nécromancie...).' },
+            { nom: 'Maîtrise des sorts', icone: '🌟', desc: 'À haut niveau, lance Identification ou Bouclier sans emplacement.' },
+            { nom: 'Génie des sorts', icone: '♾️', desc: 'Peut lancer un sort de niveau 1 ou 2 à volonté sans emplacement.' },
+        ],
+        tooltip: "Savoir arcanique mémorisé — la magie comme science exacte et implacable.",
+        description_joueur: `
+Le Magicien est le mage le plus puissant au niveau maximum — et le plus fragile au combat.
+Sa magie est pure connaissance : il a passé des années à étudier des grimoires, à mémoriser
+des formules complexes et à comprendre les lois fondamentales de l'Arcane.
+Il ne ressent pas la magie (contrairement à l'Ensorceleur) ni ne la négocie (contrairement au Sorcier) —
+il la COMPREND. Et cette compréhension lui donne accès à la liste de sorts la plus large du jeu.
+
+Différence fondamentale avec l'Ensorceleur et le Sorcier :
+• Le Magicien MÉMORISE la magie — chaque sort est une équation gravée dans son esprit.
+• Sa liste de sorts est illimitée en théorie (il peut copier tout sort trouvé).
+• Il est le seul à pouvoir apprendre des sorts d'école exclusive.
+• Fragile physiquement — ne touchez pas le Magicien.
+
+Caractéristiques clés : Intelligence, Sagesse.
+Bonus de classe : +2 Intelligence, +1 Sagesse.
+Dé de vie : d6 (le plus faible).
+
+Capacités emblématiques :
+• Grimoire — Contient tous les sorts connus (copiables depuis d'autres sources).
+• Récupération arcanique — Récupère des emplacements de sorts sur repos court.
+• École de magie — Spécialisation dans une école (Évocation, Illusion, Divination, Nécromancie...).
+• Maîtrise des sorts — À haut niveau, peut lancer Identification ou Bouclier sans emplacement.
+• Génie des sorts — Peut lancer un sort de niveau 1 ou 2 à volonté sans emplacement.
+
+Style de jeu : préparation, polyvalence maximale, puissance d'échelle.
+
+Rôle dans le groupe : artilleur magique, solutionneur de problèmes complexes, expert théorique.
+        `,
+        description_maitre: `
+Le Magicien est la classe qui récompense le plus la préparation — la sienne ET la vôtre.
+Il connaît potentiellement la solution magique à chaque problème. Créez des situations où
+aucun sort simple ne suffit, où il faut combiner les connaissances de manière créative.
+
+Écoles emblématiques : Évocation (dégâts purs), Illusion (tromperie totale), Divination (connaissance future), Nécromancie (morts-vivants).
+PNJ Magicien typique : archimage arrogant, professeur d'académie, bibliothécaire secret de sorts interdits.
+Défi narratif : sa fragilité physique le rend dépendant des alliés — jouez sur cette vulnérabilité.
+Conseil au Maître : donnez-lui des ennemis qui résistent à la magie ou l'annulent — c'est là qu'il doit improviser.
+        `
+    }
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  ALIGNEMENTS — Les 9 boussoles morales du royaume
+//  Structure morale en deux axes : Ordre↔Chaos / Bien↔Mal
+//  Usage : tooltips, modals, quiz, Livre du Joueur/Maître
+// ═══════════════════════════════════════════════════════════════
+
+const RPG_ALIGNEMENTS = {
+
+    // ── FAMILLE : BIEN ───────────────────────────────────────────
+
+    "Loyal Bon": {
+        icone: "😇",
+        titre: "Le Croisé",
+        famille: "Bien",
+        couleur: "#4a90d9",
+        tooltip: "L'honneur comme armure, la loi comme épée.",
+        desc: "Vous êtes un paladin dans l'âme. Vous défendez la loi et protégez les innocents avec ferveur. Le Code de l'Honneur est votre bouclier.",
+
+        description_joueur: `Vous êtes Le Croisé — l'âme la plus noble et la plus exigeante du royaume. Vous croyez profondément que la structure sociale, les lois et les codes d'honneur ne sont pas des contraintes : ce sont des remparts. Sans eux, les innocents sont à la merci des forts.
+
+Votre parole est un contrat sacré. Vous ne la rompez jamais — même quand cela vous coûte cher, même quand personne ne regarde. C'est précisément ce qui vous distingue : votre intégrité n'est pas une performance, c'est une nature profonde.
+
+Ce que vous défendez :
+• L'ordre comme protection des innocents
+• La parole donnée, toujours honorée
+• Les institutions justes et légitimes
+• La loyauté envers ceux qui méritent confiance
+
+Ce que vous affrontez :
+• La rigidité qui peut mener à l'injustice par application aveugle des règles
+• La tentation de juger ceux qui ne partagent pas votre code
+• Le sacrifice de soi poussé trop loin
+
+Dans le royaume : Le Loyal Bon est le chevalier que le Roi Karl appelle en premier, et le dernier à rendre son épée. Sa présence inspire confiance. Ses alliés dorment bien la nuit.
+
+Tension interne : Que faire quand la loi est injuste ? Le Croisé lutte parfois contre ce dilemme — et c'est là que son vrai caractère se révèle.
+Personnages célèbres : Aragorn, Atticus Finch, Superman, Ned Stark.`,
+
+        description_maitre: `Le Loyal Bon est l'alignement le plus "facile" en apparence — et le plus difficile à tenir sur la durée. C'est le personnage qui dit non à la torture même quand l'ennemi est en face, qui rend sa parole même quand ça le détruit.
+
+En tant que Maître, cet alignement offre les conflits moraux les plus riches : quand les institutions qu'il protège deviennent injustes, que fait-il ? C'est la question centrale du Croisé.
+Conseil narrative : placez-le face à une loi qu'il doit appliquer contre sa conscience. Le résultat révèle tout.
+Archétype de campagne : le paladin, le chevalier de l'ordre, le juge intègre.`
+    },
+
+    "Neutre Bon": {
+        icone: "🕊️",
+        titre: "Le Bienfaiteur",
+        famille: "Bien",
+        couleur: "#5dade2",
+        tooltip: "Le bien d'abord, les règles ensuite.",
+        desc: "Vous faites le bien sans vous soucier des lois ou du chaos. Votre boussole est votre cœur, et il pointe toujours vers la lumière.",
+
+        description_joueur: `Vous êtes Le Bienfaiteur — pragmatique du cœur. Votre priorité absolue est d'aider les autres, et vous choisissez le chemin le plus efficace pour y arriver, qu'il passe par les institutions ou autour d'elles.
+
+Si les autorités servent le bien, vous coopérez volontiers. Si elles font obstacle, vous les contournez sans regret. Ce n'est pas de l'insubordination — c'est de la cohérence morale.
+
+Ce que vous défendez :
+• Le bien-être concret des personnes autour de vous
+• La flexibilité morale au service de l'altruisme
+• La coopération sans servilité, l'indépendance sans égoïsme
+• La compassion comme mode de décision
+
+Ce que vous affrontez :
+• Le risque d'être manipulé par ceux qui savent jouer sur votre générosité
+• L'absence de cadre qui peut rendre vos actions imprévisibles pour vos alliés
+• La difficulté à dire non quand tout le monde a besoin de vous
+
+Dans le royaume : Le Neutre Bon est l'ami que tout le monde veut à ses côtés. Pas forcément le plus puissant, mais toujours là quand ça compte vraiment.
+
+Tension interne : Quand deux bonnes causes s'opposent, vers laquelle se tourner ? Le Bienfaiteur souffre parfois de ne pas pouvoir tout sauver.
+Personnages célèbres : Gandalf, Samwise Gamgee, Robin Hood, Hermione Granger.`,
+
+        description_maitre: `Le Neutre Bon est l'alignement le plus "jouable" et le moins conflictuel — ce qui en fait paradoxalement le plus difficile à rendre intéressant narrativement.
+
+La clé : mettre le Bienfaiteur face à l'impossibilité de faire le bien. Ressources limitées, choix impossibles, manipulation par une bonne cause corrompue.
+Conseil narratif : faites-lui rencontrer quelqu'un qui fait le mal pour de bonnes raisons — et donnez-lui raison.
+Archétype de campagne : le clerc de la vie, le barde guérisseur, l'enquêteur avec une conscience.`
+    },
+
+    "Chaotique Bon": {
+        icone: "🦅",
+        titre: "Le Rebelle",
+        famille: "Bien",
+        couleur: "#58d68d",
+        tooltip: "La liberté d'abord, les règles jamais.",
+        desc: "Rebelle au grand cœur. Vous brisez les chaînes de l'injustice et défendez les opprimés, même si cela vous met hors-la-loi.",
+
+        description_joueur: `Vous êtes Le Rebelle — et vous portez ce titre comme un étendard, pas comme une honte. Les lois ? Vous les évaluez à l'aune d'une seule question : servent-elles les gens, ou les écrasent-elles ? Si la réponse est "elles écrasent", vous les ignorez.
+
+Vous haïssez l'oppression d'un viscéral profond. Quand vous voyez quelqu'un subir une injustice au nom d'une règle absurde, quelque chose en vous se lève. Et cette chose ne se rassoit pas facilement.
+
+Ce que vous défendez :
+• La liberté individuelle comme valeur absolue
+• Les opprimés, les oubliés, ceux que le système écrase
+• L'instinct moral sur les règles écrites
+• L'action spontanée guidée par la conviction
+
+Ce que vous affrontez :
+• La difficulté à travailler dans des structures ou des équipes
+• Le risque que votre chaos blesse des innocents malgré vos bonnes intentions
+• La tendance à renverser avant d'avoir un plan pour reconstruire
+
+Dans le royaume : Le Chaotique Bon est l'étincelle. Il met le feu là où il faut — pas pour brûler, mais pour réchauffer. Ses alliés ne savent jamais exactement ce qu'il va faire. Mais ils savent pourquoi.
+
+Tension interne : La liberté individuelle peut parfois nuire au collectif. Le Rebelle doit naviguer entre son refus de l'ordre et le chaos qu'il pourrait involontairement semer.
+Personnages célèbres : Robin des Bois, Han Solo, Zorro, Jean Valjean, Tyrion Lannister à son meilleur.`,
+
+        description_maitre: `Le Chaotique Bon est l'alignement préféré des joueurs qui veulent "faire le bien à leur façon". Il est entraînant, sympathique, et potentiellement explosif narrativement.
+
+Le défi : l'empêcher de devenir simplement "je fais ce que je veux avec un prétexte moral". Le vrai Chaotique Bon a une boussole intérieure très forte — c'est son refus de l'autorité extérieure qui est radical, pas son éthique.
+Conseil narratif : donnez-lui des alliés Loyaux Bons — le frottement sera narrativement riche.
+Archétype de campagne : le roublard au grand cœur, le ranger solitaire, le révolutionnaire.`
+    },
+
+    // ── FAMILLE : NEUTRE ─────────────────────────────────────────
+
+    "Loyal Neutre": {
+        icone: "⚖️",
+        titre: "Le Juge",
+        famille: "Neutre",
+        couleur: "#aab7b8",
+        tooltip: "La loi est la loi. Rien de plus, rien de moins.",
+        desc: "La loi avant tout, ni plus ni moins. Vous êtes un gardien de l'ordre, sans vous laisser guider par la compassion ou la cruauté.",
+
+        description_joueur: `Vous êtes Le Juge — et votre réputation n'est pas celle de la chaleur, mais de la prévisibilité absolue. Dans un monde corruptible et chaotique, c'est peut-être la vertu la plus rare qui soit.
+
+Vous croyez en l'ordre. En la tradition. En un code — qu'il soit écrit dans les lois du royaume ou gravé dans vos propres principes. La loi est la loi, qu'elle soit juste ou non. La briser, même pour une bonne raison, ouvre une fissure.
+
+Ce que vous défendez :
+• L'ordre, la tradition, les institutions établies
+• L'impartialité totale dans l'application des règles
+• La fiabilité comme valeur morale en soi
+• Un code personnel rigoureux et cohérent
+
+Ce que vous affrontez :
+• La loi injuste que vous appliquez quand même
+• L'incapacité à faire des exceptions même quand le cœur le crie
+• Être perçu comme froid, mécanique, sans âme
+
+Dans le royaume : Le Loyal Neutre est le pilier administratif du château. Pas le plus populaire, mais celui qui fait tenir les choses. Quand tout le reste vacille, il est encore là, à son poste.
+
+Tension interne : Que faire quand suivre la lettre de la loi trahit son esprit ? C'est la question qui garde Le Juge éveillé la nuit.
+Personnages célèbres : Inspecteur Javert, Rorschach, Ned Stark (à sa façon rigide et fatale), Le Mandalorien.`,
+
+        description_maitre: `Le Loyal Neutre est souvent sous-estimé comme alignement "fade". En réalité, c'est l'un des plus riches philosophiquement — et narrativement — dès qu'on le pousse dans ses retranchements.
+
+La grande question : quand obéir aux règles devient-il complice du mal ? Javert est l'exemple parfait : un personnage profondément intègre que son propre code détruit.
+Conseil narratif : faites-lui découvrir que l'institution qu'il protège est corrompue. Sa réaction révèle tout.
+Archétype de campagne : le guerrier de l'ordre, le moine discipliné, l'officier de la loi.`
+    },
+
+    "Neutre Strict": {
+        icone: "🌗",
+        titre: "L'Équilibriste",
+        famille: "Neutre",
+        couleur: "#808b96",
+        tooltip: "Ni lumière ni ombre — juste l'équilibre.",
+        desc: "L'équilibre est votre religion. Ni bien ni mal, ni ordre ni chaos — vous êtes le gardien de la balance universelle.",
+
+        description_joueur: `Vous êtes L'Équilibriste — ou l'Indécis, selon comment le vent souffle ce jour-là. Ce n'est pas une critique : votre position au centre absolu de la boussole morale est l'une des plus honnêtes qui soit. Vous ne vous racontez pas d'histoires sur votre propre vertu.
+
+Vous agissez par pragmatisme, par instinct, parfois par désir profond de maintenir un équilibre que vous sentez nécessaire. Vous n'avez pas d'agenda. Vous n'êtes pas en train de conquérir, de libérer, de juger ou de détruire.
+
+Ce que vous incarnez :
+• Le pragmatisme pur, sans idéologie
+• L'observation avant l'action
+• Le refus des extrêmes de tous bords
+• Une sagesse tranquille qui peut paraître froide
+
+Ce que vous affrontez :
+• L'apparence d'indifférence aux yeux des autres
+• La difficulté à choisir un camp quand il le faut vraiment
+• Être instrumentalisé par les deux côtés
+
+Dans le royaume : Le Neutre Strict est l'arbitre. Ni ami ni ennemi, ni héros ni traître. Il est là quand on a besoin de quelqu'un qui voit sans biais. Et parfois, c'est la personne la plus précieuse de la salle.
+
+Tension interne : À force de ne pas choisir, risque-t-on de laisser le mal triompher par inaction ? C'est la grande question existentielle de cet alignement.
+Personnages célèbres : Tom Bombadil, Dr. Manhattan, Le Chat du Cheshire.`,
+
+        description_maitre: `Le Neutre Strict (Neutre Absolu) est l'alignement le plus difficile à jouer avec cohérence — et le plus fascinant philosophiquement. Il représente l'observateur, l'équilibriste, celui qui refuse de donner sa faveur.
+
+L'enjeu narratif : pousser ce personnage à agir. Quand est-ce que l'équilibre devient complicité par inaction ? À quel moment doit-il choisir ?
+Conseil narratif : faites-lui rencontrer une injustice si évidente que rester neutre devient moralement intenable.
+Archétype de campagne : le druide de l'équilibre, le mage observateur, le voyageur sans attaches.`
+    },
+
+    "Chaotique Neutre": {
+        icone: "🌀",
+        titre: "L'Esprit Libre",
+        famille: "Neutre",
+        couleur: "#a569bd",
+        tooltip: "Imprévisible. Incontrôlable. Libre.",
+        desc: "Libre comme le vent. Vous suivez vos caprices et refusez toute contrainte — ni saint ni démon, juste imprévisible.",
+
+        description_joueur: `Vous êtes L'Esprit Libre — et si quelqu'un essaie de vous définir plus précisément que ça, vous vous serez probablement déjà mis à faire autre chose. Les règles ? Pas pour vous. Les causes ? Peut-être, si ça vous inspire ce matin.
+
+Vous ne cherchez pas à faire le mal. Ce serait trop d'investissement dans une direction. Vous refusez simplement toute contrainte — qu'elle vienne des tyrans, des héros, des lois ou des bonnes intentions des autres.
+
+Ce que vous incarnez :
+• La liberté totale comme mode de vie
+• L'imprévisibilité comme protection et comme vérité
+• L'action guidée par l'envie du moment
+• L'individualisme absolu, sans cruauté délibérée
+
+Ce que vous affrontez :
+• L'impossibilité de maintenir des alliances durables
+• Être perçu comme non fiable, même par ceux qui vous apprécient
+• Le vide qui peut s'installer quand aucune contrainte ne donne de sens
+
+Dans le royaume : Le Chaotique Neutre est l'électron libre. Il peut être l'atout le plus inattendu — ou la variable qui fait tout dérailler. Il ne fait pas ça exprès. Il fait juste… lui.
+
+Tension interne : L'imprévisibilité isole. L'Esprit Libre finit parfois seul, non parce qu'il est mauvais, mais parce que personne ne peut compter sur lui durablement.
+Personnages célèbres : Jack Sparrow, Deadpool, Loki (la plupart du temps).`,
+
+        description_maitre: `Le Chaotique Neutre est souvent mal utilisé comme excuse pour jouer "sans conséquences". Il mérite mieux : c'est le personnage qui cherche authentiquement sa liberté, pas celui qui l'utilise pour éviter la responsabilité narrative.
+
+La distinction clé : il n'est pas méchant — il est centré sur lui-même et réfractaire à toute autorité. Il peut faire de grandes choses, mais pour ses propres raisons.
+Conseil narratif : donnez-lui une raison de s'attacher, puis menacez cette raison. C'est là qu'il devient intéressant.
+Archétype de campagne : le rôdeur solitaire, le roublard sans cause, le barde imprévisible.`
+    },
+
+    // ── FAMILLE : MAL ────────────────────────────────────────────
+
+    "Loyal Mauvais": {
+        icone: "👹",
+        titre: "Le Tyran",
+        famille: "Mal",
+        couleur: "#c0392b",
+        tooltip: "Le pouvoir par les règles, les règles pour le pouvoir.",
+        desc: "Vous utilisez les règles et les structures pour asseoir votre pouvoir. Redoutable et méthodique, vous êtes un tyran organisé.",
+
+        description_joueur: `Vous êtes Le Tyran — et vous êtes peut-être le plus dangereux des neuf alignements, précisément parce que vous n'avez pas l'air dangereux. Vous respectez les règles. Vous honorez vos contrats. Vous ne trahissez pas votre parole. Vous êtes... civilisé.
+
+C'est ça, le problème. Vous utilisez l'ordre comme outil de domination. Les lois ne sont pas pour vous une protection des innocents — elles sont un levier.
+
+Ce que vous incarnez :
+• La discipline au service de l'ambition personnelle
+• Un code d'honneur réel mais au service du contrôle
+• La hiérarchie comme instrument de pouvoir
+• L'efficacité froide et méthodique
+
+Ce que vous affrontez :
+• Votre propre rigidité qui peut devenir une prison
+• La rébellion de ceux que vous avez trop longtemps exploités
+• L'incapacité à improviser face au vrai chaos
+
+Dans le royaume : Le Loyal Mauvais est le grand vizir que vous n'auriez jamais dû nommer. Impeccable en apparence, inarrêtable en pratique. Il construit son empire dans les règles. C'est pour ça qu'il est si difficile à arrêter.
+
+Tension interne : Le Tyran doit constamment gérer la peur et le ressentiment de ceux qu'il domine. Un jour, quelqu'un se lèvera.
+Personnages célèbres : Cersei Lannister, Dolores Ombrage, Grand Moff Tarkin, Thanos.`,
+
+        description_maitre: `Le Loyal Mauvais est le meilleur antagoniste qui soit — parce qu'il est logique, cohérent, et difficile à critiquer formellement. Il respecte les règles. Il est juste dans ses traités. Et pourtant, tout ce qu'il fait sert son pouvoir.
+
+L'enjeu narratif : montrer comment quelque chose de "légal" peut être profondément injuste.
+Conseil narratif : donnez-lui un code d'honneur réel qu'il respecte même quand ça lui coûte — ça le rend plus complexe et plus effrayant.
+Archétype de campagne : le seigneur de guerre discipliné, le inquisiteur, le bureaucrate corrompu mais cohérent.`
+    },
+
+    "Neutre Mauvais": {
+        icone: "🗡️",
+        titre: "Le Malfaisant",
+        famille: "Mal",
+        couleur: "#922b21",
+        tooltip: "Ni loyal, ni chaotique — juste égoïste.",
+        desc: "Vous faites ce qui vous profite, sans scrupules ni loyauté envers quiconque. Un mercenaire de votre propre ambition.",
+
+        description_joueur: `Vous êtes Le Malfaisant — et vous êtes remarquablement honnête avec vous-même. Vous n'avez pas d'idéologie. Vous n'avez pas de cause. Vous avez des intérêts. Et vous les servez avec une efficacité remarquable.
+
+Une loi qui vous profite ? Vous la respectez. Une alliance qui vous avantage ? Vous la maintenez. Jusqu'au moment où elle ne vous profite plus. À ce moment-là, vous passez à autre chose — sans drama, sans explication.
+
+Ce que vous incarnez :
+• L'égoïsme pur comme philosophie de vie
+• L'absence totale de loyauté non rentable
+• La flexibilité morale au service d'un seul maître : vous-même
+• La clarté cynique sur la nature du monde
+
+Ce que vous affrontez :
+• L'isolement progressif à mesure que les autres apprennent à ne pas vous faire confiance
+• L'absence de sens profond dans une existence centrée sur le gain
+• La vulnérabilité face à quelqu'un qui joue mieux le même jeu
+
+Dans le royaume : Le Neutre Mauvais est le mercenaire dans la salle. Il est là parce que c'est payant. Le jour où ça ne l'est plus, il sera ailleurs. Tout le monde le sait. Personne ne l'oublie.
+
+Tension interne : À force de ne faire confiance à personne, Le Malfaisant finit par ne plus avoir personne sur qui compter quand ça tourne mal.
+Personnages célèbres : Littlefinger, Gollum, Scar, Amy Dunne (Gone Girl).`,
+
+        description_maitre: `Le Neutre Mauvais est l'alignement "pratique" du mal. Pas de dramaturgie, pas d'idéologie — juste de l'opportunisme. Ce qui le rend paradoxalement difficile à utiliser narrativement : il n'a pas de plan grandiose à déjouer.
+
+Sa menace est diffuse, insidieuse. Il corrode les alliances de l'intérieur.
+Conseil narratif : utilisez-le comme traître ou comme allié provisoire dont la trahison est inévitable mais dont le timing reste incertain.
+Archétype de campagne : le mercenaire, l'espion sans loyauté, le voleur pragmatique.`
+    },
+
+    "Chaotique Mauvais": {
+        icone: "💀",
+        titre: "Le Destructeur",
+        famille: "Mal",
+        couleur: "#6c3483",
+        tooltip: "Chaos. Destruction. Plaisir.",
+        desc: "La destruction et le chaos sont vos alliés. Vous ne suivez que vos désirs les plus sombres, sans foi ni loi.",
+
+        description_joueur: `Vous êtes Le Destructeur — et le monde le sait, ou l'apprend à ses dépens. Vous ne suivez ni règles, ni codes, ni alliances. Vous suivez vos désirs. Et vos désirs pointent souvent vers quelque chose que d'autres préféreraient voir intact.
+
+Ce n'est pas toujours de la haine pure. Parfois c'est de la frustration. Parfois du plaisir. Parfois simplement le vertige de sentir le monde brûler autour de soi.
+
+Ce que vous incarnez :
+• Le chaos comme fin en soi
+• La destruction libératrice — ou simplement gratifiante
+• L'absence absolue de contrainte intérieure ou extérieure
+• Une énergie brute que rien ne canalise vraiment
+
+Ce que vous affrontez :
+• L'impossibilité de maintenir la moindre alliance sur la durée
+• Être une menace perçue par tous — y compris vos "alliés"
+• Le chaos qui finit par se retourner contre vous
+
+Dans le royaume : Le Chaotique Mauvais est la tempête. On ne l'apprivoise pas. On l'évite, ou on l'affronte. Il n'y a pas de troisième option. Et si vous l'avez laissé entrer dans le château, c'est déjà trop tard.
+
+Tension interne : Le Destructeur sabote souvent ses propres objectifs par impatience ou par incapacité à se contrôler. Son pire ennemi, c'est lui-même.
+Personnages célèbres : Le Joker, Bellatrix Lestrange, Ramsay Bolton, Azula dans ses pires moments.`,
+
+        description_maitre: `Le Chaotique Mauvais est l'alignement le plus "spectaculaire" — et le plus facile à mal utiliser. Un Destructeur unidimensionnel est ennuyeux. Un Destructeur avec une histoire, une blessure originelle, une logique interne brisée : c'est fascinant.
+
+La clé : il ne détruit pas par méchanceté générique. Il détruit parce que quelque chose en lui est fondamentalement cassé — ou parce qu'il a appris que le monde ne mérite pas mieux.
+Conseil narratif : montrez pourquoi il est devenu ce qu'il est. Rendez-le compréhensible sans le rendre sympathique.
+Archétype de campagne : le barbare incontrôlable, l'ensorceleur corrompu, l'antagoniste final.`
+    }
+
+};
+//  Source de vérité unique pour : tooltips, modals, livres
+// ═══════════════════════════════════════════════════════════════
+
+const RPG_GRADES = [
+
+    {
+        seuil: 0,
+        nom: "Serf Égaré",
+        icone: "🪵",
+        coul: "#7f8c8d",
+        tooltip: "Un inconnu qui a poussé la porte du royaume pour la première fois.",
+
+        description_joueur: `
+Vous venez d'arriver. La route est longue, votre nom est inconnu et votre cape est poussiéreuse. Mais vous êtes là — c'est déjà plus que la plupart.
+
+Le Serf Égaré n'a pas encore de place à la Table, mais la porte lui est ouverte. Chaque jour passé dans le royaume forge un peu plus sa réputation. On ne devient pas chevalier en un soir — mais tout commence ici, dans cette première hésitation sur le seuil.
+
+Regardez autour de vous. Les murs sont vieux, les pierres ont des histoires. Vous commencez à peine la vôtre.
+
+Privilèges : accès aux archives publiques du royaume.
+Prochain rang dans : 2 jours de présence.
+        `,
+
+        description_maitre: `
+Le Serf Égaré représente le tout nouveau membre — curieux, intimidé, pas encore ancré. En tant que Maître de cérémonie ou gestionnaire de communauté, accueillez-le chaleureusement : la première impression définit tout.
+
+Ce rang est volontairement humble pour que l'ascension soit significative. Ne donnez pas trop de pouvoir trop vite — la progression doit sembler méritée.
+
+Rôle narratif : l'inconnu qui débarque dans la taverne. Il peut devenir n'importe quoi.
+Conseil : envoyez un message de bienvenue personnalisé dès ce rang pour ancrer l'engagement.
+        `
+    },
+
+    {
+        seuil: 2,
+        nom: "Vilein Courageux",
+        icone: "🌾",
+        coul: "#95a5a6",
+        tooltip: "Le paysan qui ose lever les yeux vers l'horizon.",
+
+        description_joueur: `
+Deux jours dans le royaume, et vous êtes toujours là. Ce n'est pas rien. Là où beaucoup fuient dès le premier défi, vous avez choisi de rester.
+
+Le Vilein Courageux est la première marche d'un long escalier. Il travaille dur, apprend vite et regarde les chevaliers avec des étoiles dans les yeux — et un peu d'envie dans le cœur. Ce n'est pas de l'arrogance : c'est de l'ambition légitime.
+
+La terre qu'il laboure n'est pas la sienne encore. Mais un jour, peut-être, il aura son propre fief.
+
+Privilèges : participation aux débats publics.
+Prochain rang dans : 5 jours de présence.
+        `,
+
+        description_maitre: `
+Le Vilein Courageux a passé le premier cap — les 48 heures critiques après l'inscription. Il est suffisamment intéressé pour revenir, mais pas encore ancré.
+
+C'est le moment idéal pour l'exposer aux premières discussions, aux premières interactions avec la communauté. La rétention à ce stade dépend de la qualité des échanges.
+
+Rôle narratif : le paysan ambitieux — archétype du "héros ordinaire avant la transformation".
+Conseil : proposez-lui une première action simple (remplir son profil, commenter une vidéo) pour créer un premier geste d'engagement.
+        `
+    },
+
+    {
+        seuil: 5,
+        nom: "Écuyer Novice",
+        icone: "🛡️",
+        coul: "#bc8f8f",
+        tooltip: "Apprenti prometteur qui porte l'écu avec fierté.",
+
+        description_joueur: `
+Cinq jours et vous avez déjà la posture d'un combattant. L'Écuyer Novice a pris les armes — symboliquement — et s'entraîne chaque jour à mériter sa place.
+
+Il suit les chevaliers, apprend leurs gestes, écoute leurs récits de bataille. Le métal de son bouclier est encore brillant car il n'a pas encore servi — mais cela ne saurait tarder. Son maître d'armes l'observe. La prochaine épreuve révélera ce qu'il vaut vraiment.
+
+Chaque nuit, il repasse mentalement ce qu'il a appris. Chaque matin, il revient plus déterminé.
+
+Privilèges : accès aux parchemins de formation.
+Prochain rang dans : 10 jours de présence.
+        `,
+
+        description_maitre: `
+L'Écuyer Novice est à un moment charnière : il a goûté à la communauté, mais n'est pas encore investi. Une semaine de présence représente un signal positif fort.
+
+Introduisez-le aux rituels de la communauté (rendez-vous hebdomadaires, défis, discussions récurrentes). Il cherche sa place — aidez-le à la trouver.
+
+Rôle narratif : l'apprenti plein de promesses. Excellent pour des missions d'introduction narrative.
+Conseil : encouragez la complétion du profil (race, classe, alignement) à ce stade — cela renforce l'identité dans le royaume.
+        `
+    },
+
+    {
+        seuil: 10,
+        nom: "Vassal du Fief",
+        icone: "🏰",
+        coul: "#cd7f32",
+        tooltip: "Homme de fief lié par serment à la Table.",
+
+        description_joueur: `
+Dix jours. Vous avez prêté serment — tacitement — en restant. Le Vassal du Fief a choisi son camp : celui de la Table Ronde (mais carrée).
+
+Il possède désormais une terre symbolique dans le royaume et une voix dans les affaires courantes. Les chevaliers le reconnaissent. Son nom commence à circuler dans les couloirs du château. On ne l'appelle plus "le nouveau" — on l'appelle par son nom.
+
+Un serment de vassal n'est pas rien dans un royaume médiéval. C'est une promesse de fidélité. Et la fidélité, ici, est la monnaie la plus précieuse.
+
+Privilèges : droit de vote sur les sujets royaux.
+Prochain rang dans : 20 jours de présence.
+        `,
+
+        description_maitre: `
+Dix jours de présence : c'est un membre qui a développé une habitude. La rétention à long terme devient probable.
+
+Le Vassal du Fief devrait commencer à interagir activement. Encouragez-le à participer aux votes, à donner son avis sur les sujets proposés par le Roi Karl. Son sentiment d'appartenance se consolide.
+
+Rôle narratif : l'homme de confiance local — pas encore un grand seigneur, mais quelqu'un sur qui on peut compter.
+Conseil : reconnaître publiquement ce palier (dans une vidéo ou annonce) renforce l'attachement communautaire.
+        `
+    },
+
+    {
+        seuil: 20,
+        nom: "Chevalier Errant",
+        icone: "🐎",
+        coul: "#bdc3c7",
+        tooltip: "Chevalier libre qui sillonne le royaume en quête de gloire.",
+
+        description_joueur: `
+Vingt jours, et vous avez franchi le seuil de la chevalerie. L'épée est à votre ceinture, la monture sous vos pieds. Le Chevalier Errant n'est attaché à aucune cause fixe — il cherche encore sa voie — mais son courage est reconnu de tous.
+
+On dit que les meilleurs chevaliers du Roi Karl ont tous commencé comme ça : sans destination, mais avec une volonté de fer. Les routes du royaume sont longues. Les défis sont nombreux. Et chaque victoire, petite ou grande, grave votre nom un peu plus profondément dans les chroniques.
+
+Votre quête commence vraiment ici.
+
+Privilèges : accès aux tournois et défis mensuels.
+Prochain rang dans : 40 jours de présence.
+        `,
+
+        description_maitre: `
+Trois semaines de présence : le Chevalier Errant est un membre actif et engagé. Il est familier avec la culture du royaume.
+
+À ce stade, il peut devenir un ambassadeur informel — quelqu'un qui accueille les nouveaux, partage le contenu du Roi Karl, participe aux discussions avec une certaine autorité morale.
+
+Rôle narratif : le héros en quête de sa destinée — polyvalent, adaptable, source de surprise narrative.
+Conseil : proposez-lui des défis communautaires (partage de contenu, création, tournois) pour canaliser son engagement croissant.
+        `
+    },
+
+    {
+        seuil: 40,
+        nom: "Héraut Royal",
+        icone: "🎺",
+        coul: "#f1c40f",
+        tooltip: "Voix officielle du royaume, porteur des annonces du Roi.",
+
+        description_joueur: `
+Quarante jours de fidélité — vous avez mérité la trompette dorée. Le Héraut Royal est la voix du royaume. C'est lui qu'on entend annoncer les grandes nouvelles, les tournois, les décrets du Roi Karl.
+
+Son prestige lui vient non pas de la force de son épée, mais de la force de sa parole. Dans une cour, une voix qui porte est parfois plus puissante qu'une armée. Le Héraut sait ça. Il choisit ses mots avec soin, il les lance avec conviction, il les fait résonner dans les salles de pierre.
+
+Quand le Héraut parle, le royaume écoute.
+
+Privilèges : mention spéciale dans les annonces royales.
+Prochain rang dans : 70 jours de présence.
+        `,
+
+        description_maitre: `
+Le Héraut Royal est l'un des membres les plus précieux de la communauté. Il est là depuis plus d'un mois, il connaît les codes, il participe activement.
+
+Ces membres sont les piliers visibles de la communauté. Leur reconnaissance publique (dans les vidéos, les annonces) renforce leur engagement et envoie un signal fort aux nouveaux membres sur ce que la fidélité rapporte.
+
+Rôle narratif : le messager officiel, figure de confiance et de continuité dans le royaume.
+Conseil : identifiez les Hérauts Royaux pour en faire des modérateurs informels ou des "parrains" de nouveaux membres.
+        `
+    },
+
+    {
+        seuil: 70,
+        nom: "Baron de la Carrée",
+        icone: "🍷",
+        coul: "#e67e22",
+        tooltip: "Noble de la Table, hôte des grands festins royaux.",
+
+        description_joueur: `
+Soixante-dix jours. Vous êtes maintenant un noble à part entière — le Baron de la Carrée. La Table (ronde mais carrée, rappelons-le) a une place réservée à votre nom.
+
+Les festins royaux ne sont pas complets sans vous. Votre opinion pèse dans les conseils. Le Roi Karl vous consulte — pas toujours, mais parfois — et c'est déjà un honneur immense. Votre château est petit mais solide. Votre bannière flotte fièrement.
+
+Un baron sait recevoir, négocier, et — quand il le faut — trancher. Vous avez appris tout ça en soixante-dix jours de présence active.
+
+Privilèges : accès aux archives secrètes du royaume.
+Prochain rang dans : 120 jours de présence.
+        `,
+
+        description_maitre: `
+Dix semaines de présence : c'est un investissement significatif. Le Baron de la Carrée est un membre de confiance absolue, profondément ancré dans la culture du royaume.
+
+À ce stade, sa présence dans la communauté a une valeur sociale réelle. Il influence les nouveaux membres par l'exemple. Ses opinions ont du poids dans les discussions.
+
+Rôle narratif : le seigneur local — important dans sa sphère d'influence, respecté de tous.
+Conseil : consultez les Barons lors de décisions importantes pour la communauté. Leur sentiment de co-construction renforce leur fidélité à long terme.
+        `
+    },
+
+    {
+        seuil: 120,
+        nom: "Maître d'Armes",
+        icone: "⚔️",
+        coul: "#8b0000",
+        tooltip: "Guerrier d'élite, formateur des futures générations.",
+
+        description_joueur: `
+Cent vingt jours de présence forgent un Maître d'Armes. Vous n'apprenez plus : vous enseignez. Les jeunes serfs et vilains vous regardent avec admiration. Vos gestes sont précis, votre jugement sûr, votre loyauté éprouvée.
+
+Le Maître d'Armes est le pilier militaire du royaume. Quand la Table a besoin d'un bras armé, c'est vers vous qu'on se tourne en premier. Vous avez vu passer assez de chevaliers pour savoir lesquels ont l'étoffe des grands — et lesquels prétendent seulement.
+
+Quatre mois de royaume. Vous faites partie des meubles. Dans le meilleur sens du terme.
+
+Privilèges : droit de former des recrues et d'organiser des tournois.
+Prochain rang dans : 200 jours de présence.
+        `,
+
+        description_maitre: `
+Quatre mois de présence : le Maître d'Armes est une institution vivante de la communauté. Sa constance est en elle-même un message pour les autres membres.
+
+Il peut légitimement prendre un rôle de mentor, d'arbitre dans les débats, de référent pour les questions sur le royaume. Sa parole a du poids précisément parce qu'elle s'est construite dans le temps.
+
+Rôle narratif : le vétéran — figure de sagesse combative, ni naïf ni cynique.
+Conseil : offrez aux Maîtres d'Armes des responsabilités concrètes (organisation d'événements, curation de contenu) pour maintenir leur engagement sur la durée.
+        `
+    },
+
+    {
+        seuil: 200,
+        nom: "Haut Connétable",
+        icone: "🚩",
+        coul: "#4a0404",
+        tooltip: "Grand commandant des armées, second du Roi.",
+
+        description_joueur: `
+Deux cents jours de fidélité absolue. Le Haut Connétable est le commandant suprême des armées du Roi Karl. Au-dessus de lui, il n'y a qu'une seule personne.
+
+Sa bannière rouge sang flotte sur les murs du château. Sa parole a force de loi dans les affaires militaires. Les ennemis du royaume ont appris à redouter son nom. Ce n'est pas un titre qu'on donne à la légère — c'est un titre qu'on gagne, jour après jour, bataille après bataille.
+
+Six mois et demi de présence. Vous avez traversé des tempêtes avec le royaume et vous êtes toujours là. C'est ça, la vraie loyauté.
+
+Privilèges : siège permanent au Conseil de la Table.
+Prochain rang dans : 365 jours de présence.
+        `,
+
+        description_maitre: `
+Deux cents jours : une présence extraordinaire qui mérite une reconnaissance extraordinaire. Le Haut Connétable est l'un des membres les plus précieux que le royaume puisse avoir.
+
+À ce niveau, l'engagement dépasse la simple consommation de contenu — c'est une relation durable et mutuellement bénéfique. Ce membre est un ambassadeur naturel du royaume dans sa vie hors-ligne.
+
+Rôle narratif : le lieutenant du roi — celui qui fait tourner le royaume au quotidien.
+Conseil : contact direct avec le Roi Karl, accès à des coulisses exclusives, co-création de contenu. Ces membres méritent un traitement exceptionnel.
+        `
+    },
+
+    {
+        seuil: 365,
+        nom: "Main du Roi Karl",
+        icone: "👑",
+        coul: "#d4af37",
+        tooltip: "Le bras droit du Roi, gardien du royaume en son absence.",
+
+        description_joueur: `
+Un an. Trois cent soixante-cinq jours de présence, de loyauté et d'engagement. Vous êtes la Main du Roi Karl.
+
+Ce titre n'est pas seulement un honneur — c'est une responsabilité. En l'absence du Roi, vous parlez en son nom. Votre sagesse guide le royaume, votre jugement tranche les conflits, votre vision façonne l'avenir de la Table Ronde (mais carrée).
+
+On dit que derrière chaque grand roi, il y a une grande main. Une main qui ne vacille pas. Une main qui connaît la douceur de la paix et la dureté de la guerre. Une main qui a choisi, il y a un an, de pousser la porte d'un royaume un peu fou — et qui n'est jamais repartie.
+
+Soyez digne de cette confiance. Le royaume vous regarde.
+
+Privilèges : titre permanent, accès complet à toutes les archives, honneur éternel gravé dans les chroniques royales.
+        `,
+
+        description_maitre: `
+La Main du Roi Karl est le summum de la fidélité communautaire : un an de présence continue. C'est exceptionnel et doit être traité comme tel.
+
+Ces membres sont les légendes vivantes du royaume. Leur histoire inspire les nouveaux. Leur loyauté est la preuve que l'investissement dans la communauté en vaut la peine. Ils sont, en un sens, la meilleure publicité possible pour le Roi Karl.
+
+Rôle narratif : la figure tutélaire — sage, puissante, permanente.
+Conseil : célébrez publiquement chaque Main du Roi Karl. Mentionnez-les dans les vidéos, créez un hall of fame, personnalisez leur expérience au maximum. Un membre d'un an est un trésor irremplaçable.
+        `
+    }
+
+];
+
 
 // ═══════════════════════════════════════════════════════════════
 //  UTILITAIRES
 // ═══════════════════════════════════════════════════════════════
 
 /**
- * Retourne toutes les armes d'une catégorie donnée
+ * Retourne les bonus cumulés race + classe pour un personnage
  */
-function getArmesParCategorie(categorie) {
-    return Object.entries(MATERIEL_ARMES)
-        .filter(([_, a]) => a.categorie === categorie)
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
+function getBonusTotal(raceKey, classeKey) {
+    const carac = ['force','dexterite','constitution','intelligence','sagesse','charisme'];
+    const total = {};
+    carac.forEach(c => total[c] = 0);
+
+    const race   = RPG_RACES[raceKey];
+    const classe = RPG_CLASSES[classeKey];
+
+    if (race?.bonus)   Object.entries(race.bonus).forEach(([k,v])   => total[k] = (total[k] || 0) + v);
+    if (classe?.bonus) Object.entries(classe.bonus).forEach(([k,v]) => total[k] = (total[k] || 0) + v);
+
+    return total;
 }
 
 /**
- * Retourne la liste des catégories uniques d'armes
+ * Retourne le grade correspondant à un nombre de jours
  */
-function getCategoriesArmes() {
-    return [...new Set(Object.values(MATERIEL_ARMES).map(a => a.categorie))];
+function getGradeFromJours(jours) {
+    let actuel = RPG_GRADES[0];
+    for (const g of RPG_GRADES) { if (jours >= g.seuil) actuel = g; else break; }
+    return actuel;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SYSTÈME DE MONNAIE
+//  Référence : 1 pp = 10 po = 20 pe = 100 pa = 1000 pc
+//  Valeur pivot en pc (pièce de cuivre)
+// ═══════════════════════════════════════════════════════════════
+
+const RPG_MONNAIE = {
+    pp: {
+        nom:         "Platine",
+        abrev:       "pp",
+        icone:       "🪙",
+        couleur:     "#e5e4e2",
+        valeur_pc:   1000,   // 1 pp = 1000 pc
+        description: "La pièce de platine — rare, précieuse, symbole de grande fortune. Rarement vue dans les bourses ordinaires, elle circule dans les hautes sphères du commerce et des trésors royaux.",
+        conversions: { po: 10, pe: 20, pa: 100, pc: 1000 }
+    },
+    po: {
+        nom:         "Or",
+        abrev:       "po",
+        icone:       "🪙",
+        couleur:     "#d4af37",
+        valeur_pc:   100,    // 1 po = 100 pc
+        description: "La pièce d'or — monnaie de référence du commerce, frappée à l'effigie du Roi Karl. Dix pièces d'argent font une pièce d'or. Un aventurier débutant travaille pour quelques pièces d'or par mission.",
+        conversions: { pp: 0.1, pe: 2, pa: 10, pc: 100 }
+    },
+    pe: {
+        nom:         "Électrum",
+        abrev:       "pe",
+        icone:       "🪙",
+        couleur:     "#a8c5c5",
+        valeur_pc:   50,     // 1 pe = 50 pc
+        description: "La pièce d'électrum — alliage naturel d'or et d'argent, moins courante que les autres. Vaut deux pièces d'argent ou la moitié d'une pièce d'or. Certains marchands méfiants les refusent.",
+        conversions: { pp: 0.05, po: 0.5, pa: 5, pc: 50 }
+    },
+    pa: {
+        nom:         "Argent",
+        abrev:       "pa",
+        icone:       "🪙",
+        couleur:     "#c0c0c0",
+        valeur_pc:   10,     // 1 pa = 10 pc
+        description: "La pièce d'argent — monnaie du peuple et des artisans. Dix pièces de cuivre font une pièce d'argent. Le salaire journalier d'un ouvrier qualifié dans le royaume du Roi Karl.",
+        conversions: { pp: 0.01, po: 0.1, pe: 0.2, pc: 10 }
+    },
+    pc: {
+        nom:         "Cuivre",
+        abrev:       "pc",
+        icone:       "🪙",
+        couleur:     "#b87333",
+        valeur_pc:   1,      // valeur de base
+        description: "La pièce de cuivre — la plus humble des monnaies, celle du marché et de la taverne. Un repas simple ou une bougie s'achète en cuivre. Dix pièces de cuivre font une pièce d'argent.",
+        conversions: { pp: 0.001, po: 0.01, pe: 0.02, pa: 0.1 }
+    }
+};
+
+// Ordre d'affichage standard (de la plus précieuse à la moins)
+const RPG_MONNAIE_ORDRE = ['pp', 'po', 'pe', 'pa', 'pc'];
+
+/**
+ * Convertit un montant d'une devise vers une autre
+ * ex: convertirMonnaie(5, 'po', 'pa') → 50
+ */
+function convertirMonnaie(montant, de, vers) {
+    if (de === vers) return montant;
+    const valPc = RPG_MONNAIE[de].valeur_pc;
+    const cible = RPG_MONNAIE[vers].valeur_pc;
+    return (montant * valPc) / cible;
 }
 
 /**
- * Recherche d'armes par propriété (ex: "Finesse", "Légère")
+ * Calcule la valeur totale d'un trésor en pièces de cuivre
+ * ex: totalTresorEnPc({ pp:1, po:5, pe:0, pa:10, pc:3 }) → 1613
  */
-function getArmesAvecPropriete(propriete) {
-    return Object.entries(MATERIEL_ARMES)
-        .filter(([_, a]) => a.proprietes.some(p => p.toLowerCase().includes(propriete.toLowerCase())))
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
+function totalTresorEnPc(tresor) {
+    return RPG_MONNAIE_ORDRE.reduce((total, abrev) => {
+        return total + ((tresor[abrev] || 0) * RPG_MONNAIE[abrev].valeur_pc);
+    }, 0);
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  EXPORTS — usage window (site) + module (Node.js / livres)
-// ═══════════════════════════════════════════════════════════════
+/**
+ * Exprime une valeur en pc dans la devise la plus lisible
+ * ex: simplifierMonnaie(1550) → "1 pp, 5 po, 5 pa"
+ */
+function simplifierMonnaie(valeurPc) {
+    let reste = valeurPc;
+    const result = [];
+    for (const abrev of RPG_MONNAIE_ORDRE) {
+        const valeur = RPG_MONNAIE[abrev].valeur_pc;
+        const nb = Math.floor(reste / valeur);
+        if (nb > 0) { result.push(`${nb} ${abrev}`); reste -= nb * valeur; }
+    }
+    return result.length ? result.join(', ') : '0 pc';
+}
 
+// Export pour usage dans index.html (via window) et Node.js (livres)
 if (typeof window !== 'undefined') {
-    window.MATERIEL_ARMES          = MATERIEL_ARMES;
-    window.getArmesParCategorie    = getArmesParCategorie;
-    window.getCategoriesArmes      = getCategoriesArmes;
-    window.getArmesAvecPropriete   = getArmesAvecPropriete;
+    window.RPG_RACES          = RPG_RACES;
+    window.RPG_CLASSES        = RPG_CLASSES;
+    window.RPG_GRADES         = RPG_GRADES;
+    window.RPG_ALIGNEMENTS    = RPG_ALIGNEMENTS;
+    window.RPG_MONNAIE        = RPG_MONNAIE;
+    window.RPG_MONNAIE_ORDRE  = RPG_MONNAIE_ORDRE;
+    window.getBonusTotal       = getBonusTotal;
+    window.getGradeFromJours   = getGradeFromJours;
+    window.convertirMonnaie    = convertirMonnaie;
+    window.totalTresorEnPc     = totalTresorEnPc;
+    window.simplifierMonnaie   = simplifierMonnaie;
 }
 if (typeof module !== 'undefined') {
     module.exports = {
-        MATERIEL_ARMES,
-        getArmesParCategorie,
-        getCategoriesArmes,
-        getArmesAvecPropriete
+        RPG_RACES, RPG_CLASSES, RPG_GRADES, RPG_ALIGNEMENTS,
+        RPG_MONNAIE, RPG_MONNAIE_ORDRE,
+        getBonusTotal, getGradeFromJours,
+        convertirMonnaie, totalTresorEnPc, simplifierMonnaie
     };
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  ARMURES
-//  Structure : { icone, categorie, ca, force_min, discrétion,
-//               poids, prix, proprietes[], description }
-//  Catégories : "Légère" | "Intermédiaire" | "Lourde" | "Bouclier"
-//  discrétion : true = désavantage aux tests de Discrétion
-// ═══════════════════════════════════════════════════════════════
-
-const MATERIEL_ARMURES = {
-
-    // ── ARMURES LÉGÈRES ──────────────────────────────────────────
-
-    "Matelassée": {
-        icone:       "🧶",
-        categorie:   "Légère",
-        ca:          "11 + Dex",
-        force_min:   null,
-        discretion:  true,
-        poids:       "4 kg",
-        prix:        "5 po",
-        proprietes:  ["Désavantage en Discrétion"],
-        description: "Épaisse veste de tissu matelassé, protection de fortune des miliciens et des pauvres. Absorbe les chocs mais gêne les mouvements furtifs. Mieux que rien sur un champ de bataille."
-    },
-
-    "Cuir": {
-        icone:       "🥋",
-        categorie:   "Légère",
-        ca:          "11 + Dex",
-        force_min:   null,
-        discretion:  false,
-        poids:       "5 kg",
-        prix:        "10 po",
-        proprietes:  [],
-        description: "Armure de cuir tanné, souple et silencieuse. Protection standard des roublards, des éclaireurs et des rangers. N'entrave pas les mouvements — idéale pour qui préfère ne pas être vu."
-    },
-
-    "Cuir clouté": {
-        icone:       "⚙️",
-        categorie:   "Légère",
-        ca:          "12 + Dex",
-        force_min:   null,
-        discretion:  false,
-        poids:       "6,5 kg",
-        prix:        "45 po",
-        proprietes:  [],
-        description: "Cuir renforcé de rivets et de clous métalliques stratégiquement placés. Meilleure protection sans sacrifice de mobilité. Armure de prédilection des aventuriers confirmés et des bardes combattants."
-    },
-
-    // ── ARMURES INTERMÉDIAIRES ───────────────────────────────────
-
-    "Peau": {
-        icone:       "🐻",
-        categorie:   "Intermédiaire",
-        ca:          "12 + Dex (max 2)",
-        force_min:   null,
-        discretion:  false,
-        poids:       "6 kg",
-        prix:        "10 po",
-        proprietes:  ["Bonus Dex limité à +2"],
-        description: "Peaux épaisses d'animaux sauvages cousues ensemble. Protection rudimentaire des barbares et des peuples des forêts. Brute mais efficace — et intimidante d'aspect."
-    },
-
-    "Chemise de mailles": {
-        icone:       "🔗",
-        categorie:   "Intermédiaire",
-        ca:          "13 + Dex (max 2)",
-        force_min:   null,
-        discretion:  false,
-        poids:       "10 kg",
-        prix:        "50 po",
-        proprietes:  ["Bonus Dex limité à +2"],
-        description: "Tunique d'anneaux de métal entrelacés. Protège des lames et des pointes tout en conservant une souplesse relative. Armure de compromis — ni aussi légère que le cuir, ni aussi lourde que les plaques."
-    },
-
-    "Écailles": {
-        icone:       "🐉",
-        categorie:   "Intermédiaire",
-        ca:          "14 + Dex (max 2)",
-        force_min:   null,
-        discretion:  true,
-        poids:       "22,5 kg",
-        prix:        "50 po",
-        proprietes:  ["Bonus Dex limité à +2", "Désavantage en Discrétion"],
-        description: "Plaques de métal ou d'os fixées sur du cuir à la manière d'écailles de poisson. Protection solide mais bruyante — chaque mouvement cliquète. Efficace en formation, problématique en infiltration."
-    },
-
-    "Cuirasse": {
-        icone:       "🛡️",
-        categorie:   "Intermédiaire",
-        ca:          "13 + Dex (max 2)",
-        force_min:   null,
-        discretion:  false,
-        poids:       "10 kg",
-        prix:        "400 po",
-        proprietes:  ["Bonus Dex limité à +2"],
-        description: "Plastron de métal moulé protégeant le torse, associé à du cuir pour les membres. Armure des officiers et des nobles guerriers — coûteuse mais élégante, elle signale le statut autant qu'elle protège."
-    },
-
-    "Demi-plate": {
-        icone:       "⚔️",
-        categorie:   "Intermédiaire",
-        ca:          "15 + Dex (max 2)",
-        force_min:   null,
-        discretion:  true,
-        poids:       "20 kg",
-        prix:        "750 po",
-        proprietes:  ["Bonus Dex limité à +2", "Désavantage en Discrétion"],
-        description: "Ensemble de plaques d'acier couvrant la majorité du corps, sans atteindre la rigidité complète du harnois. Protection maximale pour ceux qui refusent de sacrifier toute agilité. Armure des chevaliers en campagne."
-    },
-
-    // ── ARMURES LOURDES ──────────────────────────────────────────
-
-    "Broigne": {
-        icone:       "⛓️",
-        categorie:   "Lourde",
-        ca:          "14",
-        force_min:   null,
-        discretion:  true,
-        poids:       "20 kg",
-        prix:        "30 po",
-        proprietes:  ["Désavantage en Discrétion"],
-        description: "Veste de cuir garnie d'anneaux de fer ou de plaques cousues. Armure lourde accessible — protection solide sans la complexité ni le coût des grandes plaques. Populaire parmi les mercenaires et les gardes."
-    },
-
-    "Cotte de mailles": {
-        icone:       "🔗",
-        categorie:   "Lourde",
-        ca:          "16",
-        force_min:   "For 13",
-        discretion:  true,
-        poids:       "27,5 kg",
-        prix:        "75 po",
-        proprietes:  ["Force minimale 13", "Désavantage en Discrétion"],
-        description: "Armure complète d'anneaux de fer entrelacés, couvrant le corps de la tête aux genoux. Protection éprouvée sur des générations de soldats. Exige la force nécessaire pour la porter sans s'épuiser."
-    },
-
-    "Clibanion": {
-        icone:       "🏛️",
-        categorie:   "Lourde",
-        ca:          "17",
-        force_min:   "For 15",
-        discretion:  true,
-        poids:       "30 kg",
-        prix:        "200 po",
-        proprietes:  ["Force minimale 15", "Désavantage en Discrétion"],
-        description: "Armure de lamelles métalliques articulées, héritière des traditions militaires orientales. Excellente protection contre les armes perforantes grâce à ses plaques superposées qui dévient les coups. Lourde mais redoutable."
-    },
-
-    "Harnois": {
-        icone:       "👑",
-        categorie:   "Lourde",
-        ca:          "18",
-        force_min:   "For 15",
-        discretion:  true,
-        poids:       "32,5 kg",
-        prix:        "1500 po",
-        proprietes:  ["Force minimale 15", "Désavantage en Discrétion"],
-        description: "L'armure complète de plaques — le summum de la protection militaire médiévale. Chaque pièce est forgée sur mesure, ajustée au corps de son porteur. Symbole absolu de puissance et de noblesse guerrière. Le Roi Karl en exige une pour ses Mains."
-    },
-
-    // ── BOUCLIER ─────────────────────────────────────────────────
-
-    "Bouclier": {
-        icone:       "🛡️",
-        categorie:   "Bouclier",
-        ca:          "+2",
-        force_min:   null,
-        discretion:  false,
-        poids:       "3 kg",
-        prix:        "10 po",
-        proprietes:  ["Occupe la main secondaire"],
-        description: "Disque ou rectangle de bois renforcé de métal, tenu au bras gauche. Simple, fiable, et redoutablement efficace depuis l'Antiquité. Incompatible avec les armes à deux mains — mais +2 CA peut sauver une vie."
-    }
-};
-
-// ── UTILITAIRES ARMURES ──────────────────────────────────────────
-
-/**
- * Retourne toutes les armures d'une catégorie donnée
- */
-function getArmuresParCategorie(categorie) {
-    return Object.entries(MATERIEL_ARMURES)
-        .filter(([_, a]) => a.categorie === categorie)
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
-}
-
-/**
- * Retourne uniquement les armures sans désavantage en discrétion
- */
-function getArmuresFurtives() {
-    return Object.entries(MATERIEL_ARMURES)
-        .filter(([_, a]) => !a.discretion)
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
-}
-
-if (typeof window !== 'undefined') {
-    window.MATERIEL_ARMURES         = MATERIEL_ARMURES;
-    window.getArmuresParCategorie   = getArmuresParCategorie;
-    window.getArmuresFurtives       = getArmuresFurtives;
-}
-if (typeof module !== 'undefined') {
-    module.exports = Object.assign(module.exports || {}, {
-        MATERIEL_ARMURES,
-        getArmuresParCategorie,
-        getArmuresFurtives
-    });
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  ÉQUIPEMENT DIVERS
-//  Structure : { icone, categorie, poids, prix, proprietes[], description }
-//  Catégories : "Alchimie & substances" | "Focaliseurs" |
-//               "Éclairage" | "Équipement d'aventure" |
-//               "Sécurité & serrures" | "Écriture & savoir" |
-//               "Munitions" | "Contenants" |
-//               "Vêtements & accessoires" | "Nourriture & survie" |
-//               "Outils & instruments"
-// ═══════════════════════════════════════════════════════════════
-
-const MATERIEL_EQUIPEMENT = {
-
-    // ── ALCHIMIE & SUBSTANCES ────────────────────────────────────
-
-    "Acide (fiole)": {
-        icone: "🧪", categorie: "Alchimie & substances",
-        poids: "500 g", prix: "25 po",
-        proprietes: ["Action : lancer sur une cible (portée 6 m)", "2d6 dégâts d'acide"],
-        description: "Fiole de verre scellée contenant un acide corrosif bouillonnant. Lancée comme une arme improvisée, elle ronge chair, métal et bois avec une efficacité redoutable. Manipuler avec précaution."
-    },
-
-    "Antidote (fiole)": {
-        icone: "💚", categorie: "Alchimie & substances",
-        poids: "500 g", prix: "50 po",
-        proprietes: ["Avantage aux jets de sauvegarde contre le poison (1 heure)"],
-        description: "Préparation alchimique concentrée neutralisant la plupart des poisons courants. Goût amer, effet immédiat. Un flacon peut faire la différence entre une mort agonie et un lever du soleil."
-    },
-
-    "Eau bénite (flasque)": {
-        icone: "✨", categorie: "Alchimie & substances",
-        poids: "500 g", prix: "25 po",
-        proprietes: ["Action : lancer sur une cible (portée 6 m)", "2d6 dégâts radiants vs morts-vivants & fiélons"],
-        description: "Eau consacrée par un prêtre lors d'un rituel divin. Inoffensive pour les mortels, brûlante pour les créatures des ténèbres. L'arme du croyant face à ce que les épées ordinaires ne peuvent blesser."
-    },
-
-    "Feu grégeois (flasque)": {
-        icone: "🔥", categorie: "Alchimie & substances",
-        poids: "500 g", prix: "50 po",
-        proprietes: ["Action : lancer sur une cible (portée 6 m)", "1d4 dégâts de feu/tour, difficile à éteindre"],
-        description: "Substance incendiaire alchimique qui brûle même sous l'eau. Redoutée des marins et des assiégés depuis des siècles. Une fois enflammée, seul du sable ou de la terre peut l'étouffer."
-    },
-
-    "Fiole": {
-        icone: "🫙", categorie: "Alchimie & substances",
-        poids: "-", prix: "1 po",
-        proprietes: ["Contient jusqu'à 90 ml de liquide"],
-        description: "Petit récipient de verre soufflé à col étroit. Sert à conserver potions, poisons, huiles ou acides. L'accessoire incontournable de tout alchimiste, apothicaire ou empoisonneur."
-    },
-
-    "Flasque ou chope (50 cl)": {
-        icone: "🍺", categorie: "Alchimie & substances",
-        poids: "500 g", prix: "2 pc",
-        proprietes: ["Contient 500 ml de liquide"],
-        description: "Récipient métallique ou en grès pour boissons et liquides. Compagnon fidèle du voyageur — aussi utile pour l'eau que pour la bière ou l'hydromel du Roi Karl."
-    },
-
-    "Huile (flasque)": {
-        icone: "🛢️", categorie: "Alchimie & substances",
-        poids: "500 g", prix: "1 pa",
-        proprietes: ["Alimente une lampe 6 heures", "Peut être répandue et enflammée (5d8 feu, zone 1,5 m)"],
-        description: "Huile minérale ou végétale servant à alimenter lampes et lanternes. Répandue au sol et enflammée, elle devient un piège redoutable. Utile, polyvalente et dangereuse."
-    },
-
-    "Parfum (fiole)": {
-        icone: "🌸", categorie: "Alchimie & substances",
-        poids: "-", prix: "5 po",
-        proprietes: [],
-        description: "Essence florale ou musquée distillée avec soin. Marque de raffinement et de statut social. Certains aventuriers l'utilisent pour masquer leur odeur face aux créatures à l'odorat développé."
-    },
-
-    "Poison (fiole)": {
-        icone: "☠️", categorie: "Alchimie & substances",
-        poids: "-", prix: "100 po",
-        proprietes: ["Appliquer sur une arme ou dans de la nourriture", "JS Constitution DD 10 ou 1d4 poison + empoisonné 1 heure"],
-        description: "Substance toxique de base, extraite de plantes ou de venins animaux. Peut être appliquée sur une lame ou dissous dans un liquide. Légalement discutable — moralement compromettant."
-    },
-
-    "Potion de soins": {
-        icone: "❤️", categorie: "Alchimie & substances",
-        poids: "250 g", prix: "50 po",
-        proprietes: ["Action bonus : boire soi-même", "Action : faire boire une créature", "Restaure 2d4+2 PV"],
-        description: "Liquide rouge translucide à l'odeur sucrée, symbole de l'espoir en plein chaos. Boire une gorgée referme les plaies et redonne des forces. L'objet le plus précieux dans un donjon sombre."
-    },
-
-    // ── FOCALISEURS ──────────────────────────────────────────────
-
-    "Focaliseur arcanique - Baguette": {
-        icone: "🪄", categorie: "Focaliseurs",
-        poids: "500 g", prix: "10 po",
-        proprietes: ["Focaliseur pour sorts arcaniques (magicien, ensorceleur, occultiste)"],
-        description: "Fine tige de bois ou de métal concentrant l'énergie magique. Légère et discrète, la baguette est le focaliseur classique du magicien studieux."
-    },
-
-    "Focaliseur arcanique - Bâton": {
-        icone: "🔮", categorie: "Focaliseurs",
-        poids: "2 kg", prix: "5 po",
-        proprietes: ["Focaliseur pour sorts arcaniques", "Peut servir d'arme (bâton)"],
-        description: "Long bâton de bois sculpté, gravé de runes et de symboles ésotériques. Sert à la fois de focaliseur magique et d'arme de fortune. Le choix des magiciens qui préfèrent la robustesse à la discrétion."
-    },
-
-    "Focaliseur arcanique - Boule de cristal": {
-        icone: "🔮", categorie: "Focaliseurs",
-        poids: "500 g", prix: "10 po",
-        proprietes: ["Focaliseur pour sorts arcaniques"],
-        description: "Sphère de cristal taillé capturant et amplifiant les énergies magiques. Posée sur une table ou tenue à deux mains, elle est le symbole le plus reconnaissable du praticien de l'arcane."
-    },
-
-    "Focaliseur arcanique - Orbe": {
-        icone: "✨", categorie: "Focaliseurs",
-        poids: "1,5 kg", prix: "20 po",
-        proprietes: ["Focaliseur pour sorts arcaniques"],
-        description: "Sphère solide de métal, verre ou cristal taillé dans la paume. Plus lourde qu'une boule de cristal, elle irradie un pouvoir plus brut, souvent associée aux ensorceleurs d'origine draconique."
-    },
-
-    "Focaliseur arcanique - Sceptre": {
-        icone: "👑", categorie: "Focaliseurs",
-        poids: "1 kg", prix: "10 po",
-        proprietes: ["Focaliseur pour sorts arcaniques"],
-        description: "Bâton court et précieux, à mi-chemin entre l'accessoire royal et l'outil magique. Symbole d'autorité autant que de puissance arcanique. Fréquent chez les occultistes liés à des patrons nobles."
-    },
-
-    "Focaliseur druidique - Baguette d'if": {
-        icone: "🌿", categorie: "Focaliseurs",
-        poids: "500 g", prix: "10 po",
-        proprietes: ["Focaliseur pour sorts druidiques"],
-        description: "Brindille soigneusement taillée dans le bois d'if, arbre de vie et de mort dans les traditions sylvestres. Chaque baguette est unique — taillée par le druide lui-même lors d'un rituel nocturne."
-    },
-
-    "Focaliseur druidique - Bâton": {
-        icone: "🌳", categorie: "Focaliseurs",
-        poids: "2 kg", prix: "5 po",
-        proprietes: ["Focaliseur pour sorts druidiques", "Peut servir d'arme (bâton)"],
-        description: "Branche épaisse trouvée en forêt, à peine dégrossie, marquée de symboles naturels. Les druides voient dans ce bâton un fragment vivant de la nature — pas un outil fabriqué, mais un don du bois."
-    },
-
-    "Focaliseur druidique - Branche de gui": {
-        icone: "🍃", categorie: "Focaliseurs",
-        poids: "-", prix: "1 po",
-        proprietes: ["Focaliseur pour sorts druidiques"],
-        description: "Branche de gui fraîchement coupée, plante sacrée des traditions celtiques et druidiques. Légère, éphémère, mais chargée d'une connexion profonde avec les cycles naturels et les esprits des bois."
-    },
-
-    "Focaliseur druidique - Totem": {
-        icone: "🦅", categorie: "Focaliseurs",
-        poids: "-", prix: "1 po",
-        proprietes: ["Focaliseur pour sorts druidiques"],
-        description: "Petite figurine sculptée représentant un animal spirituel — loup, ours, aigle ou corbeau. Tenu dans le poing ou porté en pendentif, il ancre le druide dans son lien avec la faune sauvage."
-    },
-
-    "Symbole sacré - Amulette": {
-        icone: "📿", categorie: "Focaliseurs",
-        poids: "500 g", prix: "5 po",
-        proprietes: ["Focaliseur pour sorts divins (clerc, paladin)"],
-        description: "Médaillon ou pendentif frappé de l'emblème divin, porté autour du cou. Rappel constant de la foi et canal entre le croyant et son dieu. Chaque religion a le sien — et les reconnaît immédiatement."
-    },
-
-    "Symbole sacré - Emblème": {
-        icone: "🔰", categorie: "Focaliseurs",
-        poids: "-", prix: "5 po",
-        proprietes: ["Focaliseur pour sorts divins", "Gravé sur bouclier ou armure"],
-        description: "Signe divin gravé ou peint directement sur un bouclier ou une pièce d'armure. Libère les mains du clerc tout en maintenant la connexion divine. Pratique au combat, symboliquement fort."
-    },
-
-    "Symbole sacré - Reliquaire": {
-        icone: "⛪", categorie: "Focaliseurs",
-        poids: "1 kg", prix: "5 po",
-        proprietes: ["Focaliseur pour sorts divins", "Contient une relique sainte"],
-        description: "Petite boîte ou châsse renfermant un fragment de relique sacrée — os de saint, tissu béni, éclat de bois miraculeux. Puissant focaliseur pour les clercs de hauts grades. Précieux et irremplaçable."
-    },
-
-    // ── ÉCLAIRAGE ────────────────────────────────────────────────
-
-    "Bougie": {
-        icone: "🕯️", categorie: "Éclairage",
-        poids: "-", prix: "1 pc",
-        proprietes: ["Lumière vive 1,5 m, lumière faible 1,5 m supplémentaire", "Durée : 1 heure"],
-        description: "Simple cylindre de cire avec une mèche. Éclairage de base, fragile au vent, mais suffisant pour lire une carte ou inspecter une cellule. Soufflez-la si des gardes approchent."
-    },
-
-    "Lampe": {
-        icone: "🪔", categorie: "Éclairage",
-        poids: "500 g", prix: "5 pa",
-        proprietes: ["Lumière vive 4,5 m, lumière faible 9 m supplémentaires", "Durée : 6 heures / flasque d'huile"],
-        description: "Récipient métallique à huile avec mèche. Plus fiable qu'une bougie, elle résiste mieux aux courants d'air. Compagne des mineurs, des gardiens de nuit et des aventuriers prudents."
-    },
-
-    "Lanterne sourde": {
-        icone: "🔦", categorie: "Éclairage",
-        poids: "1 kg", prix: "10 po",
-        proprietes: ["Lumière vive 18 m en cône de 60°", "Volet orientable : 5 pc pour fermer", "Durée : 6 heures / flasque d'huile"],
-        description: "Lanterne à volet orientable projetant un faisceau directionnel. Idéale pour l'infiltration — on éclaire où on veut, sans dévoiler sa position. L'outil des explorateurs de donjons expérimentés."
-    },
-
-    "Lanterne à capote": {
-        icone: "🏮", categorie: "Éclairage",
-        poids: "1 kg", prix: "5 po",
-        proprietes: ["Lumière vive 9 m, lumière faible 9 m supplémentaires", "Durée : 6 heures / flasque d'huile"],
-        description: "Lanterne à parois translucides diffusant la lumière dans toutes les directions. Suspendue ou portée, elle éclaire une large zone. Parfaite pour les groupes qui n'ont rien à cacher."
-    },
-
-    "Torche": {
-        icone: "🔥", categorie: "Éclairage",
-        poids: "500 g", prix: "1 pc",
-        proprietes: ["Lumière vive 6 m, lumière faible 6 m supplémentaires", "Durée : 1 heure", "Dégâts : 1 feu au contact"],
-        description: "Bâton imprégné de résine ou de chiffons huileux. Primitive, fumante, mais indestructible par le vent. Peut aussi servir d'arme improvisée — une torche dans le visage reste convaincante."
-    },
-
-    // ── ÉQUIPEMENT D'AVENTURE ────────────────────────────────────
-
-    "Bélier portatif": {
-        icone: "🐏", categorie: "Équipement d'aventure",
-        poids: "17,5 kg", prix: "4 po",
-        proprietes: ["Bonus +4 aux tests de Force pour enfoncer une porte", "+2 supplémentaire avec un second porteur"],
-        description: "Poutre de bois renforcée de métal conçue pour fracasser portes et barricades. Encombrante et bruyante, mais aucune porte ordinaire ne lui résiste longtemps. Subtilité zéro — efficacité maximale."
-    },
-
-    "Billes (sac de 1000)": {
-        icone: "⚪", categorie: "Équipement d'aventure",
-        poids: "1 kg", prix: "1 po",
-        proprietes: ["Répandues : JS Dex DD 10 ou vitesse réduite à 0 jusqu'à la fin du tour"],
-        description: "Millier de petites sphères métalliques que l'on répand sur le sol pour ralentir les poursuivants. Silencieuses, légères, redoutablement efficaces. Une solution élégante à un problème de fuite."
-    },
-
-    "Boîte d'allume-feu": {
-        icone: "🔥", categorie: "Équipement d'aventure",
-        poids: "500 g", prix: "5 pa",
-        proprietes: ["Allumer : action ou action bonus selon les conditions"],
-        description: "Petite boîte contenant silex, briquet et amadou. Allumer un feu prend une minute à l'abri, davantage dans le vent. Essentielle pour la survie — un adventurier sans feu est un aventurier vulnérable."
-    },
-
-    "Bouclier en verre": {
-        icone: "🔵", categorie: "Équipement d'aventure",
-        poids: "1 kg", prix: "2 po",
-        proprietes: [],
-        description: "Disque de verre épais utilisé pour observer à travers les flammes ou les fumées. Objet de curiosité autant qu'outil — certains alchimistes l'utilisent comme lentille de concentration."
-    },
-
-    "Carquois": {
-        icone: "🏹", categorie: "Équipement d'aventure",
-        poids: "500 g", prix: "1 po",
-        proprietes: ["Contient jusqu'à 20 flèches ou carreaux"],
-        description: "Étui de cuir ou de bois porté dans le dos ou à la hanche pour transporter flèches et carreaux. Gardez-le sec — des munitions mouillées manquent leurs cibles."
-    },
-
-    "Chaîne (3 m)": {
-        icone: "⛓️", categorie: "Équipement d'aventure",
-        poids: "5 kg", prix: "5 po",
-        proprietes: ["Résistance à la rupture : JS Force DD 20 pour briser"],
-        description: "Trois mètres de chaîne en fer forgé. Sert à ligoter, barricader, escalader ou improviser une arme. Sa solidité décourage les évasions — mais pas les nains qui ont un peu de temps et beaucoup de rancœur."
-    },
-
-    "Chausse-trappes (sac de 20)": {
-        icone: "⭐", categorie: "Équipement d'aventure",
-        poids: "1 kg", prix: "1 po",
-        proprietes: ["Répandues au sol : JS Dex DD 15 ou 1 dégât perforant + vitesse 0 jusqu'à soins"],
-        description: "Petits objets métalliques à quatre pointes conçus pour toujours présenter une pointe vers le haut. Répandus à l'entrée d'un couloir, ils ralentissent n'importe quel poursuivant — botté ou non."
-    },
-
-    "Coffre": {
-        icone: "📦", categorie: "Équipement d'aventure",
-        poids: "12,5 kg", prix: "5 po",
-        proprietes: ["Contenance : 340 litres / 150 kg"],
-        description: "Caisse de bois renforcée de ferrures métalliques. Sert à transporter, stocker ou sécuriser de grandes quantités d'objets. Un cadenas en fait un coffre-fort d'aventurier."
-    },
-
-    "Corde en chanvre (15 m)": {
-        icone: "🪢", categorie: "Équipement d'aventure",
-        poids: "5 kg", prix: "1 po",
-        proprietes: ["Résistance : JS Force DD 17 pour briser"],
-        description: "Quinze mètres de corde tressée en fibres de chanvre. Robuste, bon marché, indispensable. Sert à grimper, ligoter, tendre des pièges ou descendre en rappel. L'outil universel de l'aventurier."
-    },
-
-    "Corde en soie (15 m)": {
-        icone: "🧵", categorie: "Équipement d'aventure",
-        poids: "2,5 kg", prix: "10 po",
-        proprietes: ["Résistance : JS Force DD 17 pour briser", "Deux fois plus légère que la corde en chanvre"],
-        description: "Corde de soie tressée, légère comme une plume et pourtant aussi solide que le chanvre. Préférée des roublards et des magiciens qui comptent chaque gramme dans leur sac à dos."
-    },
-
-    "Couverture": {
-        icone: "🛏️", categorie: "Équipement d'aventure",
-        poids: "1,5 kg", prix: "5 pa",
-        proprietes: [],
-        description: "Épaisse couverture de laine rêche. Protection basique contre le froid nocturne. Pas aussi confortable qu'un lit de taverne — mais infiniment préférable au sol nu d'une caverne."
-    },
-
-    "Échelle (3 m)": {
-        icone: "🪜", categorie: "Équipement d'aventure",
-        poids: "12,5 kg", prix: "1 pa",
-        proprietes: ["Encombrante (difficile à transporter dans les couloirs étroits)"],
-        description: "Échelle de bois à deux montants. Lourdaude et encombrante, elle reste irremplaçable pour franchir un mur ou descendre dans un puits quand on n'a ni corde ni griffe."
-    },
-
-    "Encre (bouteille de 30 ml)": {
-        icone: "✒️", categorie: "Équipement d'aventure",
-        poids: "-", prix: "10 po",
-        proprietes: [],
-        description: "Flacon de 30 ml d'encre noire de qualité. Sert à copier des sorts dans un grimoire, rédiger des contrats ou laisser des messages cryptés. Aussi précieuse que la connaissance qu'elle couche sur parchemin."
-    },
-
-    "Équipement d'escalade": {
-        icone: "🧗", categorie: "Équipement d'aventure",
-        poids: "6 kg", prix: "25 po",
-        proprietes: ["Pitons, marteau, crochets : avantage aux tests d'Athlétisme pour escalader"],
-        description: "Ensemble de pitons, crochets, sangles et marteaux permettant d'escalader des parois verticales avec sécurité. Nécessite des deux mains, mais transforme un mur inaccessible en défi surmontable."
-    },
-
-    "Étui à carreaux": {
-        icone: "📋", categorie: "Équipement d'aventure",
-        poids: "500 g", prix: "1 po",
-        proprietes: ["Contient jusqu'à 20 carreaux d'arbalète"],
-        description: "Étui rigide de cuir ou de bois compartimenté pour ranger les carreaux d'arbalète à l'abri de l'humidité. Protège les empennages et garde les munitions prêtes à charger."
-    },
-
-    "Étui à cartes ou parchemins": {
-        icone: "🗺️", categorie: "Équipement d'aventure",
-        poids: "500 g", prix: "1 po",
-        proprietes: ["Imperméable, protège cartes et parchemins"],
-        description: "Cylindre de cuir ciré ou de bois laqué scellant cartes, parchemins et documents précieux à l'abri de la pluie et de l'humidité. Indispensable pour le cartographe ou le mage qui tient à son grimoire."
-    },
-
-    "Grappin": {
-        icone: "🪝", categorie: "Équipement d'aventure",
-        poids: "2 kg", prix: "2 po",
-        proprietes: ["Lancé avec une corde : permet d'escalader des saillies"],
-        description: "Crochet à trois ou quatre dents conçu pour s'accrocher à une corniche, un rebord ou un bastingage. Lancé avec une corde, il transforme un mur lisse en une paroi escaladable. Bruyant mais fiable."
-    },
-
-    "Longue-vue": {
-        icone: "🔭", categorie: "Équipement d'aventure",
-        poids: "500 g", prix: "1000 po",
-        proprietes: ["×2 en distance de vision"],
-        description: "Instrument d'optique de précision composé de lentilles de verre poli. Rare, coûteuse, jalousée. Permet d'observer l'ennemi avant qu'il vous voie — avantage militaire considérable sur un champ de bataille ou en mer."
-    },
-
-    "Loupe": {
-        icone: "🔍", categorie: "Équipement d'aventure",
-        poids: "-", prix: "100 po",
-        proprietes: ["Permet d'examiner objets en détail", "Peut allumer un feu par temps ensoleillé"],
-        description: "Lentille de verre convexe montée sur un cadre. Outil du détective, du bijoutier et du sage. Révèle inscriptions minuscules, défauts cachés et marques d'identification invisibles à l'œil nu."
-    },
-
-    "Menottes": {
-        icone: "⛓️", categorie: "Équipement d'aventure",
-        poids: "3 kg", prix: "2 po",
-        proprietes: ["Entrave les mains", "Évasion : JS Dex DD 20 ou Force DD 20"],
-        description: "Anneaux de métal reliés par une courte chaîne. S'ajustent à des poignets humanoïdes de taille M ou P. Indispensables pour capturer sans tuer — ou empêcher un prisonnier récalcitrant de s'échapper."
-    },
-
-    "Miroir en acier": {
-        icone: "🪞", categorie: "Équipement d'aventure",
-        poids: "250 g", prix: "5 po",
-        proprietes: ["Permet de regarder autour d'un angle sans s'exposer"],
-        description: "Petit miroir poli en acier inoxydable. Léger, incassable, et d'une utilité surprenante — pour inspecter des couloirs sans se montrer, vérifier qu'une créature à regard pétrifiant ne vous guette pas, ou simplement se raser."
-    },
-
-    "Palan": {
-        icone: "⚙️", categorie: "Équipement d'aventure",
-        poids: "2,5 kg", prix: "1 po",
-        proprietes: ["Multiplie la force effective ×4 pour soulever des charges"],
-        description: "Système de poulies et de cordes permettant de soulever des charges très lourdes avec une force modeste. Indispensable sur un chantier, dans un port ou pour hisser un compagnon blessé hors d'un précipice."
-    },
-
-    "Pelle": {
-        icone: "🪣", categorie: "Équipement d'aventure",
-        poids: "2,5 kg", prix: "2 po",
-        proprietes: ["Creuser : 0,5 m³/heure environ"],
-        description: "Pelle à lame de fer et manche de bois. Creuse fosses, tranchées et tunnels. Arme improvisée de dernier recours. Peut aussi enterrer les morts — ou cacher un trésor pour qu'on l'oublie soigneusement."
-    },
-
-    "Perche (3 m)": {
-        icone: "📏", categorie: "Équipement d'aventure",
-        poids: "3 kg", prix: "5 pc",
-        proprietes: ["Permet de tâter le sol, pousser des objets à distance"],
-        description: "Longue tige de bois. L'outil préféré des aventuriers paranoïaques — on tâte d'abord le sol suspect avant d'y poser le pied. A sauvé plus de vies que n'importe quelle épée magique."
-    },
-
-    "Pied-de-biche": {
-        icone: "🔧", categorie: "Équipement d'aventure",
-        poids: "2 kg", prix: "2 po",
-        proprietes: ["Avantage aux tests de Force pour forcer caisses et volets cloués"],
-        description: "Levier de métal courbé aux deux extrémités. Force les caisses, arrache les planches, soulève les dalles. L'outil de l'effraction légitime — ou illégitime, selon qui vous demande."
-    },
-
-    "Piège à mâchoires": {
-        icone: "🪤", categorie: "Équipement d'aventure",
-        poids: "12,5 kg", prix: "5 po",
-        proprietes: ["Déclenché : 1d4 perforant, vitesse 0", "Évasion : JS Force ou Dex DD 13"],
-        description: "Mécanisme de métal à ressort et dents acérées dissimulé sous feuilles ou neige. Blesse et immobilise ce qui marche dessus — humains, animaux ou monstres. À placer avec des gants épais."
-    },
-
-    "Pierre à aiguiser": {
-        icone: "🪨", categorie: "Équipement d'aventure",
-        poids: "500 g", prix: "1 pc",
-        proprietes: [],
-        description: "Bloc de pierre abrasive pour affûter lames et outils. Une lame émoussée rate plus souvent qu'elle ne frappe. Cinq minutes d'entretien chaque soir peuvent sauver une vie le lendemain matin."
-    },
-
-    "Pioche de mineur": {
-        icone: "⛏️", categorie: "Équipement d'aventure",
-        poids: "5 kg", prix: "2 po",
-        proprietes: ["Creuser dans la roche : environ 0,1 m³/heure"],
-        description: "Outil à tête biface — pointe d'un côté, tranchant de l'autre. Creuse la roche, fracasse les murs, ouvre les passages murés. Dans un donjon de pierre, c'est parfois l'outil le plus utile du groupe."
-    },
-
-    "Plume d'écriture": {
-        icone: "🪶", categorie: "Équipement d'aventure",
-        poids: "-", prix: "2 pc",
-        proprietes: [],
-        description: "Grande plume taillée en pointe — d'oie, de corbeau ou d'aigle selon le goût. Outil de l'érudit, du scribe et du mage qui tient à jour son grimoire. Elle regratte selon la pression de la main."
-    },
-
-    "Piton": {
-        icone: "📌", categorie: "Équipement d'aventure",
-        poids: "100 g", prix: "5 pc",
-        proprietes: ["Vendu à l'unité", "S'enfonce au marteau dans les fissures rocheuses"],
-        description: "Petit pic de métal à tête plate qu'on enfonce dans une fissure avec un marteau. Sert d'ancrage pour une corde ou de point de fixation sur une paroi verticale. Simple, fiable, vital."
-    },
-
-    "Pointes en fer (10)": {
-        icone: "📍", categorie: "Équipement d'aventure",
-        poids: "2,5 kg", prix: "1 po",
-        proprietes: ["Caler une porte : empêche l'ouverture", "Marquer un passage"],
-        description: "Dix clous épais de fer. Plantés sous une porte, ils l'empêchent de s'ouvrir. Marqués dans la roche, ils balisent un chemin dans un labyrinthe souterrain. Polyvalence de l'objet le plus simple qui soit."
-    },
-
-    "Pot en fer": {
-        icone: "🍲", categorie: "Équipement d'aventure",
-        poids: "5 kg", prix: "2 po",
-        proprietes: ["Contenance : 4 litres"],
-        description: "Chaudron de fer robuste, suspendu au-dessus d'un feu pour cuire ragoûts et bouillons. Lourd, encombrant, mais irremplaçable pour un groupe qui campe loin de toute civilisation."
-    },
-
-    "Sablier": {
-        icone: "⏳", categorie: "Équipement d'aventure",
-        poids: "500 g", prix: "25 po",
-        proprietes: ["Mesure 1 heure"],
-        description: "Deux ampoules de verre reliées laissant s'écouler du sable fin. Instrument de mesure du temps précis et fiable — pour les rituels minutés, les gardes de nuit ou les mages qui calculent la durée de leurs sorts."
-    },
-
-    "Sifflet": {
-        icone: "🎵", categorie: "Équipement d'aventure",
-        poids: "-", prix: "5 pc",
-        proprietes: ["Signal sonore audible à grande distance"],
-        description: "Petit instrument à vent produisant un son perçant. Signal d'alerte, de ralliement ou de détresse. Dans un donjon sombre, un coup de sifflet peut appeler les renforts — ou alerter tout l'étage."
-    },
-
-    "Tente": {
-        icone: "⛺", categorie: "Équipement d'aventure",
-        poids: "10 kg", prix: "2 po",
-        proprietes: ["Abrite 2 personnes", "Protection contre intempéries légères"],
-        description: "Abri de toile tendu sur des montants de bois. Protège de la pluie et du vent, offre une semi-intimité dans les camps. Lourde à porter mais précieuse quand le ciel se couvre et que la nuit tombe."
-    },
-
-    "Tonneau": {
-        icone: "🛢️", categorie: "Équipement d'aventure",
-        poids: "35 kg", prix: "2 po",
-        proprietes: ["Contenance : 150 litres"],
-        description: "Fût de bois cerclé de métal. Transporte liquides, grains ou provisions en grande quantité. Un tonneau vide flotte — ce qui peut s'avérer utile pour traverser une rivière ou fuir un naufrage."
-    },
-
-    "Équipement d'escalade (kit)": {
-        icone: "🧗", categorie: "Équipement d'aventure",
-        poids: "6 kg", prix: "25 po",
-        proprietes: ["Avantage aux tests d'Athlétisme pour escalader"],
-        description: "Ensemble de pitons, crochets, sangles et marteau permettant d'escalader en sécurité les parois les plus verticales. L'aventurier équipé peut aller là où les autres s'arrêtent, bouche ouverte."
-    },
-
-    "Balance de marchand": {
-        icone: "⚖️", categorie: "Outils & instruments",
-        poids: "1,5 kg", prix: "5 po",
-        proprietes: ["Peser jusqu'à plusieurs kg avec précision"],
-        description: "Balance à plateau avec jeu de poids étalonnés. Indispensable pour les marchands honnêtes — et pour détecter les pièces truquées. Un aventurier équipé ne se fait pas arnaquer sur le poids de ses gemmes."
-    },
-
-    "Marteau": {
-        icone: "🔨", categorie: "Outils & instruments",
-        poids: "1,5 kg", prix: "1 po",
-        proprietes: [],
-        description: "Marteau de charpentier ou d'artisan à tête de métal et manche de bois. Enfonce les pitons, répare les meubles, fracasse les caisses. L'outil le plus polyvalent après la corde."
-    },
-
-    "Marteau de forgeron": {
-        icone: "🔨", categorie: "Outils & instruments",
-        poids: "2 kg", prix: "10 po",
-        proprietes: [],
-        description: "Lourd marteau à tête massive pour travailler le métal chaud sur l'enclume. Hors de la forge, c'est une arme contondante redoutable. Les nains l'emportent parfois en adventure — on ne sait jamais."
-    },
-
-    "Matériel de pêche": {
-        icone: "🎣", categorie: "Outils & instruments",
-        poids: "2 kg", prix: "1 po",
-        proprietes: ["Pêcher : 1 heure pour 1d4 rations dans un cours d'eau poissonneux"],
-        description: "Canne, fil, hameçons et leurres basiques. Permet de compléter les rations en chemin si on longe une rivière ou un lac. Activité reposante entre deux combats — et les poissons ne rendent pas les coups."
-    },
-
-    // ── SÉCURITÉ & SERRURES ──────────────────────────────────────
-
-    "Cadenas": {
-        icone: "🔒", categorie: "Sécurité & serrures",
-        poids: "500 g", prix: "10 po",
-        proprietes: ["Crocheter : JS Dex DD 15 avec outils de voleur"],
-        description: "Serrure de métal avec clé amovible. Sécurise coffres, chaînes et portes. Sa qualité varie — un cadenas bon marché tombe vite face à un crocheteur habile. Un cadenas de qualité donne du fil à retordre."
-    },
-
-    "Cloche": {
-        icone: "🔔", categorie: "Sécurité & serrures",
-        poids: "-", prix: "1 pa",
-        proprietes: ["Signal sonore en cas d'intrusion"],
-        description: "Petite cloche de métal suspendue à un fil tendu en travers d'un passage. Alarme primitive mais efficace — quand elle tinte, quelque chose est entré. Simple, bon marché, parfois vital."
-    },
-
-    "Ore à crochet": {
-        icone: "🗝️", categorie: "Sécurité & serrures",
-        poids: "-", prix: "1 pa",
-        proprietes: [],
-        description: "Petit crochet de métal servant à suspendre ou accrocher. Planté dans une poutre, il devient une alarme improvisée, un point d'ancrage de corde ou simplement un endroit pour pendre son manteau."
-    },
-
-    // ── ÉCRITURE & SAVOIR ────────────────────────────────────────
-
-    "Livre": {
-        icone: "📚", categorie: "Écriture & savoir",
-        poids: "2,5 kg", prix: "25 po",
-        proprietes: ["Vierge ou rempli selon contenu"],
-        description: "Volume relié de parchemin ou de vélin couvert de texte manuscrit. Rare, précieux, irremplaçable. Dans un monde où peu savent lire, posséder un livre signale une instruction et une richesse certaines."
-    },
-
-    "Craie (un morceau)": {
-        icone: "✏️", categorie: "Écriture & savoir",
-        poids: "-", prix: "1 pc",
-        proprietes: ["Écriture effaçable sur pierre, ardoise, bois"],
-        description: "Petit bâton de craie blanche. Marquer les murs d'un donjon pour trouver son chemin, dessiner un cercle de protection, noter un message. Quand l'encre manque, la craie sauve la mise."
-    },
-
-    "Cruche ou pichet": {
-        icone: "🏺", categorie: "Écriture & savoir",
-        poids: "2 kg", prix: "2 pc",
-        proprietes: ["Contient jusqu'à 3,5 litres"],
-        description: "Récipient en céramique ou en métal pour servir l'eau, le vin ou l'hydromel. Présent sur chaque table de taverne, dans chaque cuisine de château. Casse facilement — mais coûte peu à remplacer."
-    },
-
-    "Grimoire": {
-        icone: "📖", categorie: "Écriture & savoir",
-        poids: "1,5 kg", prix: "50 po",
-        proprietes: ["Contient sorts copiés du magicien", "Perte = catastrophe pour le mage"],
-        description: "Volume relié en cuir contenant les formules magiques transcrites d'un magicien. Plus précieux que la vie pour son propriétaire. Chaque sort copié représente des heures de travail minutieux et de dépenses en encre runique."
-    },
-
-    "Papier (une feuille)": {
-        icone: "📄", categorie: "Écriture & savoir",
-        poids: "-", prix: "2 pa",
-        proprietes: [],
-        description: "Feuille de papier de qualité correcte. Supporte l'encre sans boire ni gondoler. Plus pratique que le parchemin pour les notes rapides, plus fragile à l'eau. Traiter avec soin."
-    },
-
-    "Parchemin (une feuille)": {
-        icone: "📜", categorie: "Écriture & savoir",
-        poids: "-", prix: "1 pa",
-        proprietes: [],
-        description: "Feuille de peau d'animal traitée et séchée. Plus durable que le papier, résiste mieux à l'humidité. Support traditionnel des contrats officiels, des sorts transcrits et des cartes qui doivent durer des siècles."
-    },
-
-    // ── MUNITIONS ────────────────────────────────────────────────
-
-    "Munitions - Aiguilles de sarbacane (50)": {
-        icone: "🎯", categorie: "Munitions",
-        poids: "500 g", prix: "1 po",
-        proprietes: ["50 aiguilles", "Compatibles avec la sarbacane"],
-        description: "Cinquante fines aiguilles de métal ou d'os pour sarbacane. Légères, précises, souvent enduites de poison. Un tube et cinquante aiguilles — de quoi silencieusement neutraliser cinquante cibles ou en endormir une cinquantaine."
-    },
-
-    "Munitions - Billes de fronde (20)": {
-        icone: "⚫", categorie: "Munitions",
-        poids: "750 g", prix: "4 pc",
-        proprietes: ["20 billes de plomb", "Compatibles avec la fronde"],
-        description: "Vingt sphères de plomb coulé, lourdes et aérodynamiques. Tirées à la fronde, elles atteignent une vitesse et une précision que les simples cailloux ne peuvent égaler. Les bergers en rient — jusqu'à ce qu'on les voie en action."
-    },
-
-    "Munitions - Carreaux d'arbalète (20)": {
-        icone: "➡️", categorie: "Munitions",
-        poids: "750 g", prix: "1 po",
-        proprietes: ["20 carreaux", "Compatibles avec arbalètes légères, lourdes et de poing"],
-        description: "Vingt carreaux d'arbalète à pointe d'acier et empennage de bois ou d'os. Courts et trapus, conçus pour percer plutôt que planer. Après utilisation, récupérer ceux qui ne se sont pas brisés."
-    },
-
-    "Munitions - Flèches (20)": {
-        icone: "🏹", categorie: "Munitions",
-        poids: "500 g", prix: "1 po",
-        proprietes: ["20 flèches", "Compatibles avec arcs courts et longs"],
-        description: "Vingt flèches à pointe de fer et empennage de plumes d'oie. Équilibrées pour voler droit et percer la chair ou l'armure légère. Récupérer les flèches après combat — elles valent leur poids en survie."
-    },
-
-    // ── CONTENANTS ───────────────────────────────────────────────
-
-    "Bouteille en verre": {
-        icone: "🍾", categorie: "Contenants",
-        poids: "1 kg", prix: "2 po",
-        proprietes: ["Contient jusqu'à 750 ml"],
-        description: "Bouteille de verre soufflé à goulot étroit. Sert à conserver vins, potions ou huiles précieuses. Fragile si on la laisse tomber — mais le verre brisé a parfois son utilité dans un pincement de sécurité."
-    },
-
-    "Gamelle": {
-        icone: "🥣", categorie: "Contenants",
-        poids: "500 g", prix: "2 pa",
-        proprietes: [],
-        description: "Écuelle de métal étamé avec couvercle. Compagne de tout soldat et aventurier en campagne. Sert autant à manger qu'à faire bouillir de l'eau d'urgence. Simple et indestructible."
-    },
-
-    "Gourde (pleine)": {
-        icone: "🫗", categorie: "Contenants",
-        poids: "2,5 kg", prix: "2 pa",
-        proprietes: ["Contient 4 litres d'eau"],
-        description: "Récipient de cuir ou de céramique portant quatre litres d'eau. Pleine, elle est lourde — vide, elle rappelle qu'on aurait dû la remplir à la dernière source. L'eau est la ressource la plus précieuse dans un désert ou un donjon profond."
-    },
-
-    "Panier": {
-        icone: "🧺", categorie: "Contenants",
-        poids: "1 kg", prix: "4 pa",
-        proprietes: ["Contient jusqu'à 20 kg"],
-        description: "Panier tressé de jonc ou d'osier. Léger, aéré, pratique pour transporter vivres et petits objets. Moins discret qu'un sac — tout le monde voit ce qu'il y a dedans. Ce n'est pas toujours un inconvénient."
-    },
-
-    "Sac": {
-        icone: "👜", categorie: "Contenants",
-        poids: "250 g", prix: "1 pc",
-        proprietes: ["Contient jusqu'à 15 kg / 30 litres"],
-        description: "Sac de toile ou de jute. Rustique, bon marché, polyvalent. Fourre-tout de l'aventurier pressé — si ça rentre dedans et que ça ne fuit pas, c'est suffisant."
-    },
-
-    "Sac à dos": {
-        icone: "🎒", categorie: "Contenants",
-        poids: "2,5 kg", prix: "2 po",
-        proprietes: ["Contient jusqu'à 30 kg / 60 litres"],
-        description: "Sac à sangles de cuir porté dans le dos, avec poches et compartiments. L'équipement de base de tout aventurier. Bien rempli, il contient tout ce dont on a besoin pour une semaine en extérieur."
-    },
-
-    "Sac de couchage": {
-        icone: "🛏️", categorie: "Contenants",
-        poids: "2 kg", prix: "1 po",
-        proprietes: [],
-        description: "Sac de grosse toile rembourré de laine ou de plumes. Protège du froid nocturne jusqu'à des températures raisonnables. Moins confortable qu'un lit d'auberge — mais on s'y habitue après la troisième nuit dehors."
-    },
-
-    "Sacoche": {
-        icone: "👝", categorie: "Contenants",
-        poids: "500 g", prix: "5 pa",
-        proprietes: ["Contient jusqu'à 3 kg"],
-        description: "Petite bourse de cuir à fermoir, portée à la ceinture. Contient pièces, petits objets et documents importants. La première chose qu'un voleur cherche — garder à l'œil ou planquer sous le manteau."
-    },
-
-    "Sacoche à composantes": {
-        icone: "🧳", categorie: "Contenants",
-        poids: "1 kg", prix: "25 po",
-        proprietes: ["Remplace les composantes matérielles de sorts sans coût spécifié"],
-        description: "Sacoche spécialement compartimentée contenant une sélection de composantes magiques courantes — soufre, plumes, cordes de soie, cristaux mineurs. Remplace la recherche fastidieuse de chaque composante à la unité."
-    },
-
-    "Savon": {
-        icone: "🧼", categorie: "Contenants",
-        poids: "-", prix: "2 pc",
-        proprietes: [],
-        description: "Pain de savon fait de suif et de cendres. L'hygiène n'est pas optionnelle pour qui veut être admis en cour royale. Certains donjons sont nauséabonds — au moins, on peut sentir bon en y mourant."
-    },
-
-    "Seau": {
-        icone: "🪣", categorie: "Contenants",
-        poids: "1 kg", prix: "5 pc",
-        proprietes: ["Contient jusqu'à 11 litres"],
-        description: "Seau de bois cerclé de métal ou de simple métal battu. Transporte l'eau, le sable, le charbon ou n'importe quoi d'autre. L'outil le plus ignoré — et le plus regretté quand on n'en a pas."
-    },
-
-    // ── NOURRITURE & SURVIE ──────────────────────────────────────
-
-    "Rations (1 jour)": {
-        icone: "🍖", categorie: "Nourriture & survie",
-        poids: "1 kg", prix: "5 pa",
-        proprietes: ["1 journée de nourriture sèche pour 1 personne"],
-        description: "Viande séchée, fromage dur, biscuits de marin et fruits secs. Sans saveur, sans élégance — mais ca sustente pour une journée entière de marche ou de combat. Un aventurier affamé est un aventurier mort."
-    },
-
-    // ── VÊTEMENTS & ACCESSOIRES ──────────────────────────────────
-
-    "Chevalière": {
-        icone: "💍", categorie: "Vêtements & accessoires",
-        poids: "-", prix: "5 po",
-        proprietes: ["Sceau : permet de cacheter la cire des lettres officielles"],
-        description: "Bague massive gravée aux armes d'une famille, d'une guilde ou d'une institution. Sert à sceller les lettres officielles dans la cire. Symbole d'autorité et d'appartenance — et de prestige dans les milieux nobles."
-    },
-
-    "Robes": {
-        icone: "👘", categorie: "Vêtements & accessoires",
-        poids: "2 kg", prix: "1 po",
-        proprietes: [],
-        description: "Longue robe de tissu simple, vêtement classique des érudits, des clercs et des magiciens. Pratique, ample, et universellement reconnue comme le costume du praticien des arts savants ou divins."
-    },
-
-    "Vêtements, communs": {
-        icone: "👕", categorie: "Vêtements & accessoires",
-        poids: "1,5 kg", prix: "5 pa",
-        proprietes: [],
-        description: "Chemise, pantalon, ceinture et chaussures de qualité modeste. Les vêtements du peuple — robustes, ternes, fonctionnels. Permettent de passer inaperçu dans la foule d'un marché ou d'un village."
-    },
-
-    "Vêtements, costume": {
-        icone: "🎭", categorie: "Vêtements & accessoires",
-        poids: "2 kg", prix: "5 po",
-        proprietes: ["Avantage aux tests de Tromperie ou Représentation selon le contexte"],
-        description: "Costume de théâtre, de mascarade ou de déguisement. Permet d'incarner un personnage crédible — garde, noble, marchand ou prêtre. L'outil du barde et de l'espion. Le vrai talent est dans comment on le porte."
-    },
-
-    "Vêtements, fins": {
-        icone: "👔", categorie: "Vêtements & accessoires",
-        poids: "3 kg", prix: "15 po",
-        proprietes: ["Avantage possible aux tests de Persuasion en contexte noble"],
-        description: "Velours, soie et broderies finement travaillées. La tenue d'un noble, d'un ambassadeur ou d'un grand marchand. Dans une cour royale, s'habiller pauvrement ferme les portes — s'habiller richement les ouvre."
-    },
-
-    "Vêtements, voyage": {
-        icone: "🧥", categorie: "Vêtements & accessoires",
-        poids: "2 kg", prix: "2 po",
-        proprietes: [],
-        description: "Cape imperméable, chemise épaisse, pantalon robuste et bottes montantes. Conçus pour résister aux intempéries, à la boue et aux longues marches. L'équipement du voyageur sérieux qui sait ce qu'est une semaine de pluie."
-    }
-};
-
-// ── UTILITAIRES ÉQUIPEMENT ───────────────────────────────────────
-
-/**
- * Retourne tous les items d'une catégorie
- */
-function getEquipementParCategorie(categorie) {
-    return Object.entries(MATERIEL_EQUIPEMENT)
-        .filter(([_, e]) => e.categorie === categorie)
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
-}
-
-/**
- * Liste des catégories d'équipement
- */
-function getCategoriesEquipement() {
-    return [...new Set(Object.values(MATERIEL_EQUIPEMENT).map(e => e.categorie))];
-}
-
-if (typeof window !== 'undefined') {
-    window.MATERIEL_EQUIPEMENT        = MATERIEL_EQUIPEMENT;
-    window.getEquipementParCategorie  = getEquipementParCategorie;
-    window.getCategoriesEquipement    = getCategoriesEquipement;
-}
-if (typeof module !== 'undefined') {
-    module.exports = Object.assign(module.exports || {}, {
-        MATERIEL_EQUIPEMENT,
-        getEquipementParCategorie,
-        getCategoriesEquipement
-    });
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  OBJETS SPÉCIAUX
-//  Structure : { icone, categorie, poids, prix, proprietes[], description }
-//  Catégories : "Instruments de musique" | "Jeux" | "Kits" |
-//               "Outils d'artisan"
-// ═══════════════════════════════════════════════════════════════
-
-const MATERIEL_OBJETS = {
-
-    // ── INSTRUMENTS DE MUSIQUE ───────────────────────────────────
-
-    "Chalemie": {
-        icone: "🎵", categorie: "Instruments de musique",
-        poids: "500 g", prix: "2 po",
-        proprietes: ["Compétence : Instruments de musique (Chalemie)"],
-        description: "Instrument à anche double produisant un son nasillard et perçant, ancêtre du hautbois. Populaire dans les foires et les tavernes des campagnes. Son timbre rustique évoque les pâturages et les veillées paysannes."
-    },
-
-    "Cor": {
-        icone: "📯", categorie: "Instruments de musique",
-        poids: "1 kg", prix: "3 po",
-        proprietes: ["Compétence : Instruments de musique (Cor)", "Signal sonore audible à très grande distance"],
-        description: "Instrument à vent en corne ou en métal courbé. Son appel grave et puissant traverse forêts et vallées. Sur le champ de bataille, il donne les ordres de charge, de retraite ou de ralliement. Dans les fêtes du Roi Karl, il annonce les banquets."
-    },
-
-    "Cornemuse": {
-        icone: "🎶", categorie: "Instruments de musique",
-        poids: "3 kg", prix: "30 po",
-        proprietes: ["Compétence : Instruments de musique (Cornemuse)"],
-        description: "Sac de cuir alimentant plusieurs tuyaux sonores — un bourdon continu et un chalumeau mélodique. Son son puissant et envoûtant est indissociable des Hautes-Terres brumeuses et des cortèges guerriers du nord."
-    },
-
-    "Flûte": {
-        icone: "🎼", categorie: "Instruments de musique",
-        poids: "500 g", prix: "2 po",
-        proprietes: ["Compétence : Instruments de musique (Flûte)"],
-        description: "Fin tube de bois ou d'os percé de trous, tenu à l'horizontale. Légère, discrète, d'une tessiture aiguë et cristalline. L'instrument du barde itinérant — tient dans une poche, charme une salle entière."
-    },
-
-    "Flûte de pan": {
-        icone: "🪈", categorie: "Instruments de musique",
-        poids: "1 kg", prix: "12 po",
-        proprietes: ["Compétence : Instruments de musique (Flûte de pan)"],
-        description: "Ensemble de tuyaux de roseaux liés côte à côte, de longueurs décroissantes. Son souffle doux et aérien évoque les rivières et les forêts. Instrument des bergers, des fées et des bardes qui souhaitent paraître mystérieux."
-    },
-
-    "Luth": {
-        icone: "🪕", categorie: "Instruments de musique",
-        poids: "1 kg", prix: "35 po",
-        proprietes: ["Compétence : Instruments de musique (Luth)"],
-        description: "Instrument à cordes pincées à caisse bombée et manche long. Voix des troubadours et des ménestrels, il accompagne ballades d'amour et épopées héroïques. Fragile mais irremplaçable — un barde sans luth est un guerrier sans épée."
-    },
-
-    "Lyre": {
-        icone: "🎵", categorie: "Instruments de musique",
-        poids: "1 kg", prix: "30 po",
-        proprietes: ["Compétence : Instruments de musique (Lyre)"],
-        description: "Cadre en bois ou en os tendu de cordes pincées ou grattées. Instrument noble et ancien, associé aux dieux, aux héros et aux poètes. Sa sonorité claire et éthérée est celle des grandes salles de banquet et des temples."
-    },
-
-    "Tambour": {
-        icone: "🥁", categorie: "Instruments de musique",
-        poids: "1,5 kg", prix: "6 po",
-        proprietes: ["Compétence : Instruments de musique (Tambour)", "Signal rythmique pour formations militaires"],
-        description: "Membrane tendue sur un cadre circulaire, frappée à la main ou aux baguettes. Rythme les marches militaires, anime les danses et les rituels. Son battement grave est audible à grande distance — et remonte le moral des troupes."
-    },
-
-    "Tympanon": {
-        icone: "🎹", categorie: "Instruments de musique",
-        poids: "5 kg", prix: "25 po",
-        proprietes: ["Compétence : Instruments de musique (Tympanon)"],
-        description: "Instrument à cordes frappées avec de petits maillets, ancêtre du dulcimer et du piano. Posé à plat sur un support, il produit des sons métalliques et cristallins. Instrument de cour, apprécié des nobles et des musiciens lettrés."
-    },
-
-    "Viole": {
-        icone: "🎻", categorie: "Instruments de musique",
-        poids: "500 g", prix: "30 po",
-        proprietes: ["Compétence : Instruments de musique (Viole)"],
-        description: "Instrument à cordes frottées par un archet, ancêtre du violon. Sa voix chaude et expressive imite presque la voix humaine. Instrument des bardes les plus habiles — il pleure, rit et raconte mieux que les mots ne le pourraient."
-    },
-
-    // ── JEUX ─────────────────────────────────────────────────────
-
-    "Dés": {
-        icone: "🎲", categorie: "Jeux",
-        poids: "-", prix: "1 pa",
-        proprietes: ["Compétence : Jeux (Dés)"],
-        description: "Petits cubes d'os, d'ivoire ou de métal gravés de points. Jeu universel des tavernes, des garnisons et des tripots. La fortune peut tout changer en un lancer — ce qui explique pourquoi certains trichent."
-    },
-
-    "Jeu d'échecs draconiques": {
-        icone: "♟️", categorie: "Jeux",
-        poids: "250 g", prix: "1 po",
-        proprietes: ["Compétence : Jeux (Échecs draconiques)"],
-        description: "Jeu de stratégie sur plateau à cases alternées, avec pièces sculptées représentant dragons, chevaliers et rois. Version fantasy des échecs classiques. Jeu de l'intelligence et de la patience — les meilleurs joueurs voient dix coups à l'avance."
-    },
-
-    "Jeu de cartes": {
-        icone: "🃏", categorie: "Jeux",
-        poids: "-", prix: "5 pa",
-        proprietes: ["Compétence : Jeux (Cartes)"],
-        description: "Jeu de cartes peintes à la main, illustrées d'arcanes, de figures royales et de symboles mystérieux. Sert à jouer, à parier, à lire l'avenir selon certaines traditions. Un jeu neuf est rare — la plupart sont cornés et marqués."
-    },
-
-    "Jeu des Dragons": {
-        icone: "🐉", categorie: "Jeux",
-        poids: "-", prix: "5 pa",
-        proprietes: ["Compétence : Jeux (Jeu des Dragons)"],
-        description: "Jeu de plateau propre aux tavernes du royaume, opposant deux joueurs dans une simulation de siège de forteresse. Les règles varient d'une région à l'autre — ce qui génère autant de disputes que de parties."
-    },
-
-    // ── KITS ─────────────────────────────────────────────────────
-
-    "Kit d'empoisonneur": {
-        icone: "☠️", categorie: "Kits",
-        poids: "1 kg", prix: "50 po",
-        proprietes: ["Compétence : Outils d'empoisonneur", "Préparer, appliquer et identifier les poisons"],
-        description: "Ensemble de fioles, alambics miniatures, mortier et pilon, gants de protection et grimoire de recettes toxiques. Permet de créer et d'appliquer poisons et antidotes. Légalement ambigu dans la plupart des royaumes — dont celui du Roi Karl."
-    },
-
-    "Kit d'herboriste": {
-        icone: "🌿", categorie: "Kits",
-        poids: "1,5 kg", prix: "5 po",
-        proprietes: ["Compétence : Outils d'herboriste", "Préparer des remèdes et identifier plantes médicinales", "Fabriquer des potions de soins (8h + matériaux)"],
-        description: "Pochette de cuir contenant sachets de plantes séchées, mortier, pilon et carnet de recettes. Permet de soigner avec les ressources de la nature. Un herboriste compétent n'a pas besoin d'une taverne pour survivre dans les bois."
-    },
-
-    "Kit de contrefaçon": {
-        icone: "🖊️", categorie: "Kits",
-        poids: "2,5 kg", prix: "15 po",
-        proprietes: ["Compétence : Outils de contrefaçon", "Créer de faux documents, sceaux et signatures"],
-        description: "Jeu de plumes taillées, encres de couleurs variées, tampons de cire, sceaux en métal mou et parchemins de qualités différentes. L'artisan de la tromperie peut imiter n'importe quel document officiel — si ses mains sont assez habiles."
-    },
-
-    "Kit de déguisement": {
-        icone: "🎭", categorie: "Kits",
-        poids: "1,5 kg", prix: "25 po",
-        proprietes: ["Compétence : Outils de déguisement", "Avantage aux tests de Tromperie pour passer pour quelqu'un d'autre"],
-        description: "Coffret de maquillage, postiches, perruques, teintures capillaires, prothèses légères et colle de scène. Entre les mains d'un expert, ce kit peut transformer un humain en noble, en vieillard ou en demi-orc convaincant."
-    },
-
-    // ── OUTILS D'ARTISAN ─────────────────────────────────────────
-
-    "Matériel d'alchimiste": {
-        icone: "⚗️", categorie: "Outils d'artisan",
-        poids: "4 kg", prix: "50 po",
-        proprietes: ["Compétence : Outils d'alchimiste", "Identifier substances, créer acide/feu grégeois/antidotes"],
-        description: "Alambic de verre, cornues, creusets, burettes graduées et réactifs de base. L'équipement du praticien de la transformation des matières. Lourd et fragile — mais sans lui, pas de potions, pas d'explosifs, pas de magie chimique."
-    },
-
-    "Matériel de brasseur": {
-        icone: "🍺", categorie: "Outils d'artisan",
-        poids: "4,5 kg", prix: "20 po",
-        proprietes: ["Compétence : Outils de brasseur", "Fabriquer bières, vins, hydromel et liqueurs"],
-        description: "Cuves de fermentation miniatures, entonnoirs, densimètre et levures sélectionnées. Permet de produire boissons alcoolisées et vinaigres. L'hydromel du Roi Karl est fait avec soin — les aventuriers peuvent en faire autant dans leur camp."
-    },
-
-    "Matériel de calligraphe": {
-        icone: "✒️", categorie: "Outils d'artisan",
-        poids: "2,5 kg", prix: "10 po",
-        proprietes: ["Compétence : Outils de calligraphe", "Copier documents, écrire parchemins de sorts basiques"],
-        description: "Plumes de qualité, encres noires et colorées, règles, grattoirs et papiers fins. La calligraphie est un art autant qu'une technique — les documents soignés inspirent confiance et autorité dans les cercles lettrés."
-    },
-
-    "Matériel de peintre": {
-        icone: "🎨", categorie: "Outils d'artisan",
-        poids: "2,5 kg", prix: "10 po",
-        proprietes: ["Compétence : Outils de peintre", "Créer portraits, cartes illustrées et décors"],
-        description: "Pinceaux de différentes tailles, pigments broyés, huiles de fixation et châssis de toile. Un portraitiste habile peut gagner sa vie dans n'importe quelle cour noble. Un peintre aventurier peut documenter ruines et créatures pour la postérité."
-    },
-
-    "Outils de bijoutier": {
-        icone: "💎", categorie: "Outils d'artisan",
-        poids: "1 kg", prix: "25 po",
-        proprietes: ["Compétence : Outils de bijoutier", "Évaluer, tailler et sertir gemmes et métaux précieux"],
-        description: "Loupe de grossissement, burins fins, limes, pinces et mandrin. Permet d'identifier la valeur des pierres précieuses, de travailler l'or et l'argent en bijoux, et de reconnaître les contrefaçons. L'outil du commerce de luxe."
-    },
-
-    "Outils de bricoleur": {
-        icone: "🔧", categorie: "Outils d'artisan",
-        poids: "5 kg", prix: "50 po",
-        proprietes: ["Compétence : Outils de bricoleur", "Construire et réparer petits mécanismes, pièges, gadgets"],
-        description: "Tournevis, pinces, rouages de rechange, ressorts, fils métalliques et petit soufflet. L'ingénieur de poche — capable de réparer une serrure, construire un détonateur ou bricoler un mécanisme de secours dans un couloir piégé."
-    },
-
-    "Outils de cartographe": {
-        icone: "🗺️", categorie: "Outils d'artisan",
-        poids: "3 kg", prix: "15 po",
-        proprietes: ["Compétence : Outils de cartographe", "Créer cartes précises, évaluer distances et reliefs"],
-        description: "Compas, règle graduée, rapporteur, encres de couleurs et rouleaux de parchemin vierge. Un bon cartographe est d'une valeur inestimable pour une expédition — une mauvaise carte peut tuer plus sûrement qu'un monstre."
-    },
-
-    "Outils de charpentier": {
-        icone: "🪚", categorie: "Outils d'artisan",
-        poids: "3 kg", prix: "8 po",
-        proprietes: ["Compétence : Outils de charpentier", "Construire structures en bois, réparer véhicules et bateaux"],
-        description: "Scie, rabot, ciseau, maillet et équerre. Permet de construire shelters, réparer navires et fabriquer meubles ou barricades de fortune. Un charpentier compétent peut rendre n'importe quel campement confortable en quelques heures."
-    },
-
-    "Outils de cordonnier": {
-        icone: "👞", categorie: "Outils d'artisan",
-        poids: "2,5 kg", prix: "5 po",
-        proprietes: ["Compétence : Outils de cordonnier", "Fabriquer et réparer chaussures, harnachements et objets de cuir"],
-        description: "Alêne, fil de cuir ciré, formes en bois et colle. Réparer ses bottes en route évite des ampoules handicapantes lors des grandes marches. Fabriquer une semelle spéciale peut même donner un avantage discret en terrain difficile."
-    },
-
-    "Outils de forgeron": {
-        icone: "⚒️", categorie: "Outils d'artisan",
-        poids: "4 kg", prix: "20 po",
-        proprietes: ["Compétence : Outils de forgeron", "Forger et réparer armes, armures et objets métalliques"],
-        description: "Tenailles, marteaux de différentes tailles, lime et poinçon. Sans forge ni enclume, leur usage est limité — mais réparer une armure endommagée en campagne peut faire la différence avant le prochain combat."
-    },
-
-    "Outils de maçon": {
-        icone: "🧱", categorie: "Outils d'artisan",
-        poids: "4 kg", prix: "10 po",
-        proprietes: ["Compétence : Outils de maçon", "Construire et inspecter structures en pierre"],
-        description: "Truelle, niveau, marteau de tailleur de pierre et ciseau. Permet d'identifier les faiblesses dans les murs, de repérer les passages secrets maçonnés et de consolider des structures. Les nains les maîtrisent dès l'enfance."
-    },
-
-    "Outils de menuisier": {
-        icone: "🪵", categorie: "Outils d'artisan",
-        poids: "2,5 kg", prix: "1 po",
-        proprietes: ["Compétence : Outils de menuisier", "Travailler le bois en objets fins"],
-        description: "Ciseau à bois, gouge, maillet et râpe. Plus fins que les outils de charpentier, ils servent à la fabrication d'objets précis — arcs, coffrets, manches d'armes ou mobilier travaillé. L'artisan du détail ligneux."
-    },
-
-    "Outils de potier": {
-        icone: "🏺", categorie: "Outils d'artisan",
-        poids: "1 kg", prix: "10 po",
-        proprietes: ["Compétence : Outils de potier", "Façonner et cuire céramiques, identifier poteries anciennes"],
-        description: "Fil à couper l'argile, ébauchoirs, estèques et éponges. Permet de fabriquer récipients, tuiles et figurines. Un aventurier potier peut identifier l'origine d'une céramique ancienne — et parfois dater une civilisation disparue."
-    },
-
-    "Outils de souffleur de verre": {
-        icone: "🫧", categorie: "Outils d'artisan",
-        poids: "2,5 kg", prix: "30 po",
-        proprietes: ["Compétence : Outils de souffleur de verre", "Fabriquer fioles, lentilles et objets en verre"],
-        description: "Canne à souffler, pinces et moules de métal. Art délicat et rare — peu maîtrisent le souffle parfait qui donne naissance à une fiole ou à une lentille de qualité. Les alchimistes paient cher un bon souffleur de verre."
-    },
-
-    "Outils de tanneur": {
-        icone: "🐄", categorie: "Outils d'artisan",
-        poids: "2,5 kg", prix: "5 po",
-        proprietes: ["Compétence : Outils de tanneur", "Traiter peaux brutes, fabriquer cuir et objets en cuir"],
-        description: "Couteaux à décharner, grattoir, écorce de chêne et huiles de traitement. Transformer une peau brute en cuir utilisable est un processus long et odorant — mais le résultat vaut la peine. Armures, sacs et harnachements en dépendent."
-    },
-
-    "Outils de tisserand": {
-        icone: "🧵", categorie: "Outils d'artisan",
-        poids: "2,5 kg", prix: "1 po",
-        proprietes: ["Compétence : Outils de tisserand", "Fabriquer et réparer tissus, cordes et filets"],
-        description: "Navette, peigne à tisser et fuseaux. Permet de fabriquer vêtements, cordes et filets à partir de fibres brutes. En extérieur, un tisserand compétent peut réparer une voile, renforcer une corde ou créer un filet de chasse."
-    },
-
-    "Ustensiles de cuisinier": {
-        icone: "🍳", categorie: "Outils d'artisan",
-        poids: "1 po", prix: "1 po",
-        proprietes: ["Compétence : Ustensiles de cuisinier", "Préparer repas améliorant moral et récupération"],
-        description: "Couteaux, louche, spatule et petit poêlon. Un bon cuisinier au camp remonte le moral de tout un groupe. Certains maîtres cuisiniers aventuriers utilisent leurs compétences pour identifier champignons comestibles ou plantes toxiques."
-    },
-
-    "Outils de navigateur": {
-        icone: "⚓", categorie: "Outils d'artisan",
-        poids: "1 kg", prix: "25 po",
-        proprietes: ["Compétence : Outils de navigateur", "Naviguer en mer, tracer des routes, lire les étoiles"],
-        description: "Sextant, boussole, tables astronomiques et cartes marines. Le navigateur expérimenté lit le ciel comme d'autres lisent un livre. Sans lui, un navire est perdu — avec lui, même une tempête se transforme en détour maîtrisé."
-    },
-
-    "Outils de voleur": {
-        icone: "🗝️", categorie: "Outils d'artisan",
-        poids: "500 g", prix: "25 po",
-        proprietes: ["Compétence : Outils de voleur", "Crocheter serrures, désarmer pièges mécaniques"],
-        description: "Trousseau de crochets fins, miroir télescopique, lime à serrure et pince à ressort. L'outil du roublard — léger, discret, illégal dans la plupart des juridictions. Posséder ces outils suffit à rendre suspect dans les villes du Roi Karl."
-    }
-};
-
-// ── UTILITAIRES OBJETS ───────────────────────────────────────────
-
-/**
- * Retourne tous les objets d'une catégorie
- */
-function getObjetsParCategorie(categorie) {
-    return Object.entries(MATERIEL_OBJETS)
-        .filter(([_, o]) => o.categorie === categorie)
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
-}
-
-/**
- * Liste des catégories d'objets
- */
-function getCategoriesObjets() {
-    return [...new Set(Object.values(MATERIEL_OBJETS).map(o => o.categorie))];
-}
-
-if (typeof window !== 'undefined') {
-    window.MATERIEL_OBJETS          = MATERIEL_OBJETS;
-    window.getObjetsParCategorie    = getObjetsParCategorie;
-    window.getCategoriesObjets      = getCategoriesObjets;
-}
-if (typeof module !== 'undefined') {
-    module.exports = Object.assign(module.exports || {}, {
-        MATERIEL_OBJETS,
-        getObjetsParCategorie,
-        getCategoriesObjets
-    });
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  MONTURES
-//  Structure : { icone, categorie, cout, vitesse, charge_max,
-//               proprietes[], description }
-//  Catégories : "Monture de travail" | "Monture de combat" |
-//               "Monture de voyage" | "Monture lourde"
-// ═══════════════════════════════════════════════════════════════
-
-const MATERIEL_MONTURES = {
-
-    "Âne ou mule": {
-        icone:      "🫏",
-        categorie:  "Monture de travail",
-        cout:       "8 po",
-        vitesse:    "15 m",
-        charge_max: "210 kg",
-        proprietes: [
-            "Terrain difficile : pas de pénalité de vitesse",
-            "Ne panique pas facilement en conditions difficiles",
-            "Entretien modeste"
-        ],
-        description: "Bête de somme par excellence — têtue, endurant et infiniment plus fiable qu'un cheval sur les sentiers de montagne. L'âne ne bronche pas face aux pierres instables ni aux pentes abruptes. Idéal pour les marchands et les aventuriers qui transportent plus qu'ils ne courent."
-    },
-
-    "Chameau": {
-        icone:      "🐪",
-        categorie:  "Monture de voyage",
-        cout:       "50 po",
-        vitesse:    "15 m",
-        charge_max: "240 kg",
-        proprietes: [
-            "Survie en désert : peut aller plusieurs jours sans eau",
-            "Terrain sableux : pas de pénalité de vitesse",
-            "Tempérament capricieux — morsures possibles"
-        ],
-        description: "Seigneur des terres arides, le chameau stocke eau et énergie dans ses bosses pour traverser des déserts qui tueraient n'importe quel cheval. Maussade et parfois agressif, il est néanmoins irremplaçable dans les régions sèches où aucune autre monture ne survit."
-    },
-
-    "Cheval de guerre": {
-        icone:      "🐴",
-        categorie:  "Monture de combat",
-        cout:       "400 po",
-        vitesse:    "18 m",
-        charge_max: "270 kg",
-        proprietes: [
-            "Entraîné au combat : ne panique pas face aux créatures ou aux sorts",
-            "Peut attaquer (sabots : 2d6 contondant) sur ordre",
-            "Équipable d'une armure de chanfrein ou de barde"
-        ],
-        description: "Le destrier — forgé au combat dès son plus jeune âge, habitué aux cris, aux flammes et aux monstres. Là où un cheval ordinaire se cabre et fuit, le cheval de guerre charge. Symbole ultime de la noblesse guerrière du Roi Karl, seuls ses chevaliers confirmés peuvent s'en offrir un."
-    },
-
-    "Cheval de selle": {
-        icone:      "🐎",
-        categorie:  "Monture de voyage",
-        cout:       "75 po",
-        vitesse:    "18 m",
-        charge_max: "240 kg",
-        proprietes: [
-            "Vitesse de voyage : 55 km/jour (terrain dégagé)",
-            "Peut galoper : vitesse doublée sur 1 heure max",
-            "Sensible aux odeurs de sang et de magie"
-        ],
-        description: "Monture de route élégante et rapide, l'équilibre parfait entre vitesse et endurance. Ni la brutalité du cheval de guerre, ni la lenteur de la mule — il couvre les lieues avec régularité. Compagnon des messagers royaux, des marchands pressés et des aventuriers qui tiennent à arriver avant la nuit."
-    },
-
-    "Cheval de trait": {
-        icone:      "🐴",
-        categorie:  "Monture de travail",
-        cout:       "50 po",
-        vitesse:    "18 m",
-        charge_max: "270 kg",
-        proprietes: [
-            "Tirer des charges : jusqu'à 540 kg en attelage",
-            "Labours et transports lourds",
-            "Peu adapté au combat ou à la fuite rapide"
-        ],
-        description: "Massif, musculeux et calme, le cheval de trait est l'épine dorsale de l'agriculture et du transport. Il tire charrues, chariots de vivres et pièces de siège avec une force tranquille. Sur un champ de bataille, il serait perdu — dans un convoi, il est indispensable."
-    },
-
-    "Éléphant": {
-        icone:      "🐘",
-        categorie:  "Monture lourde",
-        cout:       "200 po",
-        vitesse:    "12 m",
-        charge_max: "660 kg",
-        proprietes: [
-            "Capacité de charge colossale : 660 kg",
-            "Peut porter un howdah (plateforme de combat pour 4 personnes)",
-            "Résistance naturelle : CA 12, 76 PV",
-            "Terrain dense : pénalité de vitesse en forêt épaisse",
-            "Entretien coûteux — consomme énormément"
-        ],
-        description: "Colosse vivant — forteresse mobile, symbole de puissance absolue. Quelques royaumes exotiques l'utilisent comme arme de guerre, écrasant les formations ennemies sous son poids. Dans le royaume du Roi Karl, posséder un éléphant est une déclaration de richesse et d'excentricité que peu peuvent se permettre."
-    },
-
-    "Molosse": {
-        icone:      "🐕",
-        categorie:  "Monture de travail",
-        cout:       "25 po",
-        vitesse:    "12 m",
-        charge_max: "95 kg",
-        proprietes: [
-            "Peut être utilisé comme monture par les races de petite taille (Halfelin, Gnome)",
-            "Sens développés : avantage aux tests de Perception olfactifs",
-            "Attaque (morsure : 1d6+3 perforant) si entraîné",
-            "Loyal et protecteur de son maître"
-        ],
-        description: "Chien de grande taille dressé à porter, garder ou attaquer selon l'ordre de son maître. Trop petit pour porter un humain, il devient la monture idéale d'un halfelin ou d'un gnome aventurier. Fiable, courageux et d'un entretien infiniment plus simple qu'un cheval."
-    },
-
-    "Poney": {
-        icone:      "🐴",
-        categorie:  "Monture de voyage",
-        cout:       "30 po",
-        vitesse:    "12 m",
-        charge_max: "115 kg",
-        proprietes: [
-            "Adapté aux races de petite taille (Halfelin, Nain, Gnome)",
-            "Terrain de montagne : moins de pénalité qu'un grand cheval",
-            "Entretien économique",
-            "Tempérament robuste et peu peureux"
-        ],
-        description: "Petit cheval trapu des hautes terres, rustique et opiniâtre. Moins impressionnant qu'un destrier, mais plus endurant sur les chemins de montagne et les terrains accidentés. Monture traditionnelle des nains et des halfelins — et de quiconque préfère la fiabilité à l'ostentation."
-    }
-};
-
-// ── UTILITAIRES MONTURES ─────────────────────────────────────────
-
-/**
- * Retourne toutes les montures d'une catégorie
- */
-function getMonturesParCategorie(categorie) {
-    return Object.entries(MATERIEL_MONTURES)
-        .filter(([_, m]) => m.categorie === categorie)
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
-}
-
-/**
- * Retourne les montures pouvant porter un poids donné (en kg)
- */
-function getMonturesPourPoids(poidsKg) {
-    return Object.entries(MATERIEL_MONTURES)
-        .filter(([_, m]) => parseInt(m.charge_max) >= poidsKg)
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
-}
-
-if (typeof window !== 'undefined') {
-    window.MATERIEL_MONTURES         = MATERIEL_MONTURES;
-    window.getMonturesParCategorie   = getMonturesParCategorie;
-    window.getMonturesPourPoids      = getMonturesPourPoids;
-}
-if (typeof module !== 'undefined') {
-    module.exports = Object.assign(module.exports || {}, {
-        MATERIEL_MONTURES,
-        getMonturesParCategorie,
-        getMonturesPourPoids
-    });
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  ÉQUIPEMENT & VÉHICULES
-//  Structure : { icone, categorie, cout, poids, proprietes[],
-//               description }
-//  Catégories : "Véhicule" | "Hébergement & services" |
-//               "Alimentation monture" | "Selle"
-// ═══════════════════════════════════════════════════════════════
-
-const MATERIEL_VEHICULES = {
-
-    // ── VÉHICULES ────────────────────────────────────────────────
-
-    "Carrosse": {
-        icone:      "🪄",
-        categorie:  "Véhicule",
-        cout:       "100 po",
-        poids:      "300 kg",
-        proprietes: [
-            "Capacité : 4 passagers + cocher",
-            "Vitesse : selon attelage (2 chevaux recommandés)",
-            "Protection : les occupants ont un abri contre les intempéries",
-            "Nécessite une route ou un chemin carrossable"
-        ],
-        description: "Voiture fermée à quatre roues suspendue sur des lanières de cuir, réduisant les chocs des pavés inégaux. Transport de prestige des nobles, des marchands fortunés et des diplomates royaux. Dans les rues de la capitale du Roi Karl, un carrosse annonce l'arrivée de quelqu'un d'important — ou de quelqu'un qui veut le paraître."
-    },
-
-    "Char": {
-        icone:      "⚔️",
-        categorie:  "Véhicule",
-        cout:       "250 po",
-        poids:      "50 kg",
-        proprietes: [
-            "Capacité : 1 conducteur + 1 combattant",
-            "Vitesse : selon attelage (2 chevaux de guerre recommandés)",
-            "Combat depuis le char : possible avec armes de mêlée et à distance",
-            "Terrain : uniquement sol plat et dégagé",
-            "Charge : dégâts supplémentaires lors d'une charge à pleine vitesse"
-        ],
-        description: "Plateforme de combat légère montée sur deux roues, tirée par des chevaux lancés au galop. Arme de guerre de l'Antiquité — rapide, maniable, terrifiante dans une plaine ouverte. Inutile en forêt ou en montagne, mais sur un champ de bataille dégagé, un char en charge brise les lignes d'infanterie comme du verre."
-    },
-
-    "Chariot": {
-        icone:      "🛒",
-        categorie:  "Véhicule",
-        cout:       "35 po",
-        poids:      "200 kg",
-        proprietes: [
-            "Capacité de charge : 500 kg de marchandises",
-            "Vitesse : selon attelage (1 ou 2 chevaux de trait)",
-            "Bâché ou ouvert selon configuration",
-            "Nécessite chemins larges"
-        ],
-        description: "Véhicule de transport à quatre roues, ossature de bois cerclée de fer. Épine dorsale du commerce et de la logistique militaire. Un chariot bien chargé peut transporter vivres, équipements ou blessés sur de longues distances. Sans chariots, pas de campagne militaire, pas de marché, pas de civilisation."
-    },
-
-    "Charrette": {
-        icone:      "🪵",
-        categorie:  "Véhicule",
-        cout:       "15 po",
-        poids:      "100 kg",
-        proprietes: [
-            "Capacité de charge : 200 kg",
-            "Vitesse : selon attelage (1 cheval ou mule)",
-            "À deux roues — plus maniable que le chariot",
-            "Adapté aux chemins étroits"
-        ],
-        description: "Petite remorque à deux roues tirée par une seule bête. Moins coûteuse et plus maniable que le chariot, elle convient aux paysans, aux artisans et aux aventuriers qui déplacent du matériel sans constituer un convoi. Légère à vide — lourde quand on l'a bien remplie."
-    },
-
-    // ── HÉBERGEMENT & SERVICES ───────────────────────────────────
-
-    "Écurie (par jour)": {
-        icone:      "🏠",
-        categorie:  "Hébergement & services",
-        cout:       "5 pa",
-        poids:      "-",
-        proprietes: [
-            "Logement pour 1 monture",
-            "Inclut foin et eau",
-            "Protection contre les intempéries"
-        ],
-        description: "Une stalle dans une écurie de ville ou d'auberge — paille fraîche, eau et toit au-dessus de la tête pour la monture. Laisser son cheval dehors toute la nuit est le meilleur moyen de le retrouver volé ou malade au matin."
-    },
-
-    "Fontes": {
-        icone:      "👜",
-        categorie:  "Hébergement & services",
-        cout:       "4 po",
-        poids:      "-",
-        proprietes: [
-            "2 sacoches fixées de part et d'autre de la selle",
-            "Capacité : jusqu'à 15 kg par fonte"
-        ],
-        description: "Paire de sacoches de cuir épais fixées à l'arrière de la selle, équilibrées de part et d'autre du cheval. Transport essentiel pour l'aventurier à cheval — elles accueillent provisions, équipement et butin sans gêner le cavalier ni déséquilibrer la monture."
-    },
-
-    "Fourrage (par jour)": {
-        icone:      "🌾",
-        categorie:  "Hébergement & services",
-        cout:       "5 pc",
-        poids:      "5 kg",
-        proprietes: [
-            "Alimentation pour 1 monture pour 1 journée",
-            "Avoine, foin ou mélange selon disponibilité"
-        ],
-        description: "Ration journalière de fourrage pour une monture en déplacement — avoine, foin pressé ou herbe sèche selon la région et la saison. Un cheval mal nourri perd de la vitesse et de l'endurance. En campagne longue, la logistique fourragère conditionne la survie de toute l'expédition."
-    },
-
-    "Mors et bride": {
-        icone:      "🪢",
-        categorie:  "Hébergement & services",
-        cout:       "2 po",
-        poids:      "500 g",
-        proprietes: [
-            "Nécessaire pour diriger une monture",
-            "Sans bride : tests de Monte avec désavantage"
-        ],
-        description: "Ensemble de rênes, mors métallique et montants de cuir permettant au cavalier de diriger sa monture. Sans bride, un cheval ne répond qu'à ses propres instincts. Basique mais absolument indispensable — un cavalier sans bride est un passager involontaire."
-    },
-
-    // ── SELLES ───────────────────────────────────────────────────
-
-    "Selle d'équitation": {
-        icone:      "🏇",
-        categorie:  "Selle",
-        cout:       "10 po",
-        poids:      "12,5 kg",
-        proprietes: [
-            "Confort de route : réduit la fatigue du cavalier",
-            "Capacité : cavalier + 75 kg de matériel"
-        ],
-        description: "Selle standard de voyage, conçue pour les longues distances sur route ou piste. Rembourrée de crin et de cuir tanné, elle épargne les lombaires du cavalier lors des chevauchées de plusieurs heures. La monture standard des messagers, des marchands et des aventuriers qui tiennent à arriver en forme."
-    },
-
-    "Selle de bât": {
-        icone:      "📦",
-        categorie:  "Selle",
-        cout:       "5 po",
-        poids:      "7,5 kg",
-        proprietes: [
-            "Conçue pour le transport de charge, pas le cavalier",
-            "Capacité de charge maximisée : jusqu'à charge_max de la monture",
-            "Incompatible avec le combat monté"
-        ],
-        description: "Bât de bois et de cuir conçu non pour monter mais pour charger. Répartit le poids des ballots, caisses et bagages sur le dos de la monture de manière équilibrée. L'outil du muletier et du convoyeur — fonctionnel, sans prétention, indispensable au transport de marchandises."
-    },
-
-    "Selle exotique": {
-        icone:      "✨",
-        categorie:  "Selle",
-        cout:       "60 po",
-        poids:      "20 kg",
-        proprietes: [
-            "Adaptée aux montures non-équines (griffon, pégase, éléphant…)",
-            "Fixations spéciales selon la morphologie de la créature",
-            "Sur mesure — commande auprès d'un sellier spécialisé"
-        ],
-        description: "Selle conçue sur mesure pour des montures hors du commun — griffons, hippogriffes, éléphants ou créatures encore plus étranges. Chaque pièce est unique, adaptée à l'anatomie particulière de la bête. Rares sont les selliers capables de les fabriquer — et leurs prix reflètent cette rareté."
-    },
-
-    "Selle militaire": {
-        icone:      "⚔️",
-        categorie:  "Selle",
-        cout:       "20 po",
-        poids:      "15 kg",
-        proprietes: [
-            "Avantage aux jets de sauvegarde pour rester en selle",
-            "Arçons renforcés : stabilité au combat",
-            "Étriers profonds : difficile d'être désarçonné"
-        ],
-        description: "Selle de guerre à arçons hauts et étriers profonds, conçue pour maintenir le cavalier en selle lors des chocs, des charges et des corps-à-corps. Les chevaliers du Roi Karl ne jurent que par elle — tomber de cheval en plein combat est souvent fatal."
-    },
-
-    "Selle de traîneau": {
-        icone:      "🛷",
-        categorie:  "Selle",
-        cout:       "20 po",
-        poids:      "150 kg",
-        proprietes: [
-            "Glisse sur neige et glace",
-            "Tiré par 2 à 4 chiens ou rennes",
-            "Vitesse : 15 m sur terrain enneigé",
-            "Capacité : 1 conducteur + 150 kg de charge"
-        ],
-        description: "Plateforme de bois sur patins de métal conçue pour glisser sur neige et glace. Indispensable dans les régions nordiques où les roues s'enfoncent et les chevaux peinent. Tiré par des chiens de traîneau ou des rennes, il vole sur la toundra gelée avec une rapidité surprenante."
-    }
-};
-
-// ── UTILITAIRES VÉHICULES ────────────────────────────────────────
-
-/**
- * Retourne tous les véhicules/équipements d'une catégorie
- */
-function getVehiculesParCategorie(categorie) {
-    return Object.entries(MATERIEL_VEHICULES)
-        .filter(([_, v]) => v.categorie === categorie)
-        .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
-}
-
-/**
- * Liste des catégories
- */
-function getCategoriesVehicules() {
-    return [...new Set(Object.values(MATERIEL_VEHICULES).map(v => v.categorie))];
-}
-
-if (typeof window !== 'undefined') {
-    window.MATERIEL_VEHICULES        = MATERIEL_VEHICULES;
-    window.getVehiculesParCategorie  = getVehiculesParCategorie;
-    window.getCategoriesVehicules    = getCategoriesVehicules;
-}
-if (typeof module !== 'undefined') {
-    module.exports = Object.assign(module.exports || {}, {
-        MATERIEL_VEHICULES,
-        getVehiculesParCategorie,
-        getCategoriesVehicules
-    });
-}
