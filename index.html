@@ -1085,6 +1085,8 @@
             padding: 14px;
             border: 2px solid var(--or-sombre);
             background: rgba(212,175,55,0.04);
+            overflow: visible;
+            position: relative;
         }
         .fiche-titre {
             font-family: 'Cinzel', serif;
@@ -1099,12 +1101,15 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            overflow: visible;
         }
         .fiche-ligne {
             display: flex;
             align-items: flex-start;
             gap: 6px;
             flex-wrap: wrap;
+            overflow: visible;
+            position: relative;
         }
         .fiche-label {
             font-family: 'Cinzel', serif;
@@ -1172,7 +1177,6 @@
         .rpg-tooltip-icone {
             font-size: 1.6rem;
             line-height: 1;
-            transition: transform 0.2s ease;
             filter: drop-shadow(0 0 0px rgba(212,175,55,0));
             transition: transform 0.2s, filter 0.2s;
         }
@@ -1180,32 +1184,24 @@
             transform: scale(1.18);
             filter: drop-shadow(0 0 6px rgba(212,175,55,0.7));
         }
-        .rpg-tooltip-box {
+        /* Tooltip box — caché par défaut, rendu visible par JS via position:fixed */
+        .rpg-tooltip-box { display: none; }
+
+        /* Tooltip global portal — injecté dans body, position fixed */
+        #rpg-tooltip-portal {
             display: none;
-            position: absolute;
-            left: 110%;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 9999;
+            position: fixed;
+            z-index: 999999;
             width: 300px;
             background: #f5ead8;
             border: 1px solid var(--or-sombre);
             border-radius: 4px;
             padding: 14px 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             pointer-events: none;
         }
-        .rpg-tooltip-wrap:hover .rpg-tooltip-box {
-            display: block;
-        }
-        /* Sur mobile : tooltip en dessous */
         @media (max-width: 600px) {
-            .rpg-tooltip-box {
-                left: 50%;
-                top: 120%;
-                transform: translateX(-50%);
-                width: 260px;
-            }
+            #rpg-tooltip-portal { width: 260px; }
         }
         .rpg-tt-header {
             display: flex;
@@ -1855,7 +1851,10 @@
                     <!-- Alignement -->
                     <div class="fiche-ligne">
                         <span class="fiche-label">Alignement :</span>
-                        <span id="profil-alignement" class="fiche-valeur"><span class="skeleton skeleton-align"></span></span>
+                        <span id="profil-alignement" class="fiche-valeur rpg-tooltip-wrap" style="cursor:default;">
+                            <span id="profil-alignement-texte"><span class="skeleton skeleton-align"></span></span>
+                            <div class="rpg-tooltip-box" id="tooltip-alignement-fiche"></div>
+                        </span>
                         <button onclick="ouvrirQuizModal()" title="Déterminer votre alignement" class="fiche-btn-icone">⏳</button>
                     </div>
 
@@ -2545,15 +2544,248 @@
 
         // ── ALIGNEMENTS ──────────────────────────
         const ALIGNEMENTS_DATA = {
-            "Loyal Bon":        { icone: "😇", desc: "Vous êtes un paladin dans l'âme. Vous défendez la loi et protégez les innocents avec ferveur. Le Code de l'Honneur est votre bouclier." },
-            "Loyal Neutre":     { icone: "⚖️", desc: "La loi avant tout, ni plus ni moins. Vous êtes un gardien de l'ordre, sans vous laisser guider par la compassion ou la cruauté." },
-            "Loyal Mauvais":    { icone: "👹", desc: "Vous utilisez les règles et les structures pour asseoir votre pouvoir. Redoutable et méthodique, vous êtes un tyran organisé." },
-            "Neutre Bon":       { icone: "🕊️", desc: "Vous faites le bien sans vous soucier des lois ou du chaos. Votre boussole est votre cœur, et il pointe toujours vers la lumière." },
-            "Neutre Strict":    { icone: "🌗", desc: "L'équilibre est votre religion. Ni bien ni mal, ni ordre ni chaos — vous êtes le gardien de la balance universelle." },
-            "Neutre Mauvais":   { icone: "🗡️", desc: "Vous faites ce qui vous profite, sans scrupules ni loyauté envers quiconque. Un mercenaire de votre propre ambition." },
-            "Chaotique Bon":    { icone: "🦅", desc: "Rebelle au grand cœur. Vous brisez les chaînes de l'injustice et défendez les opprimés, même si cela vous met hors-la-loi." },
-            "Chaotique Neutre": { icone: "🌀", desc: "Libre comme le vent. Vous suivez vos caprices et refusez toute contrainte — ni saint ni démon, juste imprévisible." },
-            "Chaotique Mauvais":{ icone: "💀", desc: "La destruction et le chaos sont vos alliés. Vous ne suivez que vos désirs les plus sombres, sans foi ni loi." },
+            "Loyal Bon": {
+                icone: "😇",
+                titre: "Le Croisé",
+                categorie: "Bien",
+                couleur: "#4a90d9",
+                desc: "Vous êtes un paladin dans l'âme. Vous défendez la loi et protégez les innocents avec ferveur. Le Code de l'Honneur est votre bouclier.",
+                tooltip: "L'honneur comme armure, la loi comme épée.",
+                description: `Vous êtes Le Croisé — l'archétype de celui qui croit que la structure et l'ordre sont les fondations du bien dans le monde. Vous ne faites pas le bien parce que c'est commode, mais parce que c'est juste. Et pour vous, la justice passe par des règles claires, respectées par tous, à commencer par vous-même.
+
+Votre parole est un contrat sacré. Vous ne la rompez jamais — même quand cela vous coûte cher, même quand personne ne regarde. C'est précisément ce qui vous distingue : votre intégrité n'est pas une performance, c'est une nature profonde.
+
+Ce que vous défendez :
+• L'ordre comme protection des innocents
+• La parole donnée, toujours honorée
+• Les institutions justes et légitimes
+• La loyauté envers ceux qui méritent confiance
+
+Ce que vous affrontez :
+• La rigidité qui peut mener à l'injustice par application aveugle des règles
+• La tentation de juger ceux qui ne partagent pas votre code
+• Le sacrifice de soi poussé trop loin
+
+Dans le royaume : Le Loyal Bon est le chevalier que le roi appelle en premier, et le dernier à rendre son épée. Sa présence inspire confiance. Ses alliés dorment bien la nuit.
+
+Personnages célèbres : Aragorn, Superman, Hermione Granger dans ses meilleurs moments.`
+            },
+
+            "Neutre Bon": {
+                icone: "🕊️",
+                titre: "Le Bienfaiteur",
+                categorie: "Bien",
+                couleur: "#5dade2",
+                desc: "Vous faites le bien sans vous soucier des lois ou du chaos. Votre boussole est votre cœur, et il pointe toujours vers la lumière.",
+                tooltip: "Le bien d'abord, les règles ensuite.",
+                description: `Vous êtes Le Bienfaiteur — et votre seule véritable boussole, c'est votre cœur. Vous voulez aider les gens. Pas pour la gloire, pas pour respecter un code, pas pour renverser un système. Juste parce que c'est bien. Parce que ça compte.
+
+Vous coopérez avec les autorités quand elles servent les gens. Vous les contournez quand elles leur nuisent. Vous n'avez pas d'idéologie fixe sur l'ordre ou le chaos — vous avez des principes simples, profonds, et vous les appliquez au cas par cas.
+
+Ce que vous défendez :
+• Le bien-être concret des personnes autour de vous
+• La flexibilité morale au service de l'altruisme
+• La coopération sans servilité, l'indépendance sans égoïsme
+• La compassion comme mode de décision
+
+Ce que vous affrontez :
+• Le risque d'être manipulé par ceux qui savent jouer sur votre générosité
+• L'absence de cadre qui peut rendre vos actions imprévisibles pour vos alliés
+• La difficulté à dire non
+
+Dans le royaume : Le Neutre Bon est l'ami que tout le monde veut à ses côtés. Pas forcément le plus puissant, mais toujours là quand ça compte vraiment. Il ne fait pas de grands discours. Il agit.
+
+Personnages célèbres : Samwise Gamgee, Atticus Finch, Gandalf le Gris.`
+            },
+
+            "Chaotique Bon": {
+                icone: "🦅",
+                titre: "Le Rebelle",
+                categorie: "Bien",
+                couleur: "#58d68d",
+                desc: "Rebelle au grand cœur. Vous brisez les chaînes de l'injustice et défendez les opprimés, même si cela vous met hors-la-loi.",
+                tooltip: "La liberté d'abord, les règles jamais.",
+                description: `Vous êtes Le Rebelle — et vous portez ce titre avec fierté. Les lois ? Elles valent ce que valent ceux qui les écrivent. L'autorité ? Elle mérite le respect seulement quand elle le mérite. Et quand elle ne le mérite pas, vous agissez — souvent seul, souvent à contre-courant, presque toujours du bon côté de l'histoire.
+
+Vous haïssez l'oppression d'un viscéral profond. Quand vous voyez quelqu'un subir une injustice au nom d'une règle absurde, quelque chose en vous se lève. Et cette chose ne se rassoit pas facilement.
+
+Ce que vous défendez :
+• La liberté individuelle comme valeur absolue
+• Les opprimés, les oubliés, ceux que le système écrase
+• L'instinct moral sur les règles écrites
+• L'action spontanée guidée par la conviction
+
+Ce que vous affrontez :
+• La difficulté à travailler dans des structures ou des équipes
+• Le risque que votre chaos blesse des innocents malgré vos bonnes intentions
+• La tendance à renverser avant d'avoir un plan pour reconstruire
+
+Dans le royaume : Le Chaotique Bon est l'étincelle. Il met le feu là où il faut — pas pour brûler, mais pour réchauffer. Ses alliés ne savent jamais exactement ce qu'il va faire. Mais ils savent pourquoi il le fait.
+
+Personnages célèbres : Robin des Bois, Han Solo, Zorro, Tyrion Lannister à son meilleur.`
+            },
+
+            "Loyal Neutre": {
+                icone: "⚖️",
+                titre: "Le Juge",
+                categorie: "Neutre",
+                couleur: "#aab7b8",
+                desc: "La loi avant tout, ni plus ni moins. Vous êtes un gardien de l'ordre, sans vous laisser guider par la compassion ou la cruauté.",
+                tooltip: "La loi est la loi. Rien de plus, rien de moins.",
+                description: `Vous êtes Le Juge — et vous croyez sincèrement que sans règles, sans structure, sans ordre, le monde s'effondre. Peut-être que vous avez raison. Peut-être que c'est l'expérience qui vous l'a appris. Quoi qu'il en soit, vous avez choisi votre camp : celui de la cohérence et de la prévisibilité.
+
+Vous n'êtes pas cruel. Vous n'êtes pas bon non plus — du moins, pas au sens où ça modifie vos décisions. Vous êtes impartial. La loi s'applique à tous, y compris à vous. C'est précisément ça, votre force.
+
+Ce que vous défendez :
+• L'ordre, la tradition, les institutions établies
+• L'impartialité totale dans l'application des règles
+• La fiabilité comme valeur morale en soi
+• Un code personnel rigoureux et cohérent
+
+Ce que vous affrontez :
+• La loi injuste que vous appliquez quand même
+• L'incapacité à faire des exceptions même quand le cœur le crie
+• Être perçu comme froid, mécanique, sans âme
+
+Dans le royaume : Le Loyal Neutre est le pilier administratif du château. Ce n'est pas le plus populaire, mais c'est lui qui fait tenir les choses. Quand tout le reste vacille, il est encore là, à son poste.
+
+Personnages célèbres : Inspecteur Javert, Rorschach, Ned Stark (à sa façon rigide et fatale).`
+            },
+
+            "Neutre Strict": {
+                icone: "🌗",
+                titre: "L'Équilibriste",
+                categorie: "Neutre",
+                couleur: "#808b96",
+                desc: "L'équilibre est votre religion. Ni bien ni mal, ni ordre ni chaos — vous êtes le gardien de la balance universelle.",
+                tooltip: "Ni lumière ni ombre — juste l'équilibre.",
+                description: `Vous êtes L'Équilibriste — ou peut-être L'Indécis, selon comment le vent souffle ce jour-là. Ce n'est pas une critique : votre position au centre absolu de la boussole morale est l'une des plus honnêtes qui soit. Vous ne vous racontez pas d'histoires sur votre propre vertu. Vous voyez le monde tel qu'il est.
+
+Vous agissez par pragmatisme, par instinct, parfois par désir profond de maintenir un équilibre que vous sentez nécessaire. Vous n'avez pas d'agenda. Vous n'êtes pas en train de conquérir, de libérer, de juger ou de détruire. Vous êtes simplement là — présent, attentif, neutre.
+
+Ce que vous incarnez :
+• Le pragmatisme pur, sans idéologie
+• L'observation avant l'action
+• Le refus des extrêmes de tous bords
+• Une sagesse tranquille qui peut paraître froide
+
+Ce que vous affrontez :
+• L'apparence d'indifférence aux yeux des autres
+• La difficulté à choisir un camp quand il le faut vraiment
+• Être instrumentalisé par les deux côtés qui cherchent à vous rallier
+
+Dans le royaume : Le Neutre Strict est l'arbitre. Ni ami ni ennemi, ni héros ni traître. Il est là quand on a besoin de quelqu'un qui voit sans biais. Et parfois, c'est la personne la plus précieuse de la salle.
+
+Personnages célèbres : Le Chat du Cheshire, Dr. Manhattan, Tom Bombadil.`
+            },
+
+            "Chaotique Neutre": {
+                icone: "🌀",
+                titre: "L'Esprit Libre",
+                categorie: "Neutre",
+                couleur: "#a569bd",
+                desc: "Libre comme le vent. Vous suivez vos caprices et refusez toute contrainte — ni saint ni démon, juste imprévisible.",
+                tooltip: "Imprévisible. Incontrôlable. Libre.",
+                description: `Vous êtes L'Esprit Libre — et si quelqu'un essaie de vous définir plus précisément que ça, vous vous serez probablement déjà mis à faire autre chose. Les règles ? Pas pour vous. Les causes ? Peut-être, si ça vous inspire ce matin. Les alliances ? Temporaires, au mieux.
+
+Vous ne cherchez pas à faire le mal. Ce serait trop d'investissement dans une direction. Vous refusez simplement toute contrainte — qu'elle vienne des tyrans, des héros, des lois ou des bonnes intentions des autres. Vous êtes le seul auteur de vos actes.
+
+Ce que vous incarnez :
+• La liberté totale comme mode de vie
+• L'imprévisibilité comme protection et comme vérité
+• L'action guidée par l'envie du moment
+• L'individualisme absolu, sans cruauté délibérée
+
+Ce que vous affrontez :
+• L'impossibilité de maintenir des alliances durables
+• Être perçu comme non fiable, même par ceux qui vous apprécient
+• Le vide qui peut s'installer quand aucune contrainte ne donne de sens
+
+Dans le royaume : Le Chaotique Neutre est l'électron libre. Il peut être l'atout le plus inattendu — ou la variable qui fait tout dérailler. Il ne fait pas ça exprès. Il fait juste… lui.
+
+Personnages célèbres : Jack Sparrow, Deadpool, Loki (la plupart du temps).`
+            },
+
+            "Loyal Mauvais": {
+                icone: "👹",
+                titre: "Le Tyran",
+                categorie: "Mal",
+                couleur: "#c0392b",
+                desc: "Vous utilisez les règles et les structures pour asseoir votre pouvoir. Redoutable et méthodique, vous êtes un tyran organisé.",
+                tooltip: "Le pouvoir par les règles, les règles pour le pouvoir.",
+                description: `Vous êtes Le Tyran — et vous êtes peut-être le plus dangereux des neuf alignements, précisément parce que vous n'avez pas l'air dangereux. Vous respectez les règles. Vous honorez vos contrats. Vous ne trahissez pas votre parole. Vous êtes... civilisé.
+
+C'est ça, le problème. Vous utilisez l'ordre comme outil de domination. Les lois ne sont pas pour vous une protection des innocents — elles sont un levier. Ceux qui les maîtrisent dominent ceux qui les subissent. Et vous les maîtrisez mieux que quiconque.
+
+Ce que vous incarnez :
+• La discipline au service de l'ambition personnelle
+• Un code d'honneur réel mais au service du contrôle
+• La hiérarchie comme instrument de pouvoir
+• L'efficacité froide et méthodique
+
+Ce que vous affrontez :
+• Votre propre rigidité qui peut devenir une prison
+• La rébellion de ceux que vous avez trop longtemps exploités
+• L'incapacité à improviser face au vrai chaos
+
+Dans le royaume : Le Loyal Mauvais est le grand vizir que vous n'auriez jamais dû nommer. Impeccable en apparence, inarrêtable en pratique. Il construit son empire dans les règles. C'est pour ça qu'il est si difficile à arrêter.
+
+Personnages célèbres : Thanos, Dolores Ombrage, Grand Moff Tarkin, Cersei Lannister.`
+            },
+
+            "Neutre Mauvais": {
+                icone: "🗡️",
+                titre: "Le Malfaisant",
+                categorie: "Mal",
+                couleur: "#922b21",
+                desc: "Vous faites ce qui vous profite, sans scrupules ni loyauté envers quiconque. Un mercenaire de votre propre ambition.",
+                tooltip: "Ni loyal, ni chaotique — juste égoïste.",
+                description: `Vous êtes Le Malfaisant — et vous êtes remarquablement honnête avec vous-même. Vous n'avez pas d'idéologie. Vous n'avez pas de cause. Vous n'avez pas de code. Vous avez des intérêts. Et vous les servez avec une efficacité remarquable.
+
+Vous n'avez pas de haine particulière pour l'ordre ou le chaos — vous utilisez ce qui fonctionne. Une loi qui vous profite ? Vous la respectez. Une alliance qui vous avantage ? Vous la maintenez. Jusqu'au moment où elle ne vous profite plus. À ce moment-là, vous passez à autre chose.
+
+Ce que vous incarnez :
+• L'égoïsme pur comme philosophie de vie
+• L'absence totale de loyauté non rentable
+• La flexibilité morale au service d'un seul maître : vous-même
+• La clarté cynique sur la nature du monde
+
+Ce que vous affrontez :
+• L'isolement progressif à mesure que les autres apprennent à ne pas vous faire confiance
+• L'absence de sens profond dans une existence centrée sur le gain
+• La vulnérabilité face à quelqu'un qui joue mieux le même jeu que vous
+
+Dans le royaume : Le Neutre Mauvais est le mercenaire dans la salle. Il est là parce que c'est payant. Le jour où ça ne l'est plus, il sera ailleurs. Tout le monde le sait. Personne ne l'oublie.
+
+Personnages célèbres : Bellatrix Lestrange, Hannibal Lecter (partiellement), Scar.`
+            },
+
+            "Chaotique Mauvais": {
+                icone: "💀",
+                titre: "Le Destructeur",
+                categorie: "Mal",
+                couleur: "#6c3483",
+                desc: "La destruction et le chaos sont vos alliés. Vous ne suivez que vos désirs les plus sombres, sans foi ni loi.",
+                tooltip: "Chaos. Destruction. Plaisir.",
+                description: `Vous êtes Le Destructeur — et le monde le sait, ou l'apprend à ses dépens. Vous ne suivez ni règles, ni codes, ni alliances. Vous suivez vos désirs. Et vos désirs, en ce moment, pointent souvent vers quelque chose que d'autres préféreraient voir intact.
+
+Ce n'est pas toujours de la haine pure. Parfois c'est de la frustration. Parfois du plaisir. Parfois simplement le vertige de sentir le monde brûler autour de soi et de se dire — je l'ai fait. Votre imprévisibilité est totale. Vos alliés potentiels le savent : vous êtes autant un danger pour eux que pour vos ennemis.
+
+Ce que vous incarnez :
+• Le chaos comme fin en soi
+• La destruction libératrice — ou simplement gratifiante
+• L'absence absolue de contrainte intérieure ou extérieure
+• Une énergie brute que rien ne canalise vraiment
+
+Ce que vous affrontez :
+• L'impossibilité de maintenir la moindre alliance sur la durée
+• Être une menace perçue par tous — y compris vos "alliés"
+• Le chaos qui finit par se retourner contre vous
+
+Dans le royaume : Le Chaotique Mauvais est la tempête. On ne l'apprivoise pas. On l'évite, ou on l'affronte. Il n'y a pas de troisième option. Et si vous l'avez laissé entrer dans le château, c'est déjà trop tard.
+
+Personnages célèbres : Le Joker, Dabi, Kefka (Final Fantasy VI), Azula dans ses pires moments.`
+            },
         };
 
         // ── ERREURS TRADUITES ─────────────────────
@@ -2912,7 +3144,7 @@
                                 </div>
                                 ${corps}
                             </div>`;
-                        document.getElementById('rpg-modal-overlay').style.display = 'flex';
+                        if(window._hideRPGTooltip) window._hideRPGTooltip(); document.getElementById('rpg-modal-overlay').style.display = 'flex';
                         document.body.style.overflow = 'hidden';
                     };
                 }
@@ -2921,12 +3153,102 @@
 
                 // Alignement + Histoire depuis Firestore
                 const alignement = profilData.alignement || null;
-                const elAlign = document.getElementById('profil-alignement');
-                if (elAlign) {
-                    if (alignement && ALIGNEMENTS_DATA && ALIGNEMENTS_DATA[alignement]) {
-                        elAlign.innerHTML = `${ALIGNEMENTS_DATA[alignement].icone} ${alignement}`;
+                const elAlign    = document.getElementById('profil-alignement');
+                const elAlignTxt = document.getElementById('profil-alignement-texte');
+                if (elAlign && elAlignTxt) {
+                    const aData = alignement && ALIGNEMENTS_DATA[alignement] ? ALIGNEMENTS_DATA[alignement] : null;
+                    elAlignTxt.innerHTML = aData
+                        ? `${aData.icone} ${alignement}`
+                        : (alignement || '— Non déterminé —');
+
+                    if (aData) {
+                        elAlign.style.cursor = 'pointer';
+
+                        // ── Tooltip alignement ──────────────────────
+                        const ttAlign = document.getElementById('tooltip-alignement-fiche');
+                        if (ttAlign) {
+                            const catCouleurs = { "Bien": "#4a90d9", "Neutre": "#aab7b8", "Mal": "#c0392b" };
+                            const catCol = catCouleurs[aData.categorie] || '#aa8222';
+                            ttAlign.innerHTML = `
+                                <div class="rpg-tt-header">
+                                    <div class="rpg-tt-header-icone">${aData.icone}</div>
+                                    <div>
+                                        <div class="rpg-tt-header-nom" style="color:${aData.couleur || catCol};">${aData.titre || alignement}</div>
+                                        <div class="rpg-tt-header-accroche">${aData.tooltip || aData.desc || ''}</div>
+                                    </div>
+                                </div>
+                                <div class="rpg-tt-section">
+                                    <div class="rpg-tt-label">Catégorie morale</div>
+                                    <div class="rpg-tt-bonus">
+                                        <span class="rpg-tt-bonus-pill" style="border-color:${catCol}33; color:${catCol};">${aData.categorie || ''}</span>
+                                    </div>
+                                </div>`;
+                        }
+
+                        // ── Modal alignement ────────────────────────
+                        elAlign.onclick = () => {
+                            const catCouleurs = { "Bien": "#4a90d9", "Neutre": "#aab7b8", "Mal": "#c0392b" };
+                            const catCol   = catCouleurs[aData.categorie] || '#aa8222';
+                            const catLabel = aData.categorie === "Bien" ? "⚪ Alignement du Bien"
+                                           : aData.categorie === "Mal"  ? "🔴 Alignement du Mal"
+                                           : "⚫ Alignement Neutre";
+                            const descBrut = (aData.description || aData.desc || '').trim();
+                            const corps = descBrut.split(/\n\n+/).map(p => {
+                                const t = p.trim();
+                                if (t.startsWith('•') || t.includes('\n•')) {
+                                    const lignes = t.split('\n');
+                                    const items = lignes.map(l =>
+                                        l.startsWith('•')
+                                            ? `<li style="font-family:'Lora',serif;font-size:0.78rem;color:#4a3010;line-height:1.55;margin-bottom:3px;">${l.slice(1).trim()}</li>`
+                                            : `<p style="font-family:'Cinzel',serif;font-size:0.62rem;color:var(--rouge-blason);letter-spacing:0.08em;text-transform:uppercase;margin:8px 0 4px;">${l}</p>`
+                                    ).join('');
+                                    return `<ul style="margin:0 0 10px;padding-left:14px;">${items}</ul>`;
+                                }
+                                return `<p style="font-family:'Lora',serif;font-size:0.82rem;color:#3a2a0a;line-height:1.65;margin:0 0 12px;">${t.replace(/\n/g,' ')}</p>`;
+                            }).join('');
+
+                            const contenu = document.getElementById('rpg-modal-contenu');
+                            if (!contenu) return;
+                            contenu.innerHTML = `
+                                <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;
+                                            padding-bottom:14px;border-bottom:1px solid rgba(139,0,0,0.25);">
+                                    <div style="font-size:3.5rem;line-height:1;">${aData.icone}</div>
+                                    <div>
+                                        <div style="font-family:'Cinzel',serif;font-size:0.55rem;color:var(--or-sombre);
+                                             letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">ALIGNEMENT</div>
+                                        <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:bold;
+                                             color:${aData.couleur || catCol};letter-spacing:0.05em;">${alignement}</div>
+                                        <div style="font-family:'Lora',serif;font-size:0.8rem;font-weight:bold;
+                                             color:#5a3e1b;margin-top:2px;">${aData.titre || ''}</div>
+                                        <div style="font-family:'Lora',serif;font-style:italic;font-size:0.72rem;
+                                             color:#7a5a30;margin-top:3px;">${aData.tooltip || ''}</div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom:16px;">
+                                    <div style="font-family:'Cinzel',serif;font-size:0.58rem;color:var(--or-sombre);
+                                         letter-spacing:0.12em;text-transform:uppercase;margin-bottom:7px;">
+                                        Famille morale
+                                    </div>
+                                    <span style="font-family:'Cinzel',serif;font-size:0.7rem;
+                                        background:rgba(139,0,0,0.07);border:1px solid rgba(139,0,0,0.2);
+                                        color:var(--rouge-blason);padding:3px 12px;border-radius:2px;">
+                                        ${catLabel}
+                                    </span>
+                                </div>
+                                <div>
+                                    <div style="font-family:'Cinzel',serif;font-size:0.58rem;color:var(--or-sombre);
+                                         letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;
+                                         padding-bottom:5px;border-bottom:1px solid rgba(139,0,0,0.2);">
+                                        📖 Portrait moral
+                                    </div>
+                                    ${corps}
+                                </div>`;
+                            if(window._hideRPGTooltip) window._hideRPGTooltip(); document.getElementById('rpg-modal-overlay').style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        };
                     } else {
-                        elAlign.innerHTML = alignement || '— Non déterminé —';
+                        elAlign.style.cursor = 'default';
+                        elAlign.onclick = null;
                     }
                     appliquerCouleurAlignement(alignement);
                 }
@@ -3356,7 +3678,7 @@
         document.body.style.overflow = 'hidden';
 
         // Si un alignement existe déjà et qu'on ne force pas le requiz → afficher le résultat
-        const alignementExistant = document.getElementById('profil-alignement')?.innerText?.trim();
+        const alignementExistant = document.getElementById('profil-alignement-texte')?.innerText?.trim();
         const aUnAlignement = alignementExistant && alignementExistant !== '—' && alignementExistant !== '';
 
         if (aUnAlignement && !forcer) {
@@ -3532,8 +3854,30 @@
         document.getElementById('modal-quiz-resultat').style.display = 'block';
 
         // Mettre à jour la fiche de personnage en temps réel
-        const elAlign = document.getElementById('profil-alignement');
-        if (elAlign) elAlign.innerHTML = `${icone} ${cle}`;
+        const elAlign    = document.getElementById('profil-alignement');
+        const elAlignTxt = document.getElementById('profil-alignement-texte');
+        const aDataFresh = window._alignementsIcones && ALIGNEMENTS_DATA ? ALIGNEMENTS_DATA[cle] : null;
+        if (elAlignTxt) elAlignTxt.innerHTML = `${icone} ${cle}`;
+        if (elAlign && aDataFresh) {
+            elAlign.style.cursor = 'pointer';
+            const ttAlign = document.getElementById('tooltip-alignement-fiche');
+            if (ttAlign) {
+                const catCouleurs = { "Bien": "#4a90d9", "Neutre": "#aab7b8", "Mal": "#c0392b" };
+                const catCol = catCouleurs[aDataFresh.categorie] || '#aa8222';
+                ttAlign.innerHTML = `
+                    <div class="rpg-tt-header">
+                        <div class="rpg-tt-header-icone">${aDataFresh.icone}</div>
+                        <div>
+                            <div class="rpg-tt-header-nom" style="color:${aDataFresh.couleur || catCol};">${aDataFresh.titre || cle}</div>
+                            <div class="rpg-tt-header-accroche">${aDataFresh.tooltip || aDataFresh.desc || ''}</div>
+                        </div>
+                    </div>
+                    <div class="rpg-tt-section">
+                        <div class="rpg-tt-label">Catégorie morale</div>
+                        <div class="rpg-tt-bonus"><span class="rpg-tt-bonus-pill">${aDataFresh.categorie || ''}</span></div>
+                    </div>`;
+            }
+        }
         appliquerCouleurAlignement(cle);
         if (desc) {
             const elHistoire = document.getElementById('profil-histoire');
@@ -3891,6 +4235,59 @@
     }
     window.fermerModalRPG = fermerModalRPG;
 
+    // ── TOOLTIP PORTAL ENGINE ─────────────────────────────────
+    // Remplace les tooltips CSS (position:absolute clippés)
+    // par un div position:fixed injecté au niveau du body.
+    (function() {
+        const portal = document.getElementById('rpg-tooltip-portal');
+        if (!portal) return;
+
+        function showTooltip(wrap, e) {
+            const box = wrap.querySelector('.rpg-tooltip-box');
+            if (!box || !box.innerHTML.trim()) return;
+            portal.innerHTML = box.innerHTML;
+            portal.style.display = 'block';
+            positionPortal(e);
+        }
+        function positionPortal(e) {
+            const margin = 12;
+            const pw = portal.offsetWidth  || 300;
+            const ph = portal.offsetHeight || 200;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            let x = e.clientX + margin;
+            let y = e.clientY + margin;
+            if (x + pw > vw - margin) x = e.clientX - pw - margin;
+            if (y + ph > vh - margin) y = e.clientY - ph - margin;
+            if (x < margin) x = margin;
+            if (y < margin) y = margin;
+            portal.style.left = x + 'px';
+            portal.style.top  = y + 'px';
+        }
+        function hideTooltip() {
+            portal.style.display = 'none';
+        }
+
+        // Brancher sur les wraps existants + futurs (MutationObserver)
+        function attachWrap(wrap) {
+            if (wrap._rpgTTAttached) return;
+            wrap._rpgTTAttached = true;
+            wrap.addEventListener('mouseenter', e => showTooltip(wrap, e));
+            wrap.addEventListener('mousemove',  e => positionPortal(e));
+            wrap.addEventListener('mouseleave', hideTooltip);
+        }
+        function attachAll() {
+            document.querySelectorAll('.rpg-tooltip-wrap').forEach(attachWrap);
+        }
+        attachAll();
+
+        // Observer pour les éléments ajoutés dynamiquement
+        const obs = new MutationObserver(attachAll);
+        obs.observe(document.body, { childList: true, subtree: true });
+
+        window._hideRPGTooltip = hideTooltip;
+    })();
+
     // ── RANG — TOOLTIP & MODAL ────────────────────────────
     function construireTooltipRang(grade) {
         if (!grade) return '';
@@ -3969,7 +4366,7 @@
                 ${corps}
             </div>
         `;
-        document.getElementById('rpg-modal-overlay').style.display = 'flex';
+        if(window._hideRPGTooltip) window._hideRPGTooltip(); document.getElementById('rpg-modal-overlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     };
 
@@ -4571,5 +4968,8 @@
         if (nav && !nav.contains(e.target)) fermerMenu();
     });
     </script>
+    <!-- ─── TOOLTIP PORTAL (position:fixed, z-index max, jamais clippé) ── -->
+    <div id="rpg-tooltip-portal"></div>
+
 </body>
 </html>
