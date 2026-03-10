@@ -4172,6 +4172,7 @@
             pv_total: pvTotal,
             classe_nom: classeNomPur || '',
         };
+        window._pvState = _pvState;
 
         // Afficher le total
         const elPV = document.getElementById('fiche-pv');
@@ -4214,7 +4215,7 @@
     function lancerDeVie() {
         const niveau = _pvState.niveau_actuel;
         if (niveau === 1 || _pvState.niveaux_lances[String(niveau)] !== undefined) return;
-        ouvrirDesVie();
+        window.ouvrirDesVie?.();
     }
     window.lancerDeVie = lancerDeVie;
 
@@ -4309,8 +4310,9 @@
             }, { merge: true });
         } catch(e) { console.warn('Erreur sauvegarde PV:', e); }
     }
-
     window.lancerDesVieModal = lancerDesVieModal;
+
+
 
     // ── TRÉSOR : total live ──────────────────────────────────────
     window.mettreAJourTotalTresor = function() {
@@ -5020,28 +5022,6 @@
         document.body.style.overflow = 'hidden';
     }
 
-    function ouvrirDesVie() {
-        _desMode = 'vie';
-        const deFaces    = _pvState.de_faces;
-        const bonusConst = _pvState.bonus_const;
-        const niveau     = _pvState.niveau_actuel;
-        const classeNom  = _pvState.classe_nom || 'Classe';
-
-        _desCarac    = 'vie';
-        _desJetsLeft = 1;
-        _desScoreActuel = null;
-
-        const bonusStr = bonusConst > 0 ? ` + mod(+${bonusConst})` : bonusConst < 0 ? ` − mod(${Math.abs(bonusConst)})` : '';
-        document.getElementById('des-modal-icone').innerText = '❤️';
-        document.getElementById('des-modal-titre').innerText = `Points de Vie — Niveau ${niveau}`;
-        document.getElementById('des-modal-sous-titre').innerText = `d${deFaces} (${classeNom})${bonusStr}`;
-        document.getElementById('des-score').innerText = '—';
-        document.getElementById('des-zone').innerHTML = '<span style="font-family:\'Lora\',serif;font-style:italic;color:#7a5a2a;font-size:0.85rem;">Cliquez sur 🎲 pour lancer</span>';
-        document.getElementById('des-detail').innerHTML = '';
-        mettreAJourBoutonsDes();
-        document.getElementById('des-modal-overlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
 
     function fermerDes(event) {
         if (event && event.target !== document.getElementById('des-modal-overlay')) return;
@@ -5086,6 +5066,33 @@
         }
     }
     window.mettreAJourBoutonsDes = mettreAJourBoutonsDes;
+
+
+    function ouvrirDesVie() {
+        _desMode = 'vie';
+        const pv         = window._pvState || {};
+        const deFaces    = pv.de_faces    || 8;
+        const bonusConst = pv.bonus_const || 0;
+        const niveau     = pv.niveau_actuel || 1;
+        const classeNom  = pv.classe_nom  || 'Classe';
+
+        _desCarac    = 'vie';
+        _desJetsLeft = 1;
+        _desScoreActuel = null;
+
+        const bonusStr = bonusConst > 0 ? ` + mod(+${bonusConst})` : bonusConst < 0 ? ` − mod(${Math.abs(bonusConst)})` : '';
+        document.getElementById('des-modal-icone').innerText = '❤️';
+        document.getElementById('des-modal-titre').innerText = `Points de Vie — Niveau ${niveau}`;
+        document.getElementById('des-modal-sous-titre').innerText = `d${deFaces} (${classeNom})${bonusStr}`;
+        document.getElementById('des-score').innerText = '—';
+        document.getElementById('des-zone').innerHTML = '<span style="font-family:\'Lora\',serif;font-style:italic;color:#7a5a2a;font-size:0.85rem;">Cliquez sur 🎲 pour lancer</span>';
+        document.getElementById('des-detail').innerHTML = '';
+        mettreAJourBoutonsDes();
+        document.getElementById('des-modal-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    window.ouvrirDesVie = ouvrirDesVie;
+
 
     async function lancerDes() {
         if (_desJetsLeft <= 0) return;
