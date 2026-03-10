@@ -4238,7 +4238,7 @@ Personnages célèbres : Le Joker, Dabi, Kefka (Final Fantasy VI), Azula dans se
     // ── TOOLTIP PORTAL ENGINE ─────────────────────────────────
     // Remplace les tooltips CSS (position:absolute clippés)
     // par un div position:fixed injecté au niveau du body.
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const portal = document.getElementById('rpg-tooltip-portal');
         if (!portal) return;
 
@@ -4287,7 +4287,7 @@ Personnages célèbres : Le Joker, Dabi, Kefka (Final Fantasy VI), Azula dans se
         obs.observe(document.body, { childList: true, subtree: true });
 
         window._hideRPGTooltip = hideTooltip;
-    })();
+    });
 
     // ── RANG — TOOLTIP & MODAL ────────────────────────────
     function construireTooltipRang(grade) {
