@@ -4170,6 +4170,7 @@
             de_faces: deFaces,
             niveau_actuel: niveauActuel,
             pv_total: pvTotal,
+            classe_nom: classeNomPur || '',
         };
 
         // Afficher le total
@@ -4208,9 +4209,19 @@
     window.mettreAJourPV = mettreAJourPV;
 
     /**
-     * Animation de lancer de dé de vie — overlay SVG au centre de l'écran
+     * Ouvre la modale des dés en mode "dé de vie"
      */
-    async function lancerDeVie() {
+    function lancerDeVie() {
+        const niveau = _pvState.niveau_actuel;
+        if (niveau === 1 || _pvState.niveaux_lances[String(niveau)] !== undefined) return;
+        ouvrirDesVie();
+    }
+    window.lancerDeVie = lancerDeVie;
+
+    /**
+     * Lancer du dé de vie dans la modale — animation SVG polyédrique + sauvegarde
+     */
+    async function lancerDesVieModal() {
         const user = auth.currentUser;
         if (!user) return;
 
@@ -4218,69 +4229,57 @@
         const deFaces    = _pvState.de_faces;
         const bonusConst = _pvState.bonus_const;
 
-        if (niveau === 1 || _pvState.niveaux_lances[String(niveau)] !== undefined) return;
+        _desJetsLeft = 0;
+        mettreAJourBoutonsDes();
 
-        const btnDe   = document.getElementById('btn-de-vie');
-        const elDispo = document.getElementById('pv-statut-disponible');
-        const elEpuise= document.getElementById('pv-statut-epuise');
+        // ── Animation SVG dans la zone dés ───────────────────
+        const zone = document.getElementById('des-zone');
+        zone.style.cssText = 'display:flex;justify-content:center;align-items:center;min-height:96px;margin-bottom:1.2rem;';
 
-        // Désactiver le bouton immédiatement
-        if (btnDe)   btnDe.disabled = true;
-        if (elDispo) elDispo.style.display = 'none';
-
-        // ── Overlay d'animation ───────────────────────────────
-        const overlay = document.createElement('div');
-        overlay.style.cssText = `
-            position:fixed; inset:0; z-index:99990;
-            background:rgba(0,0,0,0.75);
-            display:flex; flex-direction:column;
-            align-items:center; justify-content:center; gap:12px;`;
         const svgWrap = document.createElement('div');
-        svgWrap.style.cssText = 'transition:transform 0.1s;';
-        const labelAnim = document.createElement('div');
-        labelAnim.style.cssText = `font-family:'Cinzel',serif; font-size:1.4rem;
-            color:var(--or-royal); letter-spacing:0.1em;`;
-        const sousTitre = document.createElement('div');
-        sousTitre.style.cssText = `font-family:'Lora',serif; font-size:0.75rem;
-            color:var(--or-sombre);`;
-        sousTitre.textContent = `Dé de vie — d${deFaces}`;
-        overlay.append(sousTitre, svgWrap, labelAnim);
-        document.body.appendChild(overlay);
+        svgWrap.style.cssText = 'transition:transform 0.08s; display:inline-block;';
+        zone.innerHTML = '';
+        zone.appendChild(svgWrap);
 
-        // Animation : défile tous les types de dés + valeurs aléatoires
-        const TYPES_DES  = [4, 6, 8, 10, 12, 20, deFaces]; // finit sur le bon dé
-        const COULEURS   = ['#8b0000','#d4af37','#4a90d9','#2a7a2a','#a0522d','#6a0dad'];
+        const scoreEl  = document.getElementById('des-score');
+        const detailEl = document.getElementById('des-detail');
+        scoreEl.innerText  = '…';
+        detailEl.innerHTML = '';
+
+        const TYPES_DES    = [4, 6, 8, 10, 12, 20, deFaces];
+        const COULEURS     = ['#8b0000','#d4af37','#4a90d9','#2a7a2a','#a0522d','#6a0dad'];
         const TOTAL_FRAMES = 18;
+
         for (let i = 0; i < TOTAL_FRAMES; i++) {
-            const isLast   = i >= TOTAL_FRAMES - 4;
-            const faces    = isLast ? deFaces : TYPES_DES[i % TYPES_DES.length];
-            const fake     = Math.floor(Math.random() * faces) + 1;
-            const couleur  = isLast ? '#d4af37' : COULEURS[i % COULEURS.length];
-            const scale    = 1 + Math.random() * 0.15;
-            svgWrap.innerHTML = getSVGDe(faces, couleur).replace('width="48"','width="96"').replace('height="48"','height="96"').replace('viewBox="0 0 48 48"','viewBox="0 0 48 48"');
-            svgWrap.style.transform = `scale(${scale}) rotate(${(Math.random()-0.5)*30}deg)`;
-            labelAnim.textContent = `${fake}`;
-            labelAnim.style.color = isLast ? '#d4af37' : '#aaa';
+            const isLast  = i >= TOTAL_FRAMES - 4;
+            const faces   = isLast ? deFaces : TYPES_DES[i % TYPES_DES.length];
+            const fake    = Math.floor(Math.random() * faces) + 1;
+            const couleur = isLast ? '#d4af37' : COULEURS[i % COULEURS.length];
+            svgWrap.innerHTML = getSVGDe(faces, couleur)
+                .replace('width="48"', 'width="80"')
+                .replace('height="48"', 'height="80"');
+            svgWrap.style.transform = `rotate(${(Math.random()-0.5)*25}deg) scale(${1 + Math.random()*0.12})`;
+            scoreEl.innerText = fake;
+            scoreEl.style.color = isLast ? 'var(--rouge-blason)' : '#aaa';
             await new Promise(r => setTimeout(r, 60 + i * 12));
         }
 
-        // Résultat final
+        // ── Résultat final ────────────────────────────────────
         const resultat = Math.floor(Math.random() * deFaces) + 1;
         const pvGagnes = Math.max(1, resultat + bonusConst);
-        svgWrap.innerHTML = getSVGDe(deFaces, '#d4af37').replace('width="48"','width="96"').replace('height="48"','height="96"');
-        svgWrap.style.transform = 'scale(1.1) rotate(0deg)';
-        labelAnim.textContent = `${resultat}`;
-        labelAnim.style.color = '#d4af37';
-        labelAnim.style.fontSize = '2rem';
 
-        // Fermer l'overlay après 1.2s
-        await new Promise(r => setTimeout(r, 1200));
-        overlay.remove();
+        svgWrap.innerHTML = getSVGDe(deFaces, '#d4af37')
+            .replace('width="48"', 'width="80"')
+            .replace('height="48"', 'height="80"');
+        svgWrap.style.transform = 'rotate(0deg) scale(1)';
+        scoreEl.innerText  = resultat;
+        scoreEl.style.color = 'var(--rouge-blason)';
+        detailEl.innerHTML = `<span style="font-family:'Lora',serif;font-size:0.78rem;color:#5a3e1b;">
+            ${formatResultatDeVie(resultat, bonusConst, deFaces, false)}</span>`;
 
-        // Mettre à jour UI
-        if (elEpuise) elEpuise.style.display = 'block';
+        document.getElementById('des-jets-info').innerText = `✦ Dé de vie épuisé pour ce niveau.`;
 
-        // Mettre à jour l'état
+        // ── Persistance ───────────────────────────────────────
         const niveauxLancesMaj = { ..._pvState.niveaux_lances, [String(niveau)]: resultat };
         _pvState.niveaux_lances = niveauxLancesMaj;
 
@@ -4290,8 +4289,16 @@
             if (res !== undefined) pvTotal += Math.max(1, res + bonusConst);
         }
         _pvState.pv_total = pvTotal;
+
+        // Mettre à jour la case PV + statut dans la fiche
         const elPV = document.getElementById('fiche-pv');
         if (elPV) elPV.textContent = pvTotal;
+        const btnDe   = document.getElementById('btn-de-vie');
+        const elDispo = document.getElementById('pv-statut-disponible');
+        const elEpuise= document.getElementById('pv-statut-epuise');
+        if (btnDe)    btnDe.disabled = true;
+        if (elDispo)  elDispo.style.display  = 'none';
+        if (elEpuise) elEpuise.style.display = 'block';
 
         window.afficherNotifXP?.(`❤️ +${pvGagnes} PV au niveau ${niveau} !`);
 
@@ -4302,7 +4309,6 @@
             }, { merge: true });
         } catch(e) { console.warn('Erreur sauvegarde PV:', e); }
     }
-    window.lancerDeVie = lancerDeVie;
 
     // ── TRÉSOR : total live ──────────────────────────────────────
     window.mettreAJourTotalTresor = function() {
@@ -4866,7 +4872,7 @@
             <div style="text-align:center; margin-bottom:1.2rem; border-bottom:1px solid rgba(120,80,10,0.3); padding-bottom:1rem;">
                 <p id="des-modal-icone" style="font-size:2rem; margin:0;"></p>
                 <h2 id="des-modal-titre" style="font-family:'Cinzel',serif; color:var(--rouge-blason); font-size:1.2rem; margin:6px 0 4px; letter-spacing:0.1em;"></h2>
-                <p style="font-family:'Lora',serif; font-style:italic; color:#5a3e1b; font-size:0.8rem; margin:0;">6D6 — On garde les 3 meilleurs</p>
+                <p id="des-modal-sous-titre" style="font-family:'Lora',serif; font-style:italic; color:#5a3e1b; font-size:0.8rem; margin:0;">6D6 — On garde les 3 meilleurs</p>
             </div>
 
             <!-- Dés animés -->
@@ -4989,7 +4995,10 @@
         return { wrapper, cube };
     }
 
+    let _desMode = 'carac'; // 'carac' | 'vie'
+
     function ouvrirDes(cle, nom, icone) {
+        _desMode = 'carac';
         const jets = (window._caracJets || {})[cle] ?? 3;
         const scoreExist = document.getElementById('carac-' + cle).innerText !== '—';
         _desCarac = cle;
@@ -4998,7 +5007,31 @@
 
         document.getElementById('des-modal-icone').innerText = icone;
         document.getElementById('des-modal-titre').innerText = nom;
+        document.getElementById('des-modal-sous-titre').innerText = '6D6 — On garde les 3 meilleurs';
         document.getElementById('des-score').innerText = _desScoreActuel ?? '—';
+        document.getElementById('des-zone').innerHTML = '<span style="font-family:\'Lora\',serif;font-style:italic;color:#7a5a2a;font-size:0.85rem;">Cliquez sur 🎲 pour lancer</span>';
+        document.getElementById('des-detail').innerHTML = '';
+        mettreAJourBoutonsDes();
+        document.getElementById('des-modal-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function ouvrirDesVie() {
+        _desMode = 'vie';
+        const deFaces    = _pvState.de_faces;
+        const bonusConst = _pvState.bonus_const;
+        const niveau     = _pvState.niveau_actuel;
+        const classeNom  = _pvState.classe_nom || 'Classe';
+
+        _desCarac    = 'vie';
+        _desJetsLeft = 1;
+        _desScoreActuel = null;
+
+        const bonusStr = bonusConst > 0 ? ` + mod(+${bonusConst})` : bonusConst < 0 ? ` − mod(${Math.abs(bonusConst)})` : '';
+        document.getElementById('des-modal-icone').innerText = '❤️';
+        document.getElementById('des-modal-titre').innerText = `Points de Vie — Niveau ${niveau}`;
+        document.getElementById('des-modal-sous-titre').innerText = `d${deFaces} (${classeNom})${bonusStr}`;
+        document.getElementById('des-score').innerText = '—';
         document.getElementById('des-zone').innerHTML = '<span style="font-family:\'Lora\',serif;font-style:italic;color:#7a5a2a;font-size:0.85rem;">Cliquez sur 🎲 pour lancer</span>';
         document.getElementById('des-detail').innerHTML = '';
         mettreAJourBoutonsDes();
@@ -5014,10 +5047,24 @@
     }
 
     function mettreAJourBoutonsDes() {
-        const info     = document.getElementById('des-jets-info');
+        const info      = document.getElementById('des-jets-info');
         const btnLancer = document.getElementById('des-btn-lancer');
         const btnGarder = document.getElementById('des-btn-garder');
 
+        if (_desMode === 'vie') {
+            btnGarder.style.display = 'none';
+            if (_desJetsLeft <= 0) {
+                info.innerText = '✦ Dé de vie épuisé pour ce niveau.';
+                btnLancer.style.display = 'none';
+            } else {
+                info.innerText = '1 jet disponible ce niveau';
+                btnLancer.style.display = 'inline-block';
+                btnLancer.innerText = '🎲 Lancer le dé de vie';
+            }
+            return;
+        }
+
+        // Mode carac (comportement inchangé)
         if (_desJetsLeft <= 0) {
             info.innerText = '✦ Jets épuisés — score enregistré automatiquement.';
             btnLancer.style.display = 'none';
@@ -5037,6 +5084,7 @@
 
     async function lancerDes() {
         if (_desJetsLeft <= 0) return;
+        if (_desMode === 'vie') { await lancerDesVieModal(); return; }
         _desJetsLeft--;
         if (!window._caracJets) window._caracJets = {};
         window._caracJets[_desCarac] = _desJetsLeft;
