@@ -1929,6 +1929,11 @@
                         </div>
                     </div>
 
+                    <!-- Traits raciaux & de classe -->
+                    <div id="bloc-traits-speciaux" style="display:none; margin-top:14px; padding:14px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px;">
+                        <p class="fiche-carac-titre" style="margin-bottom:12px;">✦ Traits spéciaux ✦</p>
+                    </div>
+
                 </div>
             </div>
 
@@ -2935,16 +2940,35 @@
                     if (blocHistoire) blocHistoire.style.display = 'flex';
                 }
 
-                // Caractéristiques depuis Firestore
+                // Caractéristiques depuis Firestore + bonus race/classe
                 window._caracJets = {};
                 const CARACS = ['force','dexterite','constitution','intelligence','sagesse','charisme'];
+
+                // Calculer les bonus race + classe
+                const bonusTotal = (window.getBonusTotal && raceNomPur && classeNomPur)
+                    ? window.getBonusTotal(raceNomPur, classeNomPur)
+                    : {};
+
                 CARACS.forEach(c => {
-                    const val  = profilData['carac_' + c];
-                    const jets = profilData['carac_jets_' + c] ?? 3;
+                    const val      = profilData['carac_' + c];
+                    const jets     = profilData['carac_jets_' + c] ?? 3;
+                    const bonusVal = bonusTotal[c] || 0;
                     window._caracJets[c] = jets;
+
                     const elVal = document.getElementById('carac-' + c);
-                    if (elVal && val !== undefined) elVal.innerHTML = val;
-                    else if (elVal) elVal.innerHTML = '—';
+                    if (elVal) {
+                        if (val !== undefined) {
+                            const total = val + bonusVal;
+                            if (bonusVal > 0) {
+                                elVal.innerHTML = `${total}<span style="font-size:0.55rem;font-family:'Lora',serif;font-weight:normal;color:var(--or-royal);display:block;margin-top:1px;">${val} <span style="color:var(--or-royal);">+${bonusVal}</span></span>`;
+                            } else {
+                                elVal.innerHTML = val;
+                            }
+                        } else {
+                            elVal.innerHTML = '&#8212;';
+                        }
+                    }
+
                     const elJets = document.getElementById('jets-restants-' + c);
                     if (elJets) {
                         if (jets <= 0) elJets.innerText = 'épuisé';
@@ -2956,6 +2980,38 @@
                         if (btn) { btn.disabled = true; btn.style.opacity = '0.35'; btn.style.cursor = 'default'; }
                     }
                 });
+
+                // Section Traits raciaux & de classe
+                const blocTraits = document.getElementById('bloc-traits-speciaux');
+                if (blocTraits) {
+                    const raceObj   = window.RPG_RACES?.[raceNomPur];
+                    const classeObj = window.RPG_CLASSES?.[classeNomPur];
+                    const traitsRace   = raceObj?.traits   || [];
+                    const traitsClasse = classeObj?.traits || [];
+
+                    const renderTraits = (liste, titre, iconeSource) => {
+                        if (!liste.length) return '';
+                        const items = liste.map(t =>
+                            `<div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(212,175,55,0.12);">` +
+                            `<span style="font-size:1rem;line-height:1.3;flex-shrink:0;">${t.icone}</span>` +
+                            `<div><div style="font-family:'Cinzel',serif;font-size:0.62rem;color:var(--rouge-blason);font-weight:bold;letter-spacing:0.04em;">${t.nom}</div>` +
+                            `<div style="font-family:'Lora',serif;font-size:0.72rem;color:#5a4020;line-height:1.45;margin-top:1px;">${t.desc}</div></div></div>`
+                        ).join('');
+                        return `<div style="margin-bottom:14px;">` +
+                            `<div style="font-family:'Cinzel',serif;font-size:0.6rem;color:var(--or-sombre);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid rgba(212,175,55,0.3);">${iconeSource} Traits — ${titre}</div>` +
+                            items + `</div>`;
+                    };
+
+                    const htmlRace   = renderTraits(traitsRace,   raceNomPur   || '—', raceObj?.icone   || '🧑');
+                    const htmlClasse = renderTraits(traitsClasse, classeNomPur || '—', classeObj?.icone || '⚔️');
+
+                    if (htmlRace || htmlClasse) {
+                        blocTraits.innerHTML = htmlRace + htmlClasse;
+                        blocTraits.style.display = 'block';
+                    } else {
+                        blocTraits.style.display = 'none';
+                    }
+                }
 
                 const barre = document.getElementById('barre-xp');
                 if (barre) {
