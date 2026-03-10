@@ -2742,6 +2742,8 @@
                     try {
                         const snapFrais = await getDoc(doc(db, "membres", user.uid));
                         const dataFrais = snapFrais.exists() ? snapFrais.data() : {};
+                        // Injecter jours_anciennete pour que mettreAJourPV calcule le bon niveau
+                        dataFrais.jours_anciennete = Math.floor((new Date() - (dataFrais.cree_le?.toDate?.() || new Date())) / 86400000);
                         window.mettreAJourFicheCaracs(dataFrais, raceNomSave, classeNomSave);
                     } catch(e) { window.mettreAJourFicheCaracs({}, raceNomSave, classeNomSave); }
                 }
@@ -2865,6 +2867,7 @@
 
                 const aujourd_hui    = new Date();
                 const joursAncien   = Math.floor((aujourd_hui - dateCreation) / (1000 * 60 * 60 * 24));
+                profilData.jours_anciennete = joursAncien;
                 if (document.getElementById('profil-anciennete')) document.getElementById('profil-anciennete').innerText = joursAncien + (joursAncien > 1 ? " jours" : " jour");
 
                 const xpQuiz       = profilData.xp_quiz || 0;
