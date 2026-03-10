@@ -1867,35 +1867,18 @@
 
                     <!-- PV + Initiative (côte à côte) -->
                     <div style="display:flex; gap:10px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
-                        <div class="fiche-stat-box" style="flex:1;">
+                        <div class="fiche-stat-box" style="flex:1; position:relative;">
                             <div class="fiche-stat-label">❤️ Points de Vie</div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <div id="fiche-pv" class="fiche-stat-val">—</div>
-                                <!-- Mini dé de vie — même style que les caracs -->
-                                <div id="bloc-de-vie" style="display:none;">
-                                    <button id="btn-de-vie" class="carac-card-des"
-                                        onclick="lancerDeVie()"
-                                        title="Lancer le dé de vie">🎲</button>
-                                </div>
-                            </div>
-                            <!-- Statut + résultat sur une ligne -->
-                            <div id="bloc-de-vie-statut" style="display:none; margin-top:2px;">
-                                <div id="pv-statut-disponible"
-                                    style="display:none; font-family:'Cinzel',serif; font-size:0.48rem;
-                                           color:#4caf50; letter-spacing:0.05em;">
-                                    1 jet restant
-                                </div>
-                                <div id="pv-statut-epuise"
-                                    style="display:none; font-family:'Cinzel',serif; font-size:0.48rem;
-                                           color:#888; letter-spacing:0.05em;">
-                                    Épuisé
-                                </div>
-                                <div id="pv-resultat-lancer"
-                                    style="font-family:'Lora',serif; font-size:0.52rem;
-                                           color:var(--or-sombre); margin-top:1px;">
-                                </div>
-                            </div>
+                            <div id="fiche-pv" class="fiche-stat-val">—</div>
                             <div class="fiche-stat-note" id="pv-note">10 PV de base</div>
+                            <!-- Dé + statut — positionné en bas à droite -->
+                            <div id="bloc-de-vie" style="display:none; position:absolute; bottom:5px; right:6px; text-align:center;">
+                                <button id="btn-de-vie" class="carac-card-des"
+                                    onclick="lancerDeVie()"
+                                    title="Lancer le dé de vie">🎲</button>
+                                <div id="pv-statut-disponible" class="carac-card-jets" style="display:none;">1 jet</div>
+                                <div id="pv-statut-epuise"     class="carac-card-jets" style="display:none;">Épuisé</div>
+                            </div>
                         </div>
                         <div class="fiche-stat-box" style="flex:1;">
                             <div class="fiche-stat-label">⚡ Initiative</div>
@@ -4198,16 +4181,13 @@
         }
 
         // ── Affichage du dé de vie ─────────────────────────────
-        const blocDe      = document.getElementById('bloc-de-vie');
-        const blocStatut  = document.getElementById('bloc-de-vie-statut');
-        const btnDe       = document.getElementById('btn-de-vie');
-        const elRes       = document.getElementById('pv-resultat-lancer');
-        const elDispo     = document.getElementById('pv-statut-disponible');
-        const elEpuise    = document.getElementById('pv-statut-epuise');
+        const blocDe   = document.getElementById('bloc-de-vie');
+        const btnDe    = document.getElementById('btn-de-vie');
+        const elDispo  = document.getElementById('pv-statut-disponible');
+        const elEpuise = document.getElementById('pv-statut-epuise');
 
         if (blocDe) {
-            blocDe.style.display     = 'block';
-            blocStatut.style.display = 'block';
+            blocDe.style.display = 'block';
 
             const dejaLance = (niveauActuel === 1) || (niveauxLances[String(niveauActuel)] !== undefined);
 
@@ -4217,21 +4197,9 @@
                 btnDe.title    = dejaLance ? 'Dé épuisé ce niveau' : 'Lancer le dé de vie';
             }
 
-            // Statut
+            // Statut sous le dé
             if (elDispo)  elDispo.style.display  = dejaLance ? 'none'  : 'block';
             if (elEpuise) elEpuise.style.display = dejaLance ? 'block' : 'none';
-
-            // Résultat
-            if (elRes) {
-                if (niveauActuel === 1) {
-                    elRes.textContent = formatResultatDeVie(deFaces, bonusConst, deFaces, true);
-                } else if (niveauxLances[String(niveauActuel)] !== undefined) {
-                    const res = niveauxLances[String(niveauActuel)];
-                    elRes.textContent = formatResultatDeVie(res, bonusConst, deFaces, false);
-                } else {
-                    elRes.textContent = '';
-                }
-            }
         }
     }
     window.mettreAJourPV = mettreAJourPV;
@@ -4250,7 +4218,6 @@
         if (niveau === 1 || _pvState.niveaux_lances[String(niveau)] !== undefined) return;
 
         const btnDe   = document.getElementById('btn-de-vie');
-        const elRes   = document.getElementById('pv-resultat-lancer');
         const elDispo = document.getElementById('pv-statut-disponible');
         const elEpuise= document.getElementById('pv-statut-epuise');
 
@@ -4309,7 +4276,6 @@
 
         // Mettre à jour UI
         if (elEpuise) elEpuise.style.display = 'block';
-        if (elRes)    elRes.textContent = formatResultatDeVie(resultat, bonusConst, deFaces, false);
 
         // Mettre à jour l'état
         const niveauxLancesMaj = { ..._pvState.niveaux_lances, [String(niveau)]: resultat };
