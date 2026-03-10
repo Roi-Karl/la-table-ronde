@@ -1880,10 +1880,16 @@
                                 <div id="pv-statut-epuise"     class="carac-card-jets" style="display:none;">Épuisé</div>
                             </div>
                         </div>
-                        <div class="fiche-stat-box" style="flex:1;">
+                        <div class="fiche-stat-box" style="flex:1; position:relative;">
                             <div class="fiche-stat-label">⚡ Initiative</div>
                             <div id="fiche-initiative" class="fiche-stat-val">—</div>
-                            <div class="fiche-stat-note">calcul à venir</div>
+                            <div class="fiche-stat-note" id="initiative-note">mod DEX + maîtrise</div>
+                            <div id="bloc-initiative" style="display:none; position:absolute; bottom:5px; right:6px; text-align:center;">
+                                <button id="btn-initiative" class="carac-card-des"
+                                    onclick="ouvrirDesInitiative()"
+                                    title="Lancer l'initiative (d20)">🎲</button>
+                                <div class="carac-card-jets" style="margin-top:1px;">d20</div>
+                            </div>
                         </div>
                     </div>
 
@@ -4024,6 +4030,35 @@
             ) : { niveau: 1 };
             window.mettreAJourPV(profilData, classeNomPur, niveauData.niveau, bonusTotal);
         }
+
+        // ── Mise à jour Initiative ─────────────────────────────
+        // Initiative = mod DEX + bonus maîtrise
+        {
+            const niveauData  = window.getNiveauFromXP ? window.getNiveauFromXP(
+                10 + ((profilData.jours_anciennete || 0) * 12) +
+                (profilData.xp_quiz || 0) +
+                (profilData.xp_newsletter || 0)
+            ) : { niveau: 1, maitrise: 2 };
+            const maitrise    = niveauData.maitrise || 2;
+            const modDex      = window.getModifCarac
+                ? window.getModifCarac('dexterite', profilData.carac_dexterite || 10, bonusTotal)
+                : Math.floor(((profilData.carac_dexterite || 10) + (bonusTotal.dexterite || 0) - 10) / 2);
+            const initiative  = modDex + maitrise;
+            const signe       = initiative >= 0 ? '+' : '';
+
+            const elInit      = document.getElementById('fiche-initiative');
+            const elNote      = document.getElementById('initiative-note');
+            const blocInit    = document.getElementById('bloc-initiative');
+            if (elInit) elInit.textContent = signe + initiative;
+            if (elNote) {
+                const dexStr      = modDex >= 0 ? `+${modDex}` : `${modDex}`;
+                elNote.textContent = `DEX(${dexStr}) + maîtrise(+${maitrise})`;
+            }
+            if (blocInit) blocInit.style.display = 'block';
+
+            // Stocker pour la modale
+            window._initiativeState = { modDex, maitrise, initiative, total: initiative };
+        }
     }
     window.mettreAJourFicheCaracs = mettreAJourFicheCaracs;
 
@@ -5103,6 +5138,14 @@
             return;
         }
 
+        if (_desMode === 'initiative') {
+            btnGarder.style.display = 'none';
+            info.innerText = 'Relancez autant que souhaité';
+            btnLancer.style.display = 'inline-block';
+            btnLancer.innerText = '🎲 Lancer l\'initiative';
+            return;
+        }
+
         // Mode carac (comportement inchangé)
         if (_desJetsLeft <= 0) {
             info.innerText = '✦ Jets épuisés — score enregistré automatiquement.';
@@ -5148,6 +5191,79 @@
     }
     window.ouvrirDesVie = ouvrirDesVie;
 
+
+
+    // ── Initiative : ouverture modale ─────────────────────────────
+    function ouvrirDesInitiative() {
+        _desMode = 'initiative';
+        const st = window._initiativeState || { modDex:0, maitrise:2, initiative:2 };
+        _desCarac       = 'initiative';
+        _desJetsLeft    = 99; // pas de limite de jets pour l'initiative
+        _desScoreActuel = null;
+
+        const modStr  = st.modDex >= 0 ? `+${st.modDex}` : `${st.modDex}`;
+        document.getElementById('des-modal-icone').innerText = '⚡';
+        document.getElementById('des-modal-titre').innerText = 'Initiative';
+        document.getElementById('des-modal-sous-titre').innerText =
+            `d20 + DEX(${modStr}) + maîtrise(+${st.maitrise})`;
+        document.getElementById('des-score').innerText   = '—';
+        document.getElementById('des-zone').innerHTML    =
+            '<span style="font-family:'Lora',serif;font-style:italic;color:#7a5a2a;font-size:0.85rem;">Cliquez sur 🎲 pour lancer</span>';
+        document.getElementById('des-detail').innerHTML  = '';
+        mettreAJourBoutonsDes();
+        document.getElementById('des-modal-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    window.ouvrirDesInitiative = ouvrirDesInitiative;
+
+    // ── Initiative : lancer dans la modale ────────────────────────
+    async function lancerDesInitiative() {
+        const st = window._initiativeState || { modDex:0, maitrise:2 };
+        const modDex   = st.modDex   || 0;
+        const maitrise = st.maitrise || 2;
+
+        // ── Dé polyédrique d20 ────────────────────────────────
+        const zone = document.getElementById('des-zone');
+        zone.style.cssText = 'display:flex;justify-content:center;align-items:center;min-height:110px;margin-bottom:1.2rem;';
+
+        const scoreEl  = document.getElementById('des-score');
+        const detailEl = document.getElementById('des-detail');
+        scoreEl.innerText   = '…';
+        scoreEl.style.color = '#aaa';
+        detailEl.innerHTML  = '';
+
+        // Désactiver le bouton pendant l'animation
+        const btnLancer = document.getElementById('des-btn-lancer');
+        if (btnLancer) btnLancer.disabled = true;
+
+        const de = creerDePolyedre(20, '?', 90);
+        zone.innerHTML = '';
+        zone.appendChild(de.wrapper);
+        de.animer();
+        await new Promise(r => setTimeout(r, 1100));
+
+        // Résultat
+        const d20      = Math.floor(Math.random() * 20) + 1;
+        const total    = d20 + modDex + maitrise;
+        const signe    = total >= 0 ? '+' : '';
+        const modStr   = modDex >= 0 ? `+${modDex}` : `${modDex}`;
+
+        de.finir(d20);
+
+        scoreEl.innerText   = signe + total;
+        scoreEl.style.color = d20 === 20 ? '#2a7a2a'       // nat 20 = vert
+                            : d20 === 1  ? 'var(--rouge-blason)' // nat 1 = rouge
+                            : 'var(--rouge-blason)';
+
+        let labelD20 = d20 === 20 ? '🌟 Naturel 20 !' : d20 === 1 ? '💀 Naturel 1' : `d20 = ${d20}`;
+        detailEl.innerHTML = `<span style="font-family:'Lora',serif;font-size:0.78rem;color:#5a3e1b;">
+            ${labelD20} &nbsp;${modStr} DEX &nbsp;+${maitrise} maîtrise = <strong>${signe}${total}</strong>
+        </span>`;
+
+        document.getElementById('des-jets-info').innerText = 'Relancez autant que souhaité';
+        if (btnLancer) { btnLancer.disabled = false; btnLancer.innerText = '🎲 Relancer'; }
+    }
+    window.lancerDesInitiative = lancerDesInitiative;
 
 
     async function lancerDesVieModal() {
@@ -5230,6 +5346,7 @@
     async function lancerDes() {
         if (_desJetsLeft <= 0) return;
         if (_desMode === 'vie') { await window.lancerDesVieModal(); return; }
+        if (_desMode === 'initiative') { await lancerDesInitiative(); return; }
         _desJetsLeft--;
         if (!window._caracJets) window._caracJets = {};
         window._caracJets[_desCarac] = _desJetsLeft;
