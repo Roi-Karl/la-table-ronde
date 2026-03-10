@@ -2892,6 +2892,9 @@
                         ? `${aData.icone} ${alignement}`
                         : (alignement || '— Non déterminé —');
 
+                    // Stocker le nom brut pour ouvrirModalAlignement (évite le strip emoji)
+                    if (elAlign) elAlign.dataset.alignement = alignement || '';
+
                     if (aData) {
                         elAlign.style.cursor = 'pointer';
 
@@ -3349,9 +3352,8 @@
     // Lit l'alignement courant depuis le DOM au moment du clic
     // → pas de closure capturée, toujours à jour après quiz
     function ouvrirModalAlignement() {
-        const raw = document.getElementById('profil-alignement-texte')?.innerText?.trim() || '';
-        // Retirer l'icône emoji en tête (peut être 1 ou 2 unités JS) + espace
-        const nomAlign = raw.replace(/^[\p{Emoji}\s]+/u, '').trim();
+        // Lire le nom depuis dataset — posé au login et après quiz, aucune regex fragile
+        const nomAlign = document.getElementById('profil-alignement')?.dataset?.alignement?.trim() || '';
         if (!nomAlign || nomAlign === '— Non déterminé —') return;
 
         const ad = window.RPG_ALIGNEMENTS?.[nomAlign] || window.ALIGNEMENTS_DATA?.[nomAlign];
@@ -3603,6 +3605,7 @@
         const elAlignTxt = document.getElementById('profil-alignement-texte');
         const aDataFresh = window.RPG_ALIGNEMENTS?.[cle] || window.ALIGNEMENTS_DATA?.[cle] || null;
         if (elAlignTxt) elAlignTxt.innerHTML = `${icone} ${cle}`;
+        if (elAlign) elAlign.dataset.alignement = cle;
         if (elAlign && aDataFresh) {
             elAlign.style.cursor = 'pointer';
             elAlign.onclick = () => window.ouvrirModalAlignement();
