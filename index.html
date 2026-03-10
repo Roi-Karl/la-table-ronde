@@ -3089,6 +3089,7 @@
         window._firebaseQuery     = query;
         window._firebaseOrderBy   = orderBy;
         window._firebaseLimit     = limit;
+        window._firebaseServerTimestamp = serverTimestamp;
         window.GRADES_DATA        = GRADES; // = window.RPG_GRADES via rpg-data.js
         window.NIVEAUX_DATA       = NIVEAUX;
         window.getNiveauFromXP    = getNiveauFromXP;
@@ -4222,96 +4223,6 @@
     /**
      * Lancer du dé de vie dans la modale — animation SVG polyédrique + sauvegarde
      */
-    async function lancerDesVieModal() {
-        const user = auth.currentUser;
-        if (!user) return;
-
-        const niveau     = _pvState.niveau_actuel;
-        const deFaces    = _pvState.de_faces;
-        const bonusConst = _pvState.bonus_const;
-
-        window._setDesJetsLeft?.(0);
-        window.mettreAJourBoutonsDes?.();
-
-        // ── Animation SVG dans la zone dés ───────────────────
-        const zone = document.getElementById('des-zone');
-        zone.style.cssText = 'display:flex;justify-content:center;align-items:center;min-height:96px;margin-bottom:1.2rem;';
-
-        const svgWrap = document.createElement('div');
-        svgWrap.style.cssText = 'transition:transform 0.08s; display:inline-block;';
-        zone.innerHTML = '';
-        zone.appendChild(svgWrap);
-
-        const scoreEl  = document.getElementById('des-score');
-        const detailEl = document.getElementById('des-detail');
-        scoreEl.innerText  = '…';
-        detailEl.innerHTML = '';
-
-        const TYPES_DES    = [4, 6, 8, 10, 12, 20, deFaces];
-        const COULEURS     = ['#8b0000','#d4af37','#4a90d9','#2a7a2a','#a0522d','#6a0dad'];
-        const TOTAL_FRAMES = 18;
-
-        for (let i = 0; i < TOTAL_FRAMES; i++) {
-            const isLast  = i >= TOTAL_FRAMES - 4;
-            const faces   = isLast ? deFaces : TYPES_DES[i % TYPES_DES.length];
-            const fake    = Math.floor(Math.random() * faces) + 1;
-            const couleur = isLast ? '#d4af37' : COULEURS[i % COULEURS.length];
-            svgWrap.innerHTML = getSVGDe(faces, couleur)
-                .replace('width="48"', 'width="80"')
-                .replace('height="48"', 'height="80"');
-            svgWrap.style.transform = `rotate(${(Math.random()-0.5)*25}deg) scale(${1 + Math.random()*0.12})`;
-            scoreEl.innerText = fake;
-            scoreEl.style.color = isLast ? 'var(--rouge-blason)' : '#aaa';
-            await new Promise(r => setTimeout(r, 60 + i * 12));
-        }
-
-        // ── Résultat final ────────────────────────────────────
-        const resultat = Math.floor(Math.random() * deFaces) + 1;
-        const pvGagnes = Math.max(1, resultat + bonusConst);
-
-        svgWrap.innerHTML = getSVGDe(deFaces, '#d4af37')
-            .replace('width="48"', 'width="80"')
-            .replace('height="48"', 'height="80"');
-        svgWrap.style.transform = 'rotate(0deg) scale(1)';
-        scoreEl.innerText  = resultat;
-        scoreEl.style.color = 'var(--rouge-blason)';
-        detailEl.innerHTML = `<span style="font-family:'Lora',serif;font-size:0.78rem;color:#5a3e1b;">
-            ${formatResultatDeVie(resultat, bonusConst, deFaces, false)}</span>`;
-
-        document.getElementById('des-jets-info').innerText = `✦ Dé de vie épuisé pour ce niveau.`;
-
-        // ── Persistance ───────────────────────────────────────
-        const niveauxLancesMaj = { ..._pvState.niveaux_lances, [String(niveau)]: resultat };
-        _pvState.niveaux_lances = niveauxLancesMaj;
-
-        let pvTotal = _pvState.base;
-        for (let n = 2; n <= niveau; n++) {
-            const res = niveauxLancesMaj[String(n)];
-            if (res !== undefined) pvTotal += Math.max(1, res + bonusConst);
-        }
-        _pvState.pv_total = pvTotal;
-
-        // Mettre à jour la case PV + statut dans la fiche
-        const elPV = document.getElementById('fiche-pv');
-        if (elPV) elPV.textContent = pvTotal;
-        const btnDe   = document.getElementById('btn-de-vie');
-        const elDispo = document.getElementById('pv-statut-disponible');
-        const elEpuise= document.getElementById('pv-statut-epuise');
-        if (btnDe)    btnDe.disabled = true;
-        if (elDispo)  elDispo.style.display  = 'none';
-        if (elEpuise) elEpuise.style.display = 'block';
-
-        window.afficherNotifXP?.(`❤️ +${pvGagnes} PV au niveau ${niveau} !`);
-
-        try {
-            await setDoc(doc(db, 'membres', user.uid), {
-                pv_niveaux_lances: niveauxLancesMaj,
-                mis_a_jour: serverTimestamp()
-            }, { merge: true });
-        } catch(e) { console.warn('Erreur sauvegarde PV:', e); }
-    }
-    window.lancerDesVieModal = lancerDesVieModal;
-
 
 
     // ── TRÉSOR : total live ──────────────────────────────────────
@@ -5093,6 +5004,98 @@
     }
     window.ouvrirDesVie = ouvrirDesVie;
 
+
+
+    async function lancerDesVieModal() {
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+
+        const pv_        = window._pvState || {};
+        const niveau     = pv_.niveau_actuel || 1;
+        const deFaces    = pv_.de_faces    || 8;
+        const bonusConst = pv_.bonus_const || 0;
+
+        window._setDesJetsLeft?.(0);
+        window.mettreAJourBoutonsDes?.();
+
+        // ── Animation SVG dans la zone dés ───────────────────
+        const zone = document.getElementById('des-zone');
+        zone.style.cssText = 'display:flex;justify-content:center;align-items:center;min-height:96px;margin-bottom:1.2rem;';
+
+        const svgWrap = document.createElement('div');
+        svgWrap.style.cssText = 'transition:transform 0.08s; display:inline-block;';
+        zone.innerHTML = '';
+        zone.appendChild(svgWrap);
+
+        const scoreEl  = document.getElementById('des-score');
+        const detailEl = document.getElementById('des-detail');
+        scoreEl.innerText  = '…';
+        detailEl.innerHTML = '';
+
+        const TYPES_DES    = [4, 6, 8, 10, 12, 20, deFaces];
+        const COULEURS     = ['#8b0000','#d4af37','#4a90d9','#2a7a2a','#a0522d','#6a0dad'];
+        const TOTAL_FRAMES = 18;
+
+        for (let i = 0; i < TOTAL_FRAMES; i++) {
+            const isLast  = i >= TOTAL_FRAMES - 4;
+            const faces   = isLast ? deFaces : TYPES_DES[i % TYPES_DES.length];
+            const fake    = Math.floor(Math.random() * faces) + 1;
+            const couleur = isLast ? '#d4af37' : COULEURS[i % COULEURS.length];
+            svgWrap.innerHTML = window.getSVGDe(faces, couleur)
+                .replace('width="48"', 'width="80"')
+                .replace('height="48"', 'height="80"');
+            svgWrap.style.transform = `rotate(${(Math.random()-0.5)*25}deg) scale(${1 + Math.random()*0.12})`;
+            scoreEl.innerText = fake;
+            scoreEl.style.color = isLast ? 'var(--rouge-blason)' : '#aaa';
+            await new Promise(r => setTimeout(r, 60 + i * 12));
+        }
+
+        // ── Résultat final ────────────────────────────────────
+        const resultat = Math.floor(Math.random() * deFaces) + 1;
+        const pvGagnes = Math.max(1, resultat + bonusConst);
+
+        svgWrap.innerHTML = window.getSVGDe(deFaces, '#d4af37')
+            .replace('width="48"', 'width="80"')
+            .replace('height="48"', 'height="80"');
+        svgWrap.style.transform = 'rotate(0deg) scale(1)';
+        scoreEl.innerText  = resultat;
+        scoreEl.style.color = 'var(--rouge-blason)';
+        detailEl.innerHTML = `<span style="font-family:'Lora',serif;font-size:0.78rem;color:#5a3e1b;">
+            ${window.formatResultatDeVie(resultat, bonusConst, deFaces, false)}</span>`;
+
+        document.getElementById('des-jets-info').innerText = `✦ Dé de vie épuisé pour ce niveau.`;
+
+        // ── Persistance ───────────────────────────────────────
+        const niveauxLancesMaj = { ...(window._pvState?.niveaux_lances || {}), [String(niveau)]: resultat };
+        if (window._pvState) window._pvState.niveaux_lances = niveauxLancesMaj;
+
+        let pvTotal = (window._pvState?.base || (deFaces + bonusConst));
+        for (let n = 2; n <= niveau; n++) {
+            const res = niveauxLancesMaj[String(n)];
+            if (res !== undefined) pvTotal += Math.max(1, res + bonusConst);
+        }
+        if (window._pvState) window._pvState.pv_total = pvTotal;
+
+        // Mettre à jour la case PV + statut dans la fiche
+        const elPV = document.getElementById('fiche-pv');
+        if (elPV) elPV.textContent = pvTotal;
+        const btnDe   = document.getElementById('btn-de-vie');
+        const elDispo = document.getElementById('pv-statut-disponible');
+        const elEpuise= document.getElementById('pv-statut-epuise');
+        if (btnDe)    btnDe.disabled = true;
+        if (elDispo)  elDispo.style.display  = 'none';
+        if (elEpuise) elEpuise.style.display = 'block';
+
+        window.afficherNotifXP?.(`❤️ +${pvGagnes} PV au niveau ${niveau} !`);
+
+        try {
+            await window._firebaseSetDoc(window._firebaseDoc(window._firebaseDb, 'membres', user.uid), {
+                pv_niveaux_lances: niveauxLancesMaj,
+                mis_a_jour: window._firebaseServerTimestamp()
+            }, { merge: true });
+        } catch(e) { console.warn('Erreur sauvegarde PV:', e); }
+    }
+    window.lancerDesVieModal = lancerDesVieModal;
 
     async function lancerDes() {
         if (_desJetsLeft <= 0) return;
