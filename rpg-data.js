@@ -1590,16 +1590,120 @@ function getGradeFromJours(jours) {
     return actuel;
 }
 
+// ═══════════════════════════════════════════════════════════════
+//  SYSTÈME DE MONNAIE
+//  Référence : 1 pp = 10 po = 20 pe = 100 pa = 1000 pc
+//  Valeur pivot en pc (pièce de cuivre)
+// ═══════════════════════════════════════════════════════════════
+
+const RPG_MONNAIE = {
+    pp: {
+        nom:         "Platine",
+        abrev:       "pp",
+        icone:       "🪙",
+        couleur:     "#e5e4e2",
+        valeur_pc:   1000,   // 1 pp = 1000 pc
+        description: "La pièce de platine — rare, précieuse, symbole de grande fortune. Rarement vue dans les bourses ordinaires, elle circule dans les hautes sphères du commerce et des trésors royaux.",
+        conversions: { po: 10, pe: 20, pa: 100, pc: 1000 }
+    },
+    po: {
+        nom:         "Or",
+        abrev:       "po",
+        icone:       "🪙",
+        couleur:     "#d4af37",
+        valeur_pc:   100,    // 1 po = 100 pc
+        description: "La pièce d'or — monnaie de référence du commerce, frappée à l'effigie du Roi Karl. Dix pièces d'argent font une pièce d'or. Un aventurier débutant travaille pour quelques pièces d'or par mission.",
+        conversions: { pp: 0.1, pe: 2, pa: 10, pc: 100 }
+    },
+    pe: {
+        nom:         "Électrum",
+        abrev:       "pe",
+        icone:       "🪙",
+        couleur:     "#a8c5c5",
+        valeur_pc:   50,     // 1 pe = 50 pc
+        description: "La pièce d'électrum — alliage naturel d'or et d'argent, moins courante que les autres. Vaut deux pièces d'argent ou la moitié d'une pièce d'or. Certains marchands méfiants les refusent.",
+        conversions: { pp: 0.05, po: 0.5, pa: 5, pc: 50 }
+    },
+    pa: {
+        nom:         "Argent",
+        abrev:       "pa",
+        icone:       "🪙",
+        couleur:     "#c0c0c0",
+        valeur_pc:   10,     // 1 pa = 10 pc
+        description: "La pièce d'argent — monnaie du peuple et des artisans. Dix pièces de cuivre font une pièce d'argent. Le salaire journalier d'un ouvrier qualifié dans le royaume du Roi Karl.",
+        conversions: { pp: 0.01, po: 0.1, pe: 0.2, pc: 10 }
+    },
+    pc: {
+        nom:         "Cuivre",
+        abrev:       "pc",
+        icone:       "🪙",
+        couleur:     "#b87333",
+        valeur_pc:   1,      // valeur de base
+        description: "La pièce de cuivre — la plus humble des monnaies, celle du marché et de la taverne. Un repas simple ou une bougie s'achète en cuivre. Dix pièces de cuivre font une pièce d'argent.",
+        conversions: { pp: 0.001, po: 0.01, pe: 0.02, pa: 0.1 }
+    }
+};
+
+// Ordre d'affichage standard (de la plus précieuse à la moins)
+const RPG_MONNAIE_ORDRE = ['pp', 'po', 'pe', 'pa', 'pc'];
+
+/**
+ * Convertit un montant d'une devise vers une autre
+ * ex: convertirMonnaie(5, 'po', 'pa') → 50
+ */
+function convertirMonnaie(montant, de, vers) {
+    if (de === vers) return montant;
+    const valPc = RPG_MONNAIE[de].valeur_pc;
+    const cible = RPG_MONNAIE[vers].valeur_pc;
+    return (montant * valPc) / cible;
+}
+
+/**
+ * Calcule la valeur totale d'un trésor en pièces de cuivre
+ * ex: totalTresorEnPo({ pp:1, po:5, pe:0, pa:10, pc:3 }) → 16.03
+ */
+function totalTresorEnPo(tresor) {
+    const totalPc = RPG_MONNAIE_ORDRE.reduce((total, abrev) => {
+        return total + ((tresor[abrev] || 0) * RPG_MONNAIE[abrev].valeur_pc);
+    }, 0);
+    return totalPc / 100;
+}
+
+/**
+ * Exprime une valeur en pc dans la devise la plus lisible
+ * ex: simplifierMonnaie(1550) → "1 pp, 5 po, 5 pa"
+ */
+function simplifierMonnaie(valeurPc) {
+    let reste = valeurPc;
+    const result = [];
+    for (const abrev of RPG_MONNAIE_ORDRE) {
+        const valeur = RPG_MONNAIE[abrev].valeur_pc;
+        const nb = Math.floor(reste / valeur);
+        if (nb > 0) { result.push(`${nb} ${abrev}`); reste -= nb * valeur; }
+    }
+    return result.length ? result.join(', ') : '0 pc';
+}
+
 // Export pour usage dans index.html (via window) et Node.js (livres)
 if (typeof window !== 'undefined') {
-    window.RPG_RACES        = RPG_RACES;
-    window.RPG_CLASSES      = RPG_CLASSES;
-    window.RPG_GRADES       = RPG_GRADES;
-    window.RPG_ALIGNEMENTS  = RPG_ALIGNEMENTS;
-    window.getBonusTotal     = getBonusTotal;
-    window.getGradeFromJours = getGradeFromJours;
+    window.RPG_RACES          = RPG_RACES;
+    window.RPG_CLASSES        = RPG_CLASSES;
+    window.RPG_GRADES         = RPG_GRADES;
+    window.RPG_ALIGNEMENTS    = RPG_ALIGNEMENTS;
+    window.RPG_MONNAIE        = RPG_MONNAIE;
+    window.RPG_MONNAIE_ORDRE  = RPG_MONNAIE_ORDRE;
+    window.getBonusTotal       = getBonusTotal;
+    window.getGradeFromJours   = getGradeFromJours;
+    window.convertirMonnaie    = convertirMonnaie;
+    window.totalTresorEnPo     = totalTresorEnPo;
+    window.simplifierMonnaie   = simplifierMonnaie;
 }
 if (typeof module !== 'undefined') {
-    module.exports = { RPG_RACES, RPG_CLASSES, RPG_GRADES, RPG_ALIGNEMENTS, getBonusTotal, getGradeFromJours };
+    module.exports = {
+        RPG_RACES, RPG_CLASSES, RPG_GRADES, RPG_ALIGNEMENTS,
+        RPG_MONNAIE, RPG_MONNAIE_ORDRE,
+        getBonusTotal, getGradeFromJours,
+        convertirMonnaie, totalTresorEnPo, simplifierMonnaie
+    };
 }
 
