@@ -4836,6 +4836,61 @@
         display: inline-block;
         flex-shrink: 0;
     }
+
+    /* ── Dés polyédriques animés (d4/d6/d8/d10/d12/d20) ── */
+    .de-poly-wrapper {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+    .de-poly-scene {
+        perspective: 500px;
+        display: inline-block;
+    }
+    .de-poly-inner {
+        display: inline-block;
+        transform-style: preserve-3d;
+        transition: transform 0.15s;
+    }
+    .de-poly-inner.roule-poly {
+        animation: poly-rouler 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    @keyframes poly-rouler {
+        0%   { transform: rotateX(0deg)   rotateY(0deg)   rotateZ(0deg); }
+        20%  { transform: rotateX(180deg) rotateY(120deg) rotateZ(60deg); }
+        50%  { transform: rotateX(360deg) rotateY(240deg) rotateZ(120deg); }
+        80%  { transform: rotateX(540deg) rotateY(320deg) rotateZ(180deg); }
+        100% { transform: rotateX(720deg) rotateY(360deg) rotateZ(0deg); }
+    }
+    .de-poly-face {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Cinzel', serif;
+        font-weight: bold;
+        color: var(--rouge-blason);
+        background: linear-gradient(135deg, #fffcf0, #f5e8c8);
+        border: 2px solid rgba(120,80,10,0.4);
+        border-radius: 6px;
+        box-shadow: inset 0 2px 6px rgba(255,255,255,0.9),
+                    inset 0 -2px 4px rgba(0,0,0,0.12),
+                    0 4px 12px rgba(0,0,0,0.25);
+    }
+    .de-poly-face.active {
+        background: linear-gradient(135deg, #fffbe8, #fdf0b0);
+        border-color: var(--or-royal);
+        box-shadow: 0 0 18px rgba(212,175,55,0.6),
+                    inset 0 2px 6px rgba(255,255,255,0.95);
+    }
+    .de-poly-label {
+        font-family: 'Cinzel', serif;
+        font-size: 0.55rem;
+        color: var(--or-sombre);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.7;
+    }
     .de-cube {
         width: 52px; height: 52px;
         position: relative;
@@ -4887,6 +4942,95 @@
     let _desScoreActuel = null;
     // Setter cross-script pour lancerDesVieModal (Firebase module scope)
     window._setDesJetsLeft = (v) => { _desJetsLeft = v; };
+
+
+    /**
+     * Crée un dé polyédrique animé CSS utilisant la forme SVG exacte du dé.
+     * @param {number} faces   — 4 | 6 | 8 | 10 | 12 | 20 | 100
+     * @param {number} valeur  — valeur à afficher sur la face principale
+     * @param {number} size    — taille en px (défaut 80)
+     * @returns {{ wrapper, inner, animer, finir }}
+     */
+    function creerDePolyedre(faces, valeur, size) {
+        size = size || 80;
+        const fs = Math.max(size * 0.28, 16); // font-size proportionnel
+
+        // Conteneur externe avec label
+        const wrapper = document.createElement('div');
+        wrapper.className = 'de-poly-wrapper';
+
+        // Scène 3D
+        const scene = document.createElement('div');
+        scene.className = 'de-poly-scene';
+        scene.style.width  = size + 'px';
+        scene.style.height = size + 'px';
+
+        // Inner rotatif
+        const inner = document.createElement('div');
+        inner.className = 'de-poly-inner';
+        inner.style.width  = size + 'px';
+        inner.style.height = size + 'px';
+
+        // Face principale : SVG de la forme exacte + valeur par-dessus
+        const face = document.createElement('div');
+        face.className = 'de-poly-face';
+        face.style.cssText = `width:${size}px;height:${size}px;position:relative;`;
+
+        // SVG de forme en arrière-plan (sans le label "dN")
+        const svgShapes = {
+            d4:  `<polygon points="50,5 95,88 5,88" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+                  <polygon points="50,5 95,88 72,47" fill="rgba(212,175,55,0.15)" stroke="#d4af37" stroke-width="1" />`,
+            d6:  `<rect x="8" y="8" width="84" height="84" rx="10" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+                  <line x1="8" y1="38" x2="92" y2="38" stroke="#d4af37" stroke-width="0.8" opacity="0.35"/>
+                  <line x1="8" y1="62" x2="92" y2="62" stroke="#d4af37" stroke-width="0.8" opacity="0.35"/>`,
+            d8:  `<polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+                  <polygon points="50,5 95,50 50,50" fill="rgba(212,175,55,0.12)" stroke="#d4af37" stroke-width="1"/>`,
+            d10: `<polygon points="50,5 92,32 80,82 20,82 8,32" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+                  <polygon points="50,5 92,32 50,42 8,32" fill="rgba(212,175,55,0.12)" stroke="#d4af37" stroke-width="1"/>`,
+            d12: `<polygon points="50,5 72,12 90,34 90,66 72,88 50,95 28,88 10,66 10,34 28,12" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+                  <polygon points="50,5 72,12 64,28 36,28 28,12" fill="rgba(212,175,55,0.12)" stroke="#d4af37" stroke-width="1"/>`,
+            d20: `<polygon points="50,4 96,30 88,80 12,80 4,30" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+                  <polygon points="50,4 96,30 72,28 50,14 28,28 4,30" fill="rgba(212,175,55,0.12)" stroke="#d4af37" stroke-width="1"/>
+                  <line x1="50" y1="14" x2="50" y2="80" stroke="#d4af37" stroke-width="0.6" opacity="0.3"/>`,
+            d100:`<circle cx="50" cy="50" r="44" fill="none" stroke="#d4af37" stroke-width="2.5"/>
+                  <circle cx="50" cy="50" r="30" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.35"/>`,
+        };
+        const shape = svgShapes['d' + faces] || svgShapes.d6;
+        face.innerHTML = `
+            <svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.9;" xmlns="http://www.w3.org/2000/svg">
+                ${shape}
+            </svg>
+            <span style="position:relative;font-size:${fs}px;font-family:'Cinzel',serif;font-weight:bold;color:var(--rouge-blason);z-index:1;line-height:1;">${valeur}</span>
+        `;
+
+        // Label dN sous le dé
+        const label = document.createElement('div');
+        label.className = 'de-poly-label';
+        label.textContent = 'd' + faces;
+
+        inner.appendChild(face);
+        scene.appendChild(inner);
+        wrapper.appendChild(scene);
+        wrapper.appendChild(label);
+
+        return {
+            wrapper,
+            inner,
+            face,
+            /** Déclenche l'animation de rotation */
+            animer() {
+                inner.classList.add('roule-poly');
+            },
+            /** Finit en affichant le résultat + effet doré */
+            finir(valeurFinale) {
+                inner.classList.remove('roule-poly');
+                inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                face.querySelector('span').textContent = valeurFinale;
+                face.classList.add('active');
+            }
+        };
+    }
+    window.creerDePolyedre = creerDePolyedre;
 
     function creerDeCube(valeurFinale) {
         // Valeurs différentes sur chaque face — chiffres bien lisibles
@@ -5018,52 +5162,38 @@
         window._setDesJetsLeft?.(0);
         window.mettreAJourBoutonsDes?.();
 
-        // ── Animation SVG dans la zone dés ───────────────────
+        // ── Dé polyédrique animé — forme exacte du dé de classe ──
         const zone = document.getElementById('des-zone');
-        zone.style.cssText = 'display:flex;justify-content:center;align-items:center;min-height:96px;margin-bottom:1.2rem;';
-
-        const svgWrap = document.createElement('div');
-        svgWrap.style.cssText = 'transition:transform 0.08s; display:inline-block;';
-        zone.innerHTML = '';
-        zone.appendChild(svgWrap);
+        zone.style.cssText = 'display:flex;justify-content:center;align-items:center;min-height:110px;margin-bottom:1.2rem;';
 
         const scoreEl  = document.getElementById('des-score');
         const detailEl = document.getElementById('des-detail');
-        scoreEl.innerText  = '…';
-        detailEl.innerHTML = '';
+        scoreEl.innerText   = '…';
+        scoreEl.style.color = '#aaa';
+        detailEl.innerHTML  = '';
 
-        const TYPES_DES    = [4, 6, 8, 10, 12, 20, deFaces];
-        const COULEURS     = ['#8b0000','#d4af37','#4a90d9','#2a7a2a','#a0522d','#6a0dad'];
-        const TOTAL_FRAMES = 18;
-
-        for (let i = 0; i < TOTAL_FRAMES; i++) {
-            const isLast  = i >= TOTAL_FRAMES - 4;
-            const faces   = isLast ? deFaces : TYPES_DES[i % TYPES_DES.length];
-            const fake    = Math.floor(Math.random() * faces) + 1;
-            const couleur = isLast ? '#d4af37' : COULEURS[i % COULEURS.length];
-            svgWrap.innerHTML = window.getSVGDe(faces, couleur)
-                .replace('width="48"', 'width="80"')
-                .replace('height="48"', 'height="80"');
-            svgWrap.style.transform = `rotate(${(Math.random()-0.5)*25}deg) scale(${1 + Math.random()*0.12})`;
-            scoreEl.innerText = fake;
-            scoreEl.style.color = isLast ? 'var(--rouge-blason)' : '#aaa';
-            await new Promise(r => setTimeout(r, 60 + i * 12));
-        }
-
-        // ── Résultat final ────────────────────────────────────
+        // Tirage final
         const resultat = Math.floor(Math.random() * deFaces) + 1;
+
+        // Créer le dé polyédrique
+        const de = creerDePolyedre(deFaces, '?', 90);
+        zone.innerHTML = '';
+        zone.appendChild(de.wrapper);
+
+        // Animer
+        de.animer();
+        await new Promise(r => setTimeout(r, 1100));
+
+        // Afficher le résultat
+        de.finir(resultat);
+
+        // ── Résultat ─────────────────────────────────────────
         const pvGagnes = Math.max(1, resultat + bonusConst);
-
-        svgWrap.innerHTML = window.getSVGDe(deFaces, '#d4af37')
-            .replace('width="48"', 'width="80"')
-            .replace('height="48"', 'height="80"');
-        svgWrap.style.transform = 'rotate(0deg) scale(1)';
-        scoreEl.innerText  = resultat;
+        scoreEl.innerText   = resultat;
         scoreEl.style.color = 'var(--rouge-blason)';
-        detailEl.innerHTML = `<span style="font-family:'Lora',serif;font-size:0.78rem;color:#5a3e1b;">
+        detailEl.innerHTML  = `<span style="font-family:'Lora',serif;font-size:0.78rem;color:#5a3e1b;">
             ${window.formatResultatDeVie(resultat, bonusConst, deFaces, false)}</span>`;
-
-        document.getElementById('des-jets-info').innerText = `✦ Dé de vie épuisé pour ce niveau.`;
+        document.getElementById('des-jets-info').innerText = '✦ Dé de vie épuisé pour ce niveau.';
 
         // ── Persistance ───────────────────────────────────────
         const niveauxLancesMaj = { ...(window._pvState?.niveaux_lances || {}), [String(niveau)]: resultat };
