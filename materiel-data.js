@@ -6,14 +6,6 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-// ═══════════════════════════════════════════════════════════════
-//  ARMES
-//  Structure : { icone, categorie, degats, type_degats, poids,
-//               prix, proprietes[], description }
-//  Catégories : "Corps à corps courante" | "Distance courante" |
-//               "Corps à corps de guerre" | "Distance de guerre"
-// ═══════════════════════════════════════════════════════════════
-
 const MATERIEL_ARMES = {
 
     // ── ARMES COURANTES DE CORPS À CORPS ────────────────────────
@@ -430,8 +422,8 @@ const MATERIEL_ARMES = {
         proprietes:  ["Munitions (portée 7,50 m/30 m)", "Chargement"],
         description: "Tube creux qui projette de fines aiguilles par souffle. Dégâts minimes, mais idéale pour délivrer poisons ou sédatifs sans bruit. L'arme de l'infiltrateur patient."
     }
-
-};
+}
+;
 
 // ═══════════════════════════════════════════════════════════════
 //  UTILITAIRES
@@ -464,14 +456,6 @@ function getArmesAvecPropriete(propriete) {
 
 // ═══════════════════════════════════════════════════════════════
 //  EXPORTS — usage window (site) + module (Node.js / livres)
-// ═══════════════════════════════════════════════════════════════
-
-// ═══════════════════════════════════════════════════════════════
-//  ARMURES
-//  Structure : { icone, categorie, ca, force_min, discrétion,
-//               poids, prix, proprietes[], description }
-//  Catégories : "Légère" | "Intermédiaire" | "Lourde" | "Bouclier"
-//  discrétion : true = désavantage aux tests de Discrétion
 // ═══════════════════════════════════════════════════════════════
 
 const MATERIEL_ARMURES = {
@@ -639,7 +623,8 @@ const MATERIEL_ARMURES = {
         proprietes:  ["Occupe la main secondaire"],
         description: "Disque ou rectangle de bois renforcé de métal, tenu au bras gauche. Simple, fiable, et redoutablement efficace depuis l'Antiquité. Incompatible avec les armes à deux mains — mais +2 CA peut sauver une vie."
     }
-};
+}
+;
 
 // ── UTILITAIRES ARMURES ──────────────────────────────────────────
 
@@ -660,17 +645,6 @@ function getArmuresFurtives() {
         .filter(([_, a]) => !a.discretion)
         .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  ÉQUIPEMENT DIVERS
-//  Structure : { icone, categorie, poids, prix, proprietes[], description }
-//  Catégories : "Alchimie & substances" | "Focaliseurs" |
-//               "Éclairage" | "Équipement d'aventure" |
-//               "Sécurité & serrures" | "Écriture & savoir" |
-//               "Munitions" | "Contenants" |
-//               "Vêtements & accessoires" | "Nourriture & survie" |
-//               "Outils & instruments"
-// ═══════════════════════════════════════════════════════════════
 
 const MATERIEL_EQUIPEMENT = {
 
@@ -1386,7 +1360,8 @@ const MATERIEL_EQUIPEMENT = {
         proprietes: [],
         description: "Cape imperméable, chemise épaisse, pantalon robuste et bottes montantes. Conçus pour résister aux intempéries, à la boue et aux longues marches. L'équipement du voyageur sérieux qui sait ce qu'est une semaine de pluie."
     }
-};
+}
+;
 
 // ── UTILITAIRES ÉQUIPEMENT ───────────────────────────────────────
 
@@ -1405,13 +1380,6 @@ function getEquipementParCategorie(categorie) {
 function getCategoriesEquipement() {
     return [...new Set(Object.values(MATERIEL_EQUIPEMENT).map(e => e.categorie))];
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  OBJETS SPÉCIAUX
-//  Structure : { icone, categorie, poids, prix, proprietes[], description }
-//  Catégories : "Instruments de musique" | "Jeux" | "Kits" |
-//               "Outils d'artisan"
-// ═══════════════════════════════════════════════════════════════
 
 const MATERIEL_OBJETS = {
 
@@ -1681,7 +1649,8 @@ const MATERIEL_OBJETS = {
         proprietes: ["Compétence : Outils de voleur", "Crocheter serrures, désarmer pièges mécaniques"],
         description: "Trousseau de crochets fins, miroir télescopique, lime à serrure et pince à ressort. L'outil du roublard — léger, discret, illégal dans la plupart des juridictions. Posséder ces outils suffit à rendre suspect dans les villes du Roi Karl."
     }
-};
+}
+;
 
 // ── UTILITAIRES OBJETS ───────────────────────────────────────────
 
@@ -1700,14 +1669,6 @@ function getObjetsParCategorie(categorie) {
 function getCategoriesObjets() {
     return [...new Set(Object.values(MATERIEL_OBJETS).map(o => o.categorie))];
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  MONTURES
-//  Structure : { icone, categorie, cout, vitesse, charge_max,
-//               proprietes[], description }
-//  Catégories : "Monture de travail" | "Monture de combat" |
-//               "Monture de voyage" | "Monture lourde"
-// ═══════════════════════════════════════════════════════════════
 
 const MATERIEL_MONTURES = {
 
@@ -1826,7 +1787,8 @@ const MATERIEL_MONTURES = {
         ],
         description: "Petit cheval trapu des hautes terres, rustique et opiniâtre. Moins impressionnant qu'un destrier, mais plus endurant sur les chemins de montagne et les terrains accidentés. Monture traditionnelle des nains et des halfelins — et de quiconque préfère la fiabilité à l'ostentation."
     }
-};
+}
+;
 
 // ── UTILITAIRES MONTURES ─────────────────────────────────────────
 
@@ -1847,14 +1809,6 @@ function getMonturesPourPoids(poidsKg) {
         .filter(([_, m]) => parseInt(m.charge_max) >= poidsKg)
         .reduce((acc, [nom, data]) => { acc[nom] = data; return acc; }, {});
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  ÉQUIPEMENT & VÉHICULES
-//  Structure : { icone, categorie, cout, poids, proprietes[],
-//               description }
-//  Catégories : "Véhicule" | "Hébergement & services" |
-//               "Alimentation monture" | "Selle"
-// ═══════════════════════════════════════════════════════════════
 
 const MATERIEL_VEHICULES = {
 
@@ -2034,7 +1988,8 @@ const MATERIEL_VEHICULES = {
         ],
         description: "Plateforme de bois sur patins de métal conçue pour glisser sur neige et glace. Indispensable dans les régions nordiques où les roues s'enfoncent et les chevaux peinent. Tiré par des chiens de traîneau ou des rennes, il vole sur la toundra gelée avec une rapidité surprenante."
     }
-};
+}
+;
 
 // ── UTILITAIRES VÉHICULES ────────────────────────────────────────
 
@@ -2054,15 +2009,8 @@ function getCategoriesVehicules() {
     return [...new Set(Object.values(MATERIEL_VEHICULES).map(v => v.categorie))];
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  EXPORT GLOBAL — un seul bloc pour tout le fichier
-// ═══════════════════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════════
-//  EXPORTS WINDOW — bloc unique consolidé
-// ═══════════════════════════════════════════════════════
-
-// ═══════════════════════════════════════════════════════
-//  EXPORTS WINDOW — bloc unique
+//  EXPORTS WINDOW
 // ═══════════════════════════════════════════════════════
 if (typeof window !== 'undefined') {
     window.MATERIEL_ARMES            = MATERIEL_ARMES;
