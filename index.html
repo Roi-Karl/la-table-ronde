@@ -4247,17 +4247,22 @@
             const bonusVal = bonusTotal[c] || 0;
             window._caracJets[c] = jets;
 
-            // Badge bonus en haut à droite de la carte
+            // Modificateur de la carac brute : floor((score-10)/2), clampé -4 à +5
             const elBonus = document.getElementById('carac-bonus-' + c);
             if (elBonus) {
-                elBonus.textContent = bonusVal > 0 ? `(${ABREV_CARAC[c]} +${bonusVal})` : '';
+                if (val !== undefined) {
+                    const mod = Math.max(-4, Math.min(5, Math.floor((val - 10) / 2)));
+                    const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+                    elBonus.textContent = `(${ABREV_CARAC[c]} ${modStr})`;
+                } else {
+                    elBonus.textContent = '';
+                }
             }
 
             const elVal = document.getElementById('carac-' + c);
             if (elVal) {
                 if (val !== undefined) {
-                    const total = val + bonusVal;
-                    elVal.textContent = total;
+                    elVal.textContent = val;
                 } else {
                     elVal.innerHTML = '&#8212;';
                 }
