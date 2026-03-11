@@ -1360,12 +1360,18 @@
             overflow: hidden;
             transition: border-color 0.4s, background 0.4s;
         }
-        .carac-card-icone {
+        .carac-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
             width: 100%;
-            text-align: left;
-            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        .carac-card-icone {
+            font-size: 1.1rem;
             line-height: 1;
-            margin-bottom: 3px;
+            flex-shrink: 0;
         }
         .carac-card-label {
             font-family: 'Cinzel', serif;
@@ -1374,15 +1380,15 @@
             font-weight: bold;
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            margin-bottom: 4px;
             text-align: center;
         }
         .carac-card-valeur {
             font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
+            font-size: 1.6rem;
             color: var(--rouge-blason);
             font-weight: bold;
             margin-bottom: 4px;
+            line-height: 1;
         }
         .carac-card-des {
             background: none;
@@ -1954,43 +1960,37 @@
                         <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;" class="carac-grid">
 
                             <div class="carac-card">
-                                <div class="carac-card-icone">💪</div>
-                                <div class="carac-card-label">Force</div>
+                                <div class="carac-card-header"><div class="carac-card-icone">💪</div> <div class="carac-card-label">Force</div></div>
                                 <div id="carac-force" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
                                 <button onclick="ouvrirDes('force','Force','💪')" id="btn-des-force" class="carac-card-des" title="Lancer les dés">🎲</button>
                                 <div id="jets-restants-force" class="carac-card-jets"></div>
                             </div>
                             <div class="carac-card">
-                                <div class="carac-card-icone">🏹</div>
-                                <div class="carac-card-label">Dextérité</div>
+                                <div class="carac-card-header"><div class="carac-card-icone">🏹</div> <div class="carac-card-label">Dextérité</div></div>
                                 <div id="carac-dexterite" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
                                 <button onclick="ouvrirDes('dexterite','Dextérité','🏹')" id="btn-des-dexterite" class="carac-card-des" title="Lancer les dés">🎲</button>
                                 <div id="jets-restants-dexterite" class="carac-card-jets"></div>
                             </div>
                             <div class="carac-card">
-                                <div class="carac-card-icone">🛡️</div>
-                                <div class="carac-card-label">Constit.</div>
+                                <div class="carac-card-header"><div class="carac-card-icone">🛡️</div> <div class="carac-card-label">Constit.</div></div>
                                 <div id="carac-constitution" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
                                 <button onclick="ouvrirDes('constitution','Constitution','🛡️')" id="btn-des-constitution" class="carac-card-des" title="Lancer les dés">🎲</button>
                                 <div id="jets-restants-constitution" class="carac-card-jets"></div>
                             </div>
                             <div class="carac-card">
-                                <div class="carac-card-icone">📚</div>
-                                <div class="carac-card-label">Intellig.</div>
+                                <div class="carac-card-header"><div class="carac-card-icone">📚</div> <div class="carac-card-label">Intellig.</div></div>
                                 <div id="carac-intelligence" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
                                 <button onclick="ouvrirDes('intelligence','Intelligence','📚')" id="btn-des-intelligence" class="carac-card-des" title="Lancer les dés">🎲</button>
                                 <div id="jets-restants-intelligence" class="carac-card-jets"></div>
                             </div>
                             <div class="carac-card">
-                                <div class="carac-card-icone">🔮</div>
-                                <div class="carac-card-label">Sagesse</div>
+                                <div class="carac-card-header"><div class="carac-card-icone">🔮</div> <div class="carac-card-label">Sagesse</div></div>
                                 <div id="carac-sagesse" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
                                 <button onclick="ouvrirDes('sagesse','Sagesse','🔮')" id="btn-des-sagesse" class="carac-card-des" title="Lancer les dés">🎲</button>
                                 <div id="jets-restants-sagesse" class="carac-card-jets"></div>
                             </div>
                             <div class="carac-card">
-                                <div class="carac-card-icone">✨</div>
-                                <div class="carac-card-label">Charisme</div>
+                                <div class="carac-card-header"><div class="carac-card-icone">✨</div> <div class="carac-card-label">Charisme</div></div>
                                 <div id="carac-charisme" class="carac-card-valeur"><span class="skeleton skeleton-carac"></span></div>
                                 <button onclick="ouvrirDes('charisme','Charisme','✨')" id="btn-des-charisme" class="carac-card-des" title="Lancer les dés">🎲</button>
                                 <div id="jets-restants-charisme" class="carac-card-jets"></div>
@@ -4039,7 +4039,7 @@
                 if (val !== undefined) {
                     const total = val + bonusVal;
                     if (bonusVal > 0) {
-                        elVal.innerHTML = `${total}<span style="font-size:0.55rem;font-family:'Lora',serif;font-weight:normal;color:var(--or-royal);display:block;margin-top:1px;">${val} <span style="color:var(--or-royal);">+${bonusVal}</span></span>`;
+                        elVal.innerHTML = `${total}<span style="font-size:0.68rem;font-family:'Lora',serif;font-weight:normal;color:var(--or-royal);display:block;margin-top:1px;">${val} <span style="color:var(--or-royal);">+${bonusVal}</span></span>`;
                     } else {
                         elVal.innerHTML = val;
                     }
