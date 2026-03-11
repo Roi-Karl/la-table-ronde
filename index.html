@@ -1268,10 +1268,10 @@
         #echoppe-onglets::-webkit-scrollbar { display:none; }
         .echoppe-onglet {
             flex-shrink: 0;
-            padding: 8px 12px 7px;
+            padding: 8px 8px 7px;
             font-family: 'Cinzel', serif;
-            font-size: 0.58rem;
-            letter-spacing: 0.08em;
+            font-size: 0.52rem;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
             color: var(--or-sombre);
             cursor: pointer;
@@ -5819,10 +5819,11 @@
     function ouvrirEchoppe(ongletDepart) {
         _echoppeOngletActif = ongletDepart || 'armes';
         _construireOngletsEchoppe();
-        _afficherOngletEchoppe(_echoppeOngletActif);
         document.getElementById('echoppe-recherche').value = '';
         document.getElementById('echoppe-modal-overlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        // Afficher après que la modale est visible (données disponibles)
+        requestAnimationFrame(() => _afficherOngletEchoppe(_echoppeOngletActif));
     }
     window.ouvrirEchoppe = ouvrirEchoppe;
 
@@ -5837,6 +5838,7 @@
         const bar = document.getElementById('echoppe-onglets');
         bar.innerHTML = ECHOPPE_ONGLETS.map(o => `
             <div class="echoppe-onglet${o.id === _echoppeOngletActif ? ' actif' : ''}"
+                 data-id="${o.id}"
                  onclick="_afficherOngletEchoppe('${o.id}')">${o.label}</div>
         `).join('');
     }
@@ -5844,9 +5846,24 @@
     function _afficherOngletEchoppe(id) {
         _echoppeOngletActif = id;
         document.getElementById('echoppe-recherche').value = '';
-        // Mettre à jour onglets
+        const onglet = ECHOPPE_ONGLETS.find(o => o.id === id);
+        // Mettre à jour le sous-titre
+        const sousTitre = document.getElementById('echoppe-sous-titre');
+        const sousTitres = {
+            armes: 'Armes corps-à-corps & distance',
+            armures: 'Armures légères, intermédiaires & lourdes',
+            equipement: 'Outils, contenants & équipements divers',
+            objets: 'Objets spéciaux & instruments',
+            montures: 'Montures & animaux de trait',
+            vehicules: 'Embarcations & véhicules terrestres',
+            potions: 'Potions, élixirs & remèdes',
+            parchemins: 'Parchemins de sorts & invocations',
+            auberge: 'Hébergement, repas & services',
+        };
+        if (sousTitre) sousTitre.textContent = sousTitres[id] || '';
+        // Mettre à jour onglets actifs
         document.querySelectorAll('.echoppe-onglet').forEach(el => {
-            el.classList.toggle('actif', el.textContent.trim() === ECHOPPE_ONGLETS.find(o=>o.id===id).label.trim());
+            el.classList.toggle('actif', el.dataset.id === id);
         });
         _rendreItemsEchoppe(id, '');
     }
@@ -5959,7 +5976,7 @@
                         <div style="font-family:'Cinzel',serif; font-size:1rem; font-weight:bold;
                                     color:var(--rouge-blason); letter-spacing:0.08em;">Échoppe du Royaume</div>
                         <div style="font-family:'Lora',serif; font-style:italic; font-size:0.7rem;
-                                    color:#7a5a2a; margin-top:1px;">Armes, armures & équipements</div>
+                                    color:#7a5a2a; margin-top:1px;" id="echoppe-sous-titre">Armes, armures & équipements</div>
                     </div>
                 </div>
                 <button onclick="document.getElementById('echoppe-modal-overlay').style.display='none'; document.body.style.overflow='';"
