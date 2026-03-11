@@ -1263,6 +1263,47 @@
         }
         /* ── FIN TOOLTIP ──────────────────────────────────── */
 
+        /* ── Niveau / XP — cases héros ──────────────*/
+        .fiche-hero-box {
+            flex: 1;
+            text-align: center;
+            padding: 10px 8px 8px;
+            border: 1.5px solid rgba(212,175,55,0.55);
+            background: linear-gradient(160deg, rgba(212,175,55,0.10) 0%, rgba(212,175,55,0.03) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .fiche-hero-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(212,175,55,0.07) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .fiche-hero-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            color: var(--rouge-blason);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .fiche-hero-val {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--or-royal, #d4af37);
+            line-height: 1;
+            text-shadow: 0 1px 8px rgba(212,175,55,0.35);
+        }
+        .fiche-hero-note {
+            font-family: 'Lora', serif;
+            font-size: 0.5rem;
+            font-style: italic;
+            color: #9a7a50;
+            margin-top: 3px;
+        }
+
         /* ── PV / Initiative ─────────────────────── */
         .fiche-stat-box {
             flex: 1;
@@ -1864,6 +1905,20 @@
                         <span id="profil-histoire" class="fiche-histoire-texte">—</span>
                     </div>
 
+
+                    <!-- Niveau + XP (cases héros) -->
+                    <div style="display:flex; gap:10px; margin-bottom:8px;">
+                        <div class="fiche-hero-box">
+                            <div class="fiche-hero-label">Niveau</div>
+                            <div id="fiche-niveau" class="fiche-hero-val">—</div>
+                            <div class="fiche-hero-note" id="fiche-niveau-note">—</div>
+                        </div>
+                        <div class="fiche-hero-box">
+                            <div class="fiche-hero-label">Expérience (XP)</div>
+                            <div id="fiche-xp" class="fiche-hero-val">—</div>
+                            <div class="fiche-hero-note" id="fiche-xp-note">maîtrise +2</div>
+                        </div>
+                    </div>
 
                     <!-- PV + Initiative (côte à côte) -->
                     <div style="display:flex; gap:10px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
@@ -2900,6 +2955,21 @@
 
                 if (document.getElementById('profil-niveau'))    document.getElementById('profil-niveau').innerText    = niveau;
                 if (document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
+
+                // ── Cases héros fiche (Niveau + XP) ──────────────
+                const elFicheNiveau = document.getElementById('fiche-niveau');
+                const elFicheNiveauNote = document.getElementById('fiche-niveau-note');
+                const elFicheXP     = document.getElementById('fiche-xp');
+                const elFicheXPNote = document.getElementById('fiche-xp-note');
+                if (elFicheNiveau) elFicheNiveau.textContent = niveau;
+                if (elFicheNiveauNote) {
+                    const prochainNiveau = window.NIVEAUX_DATA ? window.NIVEAUX_DATA.find(n => n.niveau === niveau + 1) : null;
+                    elFicheNiveauNote.textContent = prochainNiveau
+                        ? `prochain : ${prochainNiveau.xpMin.toLocaleString('fr-FR')} XP`
+                        : 'niveau maximum';
+                }
+                if (elFicheXP) elFicheXP.textContent = puissance.toLocaleString('fr-FR');
+                if (elFicheXPNote) elFicheXPNote.textContent = `maîtrise +${maitrise}`;
                 const elRang     = document.getElementById('rang-chevalier');
                 const elRangTxt  = document.getElementById('rang-chevalier-texte');
                 if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${rangActuel.nom}`;
