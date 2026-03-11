@@ -1405,10 +1405,11 @@
             text-shadow: 0 1px 8px rgba(212,175,55,0.35);
         }
         .fiche-hero-note {
-            font-family: 'Lora', serif;
-            font-size: 0.68rem;
-            font-style: italic;
-            color: #9a7a50;
+            font-family: 'Cinzel', serif;
+            font-size: 0.62rem;
+            font-style: normal;
+            color: #3a2a0a;
+            font-weight: bold;
             margin-top: 4px;
         }
 
@@ -1437,10 +1438,11 @@
             margin-bottom: 3px;
         }
         .fiche-stat-note {
-            font-family: 'Lora', serif;
-            font-size: 0.65rem;
-            font-style: italic;
-            color: #9a7a50;
+            font-family: 'Cinzel', serif;
+            font-size: 0.62rem;
+            font-style: normal;
+            color: #3a2a0a;
+            font-weight: bold;
         }
         .fiche-carac-sep {
             border-top: 1px solid rgba(212,175,55,0.4);
@@ -3123,12 +3125,12 @@
                 const elFicheXP     = document.getElementById('fiche-xp');
                 const elFicheXPNote = document.getElementById('fiche-xp-note');
                 if (elFicheNiveau) elFicheNiveau.textContent = niveau;
-                if (elFicheNiveauNote) elFicheNiveauNote.textContent = `maîtrise +${maitrise}`;
+                if (elFicheNiveauNote) elFicheNiveauNote.textContent = `Maîtrise : +${maitrise}`;
                 if (elFicheXP) elFicheXP.textContent = puissance.toLocaleString('fr-FR');
                 if (elFicheXPNote) {
                     const prochainNiveau = window.NIVEAUX_DATA ? window.NIVEAUX_DATA.find(n => n.niveau === niveau + 1) : null;
                     elFicheXPNote.textContent = prochainNiveau
-                        ? `prochain niv. : ${prochainNiveau.xpMin.toLocaleString('fr-FR')} XP`
+                        ? `Prochain niveau : ${prochainNiveau.xpMin.toLocaleString('fr-FR')} XP`
                         : 'niveau maximum';
                 }
                 const elRang     = document.getElementById('rang-chevalier');
@@ -4236,6 +4238,7 @@
         const bonusTotal = (window.getBonusTotal && raceNomPur && classeNomPur)
             ? window.getBonusTotal(raceNomPur, classeNomPur)
             : {};
+        window._bonusTotalActuel = bonusTotal; // exposé pour mise à jour après lancer
 
         const ABREV_CARAC = {
             force:'FOR', dexterite:'DEX', constitution:'CON',
@@ -4247,8 +4250,8 @@
             const bonusVal = bonusTotal[c] || 0;
             window._caracJets[c] = jets;
 
-            // Score total = brut + bonus race/classe
-            // Modificateur = floor((scoreTotal - 10) / 2), clampé -4 à +5
+            // Score affiché = brut uniquement (les bonus race/classe s'appliquent au lancer)
+            // Badge modificateur = floor((scoreTotal - 10) / 2) avec bonus race/classe inclus
             const scoreTotal = val !== undefined ? val + bonusVal : undefined;
             const elBonus = document.getElementById('carac-bonus-' + c);
             if (elBonus) {
@@ -4263,8 +4266,9 @@
 
             const elVal = document.getElementById('carac-' + c);
             if (elVal) {
-                if (scoreTotal !== undefined) {
-                    elVal.textContent = scoreTotal;
+                if (val !== undefined) {
+                    // Afficher le score brut ; le bonus race/classe apparaît au lancer
+                    elVal.textContent = val;
                 } else {
                     elVal.innerHTML = '&#8212;';
                 }
@@ -4356,7 +4360,7 @@
                 if (elInit) elInit.textContent = signe + initiative;
                 if (elNote) {
                     const dexStr = modDex >= 0 ? `+${modDex}` : `${modDex}`;
-                    elNote.textContent = `DEX(${dexStr}) + maîtrise(+${maitrise})`;
+                    elNote.textContent = `DEX ${dexStr} · Maîtrise +${maitrise}`;
                 }
                 if (blocInit) blocInit.style.display = 'block';
 
@@ -4522,8 +4526,8 @@
         // Note explicative
         const elNote = document.getElementById('pv-note');
         if (elNote) {
-            const bonusStr = bonusConst >= 0 ? `+${bonusConst}` : `${bonusConst}` ;
-            elNote.textContent = `d${deFaces} par niveau (CON ${bonusStr})`;
+            const bonusStr = bonusConst >= 0 ? `+${bonusConst}` : `${bonusConst}`;
+            elNote.textContent = `d${deFaces} par niveau · CON ${bonusStr}`;
         }
 
         // ── Affichage du dé de vie ─────────────────────────────
@@ -5801,10 +5805,25 @@
         _desCarac = null;
     }
 
+    const _ABREV_CARAC = {
+        force:'FOR', dexterite:'DEX', constitution:'CON',
+        intelligence:'INT', sagesse:'SAG', charisme:'CHA'
+    };
     async function sauvegarderCarac(cle, score, jetsRestants, fermer) {
         // Mettre à jour la fiche
         const elCarac = document.getElementById('carac-' + cle);
         if (elCarac) elCarac.innerText = score;
+
+        // Mettre à jour le badge modificateur avec bonus race/classe
+        const elBonus = document.getElementById('carac-bonus-' + cle);
+        if (elBonus && score !== null && score !== undefined) {
+            const bonusRaceClasse = (window._bonusTotalActuel || {})[cle] || 0;
+            const scoreTotal = score + bonusRaceClasse;
+            const mod = Math.max(-4, Math.min(5, Math.floor((scoreTotal - 10) / 2)));
+            const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+            elBonus.textContent = `(${_ABREV_CARAC[cle] || cle.toUpperCase().slice(0,3)} ${modStr})`;
+        }
+
         const elJets = document.getElementById('jets-restants-' + cle);
         if (elJets) elJets.innerText = jetsRestants > 0 ? `${jetsRestants} jet${jetsRestants > 1 ? 's' : ''} restant` : 'épuisé';
 
