@@ -1263,6 +1263,28 @@
         }
         /* ── FIN TOOLTIP ──────────────────────────────────── */
 
+        /* ── Boutons +/− trésor ─────────────────────── */
+        .tresor-btn-adj {
+            background: none;
+            border: 1px solid rgba(212,175,55,0.5);
+            color: var(--or-sombre);
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: bold;
+            width: 20px;
+            height: 28px;
+            cursor: pointer;
+            border-radius: 2px;
+            line-height: 1;
+            padding: 0;
+            flex-shrink: 0;
+            transition: background 0.15s, color 0.15s;
+        }
+        .tresor-btn-adj:hover {
+            background: rgba(212,175,55,0.2);
+            color: var(--rouge-blason);
+        }
+
         /* ── Niveau / XP — cases héros ──────────────*/
         .fiche-hero-box {
             flex: 1;
@@ -2014,40 +2036,60 @@
                             <!-- Platine -->
                             <div style="text-align:center;">
                                 <div style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--rouge-blason); letter-spacing:0.06em; font-weight:bold; margin-bottom:5px; text-transform:uppercase;">Platine</div>
-                                <input type="number" id="tresor-pp" min="0" value="0"
-                                    style="width:100%; text-align:center; background:#e5e4e2; border:2px solid #bbb; color:#2a2a2a; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield; cursor:default;" readonly>
+                                <div style="display:flex; align-items:center; justify-content:center; gap:2px;">
+                                    <button onclick="ajusterTresor('pp',-1)" class="tresor-btn-adj">−</button>
+                                    <input type="number" id="tresor-pp" min="0" value="0" onchange="clampTresor('pp'); window.sauvegarderTresor()"
+                                        style="width:100%; text-align:center; background:#e5e4e2; border:2px solid #bbb; color:#2a2a2a; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield;">
+                                    <button onclick="ajusterTresor('pp',1)" class="tresor-btn-adj">+</button>
+                                </div>
                                 <div style="font-family:'Lora',serif; font-size:0.65rem; color:var(--or-sombre); margin-top:3px;">1 pp = 10 po</div>
                             </div>
 
                             <!-- Or -->
                             <div style="text-align:center;">
                                 <div style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--rouge-blason); letter-spacing:0.06em; font-weight:bold; margin-bottom:5px; text-transform:uppercase;">Or</div>
-                                <input type="number" id="tresor-po" min="0" value="0"
-                                    style="width:100%; text-align:center; background:#d4af37; border:2px solid #a8861a; color:#2a1f00; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield; cursor:default;" readonly>
+                                <div style="display:flex; align-items:center; justify-content:center; gap:2px;">
+                                    <button onclick="ajusterTresor('po',-1)" class="tresor-btn-adj">−</button>
+                                    <input type="number" id="tresor-po" min="0" value="0" onchange="clampTresor('po'); window.sauvegarderTresor()"
+                                        style="width:100%; text-align:center; background:#d4af37; border:2px solid #a8861a; color:#2a1f00; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield;">
+                                    <button onclick="ajusterTresor('po',1)" class="tresor-btn-adj">+</button>
+                                </div>
                                 <div style="font-family:'Lora',serif; font-size:0.65rem; color:var(--or-sombre); margin-top:3px;">base</div>
                             </div>
 
                             <!-- Électrum -->
                             <div style="text-align:center;">
                                 <div style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--rouge-blason); letter-spacing:0.06em; font-weight:bold; margin-bottom:5px; text-transform:uppercase;">Électrum</div>
-                                <input type="number" id="tresor-pe" min="0" value="0"
-                                    style="width:100%; text-align:center; background:#a8c5c5; border:2px solid #7aa0a0; color:#1a2e2e; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield; cursor:default;" readonly>
+                                <div style="display:flex; align-items:center; justify-content:center; gap:2px;">
+                                    <button onclick="ajusterTresor('pe',-1)" class="tresor-btn-adj">−</button>
+                                    <input type="number" id="tresor-pe" min="0" value="0" onchange="clampTresor('pe'); window.sauvegarderTresor()"
+                                        style="width:100%; text-align:center; background:#a8c5c5; border:2px solid #7aa0a0; color:#1a2e2e; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield;">
+                                    <button onclick="ajusterTresor('pe',1)" class="tresor-btn-adj">+</button>
+                                </div>
                                 <div style="font-family:'Lora',serif; font-size:0.65rem; color:var(--or-sombre); margin-top:3px;">1 pe = 5 pa</div>
                             </div>
 
                             <!-- Argent -->
                             <div style="text-align:center;">
                                 <div style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--rouge-blason); letter-spacing:0.06em; font-weight:bold; margin-bottom:5px; text-transform:uppercase;">Argent</div>
-                                <input type="number" id="tresor-pa" min="0" value="0"
-                                    style="width:100%; text-align:center; background:#c0c0c0; border:2px solid #909090; color:#1a1a1a; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield; cursor:default;" readonly>
+                                <div style="display:flex; align-items:center; justify-content:center; gap:2px;">
+                                    <button onclick="ajusterTresor('pa',-1)" class="tresor-btn-adj">−</button>
+                                    <input type="number" id="tresor-pa" min="0" value="0" onchange="clampTresor('pa'); window.sauvegarderTresor()"
+                                        style="width:100%; text-align:center; background:#c0c0c0; border:2px solid #909090; color:#1a1a1a; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield;">
+                                    <button onclick="ajusterTresor('pa',1)" class="tresor-btn-adj">+</button>
+                                </div>
                                 <div style="font-family:'Lora',serif; font-size:0.65rem; color:var(--or-sombre); margin-top:3px;">1 pa = 10 pc</div>
                             </div>
 
                             <!-- Cuivre -->
                             <div style="text-align:center;">
                                 <div style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--rouge-blason); letter-spacing:0.06em; font-weight:bold; margin-bottom:5px; text-transform:uppercase;">Cuivre</div>
-                                <input type="number" id="tresor-pc" min="0" value="0"
-                                    style="width:100%; text-align:center; background:#b87333; border:2px solid #8a5520; color:#1a0e00; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield; cursor:default;" readonly>
+                                <div style="display:flex; align-items:center; justify-content:center; gap:2px;">
+                                    <button onclick="ajusterTresor('pc',-1)" class="tresor-btn-adj">−</button>
+                                    <input type="number" id="tresor-pc" min="0" value="0" onchange="clampTresor('pc'); window.sauvegarderTresor()"
+                                        style="width:100%; text-align:center; background:#b87333; border:2px solid #8a5520; color:#1a0e00; font-family:'Cinzel',serif; font-size:0.9rem; font-weight:bold; padding:6px 2px; border-radius:3px; -moz-appearance:textfield;">
+                                    <button onclick="ajusterTresor('pc',1)" class="tresor-btn-adj">+</button>
+                                </div>
                                 <div style="font-family:'Lora',serif; font-size:0.65rem; color:var(--or-sombre); margin-top:3px;">10 pc = 1 pa</div>
                             </div>
 
@@ -2899,11 +2941,25 @@
                         if (typeof data.mode_clair !== 'undefined') {
                             appliquerMode(data.mode_clair);
                         }
-                        // Charger le trésor
-                        ['pp','po','pe','pa','pc'].forEach(abrev => {
-                            const el = document.getElementById('tresor-' + abrev);
-                            if (el) el.value = data['tresor_' + abrev] || 0;
+                        // Charger le trésor — dotation de départ si nouveau joueur
+                        const tresorKeys = ['pp','po','pe','pa','pc'];
+                        const tresorFirestore = {};
+                        tresorKeys.forEach(abrev => {
+                            tresorFirestore[abrev] = data['tresor_' + abrev] ?? null;
                         });
+                        // Si aucune valeur n'a jamais été sauvegardée → dotation niveau 1
+                        const estNouveauTresor = tresorKeys.every(k => tresorFirestore[k] === null);
+                        const TRESOR_DEPART = { pp: 0, po: 50, pe: 10, pa: 50, pc: 100 };
+                        tresorKeys.forEach(abrev => {
+                            const el = document.getElementById('tresor-' + abrev);
+                            if (el) el.value = estNouveauTresor
+                                ? TRESOR_DEPART[abrev]
+                                : (tresorFirestore[abrev] || 0);
+                        });
+                        if (estNouveauTresor) {
+                            // Sauvegarder la dotation initiale
+                            setTimeout(() => window.sauvegarderTresor?.(), 500);
+                        }
                         window.mettreAJourTotalTresor?.();
                         // pv_niveaux_lances est chargé via profilData dans mettreAJourFicheCaracs
                         profilData.pv_niveaux_lances = data.pv_niveaux_lances || {};
@@ -4331,6 +4387,27 @@
 
 
     // ── TRÉSOR : total live ──────────────────────────────────────
+    // ── TRÉSOR : ajustement +/− ────────────────────────────────────
+    const TRESOR_DEPART = { pp: 0, po: 50, pe: 10, pa: 50, pc: 100 };
+
+    function ajusterTresor(abrev, delta) {
+        const el = document.getElementById('tresor-' + abrev);
+        if (!el) return;
+        const val = Math.max(0, (parseInt(el.value) || 0) + delta);
+        el.value = val;
+        window.mettreAJourTotalTresor?.();
+        window.sauvegarderTresor?.();
+    }
+    function clampTresor(abrev) {
+        const el = document.getElementById('tresor-' + abrev);
+        if (!el) return;
+        if (parseInt(el.value) < 0 || isNaN(parseInt(el.value))) el.value = 0;
+        window.mettreAJourTotalTresor?.();
+    }
+
+    window.ajusterTresor = ajusterTresor;
+    window.clampTresor   = clampTresor;
+
     window.mettreAJourTotalTresor = function() {
         const tresor = {
             pp: parseInt(document.getElementById('tresor-pp')?.value) || 0,
