@@ -2947,7 +2947,7 @@
                         const msg = diff > 0
                             ? `📜 +${diff} XP pour votre allégeance à la newsletter !`
                             : `📜 -${Math.abs(diff)} XP — allégeance à la newsletter retirée.`;
-                        afficherNotifXP(msg);
+                        window.afficherNotifXP?.(msg);
                     }
                 }
             } catch (e) {
@@ -3014,7 +3014,7 @@
                         // Tooltips fiche personnage
                         raceNomPur   = data.race   ? data.race.split('|')[0]   : '';
                         classeNomPur = data.classe ? data.classe.split('|')[0] : '';
-                        mettreAJourTooltips(raceNomPur, classeNomPur);
+                        if (window.mettreAJourTooltips) window.mettreAJourTooltips(raceNomPur, classeNomPur);
                         if (document.getElementById('profil-couleur-blason')) {
                             const couleur = data.couleur_blason || "#8B0000";
                             document.getElementById('profil-couleur-blason').value = couleur;
@@ -3087,17 +3087,19 @@
                     window._firebaseAuth.currentUser._xpQuizDejaAttribue = true;
                 }
 
-                let rangActuel = GRADES[0];
+                // ── Rang : lire depuis window.RPG_GRADES (rpg-data.js synchrone) ──
+                const _grades = window.RPG_GRADES || window.GRADES_DATA || [];
+                let rangActuel   = _grades[0] || { icone: '🪵', nom: 'Serf Égaré', seuil: 0, coul: '#8B7355' };
                 let prochainRang = null;
-                for (let i = 0; i < GRADES.length; i++) {
-                    if (joursAncien >= GRADES[i].seuil) {
-                        rangActuel   = GRADES[i];
-                        prochainRang = GRADES[i + 1] || null;
+                for (let i = 0; i < _grades.length; i++) {
+                    if (joursAncien >= _grades[i].seuil) {
+                        rangActuel   = _grades[i];
+                        prochainRang = _grades[i + 1] || null;
                     }
                 }
-                window._joursAncienActuel = joursAncien;
+                window._joursAncienActuel  = joursAncien;
                 window._prochainRangActuel = prochainRang;
-                window._rangActuelData = rangActuel;
+                window._rangActuelData     = rangActuel;
 
                 if (document.getElementById('profil-niveau'))    document.getElementById('profil-niveau').innerText    = niveau;
                 if (document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
@@ -3278,7 +3280,7 @@
                         elAlign.style.cursor = 'default';
                         elAlign.onclick = null;
                     }
-                    appliquerCouleurAlignement(alignement);
+                    window.appliquerCouleurAlignement?.(alignement);
                 }
                 const histoire = profilData.histoire || null;
                 const elHistoire = document.getElementById('profil-histoire');
@@ -4909,8 +4911,8 @@
     }
 
     function getRangFromJours(jours) {
-        const grades = window.GRADES_DATA || [];
-        let rang = grades[0];
+        const grades = window.GRADES_DATA || window.RPG_GRADES || [];
+        let rang = grades[0] || { icone: "🪵", nom: "Serf Égaré", seuil: 0, coul: "#8B7355" };
         for (const g of grades) { if (jours >= g.seuil) rang = g; else break; }
         return rang;
     }
