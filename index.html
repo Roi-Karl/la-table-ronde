@@ -5810,9 +5810,9 @@
         { id:'objets',     label:'💎 Objets',      data: () => window.MATERIEL_OBJETS },
         { id:'montures',   label:'🐎 Montures',    data: () => window.MATERIEL_MONTURES },
         { id:'vehicules',  label:'⚓ Véhicules',   data: () => window.MATERIEL_VEHICULES },
-        { id:'potions',    label:'🧪 Potions',     data: () => null, avenir: true },
-        { id:'parchemins', label:'📜 Parchemins',  data: () => null, avenir: true },
-        { id:'auberge',    label:'🍺 Auberge',     data: () => null, avenir: true },
+        { id:'potions',    label:'🧪 Potions',     data: () => null },
+        { id:'parchemins', label:'📜 Parchemins',  data: () => null },
+        { id:'auberge',    label:'🍺 Auberge',     data: () => null },
     ];
     let _echoppeOngletActif = 'armes';
 
@@ -5901,11 +5901,11 @@
         const onglet  = ECHOPPE_ONGLETS.find(o => o.id === id);
         const contenu = document.getElementById('echoppe-contenu');
 
-        // Onglet "à venir"
-        if (onglet?.avenir) {
+        const data = onglet?.data();
+        if (!data) {
             const noms = { potions:'Potions & Élixirs', parchemins:'Parchemins & Sorts', auberge:'Auberge & Services' };
             contenu.innerHTML = `<div class="echoppe-vide" style="padding:40px 20px;">
-                <div style="font-size:2.5rem; margin-bottom:12px;">${onglet.label.split(' ')[0]}</div>
+                <div style="font-size:2.5rem; margin-bottom:12px;">${(onglet?.label||'').split(' ')[0]}</div>
                 <div style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--rouge-blason); margin-bottom:8px;">
                     ${noms[id] || id}
                 </div>
@@ -5915,8 +5915,6 @@
             </div>`;
             return;
         }
-
-        const data    = onglet?.data() || {};
 
         // Grouper par catégorie
         const groupes = {};
