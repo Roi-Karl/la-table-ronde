@@ -2962,14 +2962,14 @@
                 const elFicheXP     = document.getElementById('fiche-xp');
                 const elFicheXPNote = document.getElementById('fiche-xp-note');
                 if (elFicheNiveau) elFicheNiveau.textContent = niveau;
-                if (elFicheNiveauNote) {
+                if (elFicheNiveauNote) elFicheNiveauNote.textContent = `maîtrise +${maitrise}`;
+                if (elFicheXP) elFicheXP.textContent = puissance.toLocaleString('fr-FR');
+                if (elFicheXPNote) {
                     const prochainNiveau = window.NIVEAUX_DATA ? window.NIVEAUX_DATA.find(n => n.niveau === niveau + 1) : null;
-                    elFicheNiveauNote.textContent = prochainNiveau
-                        ? `prochain : ${prochainNiveau.xpMin.toLocaleString('fr-FR')} XP`
+                    elFicheXPNote.textContent = prochainNiveau
+                        ? `prochain niv. : ${prochainNiveau.xpMin.toLocaleString('fr-FR')} XP`
                         : 'niveau maximum';
                 }
-                if (elFicheXP) elFicheXP.textContent = puissance.toLocaleString('fr-FR');
-                if (elFicheXPNote) elFicheXPNote.textContent = `maîtrise +${maitrise}`;
                 const elRang     = document.getElementById('rang-chevalier');
                 const elRangTxt  = document.getElementById('rang-chevalier-texte');
                 if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${rangActuel.nom}`;
