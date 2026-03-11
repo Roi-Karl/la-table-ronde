@@ -4247,11 +4247,13 @@
             const bonusVal = bonusTotal[c] || 0;
             window._caracJets[c] = jets;
 
-            // Modificateur de la carac brute : floor((score-10)/2), clampé -4 à +5
+            // Score total = brut + bonus race/classe
+            // Modificateur = floor((scoreTotal - 10) / 2), clampé -4 à +5
+            const scoreTotal = val !== undefined ? val + bonusVal : undefined;
             const elBonus = document.getElementById('carac-bonus-' + c);
             if (elBonus) {
-                if (val !== undefined) {
-                    const mod = Math.max(-4, Math.min(5, Math.floor((val - 10) / 2)));
+                if (scoreTotal !== undefined) {
+                    const mod = Math.max(-4, Math.min(5, Math.floor((scoreTotal - 10) / 2)));
                     const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
                     elBonus.textContent = `(${ABREV_CARAC[c]} ${modStr})`;
                 } else {
@@ -4261,8 +4263,8 @@
 
             const elVal = document.getElementById('carac-' + c);
             if (elVal) {
-                if (val !== undefined) {
-                    elVal.textContent = val;
+                if (scoreTotal !== undefined) {
+                    elVal.textContent = scoreTotal;
                 } else {
                     elVal.innerHTML = '&#8212;';
                 }
