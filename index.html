@@ -2782,7 +2782,7 @@
                 case 'auth/wrong-password':        return "🔑 Le mot de passe ne déverrouille pas ce compte. Réessayez, messire.";
                 case 'auth/missing-password':      return "🗝️ Vous avez oublié la clé ! (Le mot de passe est obligatoire).";
                 case 'auth/email-already-in-use':  return "🛡️ Ce nom est déjà porté par un autre Chevalier du royaume.";
-                case 'auth/weak-password':         return "⚔️ Votre mot de passe est trop fragile. Forgez-en un plus robuste (6 caractères min).";
+                case 'auth/weak-password':         return "⚔️ Mot de passe trop faible. Règles du royaume :\n• Au moins 6 caractères\n• Mélangez lettres, chiffres et symboles\nEx : Chevalier42! ou R0iKarl#";
                 case 'auth/too-many-requests':     return "🚪 La garde bloque l'accès suite à trop d'échecs. Patientez un instant !";
                 default:                           return "📜 Une erreur mystérieuse s'est produite : " + code;
             }
@@ -3976,8 +3976,19 @@
         }
         // Mettre à jour l'affichage XP en temps réel
         if (xpGagne > 0) {
+            const nouvelleXpQuiz = (window._xpQuizActuel || 0) + xpGagne;
+            window._xpQuizActuel = nouvelleXpQuiz;
+            // Recalculer la puissance totale
+            const user = window._firebaseAuth?.currentUser;
+            const joursAncien = window._joursAncienActuel || 0;
+            const xpNewsletter = parseInt(document.getElementById('profil-puissance')?.dataset?.newsletter || 0);
+            const nouvellePuissance = 10 + (joursAncien * 12) + nouvelleXpQuiz + xpNewsletter;
             const elXP = document.getElementById('profil-puissance');
-            if (elXP) elXP.innerText = parseInt(elXP.innerText) + xpGagne;
+            if (elXP) elXP.innerText = nouvellePuissance;
+            const elFicheXP = document.getElementById('fiche-xp');
+            if (elFicheXP) elFicheXP.textContent = nouvellePuissance.toLocaleString('fr-FR');
+            // Notification visuelle
+            window.afficherNotifXP?.(`✨ +${xpGagne} XP pour votre alignement !`);
         }
 
         // Sauvegarder dans Firestore — l'utilisateur est forcément connecté ici
@@ -4278,41 +4289,54 @@
 
         // ── Mise à jour Points de Vie ──────────────────────────
         if (window.mettreAJourPV && profilData) {
-            const niveauData = window.getNiveauFromXP ? window.getNiveauFromXP(
-                10 + ((profilData.jours_anciennete || 0) * 12) +
-                (profilData.xp_quiz || 0) +
-                (profilData.xp_newsletter || 0)
-            ) : { niveau: 1 };
-            window.mettreAJourPV(profilData, classeNomPur, niveauData.niveau, bonusTotal);
+            if (!raceNomPur || !classeNomPur) {
+                // Pas encore de race/classe → afficher —
+                const elPV = document.getElementById('fiche-pv');
+                if (elPV) elPV.textContent = '—';
+            } else {
+                const niveauData = window.getNiveauFromXP ? window.getNiveauFromXP(
+                    10 + ((profilData.jours_anciennete || 0) * 12) +
+                    (profilData.xp_quiz || 0) +
+                    (profilData.xp_newsletter || 0)
+                ) : { niveau: 1 };
+                window.mettreAJourPV(profilData, classeNomPur, niveauData.niveau, bonusTotal);
+            }
         }
 
         // ── Mise à jour Initiative ─────────────────────────────
         // Initiative = mod DEX + bonus maîtrise
         {
-            const niveauData  = window.getNiveauFromXP ? window.getNiveauFromXP(
-                10 + ((profilData.jours_anciennete || 0) * 12) +
-                (profilData.xp_quiz || 0) +
-                (profilData.xp_newsletter || 0)
-            ) : { niveau: 1, maitrise: 2 };
-            const maitrise    = niveauData.maitrise || 2;
-            const modDex      = window.getModifCarac
-                ? window.getModifCarac('dexterite', profilData.carac_dexterite || 10, bonusTotal)
-                : Math.floor(((profilData.carac_dexterite || 10) + (bonusTotal.dexterite || 0) - 10) / 2);
-            const initiative  = modDex + maitrise;
-            const signe       = initiative >= 0 ? '+' : '';
+            const elInit   = document.getElementById('fiche-initiative');
+            const elNote   = document.getElementById('initiative-note');
+            const blocInit = document.getElementById('bloc-initiative');
 
-            const elInit      = document.getElementById('fiche-initiative');
-            const elNote      = document.getElementById('initiative-note');
-            const blocInit    = document.getElementById('bloc-initiative');
-            if (elInit) elInit.textContent = signe + initiative;
-            if (elNote) {
-                const dexStr      = modDex >= 0 ? `+${modDex}` : `${modDex}`;
-                elNote.textContent = `DEX(${dexStr}) + maîtrise(+${maitrise})`;
+            if (!raceNomPur || !classeNomPur) {
+                // Pas encore de race/classe → afficher —
+                if (elInit) elInit.textContent = '—';
+                if (elNote) elNote.textContent = 'mod DEX + maîtrise';
+            } else {
+                const niveauData  = window.getNiveauFromXP ? window.getNiveauFromXP(
+                    10 + ((profilData.jours_anciennete || 0) * 12) +
+                    (profilData.xp_quiz || 0) +
+                    (profilData.xp_newsletter || 0)
+                ) : { niveau: 1, maitrise: 2 };
+                const maitrise    = niveauData.maitrise || 2;
+                const modDex      = window.getModifCarac
+                    ? window.getModifCarac('dexterite', profilData.carac_dexterite || 10, bonusTotal)
+                    : Math.floor(((profilData.carac_dexterite || 10) + (bonusTotal.dexterite || 0) - 10) / 2);
+                const initiative  = modDex + maitrise;
+                const signe       = initiative >= 0 ? '+' : '';
+
+                if (elInit) elInit.textContent = signe + initiative;
+                if (elNote) {
+                    const dexStr = modDex >= 0 ? `+${modDex}` : `${modDex}`;
+                    elNote.textContent = `DEX(${dexStr}) + maîtrise(+${maitrise})`;
+                }
+                if (blocInit) blocInit.style.display = 'block';
+
+                // Stocker pour la modale
+                window._initiativeState = { modDex, maitrise, initiative, total: initiative };
             }
-            if (blocInit) blocInit.style.display = 'block';
-
-            // Stocker pour la modale
-            window._initiativeState = { modDex, maitrise, initiative, total: initiative };
         }
     }
     window.mettreAJourFicheCaracs = mettreAJourFicheCaracs;
