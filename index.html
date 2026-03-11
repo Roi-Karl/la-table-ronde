@@ -2988,6 +2988,9 @@
                         prochainRang = GRADES[i + 1] || null;
                     }
                 }
+                window._joursAncienActuel = joursAncien;
+                window._prochainRangActuel = prochainRang;
+                window._rangActuelData = rangActuel;
 
                 if (document.getElementById('profil-niveau'))    document.getElementById('profil-niveau').innerText    = niveau;
                 if (document.getElementById('profil-puissance')) document.getElementById('profil-puissance').innerText = puissance;
@@ -4608,6 +4611,42 @@
         const prochainIdx = allGrades.findIndex(g => g.nom === grade.nom) + 1;
         const prochain    = allGrades[prochainIdx];
 
+        // Jours d'allégeance + progression vers prochain rang
+        const jours      = window._joursAncienActuel || 0;
+        const joursLabel = jours > 1 ? `${jours} jours` : `${jours} jour`;
+        let pct = 0;
+        if (prochain) {
+            pct = Math.min(100, Math.max(0,
+                ((jours - grade.seuil) / (prochain.seuil - grade.seuil)) * 100
+            ));
+        } else {
+            pct = 100; // rang max
+        }
+        const barreHTML = `
+            <div style="margin-bottom:18px; padding-bottom:16px; border-bottom:1px solid rgba(139,0,0,0.15);">
+                <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--or-sombre);
+                     letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">
+                    🛡️ Progression
+                </div>
+                <div style="font-family:'Lora',serif; font-size:0.82rem; color:#3a2a0a; margin-bottom:8px;">
+                    <strong>${joursLabel}</strong> d'allégeance
+                </div>
+                ${prochain ? `
+                <div style="font-family:'Cinzel',serif; font-size:0.6rem; color:var(--or-sombre); margin-bottom:5px;">
+                    Progression vers le prochain rang
+                </div>
+                <div style="background:rgba(0,0,0,0.1); border:1px solid rgba(212,175,55,0.3); height:10px; border-radius:5px; overflow:hidden; margin-bottom:4px;">
+                    <div style="background:var(--rouge-blason); width:${pct.toFixed(1)}%; height:100%;
+                         border-radius:5px; transition:width 1s ease-in-out;"></div>
+                </div>
+                <div style="font-family:'Lora',serif; font-size:0.62rem; color:#7a5a2a; font-style:italic; text-align:right;">
+                    ${jours} / ${prochain.seuil} jours
+                </div>` : `
+                <div style="font-family:'Lora',serif; font-size:0.75rem; color:var(--or-royal); text-align:center; padding:4px;">
+                    ✦ Rang suprême atteint ✦
+                </div>`}
+            </div>`;
+
         // Utilise description_joueur (rpg-data.js) ou description (GRADES inline)
         const descBrut = (grade.description_joueur || grade.description || '').trim();
         const corps = descBrut.split(/\n\n+/).map(p => {
@@ -4620,11 +4659,18 @@
             ? `<span style="font-family:'Cinzel',serif; font-size:0.7rem;
                 background:rgba(139,0,0,0.08); border:1px solid rgba(139,0,0,0.25);
                 color:var(--rouge-blason); padding:3px 10px; border-radius:2px;">
-                → ${prochain.icone} ${prochain.nom} · ${prochain.seuil} jours</span>`
+                → ${prochain.icone} ${prochain.nom} · À partir de ${prochain.seuil} jours</span>`
             : `<span style="font-family:'Cinzel',serif; font-size:0.7rem;
                 background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.4);
                 color:var(--or-sombre); padding:3px 10px; border-radius:2px;">
                 👑 Rang suprême</span>`;
+
+        const citation = `
+            <div style="font-family:'Lora',serif; font-style:italic; font-size:0.78rem;
+                 color:#5a3e1b; border-top:1px solid rgba(139,0,0,0.15);
+                 padding-top:12px; margin-top:4px; text-align:center;">
+                "La patience est la vertu des nobles. Voici comment s'acquiert la gloire en ces terres."
+            </div>`;
 
         document.getElementById('rpg-modal-contenu').innerHTML = `
             <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;
@@ -4639,6 +4685,7 @@
                          color:#5a3e1b; margin-top:4px;">${grade.tooltip || ''}</div>
                 </div>
             </div>
+            ${barreHTML}
             <div style="margin-bottom:16px;">
                 <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--or-sombre);
                      letter-spacing:0.12em; text-transform:uppercase; margin-bottom:7px;">
@@ -4654,6 +4701,7 @@
                 </div>
                 ${corps}
             </div>
+            ${citation}
         `;
         if(window._hideRPGTooltip) window._hideRPGTooltip(); document.getElementById('rpg-modal-overlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
