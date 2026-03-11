@@ -2782,7 +2782,9 @@
                 case 'auth/wrong-password':        return "🔑 Le mot de passe ne déverrouille pas ce compte. Réessayez, messire.";
                 case 'auth/missing-password':      return "🗝️ Vous avez oublié la clé ! (Le mot de passe est obligatoire).";
                 case 'auth/email-already-in-use':  return "🛡️ Ce nom est déjà porté par un autre Chevalier du royaume.";
-                case 'auth/weak-password':         return "⚔️ Mot de passe trop faible. Règles du royaume :\n• Au moins 6 caractères\n• Mélangez lettres, chiffres et symboles\nEx : Chevalier42! ou R0iKarl#";
+                case 'auth/weak-password':
+                case 'auth/password-does-not-meet-requirements':
+                    return "⚔️ Mot de passe trop faible. Règles du royaume :\n• Au moins 8 caractères\n• Au moins une majuscule (A-Z)\n• Au moins un chiffre (0-9)\n• Au moins un symbole ( ! @ # $ % etc. )\nEx : Chevalier42! ou R0iKarl#";
                 case 'auth/too-many-requests':     return "🚪 La garde bloque l'accès suite à trop d'échecs. Patientez un instant !";
                 default:                           return "📜 Une erreur mystérieuse s'est produite : " + code;
             }
