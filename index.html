@@ -5457,19 +5457,17 @@
         // Résultat
         const d20      = Math.floor(Math.random() * 20) + 1;
         const total    = d20 + modDex + maitrise;
-        const signe    = total >= 0 ? '+' : '';
         const modStr   = modDex >= 0 ? `+${modDex}` : `${modDex}`;
 
         de.finir(d20);
 
-        scoreEl.innerText   = signe + total;
-        scoreEl.style.color = d20 === 20 ? '#2a7a2a'       // nat 20 = vert
-                            : d20 === 1  ? 'var(--rouge-blason)' // nat 1 = rouge
+        scoreEl.innerText   = total;
+        scoreEl.style.color = d20 === 20 ? '#2a7a2a'
                             : 'var(--rouge-blason)';
 
         let labelD20 = d20 === 20 ? '🌟 Naturel 20 !' : d20 === 1 ? '💀 Naturel 1' : `d20 = ${d20}`;
         detailEl.innerHTML = `<span style="font-family:'Lora',serif;font-size:0.78rem;color:#5a3e1b;">
-            ${labelD20} &nbsp;${modStr} DEX &nbsp;+${maitrise} maîtrise = <strong>${signe}${total}</strong>
+            ${labelD20} &nbsp;${modStr} DEX &nbsp;+${maitrise} maîtrise = <strong>${total}</strong>
         </span>`;
 
         document.getElementById('des-jets-info').innerText = 'Relancez autant que souhaité';
