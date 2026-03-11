@@ -1,4 +1,4 @@
-/** 
+/**
  * ═══════════════════════════════════════════════════════════════
  *  LA TABLE RONDE (MAIS CARRÉE) — Données Matériel
  *  Armes, Armures, Équipement, Montures, Objets
