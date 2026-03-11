@@ -4559,8 +4559,13 @@
 
     // ── TRÉSOR : sauvegarde Firestore (appelée par événements externes) ──
     window.sauvegarderTresor = async function() {
-        const user = auth.currentUser;
+        const user = window._firebaseAuth?.currentUser;
         if (!user) return;
+        const _db  = window._firebaseDb;
+        const _doc = window._firebaseDoc;
+        const _set = window._firebaseSetDoc;
+        const _ts  = window._firebaseServerTimestamp;
+        if (!_db || !_doc || !_set) return;
         const tresor = {
             tresor_pp: parseInt(document.getElementById('tresor-pp')?.value) || 0,
             tresor_po: parseInt(document.getElementById('tresor-po')?.value) || 0,
@@ -4569,7 +4574,7 @@
             tresor_pc: parseInt(document.getElementById('tresor-pc')?.value) || 0,
         };
         try {
-            await setDoc(doc(db, 'membres', user.uid), { ...tresor, mis_a_jour: serverTimestamp() }, { merge: true });
+            await _set(_doc(_db, 'membres', user.uid), { ...tresor, mis_a_jour: _ts() }, { merge: true });
         } catch(e) {
             console.warn('Erreur sauvegarde trésor:', e);
         }
