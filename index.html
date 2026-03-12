@@ -1995,6 +1995,15 @@
 
                 <div class="fiche-corps">
 
+                    <!-- Bouton Carte du Royaume -->
+                    <div style="margin-bottom:10px;">
+                        <button onclick="ouvrirCarte()" title="Carte du Royaume"
+                                style="background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; gap:6px;">
+                            <span style="font-size:1.5rem; line-height:1;">🗺️</span>
+                            <span style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase;">Carte du Royaume</span>
+                        </button>
+                    </div>
+
                     <!-- Rang -->
                     <div class="fiche-ligne">
                         <span class="fiche-label">Rang :</span>
@@ -2138,10 +2147,6 @@
 
                         <!-- Icônes boutiques -->
                         <div style="display:flex; justify-content:center; gap:14px; margin-bottom:14px;">
-                            <div style="text-align:center; cursor:pointer;" onclick="ouvrirCarte()" title="Carte du Royaume" style="text-align:center; cursor:pointer;">
-                                <div style="font-size:1.6rem;">🗺️</div>
-                                <div style="font-family:'Cinzel',serif; font-size:0.5rem; color:var(--or-sombre); margin-top:2px; letter-spacing:0.05em;">CARTE</div>
-                            </div>
                             <div style="text-align:center; cursor:pointer;" onclick="ouvrirEchoppe()" title="Échoppe du royaume">
                                 <div style="font-size:1.5rem; line-height:1;">⚔️</div>
                                 <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-transform:uppercase;">Échoppe</div>
@@ -6335,7 +6340,7 @@
             if (window._gmapsLoading || window.google) return;
             window._gmapsLoading = true;
             var s = document.createElement("script");
-            s.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDlcm8VgUj_2KyZb3iPFTtoUw9XWrNPRHY&libraries=places&language=fr&v=weekly";
+            s.src = "https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&libraries=places&language=fr&v=weekly";
             s.async = true;
             s.defer = true;
             document.head.appendChild(s);
