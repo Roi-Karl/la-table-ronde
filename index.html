@@ -1936,12 +1936,18 @@
             <p>Les plus nobles chevaliers ayant prêté allégeance au Roi Karl.</p>
 
             <!-- Onglets -->
-            <div class="cour-onglets" style="margin-top:1.5rem;">
-                <button class="cour-onglet actif" onclick="basculerCourOnglet('gradés', this)">
-                    👑 Hauts Gradés
-                </button>
-                <button class="cour-onglet" onclick="basculerCourOnglet('inscrits', this)">
-                    🕯 Derniers Inscrits
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:1.5rem;">
+                <div class="cour-onglets" style="margin:0;">
+                    <button class="cour-onglet actif" onclick="basculerCourOnglet('gradés', this)">
+                        👑 Hauts Gradés
+                    </button>
+                    <button class="cour-onglet" onclick="basculerCourOnglet('inscrits', this)">
+                        🕯 Derniers Inscrits
+                    </button>
+                </div>
+                <button onclick="ouvrirCarte()" class="btn-secondaire"
+                        style="font-size:0.75rem; padding:6px 14px; display:flex; align-items:center; gap:6px;">
+                    🗺️ Carte du Royaume
                 </button>
             </div>
 
@@ -2132,6 +2138,10 @@
 
                         <!-- Icônes boutiques -->
                         <div style="display:flex; justify-content:center; gap:14px; margin-bottom:14px;">
+                            <div style="text-align:center; cursor:pointer;" onclick="ouvrirCarte()" title="Carte du Royaume" style="text-align:center; cursor:pointer;">
+                                <div style="font-size:1.6rem;">🗺️</div>
+                                <div style="font-family:'Cinzel',serif; font-size:0.5rem; color:var(--or-sombre); margin-top:2px; letter-spacing:0.05em;">CARTE</div>
+                            </div>
                             <div style="text-align:center; cursor:pointer;" onclick="ouvrirEchoppe()" title="Échoppe du royaume">
                                 <div style="font-size:1.5rem; line-height:1;">⚔️</div>
                                 <div style="font-family:'Cinzel',serif; font-size:0.62rem; color:#3a2a0a; font-weight:bold; margin-top:2px; text-transform:uppercase;">Échoppe</div>
@@ -6117,6 +6127,202 @@
         </div>
     </div>
 
+    <script>
+    // ======================================================
+    //  CARTE DU ROYAUME
+    // ======================================================
+    (function() {
+        var _carteMap      = null;
+        var _carteMarkers  = [];
+        var _carteInfoWin  = null;
+        var _carteDonnees  = null; // cache des membres
+
+        window.ouvrirCarte = async function() {
+            // Verifier que l'utilisateur est connecte
+            if (!window._firebaseAuth || !window._firebaseAuth.currentUser) {
+                alert("🔒 Vous devez être connecté pour accéder à la carte du Royaume.");
+                return;
+            }
+            var overlay = document.getElementById("carte-modal-overlay");
+            overlay.style.display = "flex";
+            document.body.style.overflow = "hidden";
+
+            // Charger les membres si pas encore en cache
+            if (!_carteDonnees) {
+                await _chargerMembres();
+            }
+            // Initialiser la carte apres un court delai (le div doit etre visible)
+            setTimeout(_initCarte, 150);
+        };
+
+        window.fermerCarte = function(event) {
+            var overlay = document.getElementById("carte-modal-overlay");
+            if (event && event.target !== overlay) return;
+            _fermerCarteForce();
+        };
+        window.fermerCarteBtn = function() { _fermerCarteForce(); };
+
+        function _fermerCarteForce() {
+            document.getElementById("carte-modal-overlay").style.display = "none";
+            document.body.style.overflow = "";
+            // Fermer infobulle si ouverte
+            if (_carteInfoWin) { _carteInfoWin.close(); _carteInfoWin = null; }
+        }
+
+        async function _chargerMembres() {
+            var db      = window._firebaseDb;
+            var col     = window._firebaseCollection;
+            var getDocs = window._firebaseGetDocs;
+            if (!db || !col || !getDocs) return;
+            try {
+                var snap = await getDocs(col(db, "membres"));
+                var tous = [];
+                snap.forEach(function(d) { tous.push(Object.assign({ id: d.id }, d.data())); });
+                // Garder seulement ceux qui ont lat/lng
+                _carteDonnees = tous.filter(function(m) {
+                    return m.lat && m.lng && (m.pseudo || m.email);
+                });
+            } catch(e) {
+                console.warn("Carte - erreur Firestore:", e);
+                _carteDonnees = [];
+            }
+        }
+
+        function _initCarte() {
+            if (!window.google || !google.maps) {
+                setTimeout(_initCarte, 300); return;
+            }
+            var loader = document.getElementById("carte-loader");
+            var mapDiv = document.getElementById("carte-royaume-map");
+            var compteur = document.getElementById("carte-compteur");
+
+            if (!_carteDonnees || _carteDonnees.length === 0) {
+                if (loader) loader.innerHTML = '<div style="font-family:'Cinzel',serif;font-size:0.8rem;color:var(--rouge-blason);padding:20px;text-align:center;">' +
+                    '🏔️ Aucun chevalier géolocalisé pour l\'instant.<br><span style="font-family:'Lora',serif;font-style:italic;font-size:0.7rem;color:#9a7a50;">Les membres doivent renseigner leur adresse dans leur profil.</span></div>';
+                if (compteur) compteur.textContent = "0 chevalier géolocalisé sur la carte";
+                return;
+            }
+
+            // Calculer le centre (barycentre des membres)
+            var latSum = 0, lngSum = 0;
+            _carteDonnees.forEach(function(m) { latSum += m.lat; lngSum += m.lng; });
+            var centre = { lat: latSum / _carteDonnees.length, lng: lngSum / _carteDonnees.length };
+
+            // Creer ou recycler la carte
+            if (!_carteMap) {
+                _carteMap = new google.maps.Map(mapDiv, {
+                    center: centre,
+                    zoom: 4,
+                    mapTypeId: "roadmap",
+                    styles: [
+                        { featureType: "all", elementType: "geometry", stylers: [{ saturation: -30 }] },
+                        { featureType: "water", elementType: "geometry", stylers: [{ color: "#b8d4e8" }] },
+                        { featureType: "landscape", elementType: "geometry", stylers: [{ color: "#f0e8d0" }] },
+                        { featureType: "road", elementType: "geometry", stylers: [{ color: "#e8d5a8" }] },
+                        { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] }
+                    ],
+                    disableDefaultUI: false,
+                    zoomControl: true,
+                    streetViewControl: false,
+                    mapTypeControl: false,
+                    fullscreenControl: true
+                });
+                _carteInfoWin = new google.maps.InfoWindow();
+            } else {
+                _carteMap.setCenter(centre);
+                // Supprimer anciens marqueurs
+                _carteMarkers.forEach(function(m) { m.setMap(null); });
+                _carteMarkers = [];
+                _carteInfoWin.close();
+            }
+
+            // Creer marqueurs
+            var bounds = new google.maps.LatLngBounds();
+            _carteDonnees.forEach(function(membre) {
+                var pos = { lat: parseFloat(membre.lat), lng: parseFloat(membre.lng) };
+                bounds.extend(pos);
+
+                // Couleur du blason ou rouge par defaut
+                var couleur = membre.couleur_blason || "#8B0000";
+
+                // Marqueur SVG chateau
+                var svgMarker = {
+                    path: "M-8,-16 L-8,-10 L-12,-10 L-12,0 L12,0 L12,-10 L8,-10 L8,-16 L5,-16 L5,-12 L2,-12 L2,-16 L-2,-16 L-2,-12 L-5,-12 L-5,-16 Z",
+                    fillColor: couleur,
+                    fillOpacity: 1,
+                    strokeColor: "#D4AF37",
+                    strokeWeight: 1.5,
+                    scale: 1.3,
+                    anchor: new google.maps.Point(0, 0)
+                };
+
+                var marker = new google.maps.Marker({
+                    position: pos,
+                    map: _carteMap,
+                    icon: svgMarker,
+                    title: membre.pseudo || "Chevalier"
+                });
+
+                // Info-bulle au clic
+                marker.addListener("click", function() {
+                    var jours = 0;
+                    if (membre.cree_le && membre.cree_le.seconds) {
+                        jours = Math.max(0, Math.floor((Date.now()/1000 - membre.cree_le.seconds) / 86400));
+                    }
+                    var xp = 10 + (jours * 12) + (membre.xp_quiz || 0) + (membre.xp_newsletter || 0);
+                    var raceRaw  = membre.race   || "";
+                    var classeRaw = membre.classe || "";
+                    var raceNom  = raceRaw.split("|")[0]  || "";
+                    var raceIco  = raceRaw.split("|")[1]  || "";
+                    var classeNom = classeRaw.split("|")[0] || "";
+                    var classeIco = classeRaw.split("|")[1] || "";
+                    var rcLine = (raceNom || classeNom)
+                        ? (raceIco + " " + raceNom + (raceNom && classeNom ? " &middot; " : "") + classeIco + " " + classeNom).trim()
+                        : "";
+                    var devise = membre.devise ? "&laquo;&nbsp;" + membre.devise + "&nbsp;&raquo;" : "";
+                    var html = '<div style="font-family:Lora,serif; min-width:170px; max-width:220px; padding:2px;">' +
+                        '<div style="font-family:Cinzel,serif; font-size:0.9rem; font-weight:bold; color:#8B0000; margin-bottom:4px;">' +
+                            (membre.pseudo || "Chevalier Anonyme") + '</div>' +
+                        (rcLine ? '<div style="font-size:0.72rem; color:#5a3a1a; margin-bottom:3px;">' + rcLine + '</div>' : '') +
+                        (devise  ? '<div style="font-size:0.68rem; font-style:italic; color:#7a5a2a; margin-bottom:5px;">' + devise + '</div>' : '') +
+                        '<div style="display:flex; gap:10px; font-size:0.7rem; color:#5a3a1a; border-top:1px solid rgba(212,175,55,0.3); padding-top:5px; margin-top:2px;">' +
+                            '<span>⚔️ ' + xp + ' PUI</span>' +
+                            '<span>📅 ' + jours + ' jours</span>' +
+                        '</div>' +
+                        (membre.adresse ? '<div style="font-size:0.62rem; color:#9a7a50; margin-top:4px;">📍 ' + membre.adresse + '</div>' : '') +
+                        '</div>';
+                    _carteInfoWin.setContent(html);
+                    _carteInfoWin.open(_carteMap, marker);
+                });
+
+                _carteMarkers.push(marker);
+            });
+
+            // Ajuster le zoom pour voir tous les marqueurs
+            if (_carteDonnees.length > 1) {
+                _carteMap.fitBounds(bounds);
+                // Eviter un zoom trop proche
+                google.maps.event.addListenerOnce(_carteMap, "bounds_changed", function() {
+                    if (_carteMap.getZoom() > 10) _carteMap.setZoom(10);
+                });
+            }
+
+            if (loader) loader.style.display = "none";
+            var n = _carteDonnees.length;
+            if (compteur) compteur.textContent = n + " chevalier" + (n > 1 ? "s" : "") + " géolocalisé" + (n > 1 ? "s" : "") + " sur la carte du Royaume";
+        }
+
+        // Invalider le cache quand on sauvegarde le profil (adresse peut avoir change)
+        var _origSave = window.sauvegarderProfil;
+        if (_origSave) {
+            window.sauvegarderProfil = async function() {
+                _carteDonnees = null;
+                return _origSave.apply(this, arguments);
+            };
+        }
+    })();
+    </script>
+
 
     <!-- Places Autocomplete (New API - post mars 2025) -->
     <script>
@@ -6264,5 +6470,64 @@
         });
     })();
     </script>
+
+    <!-- ======================================================
+         MODALE CARTE DU ROYAUME
+    ====================================================== -->
+    <div id="carte-modal-overlay" onclick="fermerCarte(event)"
+         style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7);
+                z-index:1200; align-items:center; justify-content:center; padding:16px;">
+        <div style="background:var(--parchemin); border:2px solid rgba(212,175,55,0.5);
+                    border-radius:4px; width:100%; max-width:820px; max-height:92vh;
+                    display:flex; flex-direction:column; position:relative; overflow:hidden;">
+
+            <!-- En-tete -->
+            <div style="padding:16px 20px 12px; border-bottom:1px solid rgba(212,175,55,0.3);
+                        display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:1.8rem;">🗺️</span>
+                    <div>
+                        <div style="font-family:'Cinzel',serif; font-size:1rem; font-weight:bold;
+                                    color:var(--rouge-blason); letter-spacing:0.08em;">Carte du Royaume</div>
+                        <div id="carte-sous-titre" style="font-family:'Lora',serif; font-style:italic; font-size:0.7rem;
+                                    color:#7a5a2a; margin-top:1px;">Les chevaliers de la Cour du Roi Karl</div>
+                    </div>
+                </div>
+                <button onclick="fermerCarteBtn()"
+                        style="background:none; border:none; font-size:1.2rem; cursor:pointer;
+                               color:var(--or-sombre); line-height:1; padding:4px;">✕</button>
+            </div>
+
+            <!-- Carte -->
+            <div style="flex:1; position:relative; min-height:420px;">
+                <div id="carte-royaume-map" style="width:100%; height:100%; min-height:420px;"></div>
+                <!-- Loader -->
+                <div id="carte-loader" style="position:absolute; inset:0; background:rgba(244,235,208,0.92);
+                     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;">
+                    <div style="font-size:2rem; animation:spin 1.5s linear infinite;">🏰</div>
+                    <div style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--rouge-blason);
+                                letter-spacing:0.1em;">Convocation des chevaliers...</div>
+                </div>
+            </div>
+
+            <!-- Pied : compteur -->
+            <div style="padding:8px 16px; border-top:1px solid rgba(212,175,55,0.2); flex-shrink:0;
+                        font-family:'Lora',serif; font-style:italic; font-size:0.72rem; color:#9a7a50; text-align:center;">
+                <span id="carte-compteur">⚔️ Chargement...</span>
+            </div>
+        </div>
+    </div>
+    <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .gm-style .carte-infobulle {
+            background: #f4ebd0;
+            border: 1.5px solid rgba(212,175,55,0.6);
+            border-radius: 4px;
+            padding: 10px 13px;
+            min-width: 160px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+            font-family: 'Lora', serif;
+        }
+    </style>
 </body>
 </html>
