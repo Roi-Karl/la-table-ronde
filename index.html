@@ -6371,7 +6371,18 @@
                 return p.race === race && p.classe === classe && p.sexe === sexeP;
             });
             console.log('[Portrait] entry=', entry ? entry.fichier : 'AUCUN');
-            if (!entry && prompts.length > 0) console.warn('[Portrait] ex JSON[0]:', JSON.stringify(prompts[0]));
+            if (!entry && prompts.length > 0) {
+                console.warn('[Portrait] ex JSON[0]:', JSON.stringify(prompts[0]));
+                // Comparer caractere par caractere
+                var p0 = prompts[0];
+                console.warn('[Portrait] race match:', p0.race === race, JSON.stringify(p0.race), '===', JSON.stringify(race));
+                console.warn('[Portrait] classe match:', p0.classe === classe, JSON.stringify(p0.classe), '===', JSON.stringify(classe));
+                console.warn('[Portrait] sexe match:', p0.sexe === sexeP, JSON.stringify(p0.sexe), '===', JSON.stringify(sexeP));
+                // Chercher entrees feminines
+                var femCount = prompts.filter(function(p){ return p.sexe === 'Féminin'; }).length;
+                var femCount2 = prompts.filter(function(p){ return p.sexe === sexeP; }).length;
+                console.warn('[Portrait] nb Feminin literal:', femCount, '/ nb avec sexeP:', femCount2);
+            }
             if (!entry) { if(ld)ld.style.display='none'; if(ph)ph.style.display='flex'; _toastPortrait('❌ Portrait introuvable','err'); return; }
             console.log('[Portrait] prompt len=', entry.prompt ? entry.prompt.length : 'null');
             // Proxy Cloudflare Worker (token HF cache cote serveur)
