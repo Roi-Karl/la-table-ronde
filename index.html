@@ -6374,16 +6374,12 @@
             if (!entry && prompts.length > 0) console.warn('[Portrait] ex JSON[0]:', JSON.stringify(prompts[0]));
             if (!entry) { if(ld)ld.style.display='none'; if(ph)ph.style.display='flex'; _toastPortrait('❌ Portrait introuvable','err'); return; }
             console.log('[Portrait] prompt len=', entry.prompt ? entry.prompt.length : 'null');
-            // HuggingFace FLUX.1-schnell
-            var HF_TOKEN = "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";
-            var HF_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell";
-            fetch(HF_URL, {
+            // Proxy Cloudflare Worker (token HF cache cote serveur)
+            var PROXY_URL = "https://portrait-proxy.karlmorand.workers.dev";
+            fetch(PROXY_URL, {
                 method: "POST",
-                headers: {
-                    "Authorization": "Bearer " + HF_TOKEN,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ inputs: entry.prompt })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt: entry.prompt })
             })
             .then(function(resp) {
                 if (!resp.ok) throw new Error("HF " + resp.status);
