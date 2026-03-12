@@ -3741,7 +3741,8 @@
                 }
                 const elRang     = document.getElementById('rang-chevalier');
                 const elRangTxt  = document.getElementById('rang-chevalier-texte');
-                if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${rangActuel.nom}`;
+                window._rangActuelCourant = rangActuel;
+                if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${window.getNomGenre ? window.getNomGenre(rangActuel.nom) : rangActuel.nom}`;
                 if (elRang) {
                     elRang.style.cursor = 'pointer';
                     elRang.style.color  = '';
@@ -3756,7 +3757,7 @@
                             <div class="rpg-tt-header">
                                 <div class="rpg-tt-header-icone">${rangActuel.icone}</div>
                                 <div>
-                                    <div class="rpg-tt-header-nom" style="color:${rangActuel.coul};">${rangActuel.nom}</div>
+                                    <div class="rpg-tt-header-nom" style="color:${rangActuel.coul};">${window.getNomGenre ? window.getNomGenre(rangActuel.nom) : rangActuel.nom}</div>
                                     <div class="rpg-tt-header-accroche">${rangActuel.tooltip || ''}</div>
                                 </div>
                             </div>
@@ -3822,7 +3823,7 @@
                                     <div style="font-family:'Cinzel',serif;font-size:0.55rem;color:var(--or-sombre);
                                          letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">RANG</div>
                                     <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:bold;
-                                         color:${rangActuel.coul};letter-spacing:0.05em;">${rangActuel.nom}</div>
+                                         color:${rangActuel.coul};letter-spacing:0.05em;">${window.getNomGenre ? window.getNomGenre(rangActuel.nom) : rangActuel.nom}</div>
                                     <div style="font-family:'Lora',serif;font-style:italic;font-size:0.75rem;
                                          color:#5a3e1b;margin-top:4px;">${rangActuel.tooltip || ''}</div>
                                 </div>
@@ -3850,7 +3851,7 @@
                         document.body.style.overflow = 'hidden';
                     };
                 }
-                if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = rangActuel.nom;
+                if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = window.getNomGenre ? window.getNomGenre(rangActuel.nom) : rangActuel.nom;
                 if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
 
                 // Alignement + Histoire depuis Firestore
@@ -4815,31 +4816,35 @@
     }
     window.mettreAJourTooltips = mettreAJourTooltips;
 
-    // Régénère les libellés et tooltips race/classe après changement de genre
+    // Régénère libellés + tooltips race/classe/rang après changement de genre
     window._rafraichirFicheGenre = function() {
-        // Récupérer race/classe courantes depuis les éléments de fiche
         var raceEl   = document.getElementById('fiche-race-texte');
         var classeEl = document.getElementById('fiche-classe-texte');
-        // Récupérer les valeurs brutes depuis les selects (source de vérité)
+        var rangEl   = document.getElementById('rang-chevalier-texte');
+        var rNom = window._raceNomPurCourant   || '';
+        var cNom = window._classeNomPurCourant || '';
+        // Mettre à jour via les selects si disponibles (formulaire profil)
         var raceVal   = document.getElementById('profil-race')?.value   || '';
         var classeVal = document.getElementById('profil-classe')?.value || '';
-        if (!raceVal && !classeVal) {
-            // Sur la fiche (pas le formulaire), les valeurs viennent de _raceNomPurCourant
-            var rNom = window._raceNomPurCourant   || '';
-            var cNom = window._classeNomPurCourant || '';
-            if (raceEl && rNom) {
-                var rData = window.RPG_RACES?.[rNom];
-                raceEl.innerHTML = rData ? `${rData.icone} ${window.getNomGenre(rNom)}` : rNom;
-            }
-            if (classeEl && cNom) {
-                var cData = window.RPG_CLASSES?.[cNom];
-                classeEl.innerHTML = cData ? `${cData.icone} ${window.getNomGenre(cNom)}` : cNom;
-            }
-            if (rNom || cNom) window.mettreAJourTooltips(rNom, cNom);
+        if (raceVal || classeVal) {
+            window.aperçuRaceClasse && window.aperçuRaceClasse();
             return;
         }
-        // Dans le formulaire, relancer aperçuRaceClasse
-        window.aperçuRaceClasse && window.aperçuRaceClasse();
+        // Sur la fiche
+        if (raceEl && rNom) {
+            var rData = window.RPG_RACES?.[rNom];
+            raceEl.innerHTML = rData ? `${rData.icone} ${window.getNomGenre(rNom)}` : window.getNomGenre(rNom);
+        }
+        if (classeEl && cNom) {
+            var cData = window.RPG_CLASSES?.[cNom];
+            classeEl.innerHTML = cData ? `${cData.icone} ${window.getNomGenre(cNom)}` : window.getNomGenre(cNom);
+        }
+        if (rNom || cNom) window.mettreAJourTooltips(rNom, cNom);
+        // Rang
+        if (rangEl && window._rangNomCourant) {
+            var rg = window._rangActuelCourant;
+            if (rg) rangEl.innerHTML = `${rg.icone} ${window.getNomGenre(rg.nom)}`;
+        }
     };
 
     function aperçuRaceClasse() {
@@ -6736,30 +6741,42 @@
     // ── TABLE DE FÉMINISATION DES NOMS ─────────────────────────
     window.NOMS_FEMININ = {
         // Classes
-        'Barbare':      'Barbare',
-        'Barde':        'Barde',
-        'Clerc':        'Clerc',
-        'Druide':       'Druide',
-        'Guerrier':     'Guerrière',
-        'Moine':        'Moine',
-        'Paladin':      'Paladin',
-        'Rôdeur':       'Rôdeuse',
-        'Roublard':     'Roublarde',
-        'Ensorceleur':  'Ensorceleure',
-        'Sorcier':      'Sorcière',
-        'Magicien':     'Magicienne',
-        // Races (invariables pour la plupart)
-        'Humain':       'Humaine',
-        'Nain':         'Naine',
-        'Halfelin':     'Halfeline',
-        'Semi-Orc':     'Semi-Orque',
+        'Barbare':           'Barbare',
+        'Barde':             'Barde',
+        'Clerc':             'Clerc',
+        'Druide':            'Druide',
+        'Guerrier':          'Guerrière',
+        'Moine':             'Moine',
+        'Paladin':           'Paladin',
+        'Rôdeur':            'Rôdeuse',
+        'Roublard':          'Roublarde',
+        'Ensorceleur':       'Ensorceleure',
+        'Sorcier':           'Sorcière',
+        'Magicien':          'Magicienne',
+        // Races
+        'Humain':            'Humaine',
+        'Nain':              'Naine',
+        'Halfelin':          'Halfeline',
+        'Semi-Orc':          'Semi-Orque',
+        // Rangs
+        'Serf Égaré':        'Serve Égarée',
+        'Vilein Courageux':  'Vileine Courageuse',
+        'Écuyer Novice':     'Écuyère Novice',
+        'Vassal du Fief':    'Vassale du Fief',
+        'Chevalier Errant':  'Chevalière Errante',
+        'Héraut Royal':      'Héraute Royale',
+        'Baron de la Carrée':'Baronne de la Carrée',
+        "Maître d'Armes":    "Maîtresse d'Armes",
+        'Haut Connétable':   'Haute Connétable',
+        'Main du Roi Karl':  'Main du Roi Karl',
     };
 
-    // Retourne le nom adapté au sexe courant du personnage
+    // Retourne le sexe courant du personnage
     window.getSexeActuel = function() {
         return document.getElementById('profil-sexe')?.value || 'M';
     };
 
+    // Retourne le nom adapté au genre courant
     window.getNomGenre = function(nomMasculin) {
         if (window.getSexeActuel() !== 'F') return nomMasculin;
         return window.NOMS_FEMININ[nomMasculin] || nomMasculin;
@@ -6779,7 +6796,7 @@
             var tt = document.getElementById('sexe-legal-tooltip');
             if (tt) tt.style.display = val === 'NB' ? '' : 'none';
         }
-        // Régénérer les libellés et tooltips race/classe avec le bon genre
+        // Régénérer libellés et tooltips avec le bon genre
         window._rafraichirFicheGenre && window._rafraichirFicheGenre();
     };
     </script>
