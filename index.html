@@ -3627,14 +3627,12 @@
                         const classeData = parseRC(data.classe);
                         const elRace   = document.getElementById('fiche-race-texte');
                         const elClasse = document.getElementById('fiche-classe-texte');
-                        if (elRace)   elRace.innerHTML   = raceData   ? `${raceData.icone} ${window.getNomGenre ? window.getNomGenre(raceData.nom) : raceData.nom}`     : '—';
-                        if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${window.getNomGenre ? window.getNomGenre(classeData.nom) : classeData.nom}` : '—';
+                        if (elRace)   elRace.innerHTML   = raceData   ? `${raceData.icone} ${raceData.nom}`   : '—';
+                        if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${classeData.nom}` : '—';
 
                         // Tooltips fiche personnage
                         raceNomPur   = data.race   ? data.race.split('|')[0]   : '';
                         classeNomPur = data.classe ? data.classe.split('|')[0] : '';
-                        window._raceNomPurCourant   = raceNomPur;
-                        window._classeNomPurCourant = classeNomPur;
                         if (window.mettreAJourTooltips) window.mettreAJourTooltips(raceNomPur, classeNomPur);
                         if (document.getElementById('profil-couleur-blason')) {
                             const couleur = data.couleur_blason || "#8B0000";
@@ -3741,13 +3739,7 @@
                 }
                 const elRang     = document.getElementById('rang-chevalier');
                 const elRangTxt  = document.getElementById('rang-chevalier-texte');
-                window._rangActuelCourant = rangActuel;
-                const _resolveGenre = (champ) => {
-                    const sexe = window.getSexeActuel ? window.getSexeActuel() : 'M';
-                    const cle  = sexe === 'F' ? 'feminin' : 'masculin';
-                    return (typeof champ === 'object' && champ !== null) ? (champ[cle] || champ.masculin || '') : (champ || '');
-                };
-                if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${window.getNomGenre ? window.getNomGenre(rangActuel.nom) : rangActuel.nom}`;
+                if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${rangActuel.nom}`;
                 if (elRang) {
                     elRang.style.cursor = 'pointer';
                     elRang.style.color  = '';
@@ -3756,14 +3748,14 @@
                     const ttRang = document.getElementById('tooltip-rang-fiche');
                     if (ttRang) {
                         const prochainTxt = prochainRang
-                            ? `<span class="rpg-tt-bonus-pill">→ ${prochainRang.icone} ${window.getNomGenre ? window.getNomGenre(prochainRang.nom) : prochainRang.nom} à ${prochainRang.seuil}j</span>`
+                            ? `<span class="rpg-tt-bonus-pill">→ ${prochainRang.icone} ${prochainRang.nom} à ${prochainRang.seuil}j</span>`
                             : `<span class="rpg-tt-bonus-pill">👑 Rang suprême atteint</span>`;
                         ttRang.innerHTML = `
                             <div class="rpg-tt-header">
                                 <div class="rpg-tt-header-icone">${rangActuel.icone}</div>
                                 <div>
                                     <div class="rpg-tt-header-nom" style="color:${rangActuel.coul};">${rangActuel.nom}</div>
-                                    <div class="rpg-tt-header-accroche">${_resolveGenre(rangActuel.tooltip)}</div>
+                                    <div class="rpg-tt-header-accroche">${rangActuel.tooltip || ''}</div>
                                 </div>
                             </div>
                             <div class="rpg-tt-section">
@@ -3805,7 +3797,7 @@
                                 </div>`}
                             </div>`;
 
-                        const descBrut = _resolveGenre(rangActuel.description_joueur || rangActuel.description).trim();
+                        const descBrut = (rangActuel.description_joueur || rangActuel.description || '').trim();
                         const corps = descBrut.split(/\n\n+/).map(p =>
                             `<p style="font-family:'Lora',serif;font-size:0.82rem;color:#3a2a0a;line-height:1.65;margin:0 0 12px;">${p.trim().replace(/\n/g,' ')}</p>`
                         ).join('');
@@ -3813,7 +3805,7 @@
                             ? `<span style="font-family:'Cinzel',serif;font-size:0.7rem;
                                 background:rgba(139,0,0,0.08);border:1px solid rgba(139,0,0,0.25);
                                 color:var(--rouge-blason);padding:3px 10px;border-radius:2px;">
-                                → ${prochainRang.icone} ${window.getNomGenre ? window.getNomGenre(prochainRang.nom) : prochainRang.nom} · À partir de ${prochainRang.seuil} jours</span>`
+                                → ${prochainRang.icone} ${prochainRang.nom} · À partir de ${prochainRang.seuil} jours</span>`
                             : `<span style="font-family:'Cinzel',serif;font-size:0.7rem;
                                 background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.4);
                                 color:var(--or-sombre);padding:3px 10px;border-radius:2px;">
@@ -3828,9 +3820,9 @@
                                     <div style="font-family:'Cinzel',serif;font-size:0.55rem;color:var(--or-sombre);
                                          letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">RANG</div>
                                     <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:bold;
-                                         color:${rangActuel.coul};letter-spacing:0.05em;">${window.getNomGenre ? window.getNomGenre(rangActuel.nom) : rangActuel.nom}</div>
+                                         color:${rangActuel.coul};letter-spacing:0.05em;">${rangActuel.nom}</div>
                                     <div style="font-family:'Lora',serif;font-style:italic;font-size:0.75rem;
-                                         color:#5a3e1b;margin-top:4px;">${_resolveGenre(rangActuel.tooltip)}</div>
+                                         color:#5a3e1b;margin-top:4px;">${rangActuel.tooltip || ''}</div>
                                 </div>
                             </div>
                             <div style="margin-bottom:16px;">
@@ -3856,7 +3848,7 @@
                         document.body.style.overflow = 'hidden';
                     };
                 }
-                if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = window.getNomGenre ? window.getNomGenre(rangActuel.nom) : rangActuel.nom;
+                if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = rangActuel.nom;
                 if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
 
                 // Alignement + Histoire depuis Firestore
@@ -4761,11 +4753,7 @@
             .join('');
 
         // Extraire la première section du description_joueur (avant les Traits raciaux / Capacités)
-        const _sexeTT = window.getSexeActuel ? window.getSexeActuel() : (document.getElementById('profil-sexe')?.value || 'M');
-        const _cleTT  = _sexeTT === 'F' ? 'feminin' : 'masculin';
-        const _djRaw  = data.description_joueur;
-        const _djRes  = (typeof _djRaw === 'object' && _djRaw !== null) ? (_djRaw[_cleTT] || _djRaw.masculin || '') : (_djRaw || '');
-        const descRaw = _djRes.trim();
+        const descRaw = (data.description_joueur || '').trim();
         const descCourt = descRaw.split(/\n\n/)[0].replace(/\n/g,' ').trim();
 
         return `
@@ -4819,24 +4807,6 @@
     }
     window.mettreAJourTooltips = mettreAJourTooltips;
 
-    window._rafraichirFicheGenre = function() {
-        var raceEl   = document.getElementById('fiche-race-texte');
-        var classeEl = document.getElementById('fiche-classe-texte');
-        var rangEl   = document.getElementById('rang-chevalier-texte');
-        var raceVal  = document.getElementById('profil-race')?.value   || '';
-        var classeVal= document.getElementById('profil-classe')?.value || '';
-        if (raceVal || classeVal) { window.aperçuRaceClasse && window.aperçuRaceClasse(); return; }
-        var rNom = window._raceNomPurCourant   || '';
-        var cNom = window._classeNomPurCourant || '';
-        if (raceEl && rNom) { var rD=window.RPG_RACES?.[rNom]; raceEl.innerHTML = rD?`${rD.icone} ${window.getNomGenre(rNom)}`:window.getNomGenre(rNom); }
-        if (classeEl && cNom) { var cD=window.RPG_CLASSES?.[cNom]; classeEl.innerHTML = cD?`${cD.icone} ${window.getNomGenre(cNom)}`:window.getNomGenre(cNom); }
-        if (rNom||cNom) window.mettreAJourTooltips(rNom, cNom);
-        if (rangEl && window._rangActuelCourant) {
-            var rg=window._rangActuelCourant;
-            rangEl.innerHTML = `${rg.icone} ${window.getNomGenre(rg.nom)}`;
-        }
-    };
-
     function aperçuRaceClasse() {
         const raceVal   = document.getElementById('profil-race')?.value   || '';
         const classeVal = document.getElementById('profil-classe')?.value || '';
@@ -4860,8 +4830,8 @@
         // Mettre à jour la fiche en temps réel
         const elRace   = document.getElementById('fiche-race-texte');
         const elClasse = document.getElementById('fiche-classe-texte');
-        if (elRace)   elRace.innerHTML   = raceVal   ? `${raceIcone} ${window.getNomGenre ? window.getNomGenre(raceNom) : raceNom}`     : '—';
-        if (elClasse) elClasse.innerHTML = classeVal ? `${classeIcone} ${window.getNomGenre ? window.getNomGenre(classeNom) : classeNom}` : '—';
+        if (elRace)   elRace.innerHTML   = raceVal   ? `${raceIcone} ${raceNom}`     : '—';
+        if (elClasse) elClasse.innerHTML = classeVal ? `${classeIcone} ${classeNom}` : '—';
     }
     // ── MISE À JOUR FICHE CARACS + BONUS + TRAITS ────────────────
     // Appelée au chargement ET après "Sceller mes informations"
@@ -5292,13 +5262,8 @@
             ">+${v} ${caracNoms[k]}</span>`)
             .join('');
 
-        // Résoudre description_joueur selon le format (string ou {masculin, feminin})
-        const _sexeModal = window.getSexeActuel ? window.getSexeActuel() : (document.getElementById('profil-sexe')?.value || 'M');
-        const _cleModal  = _sexeModal === 'F' ? 'feminin' : 'masculin';
-        const _djRawM    = data.description_joueur;
-        const _djResM    = (typeof _djRawM === 'object' && _djRawM !== null) ? (_djRawM[_cleModal] || _djRawM.masculin || '') : (_djRawM || '');
         // Formater la description_joueur : sections séparées par lignes vides
-        const descBrut = _djResM.trim();
+        const descBrut = (data.description_joueur || '').trim();
         const paragraphes = descBrut.split(/\n\n+/).map(p => {
             const lignes = p.trim().split('\n');
             if (lignes.length === 1) {
@@ -5320,8 +5285,7 @@
         }).join('');
 
         const typeLabel = type === 'race' ? 'RACE' : 'CLASSE';
-        const _nomBrut   = type === 'race' ? _rpgModalCourant.race : _rpgModalCourant.classe;
-        const nomAffiche = window.getNomGenre ? window.getNomGenre(_nomBrut) : _nomBrut;
+        const nomAffiche = type === 'race' ? _rpgModalCourant.race : _rpgModalCourant.classe;
 
         document.getElementById('rpg-modal-contenu').innerHTML = `
             <!-- En-tête -->
@@ -6726,21 +6690,6 @@
         'M' : { icone:'♂️', label:'Masculin',    pronom:'il',   accord:''   },
         'NB': { icone:'⚧️',  label:'Non binaire', pronom:'iel',  accord:''   }
     };
-    window.NOMS_FEMININ = {
-        'Barbare':'Barbare','Barde':'Barde','Clerc':'Clerc','Druide':'Druide',
-        'Guerrier':'Guerrière','Moine':'Moine','Paladin':'Paladin',
-        'Rôdeur':'Rôdeuse','Roublard':'Roublarde','Ensorceleur':'Ensorceleure',
-        'Sorcier':'Sorcière','Magicien':'Magicienne',
-        'Humain':'Humaine','Nain':'Naine','Halfelin':'Halfeline','Semi-Orc':'Semi-Orque',
-        'Serf Égaré':'Serve Égarée','Vilein Courageux':'Vileine Courageuse',
-        'Écuyer Novice':'Écuyère Novice','Vassal du Fief':'Vassale du Fief',
-        'Chevalier Errant':'Chevalière Errante','Héraut Royal':'Héraute Royale',
-        'Baron de la Carrée':'Baronne de la Carrée',"Maître d'Armes":"Maîtresse d'Armes",
-        'Haut Connétable':'Haute Connétable','Main du Roi Karl':'Main du Roi Karl',
-    };
-    window.getSexeActuel = function() { return document.getElementById('profil-sexe')?.value || 'M'; };
-    window.getNomGenre = function(n) { if(window.getSexeActuel()!=='F') return n; return window.NOMS_FEMININ[n]||n; };
-
     window.choisirSexe = function(val) {
         var h = document.getElementById('profil-sexe');
         if (h) h.value = val;
@@ -6755,7 +6704,6 @@
             var tt = document.getElementById('sexe-legal-tooltip');
             if (tt) tt.style.display = val === 'NB' ? '' : 'none';
         }
-        window._rafraichirFicheGenre && window._rafraichirFicheGenre();
     };
     </script>
 
@@ -7438,6 +7386,43 @@
             font-family: 'Lora', serif;
         }
     </style>
+
+    <!-- ======================================================
+         📖 CODEX DU JOUEUR — Bouton + Modale
+    ====================================================== -->
+
+    <!-- Bouton Sceau (fixe, coin inférieur droit) -->
+    <div id="book-trigger" class="book-icon-trigger" title="Ouvrir le Codex">
+        <div class="seal-inner">📖</div>
+    </div>
+
+    <!-- Modale Codex -->
+    <div id="player-book-modal" class="book-modal">
+        <div class="book-frame">
+            <button id="close-book" class="book-close-btn">&times;</button>
+
+            <div class="book-container">
+                <!-- Barre latérale -->
+                <aside class="book-sidebar">
+                    <div class="book-sidebar-header">
+                        <span class="sidebar-blason">⚜️</span>
+                        <h2 class="cinzel">Sommaire</h2>
+                    </div>
+                    <div class="book-search-bar">
+                        <input type="text" placeholder="Rechercher…" id="book-search-input">
+                    </div>
+                    <ul id="book-toc"></ul>
+                    <div class="book-sidebar-footer">❦ ✦ ❦</div>
+                </aside>
+
+                <!-- Zone de contenu -->
+                <main class="book-content" id="book-display-area"></main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Codex -->
+    <script src="player-book.js"></script>
 
     <!-- ══ MODALE ZOOM PORTRAIT ══ -->
     <div id="portrait-zoom-overlay" onclick="fermerZoomPortrait()">
