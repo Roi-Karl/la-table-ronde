@@ -6118,57 +6118,78 @@
     </div>
 
 
-    <!-- Places Autocomplete -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlcm8VgUj_2KyZb3iPFTtoUw9XWrNPRHY&libraries=places&language=fr&callback=initGooglePlaces" async defer></script>
+    <!-- Places Autocomplete (New API - post mars 2025) -->
     <script>
     (function() {
-        var _svc = null, _psvc = null, _timer = null, _token = null;
+        var _timer = null;
+        var _sessionToken = null;
 
-        window.initGooglePlaces = function() {
-            if (!window.google || !google.maps || !google.maps.places) return;
-            _svc   = new google.maps.places.AutocompleteService();
-            _psvc  = new google.maps.places.PlacesService(document.createElement("div"));
-            _token = new google.maps.places.AutocompleteSessionToken();
-        };
+        // Charge l'API Google Maps de facon dynamique
+        function _chargerAPI() {
+            if (window._gmapsLoading || window.google) return;
+            window._gmapsLoading = true;
+            var s = document.createElement("script");
+            s.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDlcm8VgUj_2KyZb3iPFTtoUw9XWrNPRHY&libraries=places&language=fr&v=weekly";
+            s.async = true;
+            s.defer = true;
+            document.head.appendChild(s);
+        }
+        _chargerAPI();
+
+        function _getToken() {
+            if (!_sessionToken) {
+                _sessionToken = new google.maps.places.AutocompleteSessionToken();
+            }
+            return _sessionToken;
+        }
 
         window._onAdresseInput = function() {
             var input = document.getElementById("profil-adresse-input");
             var val   = input ? input.value.trim() : "";
             var clr   = document.getElementById("profil-adresse-clear");
             if (clr) clr.style.display = val ? "inline" : "none";
-            document.getElementById("profil-adresse-formatee").value = "";
-            document.getElementById("profil-lat").value = "";
-            document.getElementById("profil-lng").value = "";
+            // Reset champs caches
+            ["profil-adresse-formatee","profil-lat","profil-lng"].forEach(function(id) {
+                var el = document.getElementById(id); if (el) el.value = "";
+            });
             var aff = document.getElementById("profil-adresse-affichee");
             if (aff) { aff.textContent = ""; aff.style.display = "none"; }
             if (!val || val.length < 2) { _fermer(); return; }
             clearTimeout(_timer);
-            _timer = setTimeout(function() { _fetch(val); }, 250);
+            _timer = setTimeout(function() { _fetch(val); }, 300);
         };
 
-        function _fetch(q) {
-            if (!_svc) { window.initGooglePlaces(); if (!_svc) return; }
-            // S'assurer que le token existe toujours
-            if (!_token) _token = new google.maps.places.AutocompleteSessionToken();
-            _svc.getPlacePredictions(
-                { input: q, sessionToken: _token, language: "fr" },
-                function(predictions, status) {
-                    if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) { _fermer(); return; }
-                    _afficher(predictions);
-                }
-            );
+        async function _fetch(q) {
+            if (!window.google || !google.maps || !google.maps.places) return;
+            try {
+                // Nouvelle API : AutocompleteSuggestion
+                var request = {
+                    input: q,
+                    sessionToken: _getToken(),
+                    language: "fr"
+                };
+                var response = await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
+                var suggestions = response.suggestions || [];
+                if (!suggestions.length) { _fermer(); return; }
+                _afficher(suggestions);
+            } catch(e) {
+                console.warn("Places fetch error:", e);
+                _fermer();
+            }
         }
 
-        function _afficher(predictions) {
+        function _afficher(suggestions) {
             var liste = document.getElementById("profil-adresse-liste");
             var box   = document.getElementById("profil-adresse-suggestions");
             if (!liste || !box) return;
-            liste.innerHTML = predictions.map(function(p) {
-                var main = (p.structured_formatting && p.structured_formatting.main_text) || p.description;
-                var sec  = (p.structured_formatting && p.structured_formatting.secondary_text) || "";
-                var pid  = p.place_id;
-                var desc = p.description.replace(/'/g, "\\'");
-                return '<div onclick="window._selectionner(\'' + pid + '\',\'' + desc + '\')" '
+            liste.innerHTML = suggestions.map(function(s, i) {
+                var pred = s.placePrediction;
+                if (!pred) return "";
+                var main = pred.mainText  ? pred.mainText.text  : (pred.text ? pred.text.text : "");
+                var sec  = pred.secondaryText ? pred.secondaryText.text : "";
+                var placeId = pred.placeId || "";
+                var desc    = (pred.text ? pred.text.text : main).replace(/'/g, "\\'");
+                return '<div onclick="window._selectionner(\'' + placeId + '\',\'' + desc + '\')" '
                      + 'onmouseenter="this.style.background=\'rgba(212,175,55,0.12)\'" '
                      + 'onmouseleave="this.style.background=\'transparent\'" '
                      + 'style="padding:8px 12px;cursor:pointer;border-bottom:1px solid rgba(212,175,55,0.1);transition:background 0.15s;">'
@@ -6184,58 +6205,55 @@
             if (box) box.style.display = "none";
         }
 
-        window._selectionner = function(placeId, description) {
+        window._selectionner = async function(placeId, description) {
             _fermer();
             var input = document.getElementById("profil-adresse-input");
             if (input) input.value = description;
             document.getElementById("profil-adresse-formatee").value = description;
 
-            // Toujours renouveler le token et recréer le service avant l'appel
-            var tokenPourCetAppel = _token;
-            _token = new google.maps.places.AutocompleteSessionToken();
-            // Recréer PlacesService à chaque fois pour éviter la perte de contexte
-            _psvc = new google.maps.places.PlacesService(document.createElement("div"));
-
-            _psvc.getDetails(
-                { placeId: placeId, fields: ["geometry","formatted_address","address_components"], sessionToken: tokenPourCetAppel },
-                function(place, status) {
-                    if (status === google.maps.places.PlacesServiceStatus.OK && place) {
-                        var lat = place.geometry.location.lat();
-                        var lng = place.geometry.location.lng();
-                        document.getElementById("profil-lat").value = lat;
-                        document.getElementById("profil-lng").value = lng;
-                        var comps = place.address_components || [];
-                        var prov  = "";
-                        var pays  = "";
-                        comps.forEach(function(c) {
-                            if (c.types.indexOf("administrative_area_level_1") >= 0) prov = c.long_name;
-                            if (c.types.indexOf("country") >= 0) pays = c.long_name;
-                        });
-                        document.getElementById("profil-province").value = [prov, pays].filter(Boolean).join(", ");
-                        var aff = document.getElementById("profil-adresse-affichee");
-                        if (aff) {
-                            aff.textContent = "✅ " + (place.formatted_address || description);
-                            aff.style.display = "block";
-                        }
-                    } else {
-                        // En cas d'échec, afficher quand même l'adresse saisie
-                        var aff = document.getElementById("profil-adresse-affichee");
-                        if (aff) {
-                            aff.textContent = "📍 " + description;
-                            aff.style.display = "block";
-                        }
-                    }
-                }
-            );
+            try {
+                // Nouvelle API : Place.fetchFields
+                var place = new google.maps.places.Place({ id: placeId });
+                // Utiliser le token puis le reinitialiser immediatement
+                var tokenUsed = _sessionToken;
+                _sessionToken = null; // Force nouveau token pour la prochaine recherche
+                await place.fetchFields({
+                    fields: ["location","formattedAddress","addressComponents"],
+                    sessionToken: tokenUsed
+                });
+                var lat = place.location ? place.location.lat() : null;
+                var lng = place.location ? place.location.lng() : null;
+                if (lat) document.getElementById("profil-lat").value = lat;
+                if (lng) document.getElementById("profil-lng").value = lng;
+                // Extraire province + pays
+                var comps = place.addressComponents || [];
+                var prov = "", pays = "";
+                comps.forEach(function(c) {
+                    var types = c.types || [];
+                    if (types.indexOf("administrative_area_level_1") >= 0) prov = c.longText || c.long_name || "";
+                    if (types.indexOf("country") >= 0) pays = c.longText || c.long_name || "";
+                });
+                document.getElementById("profil-province").value = [prov, pays].filter(Boolean).join(", ");
+                var adresseFinale = place.formattedAddress || description;
+                document.getElementById("profil-adresse-formatee").value = adresseFinale;
+                var aff = document.getElementById("profil-adresse-affichee");
+                if (aff) { aff.textContent = "✅ " + adresseFinale; aff.style.display = "block"; }
+            } catch(e) {
+                console.warn("Place details error:", e);
+                _sessionToken = null;
+                var aff = document.getElementById("profil-adresse-affichee");
+                if (aff) { aff.textContent = "📍 " + description; aff.style.display = "block"; }
+            }
         };
 
         window.effacerAdresse = function() {
-            var ids = ["profil-adresse-input","profil-adresse-formatee","profil-lat","profil-lng","profil-province"];
-            ids.forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ""; });
+            ["profil-adresse-input","profil-adresse-formatee","profil-lat","profil-lng","profil-province"]
+                .forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ""; });
             var aff = document.getElementById("profil-adresse-affichee");
             if (aff) { aff.textContent = ""; aff.style.display = "none"; }
             var clr = document.getElementById("profil-adresse-clear");
             if (clr) clr.style.display = "none";
+            _sessionToken = null;
             _fermer();
         };
 
