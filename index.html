@@ -7781,6 +7781,162 @@
             <button class="portrait-zoom-close" onclick="fermerZoomPortrait()">✕</button>
         </div>
     </div>
+    <div id="book-trigger" class="book-icon-trigger" title="Ouvrir le Codex du Royaume">
+    <div class="book-icon-seal">📖</div>
+</div>
+
+<div id="player-book-modal" class="book-modal-overlay">
+    <div class="book-frame">
+        <button id="close-book" class="book-close-btn">&times;</button>
+        
+        <div class="book-body">
+            <aside class="book-aside">
+                <h2 class="cinzel">Codex</h2>
+                <ul id="book-toc"></ul>
+                <div class="ornament">❦</div>
+            </aside>
+
+            <main class="book-pages" id="book-content-display">
+                </main>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* --- CSS DU LIVRE --- */
+    :root {
+        --b-parchment: #f4ebd0;
+        --b-aside: #e8dfc4;
+        --b-ink: #2c241a;
+        --b-royal: #8b0000;
+        --b-gold: #d4af37;
+        --b-leather: #3e2723;
+    }
+
+    .book-icon-trigger {
+        position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
+        background: var(--b-royal); border: 3px solid var(--b-gold); border-radius: 50%;
+        display: flex; justify-content: center; align-items: center; cursor: pointer;
+        z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s;
+    }
+    .book-icon-trigger:hover { transform: scale(1.1) rotate(-10deg); }
+
+    .book-modal-overlay {
+        display: none; position: fixed; z-index: 2000; left: 0; top: 0; 
+        width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+    }
+
+    .book-frame {
+        position: relative; background: var(--b-parchment); color: var(--b-ink);
+        width: 90%; max-width: 1100px; height: 85vh; margin: 5vh auto;
+        border: 12px solid var(--b-leather); box-shadow: 0 0 50px black;
+        display: flex; flex-direction: column; overflow: hidden;
+    }
+
+    .book-close-btn {
+        position: absolute; right: 10px; top: 10px; background: var(--b-royal);
+        color: white; border: 2px solid var(--b-gold); border-radius: 50%;
+        width: 40px; height: 40px; cursor: pointer; font-weight: bold; z-index: 10;
+    }
+
+    .book-body { display: flex; height: 100%; }
+
+    .book-aside {
+        width: 250px; background: var(--b-aside); border-right: 2px solid rgba(0,0,0,0.1);
+        padding: 20px; overflow-y: auto;
+    }
+
+    .book-aside li {
+        padding: 10px; cursor: pointer; font-family: 'Cinzel', serif;
+        border-bottom: 1px solid rgba(0,0,0,0.05); list-style: none;
+    }
+    .book-aside li:hover { color: var(--b-royal); background: rgba(0,0,0,0.05); }
+
+    .book-pages { flex: 1; padding: 40px; overflow-y: auto; line-height: 1.6; }
+    .book-pages h1, .book-pages h2 { color: var(--b-royal); font-family: 'Cinzel', serif; }
+    .ornament { text-align: center; font-size: 2rem; color: var(--b-gold); margin: 15px 0; }
+
+    .legal-notice { border: 1px solid rgba(0,0,0,0.1); padding: 10px; font-size: 0.8rem; font-style: italic; text-align: center; margin: 20px 0; }
+
+    .book-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: 'Lora', serif; }
+    .book-table th { background: var(--b-leather); color: var(--b-gold); padding: 10px; text-align: left; }
+    .book-table td { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 10px; }
+</style>
+
+<script>
+    /* --- LOGIQUE DU LIVRE --- */
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById('player-book-modal');
+        const trigger = document.getElementById('book-trigger');
+        const close = document.getElementById('close-book');
+        const toc = document.getElementById('book-toc');
+        const display = document.getElementById('book-content-display');
+
+        const chapters = [
+            { id: 'accueil', tit: 'Introduction', ico: '📜' },
+            { id: 'races',   tit: 'Les Peuples',  ico: '🧑' },
+            { id: 'classes', tit: 'Les Classes',  ico: '⚔️' },
+            { id: 'armes',   tit: 'L\'Arsenal',   ico: '🗡️' },
+            { id: 'lois',    tit: 'Lois & Règles', ico: '⚖️' }
+        ];
+
+        trigger.onclick = () => { 
+            modal.style.display = 'block'; 
+            renderTOC(); 
+            loadChapter('accueil'); 
+        };
+        close.onclick = () => modal.style.display = 'none';
+
+        function renderTOC() {
+            toc.innerHTML = chapters.map(c => `<li onclick="loadChapter('${c.id}')">${c.ico} ${c.tit}</li>`).join('');
+        }
+
+        window.loadChapter = function(id) {
+            display.innerHTML = '';
+            let html = '';
+
+            if (id === 'accueil') {
+                html = `<h1 class="cinzel">Codex du Royaume</h1>
+                        <div class="ornament">❧</div>
+                        <div class="legal-notice">Note : Dans ce recueil, le genre masculin est utilisé sans discrimination et uniquement dans le but d'alléger le texte.</div>
+                        <p>Bienvenue dans les archives du Domaine du Roi Karl. Ce livre contient les connaissances nécessaires pour forger votre légende.</p>`;
+            } 
+            else if (id === 'races') {
+                html = `<h1>Les Peuples</h1><div class="ornament">❧</div>`;
+                for (let r in window.RPG_RACES) {
+                    let d = window.RPG_RACES[r];
+                    html += `<h3>${d.icone} ${r}</h3><p>${d.description_joueur}</p><hr>`;
+                }
+            } 
+            else if (id === 'classes') {
+                html = `<h1>Les Vocations</h1><div class="ornament">❧</div>`;
+                for (let c in window.RPG_CLASSES) {
+                    let d = window.RPG_CLASSES[c];
+                    html += `<h3>${d.icone} ${c}</h3><p>${d.description}</p><p><strong>Dés de Vie :</strong> ${d.des_vie}</p><hr>`;
+                }
+            }
+            else if (id === 'armes') {
+                html = `<h1>L'Arsenal</h1><div class="ornament">❧</div><table class="book-table"><tr><th>Arme</th><th>Dégâts</th><th>Prix</th></tr>`;
+                for (let a in window.MATERIEL_ARMES) {
+                    let d = window.MATERIEL_ARMES[a];
+                    html += `<tr><td>${d.icone} ${a}</td><td>${d.degats}</td><td>${d.prix}</td></tr>`;
+                }
+                html += `</table>`;
+            }
+            else if (id === 'lois') {
+                html = `<h1>Lois du Royaume</h1><div class="ornament">❧</div>
+                        <ul>
+                            <li><strong>Ⅰ. Courtoisie :</strong> Pas d'insultes envers vos frères d'armes.</li>
+                            <li><strong>Ⅱ. Allégeance :</strong> Respect de la hiérarchie du Roi Karl.</li>
+                            <li><strong>Ⅲ. Sagesse :</strong> Le respect de la vie privée est sacré.</li>
+                        </ul>`;
+            }
+
+            display.innerHTML = `<div class="animate-fade">${html}</div>`;
+            display.scrollTop = 0;
+        };
+    });
+</script>
 
 </body>
 </html>
