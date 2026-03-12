@@ -2267,3 +2267,4 @@ if (typeof module !== 'undefined') {
         convertirMonnaie, totalTresorEnPo, simplifierMonnaie
     };
 }
+
