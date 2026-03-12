@@ -6373,10 +6373,14 @@
             console.log('[Portrait] entry=', entry ? entry.fichier : 'AUCUN');
             if (!entry && prompts.length > 0) console.warn('[Portrait] ex JSON[0]:', JSON.stringify(prompts[0]));
             if (!entry) { if(ld)ld.style.display='none'; if(ph)ph.style.display='flex'; _toastPortrait('❌ Portrait introuvable','err'); return; }
+            console.log('[Portrait] prompt len=', entry.prompt ? entry.prompt.length : 'null');
             var seed = Math.floor(Math.random()*9000)+1000;
+            try {
             var url  = "https://image.pollinations.ai/prompt/"
                      + encodeURIComponent(entry.prompt)
                      + "?width=512&height=512&nologo=true&seed=" + seed;
+            console.log('[Portrait] URL ok, len=', url.length);
+            } catch(eUrl) { console.error("[Portrait] URL build error:", eUrl); throw eUrl; }
             var tempImg = new Image();
             tempImg.onload = async function() {
                 if (ld) ld.style.display = 'none';
