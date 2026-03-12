@@ -6376,23 +6376,48 @@
             console.log('[Portrait] prompt len=', entry.prompt ? entry.prompt.length : 'null');
             var seed = Math.floor(Math.random()*9000)+1000;
             try {
-            // Seed deterministe base sur race+classe pour coherence
-            var combo = race + classe + sexeP;
-            var picsumSeed = 0;
-            for (var ci = 0; ci < combo.length; ci++) picsumSeed = (picsumSeed * 31 + combo.charCodeAt(ci)) & 0xFFFF;
-            // IDs Picsum valides (portraits/visages)
-            var picsumIds = [64,65,91,96,177,195,217,247,280,338,349,375,396,402,433,447,453,491,514,533,550,582,598,625,659,669,674,678,718,733,758,783,798,823,866,884,909,946,974,996];
-            var picsumId = picsumIds[picsumSeed % picsumIds.length];
-            var url = "https://picsum.photos/id/" + picsumId + "/512/512";
-            console.log('[Portrait] Picsum id=', picsumId, 'combo=', combo);
+            var seed = Math.floor(Math.random()*9000)+1000;
+            var url = "https://image.pollinations.ai/prompt/"
+                    + encodeURIComponent(entry.prompt)
+                    + "?width=512&height=512&model=flux&seed=" + seed;
+            console.log('[Portrait] URL =', url);
             console.log('[Portrait] URL ok, len=', url.length);
             } catch(eUrl) { console.error("[Portrait] URL build error:", eUrl); throw eUrl; }
-            // Afficher directement sans preload
-            console.log('[Portrait] URL =', url);
-            if (ld) ld.style.display = 'none';
-            window._afficherPortrait(url);
-            _toastPortrait('🖼️ Portrait royal dévoilé !', 'ok');
-            if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(url, race, classe, sexe);
+            // Retry x3 avec delai croissant
+            var _maxRetry = 3;
+            var _retry = 0;
+            function _essayer() {
+                // Regenerer seed a chaque tentative
+                if (_retry > 0) {
+                    seed = Math.floor(Math.random()*9000)+1000;
+                    url = "https://image.pollinations.ai/prompt/"
+                        + encodeURIComponent(entry.prompt)
+                        + "?width=512&height=512&model=flux&seed=" + seed;
+                }
+                console.log('[Portrait] tentative ' + (_retry+1) + '/3 url=', url);
+                var t = new Image();
+                t.onload = async function() {
+                    if (ld) ld.style.display = 'none';
+                    window._afficherPortrait(url);
+                    _toastPortrait('🖼️ Portrait royal dévoilé !', 'ok');
+                    if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(url, race, classe, sexe);
+                };
+                t.onerror = function() {
+                    _retry++;
+                    if (_retry < _maxRetry) {
+                        var delai = _retry * 10000; // 10s, 20s
+                        console.warn('[Portrait] echec, retry dans ' + (delai/1000) + 's');
+                        _toastPortrait('🖌️ Le peintre réessaie (' + _retry + '/3)…', 'loading');
+                        setTimeout(_essayer, delai);
+                    } else {
+                        if (ld) ld.style.display='none';
+                        if (ph) ph.style.display='flex';
+                        _toastPortrait('❌ Le peintre a abandonné… Ressayez plus tard.', 'err');
+                    }
+                };
+                t.src = url;
+            }
+            _essayer();
         } catch(e) {
             if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
             _toastPortrait('❌ Erreur de génération.','err');
