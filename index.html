@@ -6314,6 +6314,36 @@
         img.src = url;
         img.style.display = 'block';
     };
+    // Toast portrait (persistant jusqu'a resolution)
+    function _toastPortrait(msg, type) {
+        var t = document.getElementById('portrait-toast');
+        if (!t) {
+            t = document.createElement('div');
+            t.id = 'portrait-toast';
+            t.style.cssText = 'position:fixed;bottom:24px;right:24px;left:auto;'
+                + 'background:linear-gradient(135deg,#1a0e02,#2a1a04);'
+                + 'border:1px solid var(--or-royal);color:var(--or-royal);'
+                + "font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.07em;"
+                + 'padding:10px 18px;border-radius:4px;z-index:99998;'
+                + 'box-shadow:0 4px 20px rgba(0,0,0,0.6);'
+                + 'transition:opacity 0.6s;display:flex;align-items:center;gap:10px;'
+                + 'max-width:280px;line-height:1.4;';
+            document.body.appendChild(t);
+        }
+        clearTimeout(t._to);
+        t.style.opacity = '1';
+        t.innerHTML = msg;
+        if (type === 'ok' || type === 'err') {
+            t.style.borderColor = type === 'ok' ? '#4caf50' : '#e53935';
+            t.style.color       = type === 'ok' ? '#4caf50' : '#e53935';
+            t._to = setTimeout(function(){ t.style.opacity = '0'; }, 4000);
+        } else {
+            // persistant
+            t.style.borderColor = 'var(--or-royal)';
+            t.style.color       = 'var(--or-royal)';
+        }
+    }
+
     window._genererPortrait = async function(race, classe, sexe) {
         var img = document.getElementById('fiche-portrait-img');
         var ph  = document.getElementById('fiche-portrait-placeholder');
@@ -6322,13 +6352,19 @@
         if (ph)  ph.style.display = 'none';
         img.style.display = 'none';
         if (ld)  ld.style.display = 'flex';
+        // Toast persistant
+        _toastPortrait(
+            '<span style="font-size:1.1rem;animation:spin 1.2s linear infinite;display:inline-block">🖌️</span>'
+            + '<span>Le peintre royal travaille…</span>',
+            'loading'
+        );
         var sexeP = (sexe === 'NB') ? 'Masculin' : sexe;
         try {
             var prompts = await _chargerPrompts();
             var entry = prompts.find(function(p) {
                 return p.race === race && p.classe === classe && p.sexe === sexeP;
             });
-            if (!entry) { if(ld)ld.style.display='none'; if(ph)ph.style.display='flex'; return; }
+            if (!entry) { if(ld)ld.style.display='none'; if(ph)ph.style.display='flex'; _toastPortrait('❌ Portrait introuvable','err'); return; }
             var seed = Math.floor(Math.random()*9000)+1000;
             var url  = "https://image.pollinations.ai/prompt/"
                      + encodeURIComponent(entry.prompt)
@@ -6337,14 +6373,17 @@
             tempImg.onload = async function() {
                 if (ld) ld.style.display = 'none';
                 window._afficherPortrait(url);
+                _toastPortrait('🖼️ Portrait royal dévoilé !', 'ok');
                 if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(url, race, classe, sexe);
             };
             tempImg.onerror = function() {
                 if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
+                _toastPortrait('❌ Le peintre a abandonné… Ressayez plus tard.','err');
             };
             tempImg.src = url;
         } catch(e) {
             if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
+            _toastPortrait('❌ Erreur de génération.','err');
         }
     };
     </script>
