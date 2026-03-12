@@ -6380,8 +6380,9 @@
             var combo = race + classe + sexeP;
             var picsumSeed = 0;
             for (var ci = 0; ci < combo.length; ci++) picsumSeed = (picsumSeed * 31 + combo.charCodeAt(ci)) & 0xFFFF;
-            var picsumId = 10 + (picsumSeed % 200); // IDs 10-209, portraits et visages
-            var url = "https://picsum.photos/id/" + picsumId + "/512/512";
+            var picsumId = 10 + (picsumSeed % 200);
+            // .jpg evite la redirection qui cause onerror
+            var url = "https://fastly.picsum.photos/id/" + picsumId + "/512/512.jpg";
             console.log('[Portrait] Picsum id=', picsumId, 'combo=', combo);
             console.log('[Portrait] URL ok, len=', url.length);
             } catch(eUrl) { console.error("[Portrait] URL build error:", eUrl); throw eUrl; }
