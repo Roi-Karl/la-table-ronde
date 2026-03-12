@@ -3071,6 +3071,8 @@
                 if (infos.race && infos.classe && infos.sexe) {
                     const racePortrait   = infos.race.split('|')[0];
                     const classePortrait = infos.classe.split('|')[0];
+                    console.log('[Portrait] infos.race='+infos.race+' infos.classe='+infos.classe+' infos.sexe='+infos.sexe);
+                    console.log('[Portrait] racePortrait='+racePortrait+' classePortrait='+classePortrait);
                     // Récupérer portrait existant depuis Firestore
                     let oldPortrait = "";
                     try {
@@ -3087,6 +3089,7 @@
                                 window._afficherPortrait && window._afficherPortrait(oldPortrait);
                             } else {
                                 // Nouvelle combo : générer
+                                console.log('[Portrait] appel generer race='+racePortrait+' classe='+classePortrait+' sexe='+infos.sexe);
                                 window._genererPortrait && window._genererPortrait(racePortrait, classePortrait, infos.sexe);
                             }
                         } else {
@@ -6359,11 +6362,15 @@
             'loading'
         );
         var sexeP = (sexe === 'NB') ? 'Masculin' : sexe;
+        console.log('[Portrait] DEBUT race='+race+' classe='+classe+' sexeP='+sexeP);
         try {
             var prompts = await _chargerPrompts();
+            console.log('[Portrait] prompts nb=', prompts ? prompts.length : 0);
             var entry = prompts.find(function(p) {
                 return p.race === race && p.classe === classe && p.sexe === sexeP;
             });
+            console.log('[Portrait] entry=', entry ? entry.fichier : 'AUCUN');
+            if (!entry && prompts.length > 0) console.warn('[Portrait] ex JSON[0]:', JSON.stringify(prompts[0]));
             if (!entry) { if(ld)ld.style.display='none'; if(ph)ph.style.display='flex'; _toastPortrait('❌ Portrait introuvable','err'); return; }
             var seed = Math.floor(Math.random()*9000)+1000;
             var url  = "https://image.pollinations.ai/prompt/"
