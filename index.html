@@ -7695,72 +7695,6 @@
             box-shadow: 0 3px 12px rgba(0,0,0,0.25);
             font-family: 'Lora', serif;
         }
-/* --- LE CODEX : DESIGN MÉDIÉVAL --- */
-:root {
-    --book-parchment: #f4ebd0;
-    --book-leather: #3e2723;
-    --book-ink: #2c241a;
-    --book-royal: #8b0000;
-    --book-gold: #d4af37;
-}
-
-/* Bouton Sceau */
-.book-icon-trigger {
-    position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px;
-    background: var(--book-royal); border: 3px solid var(--book-gold);
-    border-radius: 50%; display: flex; justify-content: center; align-items: center;
-    cursor: pointer; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.book-icon-trigger:hover { transform: scale(1.1) rotate(-10deg); }
-.seal-inner { font-size: 35px; }
-
-/* Modale */
-.book-modal {
-    display: none; position: fixed; z-index: 2000; left: 0; top: 0; 
-    width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px);
-}
-
-.book-frame {
-    width: 95%; max-width: 1200px; height: 85vh; margin: 5vh auto;
-    background: var(--book-parchment); border: 15px solid var(--book-leather);
-    border-image: url('https://www.transparenttextures.com/patterns/dark-leather.png') 30 repeat;
-    box-shadow: 0 0 100px rgba(0,0,0,1); display: flex; flex-direction: column; overflow: hidden;
-}
-
-.book-container { display: flex; height: 100%; }
-
-.book-sidebar {
-    width: 280px; background: rgba(0,0,0,0.05); border-right: 2px solid var(--book-gold);
-    padding: 30px 20px; overflow-y: auto;
-}
-
-.book-sidebar li {
-    padding: 12px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold;
-    border-bottom: 1px solid rgba(0,0,0,0.1); transition: 0.2s;
-}
-.book-sidebar li:hover { background: var(--book-gold); color: white; }
-.book-sidebar li.active { color: var(--book-royal); border-left: 4px solid var(--book-royal); }
-
-.book-content { flex: 1; padding: 50px; overflow-y: auto; color: var(--book-ink); }
-
-/* Éléments de texte riches */
-.book-content h1 { text-align: center; color: var(--book-royal); margin-bottom: 5px; }
-.book-card { background: rgba(255,255,255,0.4); border: 1px solid var(--book-gold); padding: 20px; margin-bottom: 30px; }
-.stat-tag { background: var(--book-leather); color: var(--book-gold); padding: 2px 8px; border-radius: 3px; font-size: 0.8rem; margin-right: 5px; }
-
-.legal-notice { font-size: 0.85rem; border: 1px solid rgba(0,0,0,0.1); padding: 15px; text-align: center; font-style: italic; margin-bottom: 30px; }
-
-.book-close-btn {
-    position: absolute; right: 10px; top: 10px; background: var(--book-royal);
-    color: white; border: 2px solid var(--book-gold); border-radius: 50%;
-    width: 40px; height: 40px; cursor: pointer; font-weight: bold; z-index: 10;
-}
-
-/* Tableaux Arsenal */
-.arsenal-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-.arsenal-table th { background: var(--book-leather); color: var(--book-gold); padding: 10px; text-align: left; }
-.arsenal-table td { padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); }
     </style>
 
     <!-- ══ MODALE ZOOM PORTRAIT ══ -->
@@ -7847,50 +7781,6 @@
             <button class="portrait-zoom-close" onclick="fermerZoomPortrait()">✕</button>
         </div>
     </div>
-    <div id="book-trigger" class="book-icon-trigger" title="Ouvrir le Codex du Royaume">
-    <div class="book-icon-seal">📖</div>
-</div>
-
-<div id="player-book-modal" class="book-modal-overlay">
-    <div class="book-frame">
-        <button id="close-book" class="book-close-btn">&times;</button>
-        
-        <div class="book-body">
-            <aside class="book-aside">
-                <h2 class="cinzel">Codex</h2>
-                <ul id="book-toc"></ul>
-                <div class="ornament">❦</div>
-            </aside>
-
-            <main class="book-pages" id="book-content-display">
-                </main>
-        </div>
-    </div>
-</div>
-
-<div id="book-trigger" class="book-icon-trigger" title="Ouvrir le Codex">
-    <div class="seal-inner">📖</div>
-</div>
-
-<div id="player-book-modal" class="book-modal">
-    <div class="book-frame">
-        <button id="close-book" class="book-close-btn">&times;</button>
-        
-        <div class="book-container">
-            <aside class="book-sidebar">
-                <h2 class="cinzel">Sommaire</h2>
-                <ul id="book-toc">
-                    </ul>
-                <div class="book-aside-footer ornament">❦</div>
-            </aside>
-
-            <main class="book-content" id="book-display-area">
-                </main>
-        </div>
-    </div>
-</div>
-
-<script src="player-book.js"></script>
 
 </body>
 </html>
