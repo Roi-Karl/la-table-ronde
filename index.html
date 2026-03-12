@@ -139,17 +139,23 @@
         .fiche-portrait-wrap {
             position: relative;
             width: 200px;
-            height: 200px;
+            height: 230px;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+        }
+        .fiche-portrait-wrap:hover .fiche-portrait-svg-frame {
+            filter: drop-shadow(0 0 10px rgba(212,175,55,0.7)) drop-shadow(0 4px 14px rgba(0,0,0,0.6));
         }
         .fiche-portrait-inner {
             position: absolute;
-            inset: 18px;
+            inset: 0;
             overflow: hidden;
             background: #1a0e06;
             z-index: 1;
+            /* Ovale : retire 16px sur les cotes, 12px haut/bas pour le cadre SVG */
+            clip-path: ellipse(84px 100px at 50% 50%);
         }
         .fiche-portrait-svg-frame {
             position: absolute;
@@ -159,6 +165,7 @@
             z-index: 2;
             pointer-events: none;
             filter: drop-shadow(0 4px 14px rgba(0,0,0,0.6));
+            transition: filter 0.3s ease;
         }
         .fiche-portrait-img {
             width: 100%; height: 100%;
@@ -205,6 +212,65 @@
             opacity: 0.6;
             text-align: center;
             margin-top: 2px;
+        }
+        /* ── Modale agrandissement portrait ── */
+        #portrait-zoom-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(10,5,2,0.88);
+            backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            animation: fadeInOverlay 0.25s ease;
+        }
+        #portrait-zoom-overlay.actif { display: flex; }
+        @keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
+        .portrait-zoom-cadre {
+            position: relative;
+            width: min(800px, 88vw);
+            height: min(920px, 88vh);
+            cursor: default;
+            animation: zoomAppear 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes zoomAppear {
+            from { transform: scale(0.6); opacity:0; }
+            to   { transform: scale(1);   opacity:1; }
+        }
+        .portrait-zoom-inner {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            background: #1a0e06;
+            clip-path: ellipse(44% 46% at 50% 50%);
+        }
+        .portrait-zoom-inner img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .portrait-zoom-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            filter: drop-shadow(0 8px 30px rgba(0,0,0,0.8));
+        }
+        .portrait-zoom-close {
+            position: absolute;
+            top: 50%; right: -28px;
+            transform: translateY(-50%);
+            width: 34px; height: 34px;
+            background: var(--or-sombre);
+            border: none; border-radius: 50%;
+            cursor: pointer; font-size: 1rem;
+            color: #1a0e06; display: flex;
+            align-items: center; justify-content: center;
+            font-weight: bold; z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
         /* Selecteur sexe */
@@ -2156,7 +2222,7 @@
 
                         <!-- Colonne portrait -->
                         <div class="fiche-portrait-col">
-                            <div class="fiche-portrait-wrap" id="fiche-portrait-cadre">
+                            <div class="fiche-portrait-wrap" id="fiche-portrait-cadre" onclick="ouvrirZoomPortrait()">
                                 <!-- Zone image -->
                                 <div class="fiche-portrait-inner">
                                     <div class="fiche-portrait-placeholder" id="fiche-portrait-placeholder">🛡️</div>
@@ -2166,100 +2232,131 @@
                                         Le peintre royal travaille…
                                     </div>
                                 </div>
-                                <!-- Cadre SVG medieval -->
-                                <svg class="fiche-portrait-svg-frame" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Cadre SVG medieval OVAL -->
+                                <svg class="fiche-portrait-svg-frame" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
                                     <defs>
-                                        <linearGradient id="grad-or" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%"   stop-color="#f5d87a"/>
-                                            <stop offset="40%"  stop-color="#d4af37"/>
-                                            <stop offset="70%"  stop-color="#8b6914"/>
+                                        <linearGradient id="go1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%"   stop-color="#f9e88a"/>
+                                            <stop offset="30%"  stop-color="#d4af37"/>
+                                            <stop offset="65%"  stop-color="#7a5410"/>
                                             <stop offset="100%" stop-color="#d4af37"/>
                                         </linearGradient>
-                                        <linearGradient id="grad-or2" x1="100%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%"   stop-color="#f5d87a"/>
-                                            <stop offset="50%"  stop-color="#a07820"/>
-                                            <stop offset="100%" stop-color="#d4af37"/>
+                                        <linearGradient id="go2" x1="100%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%"   stop-color="#f9e88a"/>
+                                            <stop offset="50%"  stop-color="#b08820"/>
+                                            <stop offset="100%" stop-color="#e8c84a"/>
                                         </linearGradient>
-                                        <filter id="glow-or">
-                                            <feGaussianBlur stdDeviation="1.2" result="blur"/>
-                                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                        <radialGradient id="go-shine" cx="35%" cy="30%">
+                                            <stop offset="0%"   stop-color="#fff7c0" stop-opacity="0.6"/>
+                                            <stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
+                                        </radialGradient>
+                                        <filter id="glow-f">
+                                            <feGaussianBlur stdDeviation="1.5" result="b"/>
+                                            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
                                         </filter>
                                     </defs>
 
-                                    <!-- Bords du cadre -->
-                                    <rect x="3" y="3" width="194" height="194" rx="3" ry="3"
-                                          fill="none" stroke="url(#grad-or)" stroke-width="5.5" opacity="0.95"/>
-                                    <!-- Filet interieur -->
-                                    <rect x="11" y="11" width="178" height="178" rx="1" ry="1"
-                                          fill="none" stroke="url(#grad-or2)" stroke-width="1" opacity="0.5" stroke-dasharray="3 4"/>
+                                    <!-- Ombre portee sous l ellipse -->
+                                    <ellipse cx="100" cy="117" rx="90" ry="107"
+                                             fill="none" stroke="#1a0800" stroke-width="14" opacity="0.6"/>
+                                    <!-- Ellipse principale epaisse -->
+                                    <ellipse cx="100" cy="115" rx="90" ry="106"
+                                             fill="none" stroke="url(#go1)" stroke-width="8"/>
+                                    <!-- Reflet brillant -->
+                                    <ellipse cx="100" cy="115" rx="90" ry="106"
+                                             fill="none" stroke="url(#go-shine)" stroke-width="3.5" opacity="0.6"/>
+                                    <!-- Filet interieur pointille -->
+                                    <ellipse cx="100" cy="115" rx="78" ry="94"
+                                             fill="none" stroke="url(#go2)" stroke-width="1.2"
+                                             stroke-dasharray="4 5" opacity="0.55"/>
 
-                                    <!-- Coin haut-gauche -->
-                                    <g fill="url(#grad-or)" filter="url(#glow-or)">
-                                        <!-- Losange central -->
-                                        <polygon points="18,6 24,12 18,18 12,12" opacity="0.95"/>
-                                        <!-- Branches -->
-                                        <rect x="5" y="11" width="8" height="2" rx="1"/>
-                                        <rect x="11" y="5" width="2" height="8" rx="1"/>
-                                        <!-- Petits carres aux extremites -->
-                                        <rect x="4" y="10" width="3" height="3" rx="0.5" opacity="0.7"/>
-                                        <rect x="10" y="4" width="3" height="3" rx="0.5" opacity="0.7"/>
-                                        <!-- Ligne diagonale ornementee -->
-                                        <line x1="22" y1="5" x2="5" y2="22" stroke="url(#grad-or)" stroke-width="0.8" opacity="0.4"/>
-                                    </g>
-
-                                    <!-- Coin haut-droit -->
-                                    <g fill="url(#grad-or)" filter="url(#glow-or)" transform="translate(200,0) scale(-1,1)">
-                                        <polygon points="18,6 24,12 18,18 12,12" opacity="0.95"/>
-                                        <rect x="5" y="11" width="8" height="2" rx="1"/>
-                                        <rect x="11" y="5" width="2" height="8" rx="1"/>
-                                        <rect x="4" y="10" width="3" height="3" rx="0.5" opacity="0.7"/>
-                                        <rect x="10" y="4" width="3" height="3" rx="0.5" opacity="0.7"/>
-                                        <line x1="22" y1="5" x2="5" y2="22" stroke="url(#grad-or)" stroke-width="0.8" opacity="0.4"/>
-                                    </g>
-
-                                    <!-- Coin bas-gauche -->
-                                    <g fill="url(#grad-or)" filter="url(#glow-or)" transform="translate(0,200) scale(1,-1)">
-                                        <polygon points="18,6 24,12 18,18 12,12" opacity="0.95"/>
-                                        <rect x="5" y="11" width="8" height="2" rx="1"/>
-                                        <rect x="11" y="5" width="2" height="8" rx="1"/>
-                                        <rect x="4" y="10" width="3" height="3" rx="0.5" opacity="0.7"/>
-                                        <rect x="10" y="4" width="3" height="3" rx="0.5" opacity="0.7"/>
-                                        <line x1="22" y1="5" x2="5" y2="22" stroke="url(#grad-or)" stroke-width="0.8" opacity="0.4"/>
+                                    <!-- ══ FLEURON HAUT ══ -->
+                                    <g fill="url(#go1)" filter="url(#glow-f)">
+                                        <!-- Barre horizontale -->
+                                        <rect x="78" y="6.5" width="44" height="2.2" rx="1.1"/>
+                                        <!-- Tige centrale -->
+                                        <rect x="98.8" y="0" width="2.4" height="12" rx="1.2"/>
+                                        <!-- Perle centrale sommet -->
+                                        <circle cx="100" cy="0" r="4"/>
+                                        <!-- Deux tiges inclinees -->
+                                        <rect x="87" y="2" width="2" height="9" rx="1" transform="rotate(-22,88,7)"/>
+                                        <rect x="111" y="2" width="2" height="9" rx="1" transform="rotate(22,112,7)"/>
+                                        <!-- Perles laterales -->
+                                        <circle cx="84.5" cy="3.5" r="3.2"/>
+                                        <circle cx="115.5" cy="3.5" r="3.2"/>
+                                        <!-- Petits losanges -->
+                                        <polygon points="100,11 102.5,7.5 100,9 97.5,7.5"/>
+                                        <polygon points="92,9.5 94,7 92,8 90,7"/>
+                                        <polygon points="108,9.5 110,7 108,8 106,7"/>
+                                        <!-- Perles sur la barre -->
+                                        <circle cx="83" cy="7.5" r="2.2"/>
+                                        <circle cx="91" cy="6.5" r="1.6"/>
+                                        <circle cx="109" cy="6.5" r="1.6"/>
+                                        <circle cx="117" cy="7.5" r="2.2"/>
                                     </g>
 
-                                    <!-- Coin bas-droit -->
-                                    <g fill="url(#grad-or)" filter="url(#glow-or)" transform="translate(200,200) scale(-1,-1)">
-                                        <polygon points="18,6 24,12 18,18 12,12" opacity="0.95"/>
-                                        <rect x="5" y="11" width="8" height="2" rx="1"/>
-                                        <rect x="11" y="5" width="2" height="8" rx="1"/>
-                                        <rect x="4" y="10" width="3" height="3" rx="0.5" opacity="0.7"/>
-                                        <rect x="10" y="4" width="3" height="3" rx="0.5" opacity="0.7"/>
-                                        <line x1="22" y1="5" x2="5" y2="22" stroke="url(#grad-or)" stroke-width="0.8" opacity="0.4"/>
+                                    <!-- ══ FLEURON BAS (miroir) ══ -->
+                                    <g fill="url(#go1)" filter="url(#glow-f)" transform="translate(200,230) rotate(180)">
+                                        <rect x="78" y="6.5" width="44" height="2.2" rx="1.1"/>
+                                        <rect x="98.8" y="0" width="2.4" height="12" rx="1.2"/>
+                                        <circle cx="100" cy="0" r="4"/>
+                                        <rect x="87" y="2" width="2" height="9" rx="1" transform="rotate(-22,88,7)"/>
+                                        <rect x="111" y="2" width="2" height="9" rx="1" transform="rotate(22,112,7)"/>
+                                        <circle cx="84.5" cy="3.5" r="3.2"/>
+                                        <circle cx="115.5" cy="3.5" r="3.2"/>
+                                        <polygon points="100,11 102.5,7.5 100,9 97.5,7.5"/>
+                                        <polygon points="92,9.5 94,7 92,8 90,7"/>
+                                        <polygon points="108,9.5 110,7 108,8 106,7"/>
+                                        <circle cx="83" cy="7.5" r="2.2"/>
+                                        <circle cx="91" cy="6.5" r="1.6"/>
+                                        <circle cx="109" cy="6.5" r="1.6"/>
+                                        <circle cx="117" cy="7.5" r="2.2"/>
                                     </g>
 
-                                    <!-- Milieu haut : ornement fleche -->
-                                    <g fill="url(#grad-or)" opacity="0.85">
-                                        <polygon points="100,4 103,9 100,14 97,9"/>
-                                        <rect x="94" y="7" width="5" height="1.2" rx="0.6"/>
-                                        <rect x="101" y="7" width="5" height="1.2" rx="0.6"/>
+                                    <!-- ══ ORNEMENT GAUCHE : bouclier + volutes ══ -->
+                                    <g fill="url(#go1)" filter="url(#glow-f)">
+                                        <!-- Bouclier -->
+                                        <path d="M5,105 L2,115 L5,126 L12,122 L12,108 Z" opacity="0.95"/>
+                                        <circle cx="7" cy="115" r="3" fill="#2a1500" opacity="0.5"/>
+                                        <circle cx="7" cy="115" r="1.8"/>
+                                        <!-- Volute haute -->
+                                        <path d="M9,107 C5,102 2,97 6,93 C9,90 13,92 12,96" fill="none" stroke="url(#go1)" stroke-width="2" opacity="0.85"/>
+                                        <circle cx="6" cy="93" r="3"/>
+                                        <!-- Volute basse -->
+                                        <path d="M9,123 C5,128 2,133 6,137 C9,140 13,138 12,134" fill="none" stroke="url(#go1)" stroke-width="2" opacity="0.85"/>
+                                        <circle cx="6" cy="137" r="3"/>
+                                        <!-- Petits losanges sur les volutes -->
+                                        <polygon points="6,87 8,90 6,93 4,90" opacity="0.7"/>
+                                        <polygon points="6,137 8,140 6,143 4,140" opacity="0.7"/>
                                     </g>
-                                    <!-- Milieu bas -->
-                                    <g fill="url(#grad-or)" opacity="0.85" transform="translate(0,200) scale(1,-1)">
-                                        <polygon points="100,4 103,9 100,14 97,9"/>
-                                        <rect x="94" y="7" width="5" height="1.2" rx="0.6"/>
-                                        <rect x="101" y="7" width="5" height="1.2" rx="0.6"/>
+
+                                    <!-- ══ ORNEMENT DROITE (miroir) ══ -->
+                                    <g fill="url(#go1)" filter="url(#glow-f)" transform="translate(200,0) scale(-1,1)">
+                                        <path d="M5,105 L2,115 L5,126 L12,122 L12,108 Z" opacity="0.95"/>
+                                        <circle cx="7" cy="115" r="3" fill="#2a1500" opacity="0.5"/>
+                                        <circle cx="7" cy="115" r="1.8"/>
+                                        <path d="M9,107 C5,102 2,97 6,93 C9,90 13,92 12,96" fill="none" stroke="url(#go1)" stroke-width="2" opacity="0.85"/>
+                                        <circle cx="6" cy="93" r="3"/>
+                                        <path d="M9,123 C5,128 2,133 6,137 C9,140 13,138 12,134" fill="none" stroke="url(#go1)" stroke-width="2" opacity="0.85"/>
+                                        <circle cx="6" cy="137" r="3"/>
+                                        <polygon points="6,87 8,90 6,93 4,90" opacity="0.7"/>
+                                        <polygon points="6,137 8,140 6,143 4,140" opacity="0.7"/>
                                     </g>
-                                    <!-- Milieu gauche -->
-                                    <g fill="url(#grad-or)" opacity="0.85" transform="translate(0,100) rotate(-90,0,0) translate(0,-100)">
-                                        <polygon points="100,4 103,9 100,14 97,9"/>
-                                        <rect x="94" y="7" width="5" height="1.2" rx="0.6"/>
-                                        <rect x="101" y="7" width="5" height="1.2" rx="0.6"/>
-                                    </g>
-                                    <!-- Milieu droit -->
-                                    <g fill="url(#grad-or)" opacity="0.85" transform="translate(200,100) rotate(90,0,0) translate(0,-100)">
-                                        <polygon points="100,4 103,9 100,14 97,9"/>
-                                        <rect x="94" y="7" width="5" height="1.2" rx="0.6"/>
-                                        <rect x="101" y="7" width="5" height="1.2" rx="0.6"/>
+
+                                    <!-- ══ PETITES ROSACES DIAGONALES ══ -->
+                                    <g fill="url(#go1)" opacity="0.8">
+                                        <!-- HG -->
+                                        <polygon points="36,34 39.5,37.5 36,41 32.5,37.5"/>
+                                        <circle cx="36" cy="37.5" r="1.8" fill="#8b6010"/>
+                                        <!-- HD -->
+                                        <polygon points="164,34 167.5,37.5 164,41 160.5,37.5"/>
+                                        <circle cx="164" cy="37.5" r="1.8" fill="#8b6010"/>
+                                        <!-- BG -->
+                                        <polygon points="36,189 39.5,192.5 36,196 32.5,192.5"/>
+                                        <circle cx="36" cy="192.5" r="1.8" fill="#8b6010"/>
+                                        <!-- BD -->
+                                        <polygon points="164,189 167.5,192.5 164,196 160.5,192.5"/>
+                                        <circle cx="164" cy="192.5" r="1.8" fill="#8b6010"/>
                                     </g>
                                 </svg>
                             </div>
@@ -6924,7 +7021,27 @@
             if (box && inp && !box.contains(e.target) && e.target !== inp) _fermer();
         });
     })();
-    </script>
+    
+        /* ── Zoom portrait ── */
+        window.ouvrirZoomPortrait = function() {
+            var img = document.getElementById('fiche-portrait-img');
+            if (!img || img.style.display === 'none' || !img.src) return;
+            var zImg = document.getElementById('portrait-zoom-img');
+            if (zImg) zImg.src = img.src;
+            var overlay = document.getElementById('portrait-zoom-overlay');
+            if (overlay) overlay.classList.add('actif');
+            document.body.style.overflow = 'hidden';
+        };
+        window.fermerZoomPortrait = function() {
+            var overlay = document.getElementById('portrait-zoom-overlay');
+            if (overlay) overlay.classList.remove('actif');
+            document.body.style.overflow = '';
+        };
+        // Fermer avec Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') fermerZoomPortrait();
+        });
+</script>
 
     <!-- ======================================================
          MODALE CARTE DU ROYAUME
@@ -6984,5 +7101,91 @@
             font-family: 'Lora', serif;
         }
     </style>
+
+    <!-- ══ MODALE ZOOM PORTRAIT ══ -->
+    <div id="portrait-zoom-overlay" onclick="fermerZoomPortrait()">
+        <div class="portrait-zoom-cadre" onclick="event.stopPropagation()">
+            <!-- Image ovale -->
+            <div class="portrait-zoom-inner">
+                <img id="portrait-zoom-img" src="" alt="Portrait agrandi" />
+            </div>
+            <!-- Même cadre SVG oval mais adapté 800x920 -->
+            <svg class="portrait-zoom-svg" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="gz1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%"   stop-color="#f9e88a"/>
+                        <stop offset="30%"  stop-color="#d4af37"/>
+                        <stop offset="65%"  stop-color="#7a5410"/>
+                        <stop offset="100%" stop-color="#d4af37"/>
+                    </linearGradient>
+                    <radialGradient id="gz-shine" cx="35%" cy="30%">
+                        <stop offset="0%"   stop-color="#fff7c0" stop-opacity="0.7"/>
+                        <stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
+                    </radialGradient>
+                    <filter id="gz-glow">
+                        <feGaussianBlur stdDeviation="2" result="b"/>
+                        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                </defs>
+                <ellipse cx="100" cy="117" rx="90" ry="107" fill="none" stroke="#1a0800" stroke-width="14" opacity="0.6"/>
+                <ellipse cx="100" cy="115" rx="90" ry="106" fill="none" stroke="url(#gz1)" stroke-width="8"/>
+                <ellipse cx="100" cy="115" rx="90" ry="106" fill="none" stroke="url(#gz-shine)" stroke-width="3.5" opacity="0.6"/>
+                <ellipse cx="100" cy="115" rx="78" ry="94" fill="none" stroke="url(#gz1)" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.55"/>
+                <!-- Fleuron haut -->
+                <g fill="url(#gz1)" filter="url(#gz-glow)">
+                    <rect x="78" y="6.5" width="44" height="2.2" rx="1.1"/>
+                    <rect x="98.8" y="0" width="2.4" height="12" rx="1.2"/>
+                    <circle cx="100" cy="0" r="4"/>
+                    <rect x="87" y="2" width="2" height="9" rx="1" transform="rotate(-22,88,7)"/>
+                    <rect x="111" y="2" width="2" height="9" rx="1" transform="rotate(22,112,7)"/>
+                    <circle cx="84.5" cy="3.5" r="3.2"/>
+                    <circle cx="115.5" cy="3.5" r="3.2"/>
+                    <circle cx="83" cy="7.5" r="2.2"/>
+                    <circle cx="91" cy="6.5" r="1.6"/>
+                    <circle cx="109" cy="6.5" r="1.6"/>
+                    <circle cx="117" cy="7.5" r="2.2"/>
+                </g>
+                <!-- Fleuron bas -->
+                <g fill="url(#gz1)" filter="url(#gz-glow)" transform="translate(200,230) rotate(180)">
+                    <rect x="78" y="6.5" width="44" height="2.2" rx="1.1"/>
+                    <rect x="98.8" y="0" width="2.4" height="12" rx="1.2"/>
+                    <circle cx="100" cy="0" r="4"/>
+                    <rect x="87" y="2" width="2" height="9" rx="1" transform="rotate(-22,88,7)"/>
+                    <rect x="111" y="2" width="2" height="9" rx="1" transform="rotate(22,112,7)"/>
+                    <circle cx="84.5" cy="3.5" r="3.2"/>
+                    <circle cx="115.5" cy="3.5" r="3.2"/>
+                    <circle cx="83" cy="7.5" r="2.2"/>
+                    <circle cx="91" cy="6.5" r="1.6"/>
+                    <circle cx="109" cy="6.5" r="1.6"/>
+                    <circle cx="117" cy="7.5" r="2.2"/>
+                </g>
+                <!-- Ornements lateraux gauche -->
+                <g fill="url(#gz1)" filter="url(#gz-glow)">
+                    <path d="M5,105 L2,115 L5,126 L12,122 L12,108 Z"/>
+                    <circle cx="7" cy="115" r="1.8"/>
+                    <path d="M9,107 C5,102 2,97 6,93 C9,90 13,92 12,96" fill="none" stroke="url(#gz1)" stroke-width="2" opacity="0.85"/>
+                    <circle cx="6" cy="93" r="3"/>
+                    <path d="M9,123 C5,128 2,133 6,137 C9,140 13,138 12,134" fill="none" stroke="url(#gz1)" stroke-width="2" opacity="0.85"/>
+                    <circle cx="6" cy="137" r="3"/>
+                    <polygon points="6,87 8,90 6,93 4,90" opacity="0.7"/>
+                    <polygon points="6,137 8,140 6,143 4,140" opacity="0.7"/>
+                </g>
+                <!-- Ornements lateraux droite -->
+                <g fill="url(#gz1)" filter="url(#gz-glow)" transform="translate(200,0) scale(-1,1)">
+                    <path d="M5,105 L2,115 L5,126 L12,122 L12,108 Z"/>
+                    <circle cx="7" cy="115" r="1.8"/>
+                    <path d="M9,107 C5,102 2,97 6,93 C9,90 13,92 12,96" fill="none" stroke="url(#gz1)" stroke-width="2" opacity="0.85"/>
+                    <circle cx="6" cy="93" r="3"/>
+                    <path d="M9,123 C5,128 2,133 6,137 C9,140 13,138 12,134" fill="none" stroke="url(#gz1)" stroke-width="2" opacity="0.85"/>
+                    <circle cx="6" cy="137" r="3"/>
+                    <polygon points="6,87 8,90 6,93 4,90" opacity="0.7"/>
+                    <polygon points="6,137 8,140 6,143 4,140" opacity="0.7"/>
+                </g>
+            </svg>
+            <!-- Bouton fermer -->
+            <button class="portrait-zoom-close" onclick="fermerZoomPortrait()">✕</button>
+        </div>
+    </div>
+
 </body>
 </html>
