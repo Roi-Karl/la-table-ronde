@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -6299,7 +6299,7 @@
     async function _chargerPrompts() {
         if (_promptsCache) return _promptsCache;
         try {
-            var r = await fetch("https://roi-karl.github.io/character_prompts.json");
+            var r = await fetch("https://roi-karl.github.io/la-table-ronde/character_prompts.json");
             _promptsCache = await r.json();
         } catch(e) { _promptsCache = []; }
         return _promptsCache;
