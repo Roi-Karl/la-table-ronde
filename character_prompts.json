@@ -1,0 +1,1730 @@
+[
+  {
+    "fichier": "male_humain_barbare.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Barbare",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_barde.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Barde",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_clerc.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Clerc",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_druide.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Druide",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Guerrier",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_moine.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Moine",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_paladin.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Paladin",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Rôdeur",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_roublard.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Roublard",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Ensorceleur",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Occultiste",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_humain_magicien.png",
+    "sexe": "Masculin",
+    "race": "Humain",
+    "classe": "Magicien",
+    "prompt": "A male human, natural skin imperfections, realistic pores, subtle blemishes, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_barbare.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Barbare",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_barde.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Barde",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_clerc.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Clerc",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_druide.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Druide",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Guerrier",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_moine.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Moine",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_paladin.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Paladin",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Rôdeur",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_roublard.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Roublard",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Ensorceleur",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Occultiste",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_elfe_magicien.png",
+    "sexe": "Masculin",
+    "race": "Elfe",
+    "classe": "Magicien",
+    "prompt": "A male elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_barbare.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Barbare",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_barde.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Barde",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_clerc.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Clerc",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_druide.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Druide",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Guerrier",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_moine.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Moine",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_paladin.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Paladin",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Rôdeur",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_roublard.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Roublard",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Ensorceleur",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Occultiste",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_nain_magicien.png",
+    "sexe": "Masculin",
+    "race": "Nain",
+    "classe": "Magicien",
+    "prompt": "A male dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_barbare.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Barbare",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_barde.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Barde",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_clerc.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Clerc",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_druide.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Druide",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Guerrier",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_moine.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Moine",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_paladin.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Paladin",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Rôdeur",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_roublard.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Roublard",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Ensorceleur",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Occultiste",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_halfelin_magicien.png",
+    "sexe": "Masculin",
+    "race": "Halfelin",
+    "classe": "Magicien",
+    "prompt": "A male halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_barbare.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Barbare",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_barde.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Barde",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_clerc.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Clerc",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_druide.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Druide",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Guerrier",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_moine.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Moine",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_paladin.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Paladin",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Rôdeur",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_roublard.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Roublard",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Ensorceleur",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Occultiste",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_gnome_magicien.png",
+    "sexe": "Masculin",
+    "race": "Gnome",
+    "classe": "Magicien",
+    "prompt": "A male gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_barbare.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Barbare",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_barde.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Barde",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_clerc.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Clerc",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_druide.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Druide",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Guerrier",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_moine.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Moine",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_paladin.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Paladin",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Rôdeur",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_roublard.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Roublard",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Ensorceleur",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Occultiste",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_elfe_magicien.png",
+    "sexe": "Masculin",
+    "race": "Semi-Elfe",
+    "classe": "Magicien",
+    "prompt": "A male half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_barbare.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Barbare",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_barde.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Barde",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_clerc.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Clerc",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_druide.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Druide",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Guerrier",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_moine.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Moine",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_paladin.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Paladin",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Rôdeur",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_roublard.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Roublard",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Ensorceleur",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Occultiste",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_semi_orc_magicien.png",
+    "sexe": "Masculin",
+    "race": "Semi-Orc",
+    "classe": "Magicien",
+    "prompt": "A male half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_barbare.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Barbare",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_barde.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Barde",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_clerc.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Clerc",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_druide.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Druide",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Guerrier",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_moine.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Moine",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_paladin.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Paladin",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Rôdeur",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_roublard.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Roublard",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Ensorceleur",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Occultiste",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_tieffelin_magicien.png",
+    "sexe": "Masculin",
+    "race": "Tieffelin",
+    "classe": "Magicien",
+    "prompt": "A male tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_barbare.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Barbare",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_barde.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Barde",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_clerc.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Clerc",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_druide.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Druide",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_guerrier.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Guerrier",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_moine.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Moine",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_paladin.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Paladin",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_rodeur.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Rôdeur",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_roublard.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Roublard",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_ensorceleur.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Ensorceleur",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_occultiste.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Occultiste",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "male_dragonide_magicien.png",
+    "sexe": "Masculin",
+    "race": "Dragonide",
+    "classe": "Magicien",
+    "prompt": "A male dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_barbare.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Barbare",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_barde.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Barde",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_clerc.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Clerc",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_druide.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Druide",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Guerrier",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_moine.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Moine",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_paladin.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Paladin",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Rôdeur",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_roublard.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Roublard",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Ensorceleur",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Occultiste",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_humain_magicien.png",
+    "sexe": "Féminin",
+    "race": "Humain",
+    "classe": "Magicien",
+    "prompt": "A female human, natural skin imperfections, realistic pores, subtle blemishes, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_barbare.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Barbare",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_barde.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Barde",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_clerc.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Clerc",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_druide.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Druide",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Guerrier",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_moine.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Moine",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_paladin.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Paladin",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Rôdeur",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_roublard.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Roublard",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Ensorceleur",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Occultiste",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_elfe_magicien.png",
+    "sexe": "Féminin",
+    "race": "Elfe",
+    "classe": "Magicien",
+    "prompt": "A female elf, pointed ears prosthetic, porcelain-smooth skin with subtle iridescence, high cheekbones makeup, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_barbare.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Barbare",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_barde.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Barde",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_clerc.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Clerc",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_druide.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Druide",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Guerrier",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_moine.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Moine",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_paladin.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Paladin",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Rôdeur",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_roublard.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Roublard",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Ensorceleur",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Occultiste",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_nain_magicien.png",
+    "sexe": "Féminin",
+    "race": "Nain",
+    "classe": "Magicien",
+    "prompt": "A female dwarf, short and stocky build, braided beard with metal beads, weathered rough skin, prosthetic nose, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_barbare.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Barbare",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_barde.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Barde",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_clerc.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Clerc",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_druide.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Druide",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Guerrier",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_moine.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Moine",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_paladin.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Paladin",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Rôdeur",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_roublard.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Roublard",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Ensorceleur",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Occultiste",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_halfelin_magicien.png",
+    "sexe": "Féminin",
+    "race": "Halfelin",
+    "classe": "Magicien",
+    "prompt": "A female halfling, small stature, large hairy feet, round cheerful face, rosy cheeks, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_barbare.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Barbare",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_barde.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Barde",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_clerc.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Clerc",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_druide.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Druide",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Guerrier",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_moine.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Moine",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_paladin.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Paladin",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Rôdeur",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_roublard.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Roublard",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Ensorceleur",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Occultiste",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_gnome_magicien.png",
+    "sexe": "Féminin",
+    "race": "Gnome",
+    "classe": "Magicien",
+    "prompt": "A female gnome, very small stature, oversized nose prosthetic, wild hair, large curious eyes makeup, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_barbare.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Barbare",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_barde.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Barde",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_clerc.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Clerc",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_druide.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Druide",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Guerrier",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_moine.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Moine",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_paladin.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Paladin",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Rôdeur",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_roublard.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Roublard",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Ensorceleur",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Occultiste",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_elfe_magicien.png",
+    "sexe": "Féminin",
+    "race": "Semi-Elfe",
+    "classe": "Magicien",
+    "prompt": "A female half-elf, slightly pointed ears prosthetic, mixed human and elven features, luminous skin, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_barbare.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Barbare",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_barde.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Barde",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_clerc.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Clerc",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_druide.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Druide",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Guerrier",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_moine.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Moine",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_paladin.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Paladin",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Rôdeur",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_roublard.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Roublard",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Ensorceleur",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Occultiste",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_semi_orc_magicien.png",
+    "sexe": "Féminin",
+    "race": "Semi-Orc",
+    "classe": "Magicien",
+    "prompt": "A female half-orc, grey-green skin makeup, prominent lower tusks prosthetic, strong jaw, scarred skin texture, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_barbare.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Barbare",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_barde.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Barde",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_clerc.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Clerc",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_druide.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Druide",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Guerrier",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_moine.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Moine",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_paladin.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Paladin",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Rôdeur",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_roublard.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Roublard",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Ensorceleur",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Occultiste",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_tieffelin_magicien.png",
+    "sexe": "Féminin",
+    "race": "Tieffelin",
+    "classe": "Magicien",
+    "prompt": "A female tiefling, curved horns prosthetic, long prehensile tail, dark burgundy or indigo skin makeup, solid-color eyes contacts, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_barbare.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Barbare",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing tattered fur and leather armor, war paint on face, massive two-handed axe, wild hair, tribal jewelry. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_barde.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Barde",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing elegant colorful doublet with embroidery, lute or instrument at side, charismatic smile, flamboyant hat with feather. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_clerc.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Clerc",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing ornate religious robes, holy symbol amulet, divine staff, serene expression, prayer beads. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_druide.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Druide",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing natural fiber robes with leaves and bark details, wooden staff with mistletoe, earthy tones, nature markings on skin. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_guerrier.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Guerrier",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing polished plate armor with battle dents, longsword and shield, determined expression, military posture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_moine.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Moine",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing simple wrapped cloth robes, bare feet, calm meditative expression, prayer beads, no weapons. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_paladin.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Paladin",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing gleaming ceremonial full plate armor with holy crest, greatsword, noble posture, divine light halo hint. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_rodeur.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Rôdeur",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing practical green-brown leather armor, longbow across back, hooded cloak, forest camouflage, quiver of arrows. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_roublard.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Roublard",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing dark fitted leather armor, daggers at belt, hood partially raised, knowing smirk, lockpick tools visible. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_ensorceleur.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Ensorceleur",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing flowing mystical robes with arcane patterns, hands crackling with magical energy, intense glowing eyes, dramatic gesture. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_occultiste.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Occultiste",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing dark mysterious attire with eldritch symbols, unsettling calm expression, shadowy aura, forbidden tome at side. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  },
+  {
+    "fichier": "female_dragonide_magicien.png",
+    "sexe": "Féminin",
+    "race": "Dragonide",
+    "classe": "Magicien",
+    "prompt": "A female dragonborn, full-body reptilian scale makeup and prosthetics, elongated snout prosthetic, thick tail, scales reflecting light, wearing scholarly robes with star and rune patterns, tall pointed hat, arcane staff, spellbook in hand, ink-stained fingers. cinematic costume and makeup realism, practical film prosthetics, realistic skin texture with photographic grain, natural plateau lighting, shot on 85mm portrait lens, shallow depth of field, real actor on movie set aesthetic, no CGI, practical effects only, highly detailed costume craftsmanship, dramatic but natural studio lighting with subtle rim light, upper body portrait shot.",
+    "negative_prompt": "cartoon, anime, illustration, painting, flat colors, plastic skin, CGI face, digital art, fantasy game render, oversaturated, neon colors"
+  }
+]
