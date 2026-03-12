@@ -4296,9 +4296,9 @@
             const renderTraits = (liste, titre, iconeSource) => {
                 if (!liste.length) return '';
                 const items = liste.map(t =>
-                    `<div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(212,175,55,0.12);">` +
-                    `<span style="font-size:1rem;line-height:1.3;flex-shrink:0;">${t.icone}</span>` +
-                    `<div><div style="font-family:'Cinzel',serif;font-size:0.62rem;color:var(--rouge-blason);font-weight:bold;letter-spacing:0.04em;">${t.nom}</div>` +
+                    `<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(212,175,55,0.12);">` +
+                    `<span style="font-size:1.2rem;line-height:1.3;flex-shrink:0;">${t.icone}</span>` +
+                    `<div><div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--rouge-blason);font-weight:bold;letter-spacing:0.04em;">${t.nom}</div>` +
                     `<div style="font-family:'Lora',serif;font-size:0.72rem;color:#5a4020;line-height:1.45;margin-top:1px;">${t.desc}</div></div></div>`
                 ).join('');
                 return `<div style="margin-bottom:14px;">` +
