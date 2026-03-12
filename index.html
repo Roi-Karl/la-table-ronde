@@ -2323,7 +2323,7 @@
 
         <!-- PROFIL CHEVALIER (caché si déconnecté) -->
         <section id="section-profil" class="parchemin-box" style="display:none;">
-            <h2>📜 Votre Titre de Chevalier</h2>
+            <h2 id="titre-chevalier-heading">📜 Votre Titre de Chevalier</h2>
 
             <!-- Fiche de personnage -->
             <div class="fiche-container" id="fiche-perso">
@@ -3326,10 +3326,10 @@
             switch (code) {
                 case 'auth/invalid-email':         return "✉️ Ce parchemin d'adresse semble mal écrit ou falsifié.";
                 case 'auth/invalid-credential':    return "🗝️ Les informations fournies ne permettent pas d'ouvrir la herse. Vérifiez l'e-mail ou le mot de passe, messire.";
-                case 'auth/user-not-found':        return "👤 Ce nom n'est pas inscrit dans nos registres. Êtes-vous un espion ?";
+                case 'auth/user-not-found':        return "👤 Ce nom n'est pas " + window.gGenre("inscrit", "inscrite") + " dans nos registres. Êtes-vous " + window.gGenre("un espion", "une espionne") + " ?";
                 case 'auth/wrong-password':        return "🔑 Le mot de passe ne déverrouille pas ce compte. Réessayez, messire.";
                 case 'auth/missing-password':      return "🗝️ Vous avez oublié la clé ! (Le mot de passe est obligatoire).";
-                case 'auth/email-already-in-use':  return "🛡️ Ce nom est déjà porté par un autre Chevalier du royaume.";
+                case 'auth/email-already-in-use':  return "🛡️ Ce nom est déjà porté par " + window.gGenre("un autre Chevalier", "une autre Chevalière") + " du royaume.";
                 case 'auth/weak-password':
                 case 'auth/password-does-not-meet-requirements':
                     return "⚔️ Mot de passe trop faible. Règles du royaume :\n• Au moins 8 caractères\n• Au moins une majuscule (A-Z)\n• Au moins un chiffre (0-9)\n• Au moins un symbole ( ! @ # $ % etc. )\nEx : Chevalier42! ou R0iKarl#";
@@ -3379,9 +3379,9 @@
 
         window.basculerModeAuth = () => {
             modeInscription = !modeInscription;
-            document.getElementById('titreModal').innerText   = modeInscription ? "Devenir Chevalier" : "Entrer au Donjon";
+            document.getElementById('titreModal').innerText   = modeInscription ? window.gGenre("Devenir Chevalier", "Devenir Chevalière") : "Entrer au Donjon";
             document.getElementById('btnAction').innerText    = modeInscription ? "S'inscrire" : "Se Connecter";
-            document.getElementById('lienBascule').innerText  = modeInscription ? "Déjà membre ? Se connecter" : "Pas encore chevalier ? S'inscrire";
+            document.getElementById('lienBascule').innerText  = modeInscription ? "Déjà membre ? Se connecter" : window.gGenre("Pas encore chevalier ? S'inscrire", "Pas encore chevalière ? S'inscrire");
         };
 
         window.oubliMotDePasse = async () => {
@@ -3407,7 +3407,7 @@
                 if (modeInscription) {
                     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                     await sendEmailVerification(userCredential.user);
-                    alert("🛡️ Sceau créé ! Un pigeon voyageur (email) vous a été envoyé pour vérifier votre identité avant de vous laisser entrer.");
+                    alert("🛡️ Sceau " + window.gGenre("créé", "créée") + " ! Un pigeon voyageur (email) vous a été " + window.gGenre("envoyé", "envoyée") + " pour vérifier votre identité avant de vous laisser entrer.");
                     await signOut(auth);
                 } else {
                     const userCredential = await signInWithEmailAndPassword(auth, email, pass);
@@ -3739,7 +3739,7 @@
                 }
                 const elRang     = document.getElementById('rang-chevalier');
                 const elRangTxt  = document.getElementById('rang-chevalier-texte');
-                if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${rangActuel.nom}`;
+                if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${window.gNomGrade(rangActuel)}`;
                 if (elRang) {
                     elRang.style.cursor = 'pointer';
                     elRang.style.color  = '';
@@ -3748,14 +3748,14 @@
                     const ttRang = document.getElementById('tooltip-rang-fiche');
                     if (ttRang) {
                         const prochainTxt = prochainRang
-                            ? `<span class="rpg-tt-bonus-pill">→ ${prochainRang.icone} ${prochainRang.nom} à ${prochainRang.seuil}j</span>`
+                            ? `<span class="rpg-tt-bonus-pill">→ ${prochainRang.icone} ${window.gNomGrade(prochainRang)} à ${prochainRang.seuil}j</span>`
                             : `<span class="rpg-tt-bonus-pill">👑 Rang suprême atteint</span>`;
                         ttRang.innerHTML = `
                             <div class="rpg-tt-header">
                                 <div class="rpg-tt-header-icone">${rangActuel.icone}</div>
                                 <div>
-                                    <div class="rpg-tt-header-nom" style="color:${rangActuel.coul};">${rangActuel.nom}</div>
-                                    <div class="rpg-tt-header-accroche">${rangActuel.tooltip || ''}</div>
+                                    <div class="rpg-tt-header-nom" style="color:${rangActuel.coul};">${window.gNomGrade(rangActuel)}</div>
+                                    <div class="rpg-tt-header-accroche">${window.gTooltip(rangActuel)}</div>
                                 </div>
                             </div>
                             <div class="rpg-tt-section">
@@ -3797,7 +3797,7 @@
                                 </div>`}
                             </div>`;
 
-                        const descBrut = (rangActuel.description_joueur || rangActuel.description || '').trim();
+                        const descBrut = window.genrerTexte((rangActuel.description_joueur || rangActuel.description || '').trim());
                         const corps = descBrut.split(/\n\n+/).map(p =>
                             `<p style="font-family:'Lora',serif;font-size:0.82rem;color:#3a2a0a;line-height:1.65;margin:0 0 12px;">${p.trim().replace(/\n/g,' ')}</p>`
                         ).join('');
@@ -3805,7 +3805,7 @@
                             ? `<span style="font-family:'Cinzel',serif;font-size:0.7rem;
                                 background:rgba(139,0,0,0.08);border:1px solid rgba(139,0,0,0.25);
                                 color:var(--rouge-blason);padding:3px 10px;border-radius:2px;">
-                                → ${prochainRang.icone} ${prochainRang.nom} · À partir de ${prochainRang.seuil} jours</span>`
+                                → ${prochainRang.icone} ${window.gNomGrade(prochainRang)} · À partir de ${prochainRang.seuil} jours</span>`
                             : `<span style="font-family:'Cinzel',serif;font-size:0.7rem;
                                 background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.4);
                                 color:var(--or-sombre);padding:3px 10px;border-radius:2px;">
@@ -3820,9 +3820,9 @@
                                     <div style="font-family:'Cinzel',serif;font-size:0.55rem;color:var(--or-sombre);
                                          letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3px;">RANG</div>
                                     <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:bold;
-                                         color:${rangActuel.coul};letter-spacing:0.05em;">${rangActuel.nom}</div>
+                                         color:${rangActuel.coul};letter-spacing:0.05em;">${window.gNomGrade(rangActuel)}</div>
                                     <div style="font-family:'Lora',serif;font-style:italic;font-size:0.75rem;
-                                         color:#5a3e1b;margin-top:4px;">${rangActuel.tooltip || ''}</div>
+                                         color:#5a3e1b;margin-top:4px;">${window.gTooltip(rangActuel)}</div>
                                 </div>
                             </div>
                             <div style="margin-bottom:16px;">
@@ -3848,7 +3848,7 @@
                         document.body.style.overflow = 'hidden';
                     };
                 }
-                if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = rangActuel.nom;
+                if (document.getElementById('infobulle-rang'))   document.getElementById('infobulle-rang').innerText   = window.gNomGrade(rangActuel);
                 if (document.getElementById('blason-image'))     document.getElementById('blason-image').innerText     = rangActuel.icone;
 
                 // Alignement + Histoire depuis Firestore
@@ -3881,8 +3881,8 @@
                                 <div class="rpg-tt-header">
                                     <div class="rpg-tt-header-icone">${aData.icone}</div>
                                     <div>
-                                        <div class="rpg-tt-header-nom" style="color:${aData.couleur || catCol};">${aData.titre || alignement}</div>
-                                        <div class="rpg-tt-header-accroche">${aData.tooltip || aData.desc || ''}</div>
+                                        <div class="rpg-tt-header-nom" style="color:${aData.couleur || catCol};">${window.gTitreAlign(aData) || alignement}</div>
+                                        <div class="rpg-tt-header-accroche">${window.genrerTexte(aData.tooltip || aData.desc || '')}</div>
                                     </div>
                                 </div>
                                 <div class="rpg-tt-section">
@@ -3949,7 +3949,7 @@
                     alert("🏰 Votre nom a été effacé. Vous quittez le royaume en paix. Adieu, noble ami.");
                 } catch (e) {
                     if (e.code === 'auth/requires-recent-login') {
-                        alert("🛡 Sécurité : Pour supprimer votre compte, vous devez vous être connecté très récemment. Veuillez vous reconnecter et réessayer.");
+                        alert("🛡 Sécurité : Pour supprimer votre compte, vous devez vous être " + window.gGenre("connecté", "connectée") + " très récemment. Veuillez vous reconnecter et réessayer.");
                         signOut(auth);
                     } else {
                         alert("🏰 Message du Sénéchal :\n\n" + traduireErreur(e.code));
@@ -4323,7 +4323,7 @@
         const catLabel    = categorie === "Bien" ? "⚪ Alignement du Bien"
                           : categorie === "Mal"  ? "🔴 Alignement du Mal"
                           : "⚫ Alignement Neutre";
-        const descBrut    = (ad.description_joueur || ad.description || ad.desc || '').trim();
+        const descBrut    = window.genrerTexte((ad.description_joueur || ad.description || ad.desc || '').trim());
 
         const corps = descBrut.split(/\n\n+/).map(p => {
             const t = p.trim();
@@ -4351,9 +4351,9 @@
                     <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:bold;
                          color:${ad.couleur || catCol};letter-spacing:0.05em;">${nomAlign}</div>
                     <div style="font-family:'Lora',serif;font-size:0.8rem;font-weight:bold;
-                         color:#5a3e1b;margin-top:2px;">${ad.titre || ''}</div>
+                         color:#5a3e1b;margin-top:2px;">${window.gTitreAlign(ad)}</div>
                     <div style="font-family:'Lora',serif;font-style:italic;font-size:0.72rem;
-                         color:#7a5a30;margin-top:3px;">${ad.tooltip || ''}</div>
+                         color:#7a5a30;margin-top:3px;">${window.genrerTexte(ad.tooltip || '')}</div>
                 </div>
             </div>
             <div style="margin-bottom:16px;">
@@ -4537,13 +4537,13 @@
                 if (val === 'B') xpGagne += 10;
             });
             window._firebaseAuth.currentUser._xpQuizDejaAttribue = true;
-            msgXP = `⭐ +${xpGagne} XP accordés (50 complétion + bonus alignement) !`;
+            msgXP = `⭐ +${xpGagne} XP ${window.gGenre('accordés', 'accordées')} (50 complétion + bonus alignement) !`;
         }
 
         // Afficher résultat dans le modal
         document.getElementById('modal-icone').innerText = icone;
         document.getElementById('modal-nom').innerText   = cle;
-        document.getElementById('modal-desc').innerText  = desc;
+        document.getElementById('modal-desc').innerText  = window.genrerTexte(desc);
         if (msgXP) {
             let msgEl = document.getElementById('modal-xp-msg');
             if (!msgEl) {
@@ -4576,8 +4576,8 @@
                     <div class="rpg-tt-header">
                         <div class="rpg-tt-header-icone">${aDataFresh.icone}</div>
                         <div>
-                            <div class="rpg-tt-header-nom" style="color:${aDataFresh.couleur || catCol};">${aDataFresh.titre || cle}</div>
-                            <div class="rpg-tt-header-accroche">${aDataFresh.tooltip || aDataFresh.desc || ''}</div>
+                            <div class="rpg-tt-header-nom" style="color:${aDataFresh.couleur || catCol};">${window.gTitreAlign(aDataFresh) || cle}</div>
+                            <div class="rpg-tt-header-accroche">${window.genrerTexte(aDataFresh.tooltip || aDataFresh.desc || '')}</div>
                         </div>
                     </div>
                     <div class="rpg-tt-section">
@@ -4752,22 +4752,34 @@
             .map(([k, v]) => `<span class="rpg-tt-bonus-pill">+${v} ${caracNoms[k]}</span>`)
             .join('');
 
+        // Tooltip genré
+        const tooltipTxt = window.genrerTexte(data.tooltip || '');
+
         // Extraire la première section du description_joueur (avant les Traits raciaux / Capacités)
-        const descRaw = (data.description_joueur || '').trim();
+        const descRaw = window.genrerTexte((data.description_joueur || '').trim());
         const descCourt = descRaw.split(/\n\n/)[0].replace(/\n/g,' ').trim();
+
+        // Description physique genrée (races uniquement)
+        const descPhys = (type === 'race' && window.gDescPhysique) ? window.gDescPhysique(data) : '';
+        const physHTML = descPhys ? `
+            <div class="rpg-tt-section">
+                <div class="rpg-tt-label">Apparence</div>
+                <div class="rpg-tt-texte" style="font-style:italic;">${descPhys.substring(0, 180)}${descPhys.length > 180 ? '…' : ''}</div>
+            </div>` : '';
 
         return `
             <div class="rpg-tt-header">
                 <div class="rpg-tt-header-icone">${data.icone}</div>
                 <div>
-                    <div class="rpg-tt-header-nom">${data.tooltip?.split('—')[0]?.trim() || ''}</div>
-                    <div class="rpg-tt-header-accroche">${data.tooltip?.split('—').slice(1).join('—').trim() || ''}</div>
+                    <div class="rpg-tt-header-nom">${tooltipTxt.split('—')[0]?.trim() || ''}</div>
+                    <div class="rpg-tt-header-accroche">${tooltipTxt.split('—').slice(1).join('—').trim() || ''}</div>
                 </div>
             </div>
             <div class="rpg-tt-section">
                 <div class="rpg-tt-label">Description</div>
                 <div class="rpg-tt-texte">${descCourt.substring(0, 220)}${descCourt.length > 220 ? '…' : ''}</div>
             </div>
+            ${physHTML}
             <div class="rpg-tt-section">
                 <div class="rpg-tt-label">Bonus de caractéristiques</div>
                 <div class="rpg-tt-bonus">${bonusPills || '<span class="rpg-tt-texte">Aucun</span>'}</div>
@@ -4806,6 +4818,55 @@
         }
     }
     window.mettreAJourTooltips = mettreAJourTooltips;
+
+    // ── Rafraîchir le genrage quand le sexe change ──────────
+    window._rafraichirGenrage = function() {
+        // Titre de section personnalisé
+        const hChevalier = document.getElementById('titre-chevalier-heading');
+        if (hChevalier) hChevalier.textContent = '📜 Votre Titre de ' + window.gGenre('Chevalier', 'Chevalière');
+
+        // Re-render tooltips race/classe si déjà affichés
+        if (_rpgModalCourant.race || _rpgModalCourant.classe) {
+            mettreAJourTooltips(_rpgModalCourant.race, _rpgModalCourant.classe);
+        }
+        // Re-render le rang dans la fiche si un grade est affiché
+        const allGrades = window.GRADES_DATA || window.RPG_GRADES || [];
+        const jours = window._joursAncienActuel || 0;
+        let rangActuel = allGrades[0];
+        for (const g of allGrades) { if (jours >= g.seuil) rangActuel = g; else break; }
+        if (rangActuel) {
+            const elRangTxt = document.getElementById('rang-chevalier-texte');
+            if (elRangTxt) elRangTxt.innerHTML = `${rangActuel.icone} ${window.gNomGrade(rangActuel)}`;
+            if (document.getElementById('infobulle-rang'))
+                document.getElementById('infobulle-rang').innerText = window.gNomGrade(rangActuel);
+            // Re-render tooltip rang
+            const ttRang = document.getElementById('tooltip-rang-fiche');
+            if (ttRang) ttRang.innerHTML = window.construireTooltipRang(rangActuel);
+        }
+        // Re-render tooltip alignement
+        const alignNom = document.getElementById('profil-alignement')?.dataset?.alignement?.trim() || '';
+        const aData = alignNom && window.ALIGNEMENTS_DATA ? window.ALIGNEMENTS_DATA[alignNom] : null;
+        if (aData) {
+            const ttAlign = document.getElementById('tooltip-alignement-fiche');
+            if (ttAlign) {
+                const categorie = aData.famille || aData.categorie || '';
+                const catCouleurs = { "Bien": "#4a90d9", "Neutre": "#aab7b8", "Mal": "#c0392b" };
+                const catCol = catCouleurs[categorie] || '#aa8222';
+                ttAlign.innerHTML = `
+                    <div class="rpg-tt-header">
+                        <div class="rpg-tt-header-icone">${aData.icone}</div>
+                        <div>
+                            <div class="rpg-tt-header-nom" style="color:${aData.couleur || catCol};">${window.gTitreAlign(aData) || alignNom}</div>
+                            <div class="rpg-tt-header-accroche">${window.genrerTexte(aData.tooltip || aData.desc || '')}</div>
+                        </div>
+                    </div>
+                    <div class="rpg-tt-section">
+                        <div class="rpg-tt-label">Catégorie morale</div>
+                        <div class="rpg-tt-bonus"><span class="rpg-tt-bonus-pill" style="border-color:${catCol}33; color:${catCol};">${categorie}</span></div>
+                    </div>`;
+            }
+        }
+    };
 
     function aperçuRaceClasse() {
         const raceVal   = document.getElementById('profil-race')?.value   || '';
@@ -5262,8 +5323,11 @@
             ">+${v} ${caracNoms[k]}</span>`)
             .join('');
 
-        // Formater la description_joueur : sections séparées par lignes vides
-        const descBrut = (data.description_joueur || '').trim();
+        // Tooltip genré
+        const tooltipGenre = window.genrerTexte(data.tooltip || '');
+
+        // Formater la description_joueur genrée : sections séparées par lignes vides
+        const descBrut = window.genrerTexte((data.description_joueur || '').trim());
         const paragraphes = descBrut.split(/\n\n+/).map(p => {
             const lignes = p.trim().split('\n');
             if (lignes.length === 1) {
@@ -5284,6 +5348,18 @@
             </div>`;
         }).join('');
 
+        // Description physique genrée (races uniquement)
+        const descPhys = (type === 'race' && window.gDescPhysique) ? window.gDescPhysique(data) : '';
+        const physHTML = descPhys ? `
+            <div style="margin-bottom:16px;">
+                <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--or-sombre);
+                     letter-spacing:0.12em; text-transform:uppercase; margin-bottom:7px;
+                     padding-bottom:5px; border-bottom:1px solid rgba(139,0,0,0.2);">
+                    🪞 Apparence physique
+                </div>
+                <p style="font-family:'Lora',serif; font-style:italic; font-size:0.8rem; color:#4a3010; line-height:1.6; margin:0;">${descPhys}</p>
+            </div>` : '';
+
         const typeLabel = type === 'race' ? 'RACE' : 'CLASSE';
         const nomAffiche = type === 'race' ? _rpgModalCourant.race : _rpgModalCourant.classe;
 
@@ -5298,7 +5374,7 @@
                     <div style="font-family:'Cinzel',serif; font-size:1.1rem; font-weight:bold;
                          color:var(--rouge-blason); letter-spacing:0.05em;">${nomAffiche}</div>
                     <div style="font-family:'Lora',serif; font-style:italic; font-size:0.75rem;
-                         color:#5a3e1b; margin-top:4px;">${data.tooltip || ''}</div>
+                         color:#5a3e1b; margin-top:4px;">${tooltipGenre}</div>
                 </div>
             </div>
 
@@ -5310,6 +5386,8 @@
                 </div>
                 <div style="display:flex; flex-wrap:wrap; gap:6px;">${bonusPills}</div>
             </div>
+
+            ${physHTML}
 
             <!-- Description joueur -->
             <div style="margin-bottom:4px;">
@@ -5396,14 +5474,14 @@
         const prochainIdx = allGrades.findIndex(g => g.nom === grade.nom) + 1;
         const prochain    = allGrades[prochainIdx];
         const prochainTxt = prochain
-            ? `<span class="rpg-tt-bonus-pill">→ ${prochain.icone} ${prochain.nom} à ${prochain.seuil}j</span>`
+            ? `<span class="rpg-tt-bonus-pill">→ ${prochain.icone} ${window.gNomGrade(prochain)} à ${prochain.seuil}j</span>`
             : `<span class="rpg-tt-bonus-pill">👑 Rang suprême atteint</span>`;
         return `
             <div class="rpg-tt-header">
                 <div class="rpg-tt-header-icone">${grade.icone}</div>
                 <div>
-                    <div class="rpg-tt-header-nom" style="color:${grade.coul};">${grade.nom}</div>
-                    <div class="rpg-tt-header-accroche">${grade.tooltip || ''}</div>
+                    <div class="rpg-tt-header-nom" style="color:${grade.coul};">${window.gNomGrade(grade)}</div>
+                    <div class="rpg-tt-header-accroche">${window.gTooltip(grade)}</div>
                 </div>
             </div>
             <div class="rpg-tt-section">
@@ -5456,8 +5534,8 @@
                 </div>`}
             </div>`;
 
-        // Utilise description_joueur (rpg-data.js) ou description (GRADES inline)
-        const descBrut = (grade.description_joueur || grade.description || '').trim();
+        // Utilise description_joueur genrée (rpg-data.js) ou description (GRADES inline)
+        const descBrut = window.genrerTexte((grade.description_joueur || grade.description || '').trim());
         const corps = descBrut.split(/\n\n+/).map(p => {
             const t = p.trim().replace(/\n/g, ' ');
             return `<p style="font-family:'Lora',serif; font-size:0.82rem; color:#3a2a0a;
@@ -5468,7 +5546,7 @@
             ? `<span style="font-family:'Cinzel',serif; font-size:0.7rem;
                 background:rgba(139,0,0,0.08); border:1px solid rgba(139,0,0,0.25);
                 color:var(--rouge-blason); padding:3px 10px; border-radius:2px;">
-                → ${prochain.icone} ${prochain.nom} · À partir de ${prochain.seuil} jours</span>`
+                → ${prochain.icone} ${window.gNomGrade(prochain)} · À partir de ${prochain.seuil} jours</span>`
             : `<span style="font-family:'Cinzel',serif; font-size:0.7rem;
                 background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.4);
                 color:var(--or-sombre); padding:3px 10px; border-radius:2px;">
@@ -5489,9 +5567,9 @@
                     <div style="font-family:'Cinzel',serif; font-size:0.55rem; color:var(--or-sombre);
                          letter-spacing:0.15em; text-transform:uppercase; margin-bottom:3px;">RANG</div>
                     <div style="font-family:'Cinzel',serif; font-size:1.1rem; font-weight:bold;
-                         color:${grade.coul}; letter-spacing:0.05em;">${grade.nom}</div>
+                         color:${grade.coul}; letter-spacing:0.05em;">${window.gNomGrade(grade)}</div>
                     <div style="font-family:'Lora',serif; font-style:italic; font-size:0.75rem;
-                         color:#5a3e1b; margin-top:4px;">${grade.tooltip || ''}</div>
+                         color:#5a3e1b; margin-top:4px;">${window.gTooltip(grade)}</div>
                 </div>
             </div>
             ${barreHTML}
@@ -6684,12 +6762,212 @@
     </div>
 
         <script>
-    // Sexe du personnage
+    // ═══════════════════════════════════════════════════════════
+    //  SYSTÈME DE GENRAGE — Sexe du personnage
+    //  Règle : F = féminin, M/NB/vide = masculin par défaut
+    // ═══════════════════════════════════════════════════════════
+
     window.SEXE_DATA = {
         'F' : { icone:'♀️', label:'Féminin',     pronom:'elle', accord:'e'  },
         'M' : { icone:'♂️', label:'Masculin',    pronom:'il',   accord:''   },
         'NB': { icone:'⚧️',  label:'Non binaire', pronom:'iel',  accord:''   }
     };
+
+    // ── Helpers de base ─────────────────────────────────────
+    window.getSexe = function() {
+        var el = document.getElementById('profil-sexe');
+        return el ? el.value : '';
+    };
+    window.estFeminin = function() { return window.getSexe() === 'F'; };
+
+    // gGenre(m, f) → retourne f si féminin, m sinon
+    window.gGenre = function(m, f) { return window.estFeminin() ? f : m; };
+
+    // gNom(grade) → retourne le nom genré d'un grade RPG
+    window.gNomGrade = function(grade) {
+        if (!grade) return '';
+        return window.estFeminin() ? (grade.nom_f || grade.nom) : grade.nom;
+    };
+
+    // gTitre(alignData) → retourne le titre genré d'un alignement
+    window.gTitreAlign = function(aData) {
+        if (!aData) return '';
+        return window.estFeminin() ? (aData.titre_f || aData.titre) : aData.titre;
+    };
+
+    // gTooltip(obj) → retourne le tooltip genré
+    window.gTooltip = function(obj) {
+        if (!obj) return '';
+        return window.estFeminin() ? (obj.tooltip_f || obj.tooltip || '') : (obj.tooltip || '');
+    };
+
+    // gDescPhysique(raceData) → retourne la description physique genrée
+    window.gDescPhysique = function(raceData) {
+        if (!raceData || !raceData.description_physique) return '';
+        var sexe = window.getSexe();
+        if (sexe === 'F') return raceData.description_physique.feminin || raceData.description_physique.masculin || '';
+        return raceData.description_physique.masculin || '';
+    };
+
+    // ── Dictionnaire de genrage français ─────────────────────
+    // Paires [regex, remplacement_feminin]
+    // Ordre : du plus spécifique au plus générique
+    window._GENRE_REGLES = [
+        // --- Expressions complètes (prioritaires) ---
+        [/\ble nouveau\b/gi, 'la nouvelle'],
+        [/\bLe nouveau\b/g, 'La nouvelle'],
+        [/\bun inconnu\b/gi, 'une inconnue'],
+        [/\bUn inconnu\b/g, 'Une inconnue'],
+        [/\ble mâle\b/gi, 'la femelle'],
+        [/\bLe mâle\b/g, 'La femelle'],
+        [/\bun combattant\b/gi, 'une combattante'],
+        [/\bUn combattant\b/g, 'Une combattante'],
+        [/\bun noble\b/gi, 'une noble'],
+
+        // --- Noms (avec articles intégrés quand pertinent) ---
+        [/\bchevaliers\b/g, 'chevalières'],
+        [/\bChevaliers\b/g, 'Chevalières'],
+        [/\bchevalier\b/g, 'chevalière'],
+        [/\bChevalier\b/g, 'Chevalière'],
+        [/\baventuriers\b/g, 'aventurières'],
+        [/\baventurier\b/g, 'aventurière'],
+        [/\bAventurier\b/g, 'Aventurière'],
+        [/\bguerriers\b/g, 'guerrières'],
+        [/\bguerrier\b/g, 'guerrière'],
+        [/\bGuerrier\b/g, 'Guerrière'],
+        [/\bgardiens\b/g, 'gardiennes'],
+        [/\bgardien\b/g, 'gardienne'],
+        [/\bGardien\b/g, 'Gardienne'],
+        [/\bprotecteurs\b/g, 'protectrices'],
+        [/\bprotecteur\b/g, 'protectrice'],
+        [/\bProtecteur\b/g, 'Protectrice'],
+        [/\bdéfenseurs\b/g, 'défenseuses'],
+        [/\bdéfenseur\b/g, 'défenseuse'],
+        [/\bDéfenseur\b/g, 'Défenseuse'],
+        [/\bformateurs\b/g, 'formatrices'],
+        [/\bformateur\b/g, 'formatrice'],
+        [/\bFormateur\b/g, 'Formatrice'],
+        [/\bporteurs\b/g, 'porteuses'],
+        [/\bporteur\b/g, 'porteuse'],
+        [/\bPorteur\b/g, 'Porteuse'],
+        [/\bcommandants\b/g, 'commandantes'],
+        [/\bcommandant\b/g, 'commandante'],
+        [/\bCommandant\b/g, 'Commandante'],
+        [/\bécuyers\b/g, 'écuyères'],
+        [/\bécuyer\b/g, 'écuyère'],
+        [/\bÉcuyer\b/g, 'Écuyère'],
+        [/\bpaysans\b/g, 'paysannes'],
+        [/\bpaysan\b/g, 'paysanne'],
+        [/\bPaysan\b/g, 'Paysanne'],
+        [/\bapprentis\b/g, 'apprenties'],
+        [/\bapprenti\b/g, 'apprentie'],
+        [/\bApprenti\b/g, 'Apprentie'],
+        [/\bvétérans\b/g, 'vétéranes'],
+        [/\bvétéran\b/g, 'vétérane'],
+        [/\bVétéran\b/g, 'Vétérane'],
+        [/\bvilains\b/g, 'vilaines'],
+        [/\bvilein\b/g, 'vilaine'],
+        [/\bserfs\b/g, 'serves'],
+        [/\bserf\b/g, 'serve'],
+        [/\bSerf\b/g, 'Serve'],
+        [/\bbarons\b/g, 'baronnes'],
+        [/\bbaron\b/g, 'baronne'],
+        [/\bBaron\b/g, 'Baronne'],
+        [/\bhérauts\b/g, 'hérautes'],
+        [/\bhéraut\b/g, 'héraute'],
+        [/\bHéraut\b/g, 'Héraute'],
+        [/\bseigneurs\b/g, 'dames'],
+        [/\bseigneur\b/g, 'dame'],
+        [/\bSeigneur\b/g, 'Dame'],
+        [/\bhéros\b/g, 'héroïne'],
+        [/\bHéros\b/g, 'Héroïne'],
+        [/\bmaîtres\b/g, 'maîtresses'],
+        [/\bmaître\b/g, 'maîtresse'],
+        [/\bMaître\b/g, 'Maîtresse'],
+        [/\bhôtes\b/g, 'hôtesses'],
+        [/\bhôte\b/g, 'hôtesse'],
+        [/\bami\b/g, 'amie'],
+        [/\bamis\b/g, 'amies'],
+        [/\binconnus\b/g, 'inconnues'],
+        [/\binconnu\b/g, 'inconnue'],
+        [/\bInconnu\b/g, 'Inconnue'],
+        [/\bcombattants\b/g, 'combattantes'],
+        [/\bcombattant\b/g, 'combattante'],
+        [/\bCombattant\b/g, 'Combattante'],
+
+        // --- Adjectifs / participes fréquents ---
+        [/\bégaré\b/g, 'égarée'],
+        [/\bÉgaré\b/g, 'Égarée'],
+        [/\berrant\b/g, 'errante'],
+        [/\bErrant\b/g, 'Errante'],
+        [/\bcourageux\b/g, 'courageuse'],
+        [/\bCourageux\b/g, 'Courageuse'],
+        [/\bconnecté\b/g, 'connectée'],
+        [/\bConnecté\b/g, 'Connectée'],
+        [/\binscrit\b/g, 'inscrite'],
+        [/\bInscrit\b/g, 'Inscrite'],
+        [/\bchoisi\b/g, 'choisie'],
+        [/\bprêt\b/g, 'prête'],
+        [/\bPrêt\b/g, 'Prête'],
+        [/\bbienvenu\b/g, 'bienvenue'],
+        [/\bBienvenu\b/g, 'Bienvenue'],
+        [/\bsauvegardé\b/g, 'sauvegardée'],
+        [/\bsupprimé\b/g, 'supprimée'],
+        [/\bcréé\b/g, 'créée'],
+        [/\bactivé\b/g, 'activée'],
+        [/\bdésactivé\b/g, 'désactivée'],
+        [/\bconfirmé\b/g, 'confirmée'],
+        [/\baccepté\b/g, 'acceptée'],
+        [/\brefusé\b/g, 'refusée'],
+        [/\benvoyé\b/g, 'envoyée'],
+        [/\breçu\b/g, 'reçue'],
+        [/\baffiché\b/g, 'affichée'],
+        [/\bchargé\b/g, 'chargée'],
+        [/\benregistré\b/g, 'enregistrée'],
+        [/\bsélectionné\b/g, 'sélectionnée'],
+        [/\bvalidé\b/g, 'validée'],
+        [/\breconnu\b/g, 'reconnue'],
+        [/\bReconnu\b/g, 'Reconnue'],
+        [/\battaché\b/g, 'attachée'],
+        [/\bdéterminé\b/g, 'déterminée'],
+        [/\bfidèle\b/g, 'fidèle'],
+        [/\bresponsable\b/g, 'responsable'],
+        [/\bnouveau\b/g, 'nouvelle'],
+        [/\bNouveau\b/g, 'Nouvelle'],
+
+        // --- Pronoms & articles devant noms genrés ---
+        // (Ces règles sont plus risquées — à appliquer avec précaution)
+        [/\bil est\b/g, 'elle est'],
+        [/\bIl est\b/g, 'Elle est'],
+        [/\bil a\b/g, 'elle a'],
+        [/\bIl a\b/g, 'Elle a'],
+        [/\bil n'/g, 'elle n\''],
+        [/\bIl n'/g, 'Elle n\''],
+        [/\bil ne\b/g, 'elle ne'],
+        [/\bIl ne\b/g, 'Elle ne'],
+        [/\bil peut\b/g, 'elle peut'],
+        [/\bil fait\b/g, 'elle fait'],
+        [/\bil sait\b/g, 'elle sait'],
+        [/\bil cherche\b/g, 'elle cherche'],
+        [/\bil travaille\b/g, 'elle travaille'],
+        [/\bil suit\b/g, 'elle suit'],
+        [/\bil possède\b/g, 'elle possède'],
+        [/\bil porte\b/g, 'elle porte'],
+
+        // --- Géolocalisé (carte) ---
+        [/\bgéolocalisé\b/g, 'géolocalisée'],
+    ];
+
+    // genrerTexte(texte) — applique toutes les règles de genrage
+    window.genrerTexte = function(texte) {
+        if (!texte || !window.estFeminin()) return texte || '';
+        var t = texte;
+        for (var i = 0; i < window._GENRE_REGLES.length; i++) {
+            t = t.replace(window._GENRE_REGLES[i][0], window._GENRE_REGLES[i][1]);
+        }
+        return t;
+    };
+
     window.choisirSexe = function(val) {
         var h = document.getElementById('profil-sexe');
         if (h) h.value = val;
@@ -6704,6 +6982,8 @@
             var tt = document.getElementById('sexe-legal-tooltip');
             if (tt) tt.style.display = val === 'NB' ? '' : 'none';
         }
+        // Rafraîchir les textes genrés si la fiche est déjà affichée
+        if (window._rafraichirGenrage) window._rafraichirGenrage();
     };
     </script>
 
@@ -6847,7 +7127,7 @@
         window.ouvrirCarte = async function() {
             // Verifier que l'utilisateur est connecte
             if (!window._firebaseAuth || !window._firebaseAuth.currentUser) {
-                alert("🔒 Vous devez être connecté pour accéder à la carte du Royaume.");
+                alert("🔒 Vous devez être " + window.gGenre("connecté", "connectée") + " pour accéder à la carte du Royaume.");
                 return;
             }
             var overlay = document.getElementById("carte-modal-overlay");
@@ -6906,7 +7186,7 @@
             if (!_carteDonnees || _carteDonnees.length === 0) {
                 if (loader) loader.innerHTML = '<div style="font-family:Cinzel,serif;font-size:0.8rem;color:#8B0000;padding:20px;text-align:center;">' +
                     '🏔️ Aucun chevalier géolocalisé pour l\'instant.<br><span style="font-family:Lora,serif;font-style:italic;font-size:0.7rem;color:#9a7a50;">Les membres doivent renseigner leur adresse dans leur profil.</span></div>';
-                if (compteur) compteur.textContent = "0 chevalier géolocalisé sur la carte";
+                if (compteur) compteur.textContent = window.gGenre("0 chevalier géolocalisé sur la carte", "0 chevalière géolocalisée sur la carte");
                 return;
             }
 
@@ -7066,7 +7346,7 @@
 
             if (loader) loader.style.display = "none";
             var n = _carteDonnees.length;
-            if (compteur) compteur.textContent = n + " chevalier" + (n > 1 ? "s" : "") + " géolocalisé" + (n > 1 ? "s" : "") + " sur la carte du Royaume";
+            if (compteur) compteur.textContent = n + window.gGenre(" chevalier", " chevalière") + (n > 1 ? "s" : "") + window.gGenre(" géolocalisé", " géolocalisée") + (n > 1 ? "s" : "") + " sur la carte du Royaume";
         }
 
         // ── Marqueur château SVG (fallback sans portrait) ──
