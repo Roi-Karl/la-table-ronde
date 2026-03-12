@@ -6376,10 +6376,13 @@
             console.log('[Portrait] prompt len=', entry.prompt ? entry.prompt.length : 'null');
             var seed = Math.floor(Math.random()*9000)+1000;
             try {
-            var url  = "https://image.pollinations.ai/prompt/"
-                     + encodeURIComponent(entry.prompt)
-                     + "?width=512&height=512&model=flux&seed=" + seed
-                     + "&referer=roi-karl.github.io";
+            // Seed deterministe base sur race+classe pour coherence
+            var combo = race + classe + sexeP;
+            var picsumSeed = 0;
+            for (var ci = 0; ci < combo.length; ci++) picsumSeed = (picsumSeed * 31 + combo.charCodeAt(ci)) & 0xFFFF;
+            var picsumId = 10 + (picsumSeed % 200); // IDs 10-209, portraits et visages
+            var url = "https://picsum.photos/id/" + picsumId + "/512/512";
+            console.log('[Portrait] Picsum id=', picsumId, 'combo=', combo);
             console.log('[Portrait] URL ok, len=', url.length);
             } catch(eUrl) { console.error("[Portrait] URL build error:", eUrl); throw eUrl; }
             var tempImg = new Image();
