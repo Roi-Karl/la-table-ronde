@@ -6380,26 +6380,19 @@
             var combo = race + classe + sexeP;
             var picsumSeed = 0;
             for (var ci = 0; ci < combo.length; ci++) picsumSeed = (picsumSeed * 31 + combo.charCodeAt(ci)) & 0xFFFF;
-            var picsumId = 10 + (picsumSeed % 200);
-            // .jpg evite la redirection qui cause onerror
-            var url = "https://fastly.picsum.photos/id/" + picsumId + "/512/512.jpg";
+            // IDs Picsum valides (portraits/visages)
+            var picsumIds = [64,65,91,96,177,195,217,247,280,338,349,375,396,402,433,447,453,491,514,533,550,582,598,625,659,669,674,678,718,733,758,783,798,823,866,884,909,946,974,996];
+            var picsumId = picsumIds[picsumSeed % picsumIds.length];
+            var url = "https://picsum.photos/id/" + picsumId + "/512/512";
             console.log('[Portrait] Picsum id=', picsumId, 'combo=', combo);
             console.log('[Portrait] URL ok, len=', url.length);
             } catch(eUrl) { console.error("[Portrait] URL build error:", eUrl); throw eUrl; }
-            var tempImg = new Image();
-            tempImg.onload = async function() {
-                if (ld) ld.style.display = 'none';
-                window._afficherPortrait(url);
-                _toastPortrait('🖼️ Portrait royal dévoilé !', 'ok');
-                if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(url, race, classe, sexe);
-            };
-            tempImg.onerror = function() {
-                console.error('[Portrait] onerror url=', tempImg.src);
-                if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
-                _toastPortrait('❌ Le peintre a abandonné… Ressayez plus tard.','err');
-            };
+            // Afficher directement sans preload
             console.log('[Portrait] URL =', url);
-            tempImg.src = url;
+            if (ld) ld.style.display = 'none';
+            window._afficherPortrait(url);
+            _toastPortrait('🖼️ Portrait royal dévoilé !', 'ok');
+            if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(url, race, classe, sexe);
         } catch(e) {
             if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
             _toastPortrait('❌ Erreur de génération.','err');
