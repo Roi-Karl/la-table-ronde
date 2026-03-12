@@ -6233,7 +6233,7 @@
                 // Supprimer anciens marqueurs
                 _carteMarkers.forEach(function(m) { m.setMap(null); });
                 _carteMarkers = [];
-                _carteInfoWin.close();
+                if (_carteInfoWin) _carteInfoWin.close();
             }
 
             // Creer marqueurs
