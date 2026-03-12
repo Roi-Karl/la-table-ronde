@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -6374,50 +6374,38 @@
             if (!entry && prompts.length > 0) console.warn('[Portrait] ex JSON[0]:', JSON.stringify(prompts[0]));
             if (!entry) { if(ld)ld.style.display='none'; if(ph)ph.style.display='flex'; _toastPortrait('❌ Portrait introuvable','err'); return; }
             console.log('[Portrait] prompt len=', entry.prompt ? entry.prompt.length : 'null');
-            var seed = Math.floor(Math.random()*9000)+1000;
-            try {
-            var seed = Math.floor(Math.random()*9000)+1000;
-            var url = "https://image.pollinations.ai/prompt/"
-                    + encodeURIComponent(entry.prompt)
-                    + "?width=512&height=512&model=flux&seed=" + seed;
-            console.log('[Portrait] URL =', url);
-            console.log('[Portrait] URL ok, len=', url.length);
-            } catch(eUrl) { console.error("[Portrait] URL build error:", eUrl); throw eUrl; }
-            // Retry x3 avec delai croissant
-            var _maxRetry = 3;
-            var _retry = 0;
-            function _essayer() {
-                // Regenerer seed a chaque tentative
-                if (_retry > 0) {
-                    seed = Math.floor(Math.random()*9000)+1000;
-                    url = "https://image.pollinations.ai/prompt/"
-                        + encodeURIComponent(entry.prompt)
-                        + "?width=512&height=512&model=flux&seed=" + seed;
-                }
-                console.log('[Portrait] tentative ' + (_retry+1) + '/3 url=', url);
-                var t = new Image();
-                t.onload = async function() {
-                    if (ld) ld.style.display = 'none';
-                    window._afficherPortrait(url);
-                    _toastPortrait('🖼️ Portrait royal dévoilé !', 'ok');
-                    if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(url, race, classe, sexe);
+            // HuggingFace FLUX.1-schnell
+            var HF_TOKEN = "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";
+            var HF_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell";
+            fetch(HF_URL, {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + HF_TOKEN,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ inputs: entry.prompt })
+            })
+            .then(function(resp) {
+                if (!resp.ok) throw new Error("HF " + resp.status);
+                return resp.blob();
+            })
+            .then(function(blob) {
+                var objUrl = URL.createObjectURL(blob);
+                if (ld) ld.style.display = 'none';
+                window._afficherPortrait(objUrl);
+                _toastPortrait("🖼️ Portrait royal dévoilé !", "ok");
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(reader.result, race, classe, sexe);
                 };
-                t.onerror = function() {
-                    _retry++;
-                    if (_retry < _maxRetry) {
-                        var delai = _retry * 10000; // 10s, 20s
-                        console.warn('[Portrait] echec, retry dans ' + (delai/1000) + 's');
-                        _toastPortrait('🖌️ Le peintre réessaie (' + _retry + '/3)…', 'loading');
-                        setTimeout(_essayer, delai);
-                    } else {
-                        if (ld) ld.style.display='none';
-                        if (ph) ph.style.display='flex';
-                        _toastPortrait('❌ Le peintre a abandonné… Ressayez plus tard.', 'err');
-                    }
-                };
-                t.src = url;
-            }
-            _essayer();
+                reader.readAsDataURL(blob);
+            })
+            .catch(function(err) {
+                console.error("[Portrait] HF error:", err);
+                if (ld) ld.style.display='none';
+                if (ph) ph.style.display='flex';
+                _toastPortrait("❌ Le peintre a abandonné… Ressayez plus tard.", "err");
+            });
         } catch(e) {
             if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
             _toastPortrait('❌ Erreur de génération.','err');
