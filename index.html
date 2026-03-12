@@ -6937,89 +6937,128 @@
                 _carteInfoWin = new google.maps.InfoWindow();
             } else {
                 _carteMap.setCenter(centre);
-                // Supprimer anciens marqueurs
                 _carteMarkers.forEach(function(m) { m.setMap(null); });
                 _carteMarkers = [];
                 if (_carteInfoWin) _carteInfoWin.close();
             }
 
-            // Creer marqueurs
-            var bounds = new google.maps.LatLngBounds();
+            // ── Grouper les membres par coordonnées identiques ──
+            // Clé = "lat,lng" arrondi à 5 décimales
+            var groupes = {};
             _carteDonnees.forEach(function(membre) {
-                var pos = { lat: parseFloat(membre.lat), lng: parseFloat(membre.lng) };
-                bounds.extend(pos);
+                var lat = parseFloat(parseFloat(membre.lat).toFixed(5));
+                var lng = parseFloat(parseFloat(membre.lng).toFixed(5));
+                var cle = lat + "," + lng;
+                if (!groupes[cle]) groupes[cle] = { lat: lat, lng: lng, membres: [] };
+                groupes[cle].membres.push(membre);
+            });
 
-                // Couleur du blason ou rouge par defaut
-                var couleur = membre.couleur_blason || "#8B0000";
-
-                // Marqueur SVG chateau
-                var svgMarker = {
-                    path: "M-8,-16 L-8,-10 L-12,-10 L-12,0 L12,0 L12,-10 L8,-10 L8,-16 L5,-16 L5,-12 L2,-12 L2,-16 L-2,-16 L-2,-12 L-5,-12 L-5,-16 Z",
-                    fillColor: couleur,
-                    fillOpacity: 1,
-                    strokeColor: "#D4AF37",
-                    strokeWeight: 1.5,
-                    scale: 1.3,
-                    anchor: new google.maps.Point(0, 0)
+            // ── Offset spirale pour séparer les marqueurs au même point ──
+            // Rayon en degrés (~30m par step)
+            function _spiraleOffset(index, total) {
+                if (total === 1 || index === 0) return { dlat: 0, dlng: 0 };
+                // Disposition en cercle autour du centre
+                var rayon = 0.0003 * Math.ceil(index / 8 + 0.5); // rayon croissant
+                var angle = (index - 1) * (2 * Math.PI / Math.min(total - 1, 8));
+                return {
+                    dlat: rayon * Math.cos(angle),
+                    dlng: rayon * Math.sin(angle) * 1.5 // correction longitude
                 };
+            }
 
-                var marker = new google.maps.Marker({
-                    position: pos,
-                    map: _carteMap,
-                    icon: svgMarker,
-                    title: membre.pseudo || "Chevalier"
-                });
+            // ── Créer les marqueurs ──
+            var bounds = new google.maps.LatLngBounds();
 
-                // Info-bulle au clic
-                marker.addListener("click", function() {
-                    var jours = 0;
-                    if (membre.cree_le && membre.cree_le.seconds) {
-                        jours = Math.max(0, Math.floor((Date.now()/1000 - membre.cree_le.seconds) / 86400));
+            Object.values(groupes).forEach(function(groupe) {
+                var total = groupe.membres.length;
+                groupe.membres.forEach(function(membre, idx) {
+                    var offset = _spiraleOffset(idx, total);
+                    var pos = {
+                        lat: groupe.lat + offset.dlat,
+                        lng: groupe.lng + offset.dlng
+                    };
+                    bounds.extend(pos);
+
+                    var couleur = membre.couleur_blason || "#8B0000";
+
+                    // ── Marqueur : portrait rond si disponible, château SVG sinon ──
+                    var marker;
+                    if (membre.portrait_url) {
+                        // Canvas 52x60 : portrait oval + bordure or + pointe bas
+                        var canvas = document.createElement("canvas");
+                        canvas.width = 52; canvas.height = 60;
+                        var ctx = canvas.getContext("2d");
+                        var img = new Image();
+                        img.crossOrigin = "anonymous";
+                        img.onload = function() {
+                            // Ombre portée
+                            ctx.shadowColor = "rgba(0,0,0,0.5)";
+                            ctx.shadowBlur = 4;
+                            ctx.shadowOffsetY = 2;
+                            // Fond sombre (remplissage oval)
+                            ctx.beginPath();
+                            ctx.ellipse(26, 26, 22, 26, 0, 0, Math.PI * 2);
+                            ctx.fillStyle = "#1a0e06";
+                            ctx.fill();
+                            ctx.shadowColor = "transparent";
+                            // Clip oval pour l'image
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.ellipse(26, 26, 20, 24, 0, 0, Math.PI * 2);
+                            ctx.clip();
+                            ctx.drawImage(img, 6, 2, 40, 48);
+                            ctx.restore();
+                            // Bordure or
+                            ctx.beginPath();
+                            ctx.ellipse(26, 26, 22, 26, 0, 0, Math.PI * 2);
+                            ctx.strokeStyle = "#D4AF37";
+                            ctx.lineWidth = 2.5;
+                            ctx.stroke();
+                            // Pointe de pin en bas
+                            ctx.beginPath();
+                            ctx.moveTo(21, 50); ctx.lineTo(26, 60); ctx.lineTo(31, 50);
+                            ctx.fillStyle = "#D4AF37";
+                            ctx.fill();
+                            // Mettre a jour l'icone du marqueur
+                            marker.setIcon({
+                                url: canvas.toDataURL(),
+                                scaledSize: new google.maps.Size(52, 60),
+                                anchor: new google.maps.Point(26, 60)
+                            });
+                        };
+                        img.onerror = function() {
+                            // Fallback chateau si image echoue
+                            marker.setIcon(_svgChateau(couleur));
+                        };
+                        img.src = membre.portrait_url;
+                        // Marqueur initial (pendant le chargement de l'image)
+                        marker = new google.maps.Marker({
+                            position: pos,
+                            map: _carteMap,
+                            icon: _svgChateau(couleur),
+                            title: membre.pseudo || "Chevalier"
+                        });
+                    } else {
+                        marker = new google.maps.Marker({
+                            position: pos,
+                            map: _carteMap,
+                            icon: _svgChateau(couleur),
+                            title: membre.pseudo || "Chevalier"
+                        });
                     }
-                    var xp = 10 + (jours * 12) + (membre.xp_quiz || 0) + (membre.xp_newsletter || 0);
-                    // Calcul niveau depuis XP
-                    var niveaux = window.NIVEAUX_DATA || [];
-                    var niveau = 1;
-                    for (var ni = 0; ni < niveaux.length; ni++) { if (xp >= niveaux[ni].xpMin) niveau = niveaux[ni].niveau; else break; }
-                    // Calcul rang
-                    var grades = window.GRADES_DATA || [];
-                    var rang = grades[0] || { icone: "🪵", nom: "Serf Égaré" };
-                    for (var gi = 0; gi < grades.length; gi++) { if (jours >= grades[gi].seuil) rang = grades[gi]; else break; }
-                    var raceRaw  = membre.race   || "";
-                    var classeRaw = membre.classe || "";
-                    var raceNom  = raceRaw.split("|")[0]  || "";
-                    var raceIco  = raceRaw.split("|")[1]  || "";
-                    var classeNom = classeRaw.split("|")[0] || "";
-                    var classeIco = classeRaw.split("|")[1] || "";
-                    var rcLine = (raceNom || classeNom)
-                        ? (raceIco + " " + raceNom + (raceNom && classeNom ? " &middot; " : "") + classeIco + " " + classeNom).trim()
-                        : "";
-                    var devise = membre.devise ? "&laquo;&nbsp;" + membre.devise + "&nbsp;&raquo;" : "";
-                    var html = '<div style="font-family:Lora,serif; min-width:170px; max-width:220px; padding:2px;">' +
-                        '<div style="font-family:Cinzel,serif; font-size:0.9rem; font-weight:bold; color:#8B0000; margin-bottom:4px;">' +
-                            (membre.pseudo || "Chevalier Anonyme") + '</div>' +
-                        '<div style="font-size:0.7rem; color:#7a5a2a; margin-bottom:4px;">' + rang.icone + " " + rang.nom + '</div>' +
-                        (rcLine ? '<div style="font-size:0.72rem; color:#5a3a1a; margin-bottom:3px;">' + rcLine + '</div>' : '') +
-                        (devise  ? '<div style="font-size:0.68rem; font-style:italic; color:#7a5a2a; margin-bottom:5px;">' + devise + '</div>' : '') +
-                        '<div style="display:flex; gap:10px; font-size:0.7rem; color:#5a3a1a; border-top:1px solid rgba(212,175,55,0.3); padding-top:5px; margin-top:2px;">' +
-                            '<span>⭐ Niv.' + niveau + '</span>' +
-                            '<span>✨ ' + xp + ' XP</span>' +
-                            '<span>📅 ' + jours + ' j.</span>' +
-                        '</div>' +
-                        (membre.adresse ? '<div style="font-size:0.62rem; color:#9a7a50; margin-top:4px;">📍 ' + membre.adresse + '</div>' : '') +
-                        '</div>';
-                    if (!_carteInfoWin) _carteInfoWin = new google.maps.InfoWindow();
-                    _carteInfoWin.setContent(html);
-                    _carteInfoWin.open(_carteMap, marker);
-                });
 
-                _carteMarkers.push(marker);
+                    // ── Infobulle au clic ──
+                    marker.addListener("click", (function(m) { return function() {
+                        _carteInfoBulle(m, marker);
+                    }; })(membre));
+
+                    _carteMarkers.push(marker);
+                });
             });
 
             // Ajuster le zoom pour voir tous les marqueurs
             if (_carteDonnees.length > 1) {
                 _carteMap.fitBounds(bounds);
-                // Eviter un zoom trop proche
                 google.maps.event.addListenerOnce(_carteMap, "bounds_changed", function() {
                     if (_carteMap.getZoom() > 10) _carteMap.setZoom(10);
                 });
@@ -7028,6 +7067,86 @@
             if (loader) loader.style.display = "none";
             var n = _carteDonnees.length;
             if (compteur) compteur.textContent = n + " chevalier" + (n > 1 ? "s" : "") + " géolocalisé" + (n > 1 ? "s" : "") + " sur la carte du Royaume";
+        }
+
+        // ── Marqueur château SVG (fallback sans portrait) ──
+        function _svgChateau(couleur) {
+            return {
+                path: "M-8,-16 L-8,-10 L-12,-10 L-12,0 L12,0 L12,-10 L8,-10 L8,-16 L5,-16 L5,-12 L2,-12 L2,-16 L-2,-16 L-2,-12 L-5,-12 L-5,-16 Z",
+                fillColor: couleur || "#8B0000",
+                fillOpacity: 1,
+                strokeColor: "#D4AF37",
+                strokeWeight: 1.5,
+                scale: 1.3,
+                anchor: new google.maps.Point(0, 0)
+            };
+        }
+
+        // ── Infobulle enrichie avec portrait ──
+        function _carteInfoBulle(membre, marker) {
+            var jours = 0;
+            if (membre.cree_le && membre.cree_le.seconds) {
+                jours = Math.max(0, Math.floor((Date.now()/1000 - membre.cree_le.seconds) / 86400));
+            }
+            var xp = 10 + (jours * 12) + (membre.xp_quiz || 0) + (membre.xp_newsletter || 0);
+            var niveaux = window.NIVEAUX_DATA || [];
+            var niveau = 1;
+            for (var ni = 0; ni < niveaux.length; ni++) { if (xp >= niveaux[ni].xpMin) niveau = niveaux[ni].niveau; else break; }
+            var grades = window.GRADES_DATA || [];
+            var rang = grades[0] || { icone: "\u1fab5", nom: "Serf \u00c9gar\u00e9" };
+            for (var gi = 0; gi < grades.length; gi++) { if (jours >= grades[gi].seuil) rang = grades[gi]; else break; }
+
+            var raceRaw   = membre.race   || "";
+            var classeRaw = membre.classe || "";
+            var raceNom   = raceRaw.split("|")[0]   || "";
+            var raceIco   = raceRaw.split("|")[1]   || "";
+            var classeNom = classeRaw.split("|")[0] || "";
+            var classeIco = classeRaw.split("|")[1] || "";
+            var rcLine = (raceNom || classeNom)
+                ? (raceIco + " " + raceNom + (raceNom && classeNom ? " &middot; " : "") + classeIco + " " + classeNom).trim()
+                : "";
+            var devise = membre.devise ? "&laquo; " + membre.devise + " &raquo;" : "";
+
+            var portraitHtml = "";
+            if (membre.portrait_url) {
+                portraitHtml =
+                    '<div style="display:flex;justify-content:center;margin-bottom:8px;">' +
+                        '<div style="width:68px;height:78px;position:relative;flex-shrink:0;">' +
+                            '<img src="' + membre.portrait_url + '" crossorigin="anonymous" ' +
+                                'style="width:100%;height:100%;object-fit:cover;clip-path:ellipse(48% 46% at 50% 50%);display:block;" ' +
+                                'onerror="this.closest('div').style.display='none'" />' +
+                            '<svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 68 78" xmlns="http://www.w3.org/2000/svg">' +
+                                '<ellipse cx="34" cy="37" rx="32" ry="35" fill="none" stroke="#D4AF37" stroke-width="2.5"/>' +
+                                '<ellipse cx="34" cy="37" rx="32" ry="35" fill="none" stroke="#f9e88a" stroke-width="1" opacity="0.4"/>' +
+                                '<circle cx="34" cy="2" r="3" fill="#D4AF37"/>' +
+                                '<circle cx="34" cy="72" r="3" fill="#D4AF37"/>' +
+                                '<circle cx="2" cy="37" r="2.5" fill="#D4AF37"/>' +
+                                '<circle cx="66" cy="37" r="2.5" fill="#D4AF37"/>' +
+                            '</svg>' +
+                        '</div>' +
+                    '</div>';
+            }
+
+            var html =
+                '<div style="font-family:Lora,serif;min-width:185px;max-width:230px;padding:4px 2px;">' +
+                    portraitHtml +
+                    '<div style="font-family:Cinzel,serif;font-size:0.88rem;font-weight:bold;color:#8B0000;margin-bottom:3px;text-align:center;">' +
+                        (membre.pseudo || "Chevalier Anonyme") +
+                    '</div>' +
+                    '<div style="font-size:0.68rem;color:#7a5a2a;margin-bottom:3px;text-align:center;">' + rang.icone + " " + rang.nom + '</div>' +
+                    (rcLine ? '<div style="font-size:0.7rem;color:#5a3a1a;margin-bottom:3px;text-align:center;">' + rcLine + '</div>' : '') +
+                    (devise  ? '<div style="font-size:0.65rem;font-style:italic;color:#7a5a2a;margin-bottom:5px;text-align:center;">' + devise + '</div>' : '') +
+                    '<div style="display:flex;justify-content:center;gap:10px;font-size:0.68rem;color:#5a3a1a;border-top:1px solid rgba(212,175,55,0.3);padding-top:5px;margin-top:3px;">' +
+                        '<span>&#11088; Niv.' + niveau + '</span>' +
+                        '<span>&#10024; ' + xp + ' XP</span>' +
+                        '<span>&#128197; ' + jours + 'j</span>' +
+                    '</div>' +
+                    (membre.adresse ? '<div style="font-size:0.6rem;color:#9a7a50;margin-top:4px;text-align:center;">&#128205; ' + membre.adresse + '</div>' : '') +
+                '</div>';
+
+            if (!_carteInfoWin) _carteInfoWin = new google.maps.InfoWindow();
+            _carteInfoWin.setContent(html);
+            _carteInfoWin.open(_carteMap, marker);
         }
 
         // Invalider le cache quand on sauvegarde le profil (adresse peut avoir change)
