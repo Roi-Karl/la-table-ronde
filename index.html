@@ -6197,8 +6197,8 @@
             var compteur = document.getElementById("carte-compteur");
 
             if (!_carteDonnees || _carteDonnees.length === 0) {
-                if (loader) loader.innerHTML = '<div style="font-family:'Cinzel',serif;font-size:0.8rem;color:var(--rouge-blason);padding:20px;text-align:center;">' +
-                    '🏔️ Aucun chevalier géolocalisé pour l\'instant.<br><span style="font-family:'Lora',serif;font-style:italic;font-size:0.7rem;color:#9a7a50;">Les membres doivent renseigner leur adresse dans leur profil.</span></div>';
+                if (loader) loader.innerHTML = '<div style="font-family:Cinzel,serif;font-size:0.8rem;color:#8B0000;padding:20px;text-align:center;">' +
+                    '🏔️ Aucun chevalier géolocalisé pour l\'instant.<br><span style="font-family:Lora,serif;font-style:italic;font-size:0.7rem;color:#9a7a50;">Les membres doivent renseigner leur adresse dans leur profil.</span></div>';
                 if (compteur) compteur.textContent = "0 chevalier géolocalisé sur la carte";
                 return;
             }
