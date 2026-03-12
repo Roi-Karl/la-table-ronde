@@ -3627,8 +3627,8 @@
                         const classeData = parseRC(data.classe);
                         const elRace   = document.getElementById('fiche-race-texte');
                         const elClasse = document.getElementById('fiche-classe-texte');
-                        if (elRace)   elRace.innerHTML   = raceData   ? `${raceData.icone} ${raceData.nom}`   : '—';
-                        if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${classeData.nom}` : '—';
+                        if (elRace)   elRace.innerHTML   = raceData   ? `${raceData.icone} ${window.getNomGenre ? window.getNomGenre(raceData.nom) : raceData.nom}`     : '—';
+                        if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${window.getNomGenre ? window.getNomGenre(classeData.nom) : classeData.nom}` : '—';
 
                         // Tooltips fiche personnage
                         raceNomPur   = data.race   ? data.race.split('|')[0]   : '';
@@ -4755,7 +4755,7 @@
             .join('');
 
         // Extraire la première section du description_joueur (avant les Traits raciaux / Capacités)
-        const _sexeTooltip = document.getElementById('profil-sexe')?.value || 'M';
+        const _sexeTooltip = window.getSexeActuel ? window.getSexeActuel() : (document.getElementById('profil-sexe')?.value || 'M');
         const _cleTooltip  = _sexeTooltip === 'F' ? 'feminin' : 'masculin';
         const _djRaw = data.description_joueur;
         const _djResolu = (typeof _djRaw === 'object' && _djRaw !== null)
@@ -4815,6 +4815,33 @@
     }
     window.mettreAJourTooltips = mettreAJourTooltips;
 
+    // Régénère les libellés et tooltips race/classe après changement de genre
+    window._rafraichirFicheGenre = function() {
+        // Récupérer race/classe courantes depuis les éléments de fiche
+        var raceEl   = document.getElementById('fiche-race-texte');
+        var classeEl = document.getElementById('fiche-classe-texte');
+        // Récupérer les valeurs brutes depuis les selects (source de vérité)
+        var raceVal   = document.getElementById('profil-race')?.value   || '';
+        var classeVal = document.getElementById('profil-classe')?.value || '';
+        if (!raceVal && !classeVal) {
+            // Sur la fiche (pas le formulaire), les valeurs viennent de _raceNomPurCourant
+            var rNom = window._raceNomPurCourant   || '';
+            var cNom = window._classeNomPurCourant || '';
+            if (raceEl && rNom) {
+                var rData = window.RPG_RACES?.[rNom];
+                raceEl.innerHTML = rData ? `${rData.icone} ${window.getNomGenre(rNom)}` : rNom;
+            }
+            if (classeEl && cNom) {
+                var cData = window.RPG_CLASSES?.[cNom];
+                classeEl.innerHTML = cData ? `${cData.icone} ${window.getNomGenre(cNom)}` : cNom;
+            }
+            if (rNom || cNom) window.mettreAJourTooltips(rNom, cNom);
+            return;
+        }
+        // Dans le formulaire, relancer aperçuRaceClasse
+        window.aperçuRaceClasse && window.aperçuRaceClasse();
+    };
+
     function aperçuRaceClasse() {
         const raceVal   = document.getElementById('profil-race')?.value   || '';
         const classeVal = document.getElementById('profil-classe')?.value || '';
@@ -4838,8 +4865,8 @@
         // Mettre à jour la fiche en temps réel
         const elRace   = document.getElementById('fiche-race-texte');
         const elClasse = document.getElementById('fiche-classe-texte');
-        if (elRace)   elRace.innerHTML   = raceVal   ? `${raceIcone} ${raceNom}`     : '—';
-        if (elClasse) elClasse.innerHTML = classeVal ? `${classeIcone} ${classeNom}` : '—';
+        if (elRace)   elRace.innerHTML   = raceVal   ? `${raceIcone} ${window.getNomGenre ? window.getNomGenre(raceNom) : raceNom}`     : '—';
+        if (elClasse) elClasse.innerHTML = classeVal ? `${classeIcone} ${window.getNomGenre ? window.getNomGenre(classeNom) : classeNom}` : '—';
     }
     // ── MISE À JOUR FICHE CARACS + BONUS + TRAITS ────────────────
     // Appelée au chargement ET après "Sceller mes informations"
@@ -5271,7 +5298,7 @@
             .join('');
 
         // Résoudre description_joueur selon le format (string ou {masculin, feminin})
-        const sexePerso = document.getElementById('profil-sexe')?.value || 'M';
+        const sexePerso = window.getSexeActuel ? window.getSexeActuel() : (document.getElementById('profil-sexe')?.value || 'M');
         const cleGenre = sexePerso === 'F' ? 'feminin' : 'masculin';
         const descJoueurRaw = data.description_joueur;
         const descJoueurResolu = (typeof descJoueurRaw === 'object' && descJoueurRaw !== null)
@@ -5300,7 +5327,8 @@
         }).join('');
 
         const typeLabel = type === 'race' ? 'RACE' : 'CLASSE';
-        const nomAffiche = type === 'race' ? _rpgModalCourant.race : _rpgModalCourant.classe;
+        const _nomBrut   = type === 'race' ? _rpgModalCourant.race : _rpgModalCourant.classe;
+        const nomAffiche = window.getNomGenre ? window.getNomGenre(_nomBrut) : _nomBrut;
 
         document.getElementById('rpg-modal-contenu').innerHTML = `
             <!-- En-tête -->
@@ -6705,14 +6733,42 @@
         'M' : { icone:'♂️', label:'Masculin',    pronom:'il',   accord:''   },
         'NB': { icone:'⚧️',  label:'Non binaire', pronom:'iel',  accord:''   }
     };
+    // ── TABLE DE FÉMINISATION DES NOMS ─────────────────────────
+    window.NOMS_FEMININ = {
+        // Classes
+        'Barbare':      'Barbare',
+        'Barde':        'Barde',
+        'Clerc':        'Clerc',
+        'Druide':       'Druide',
+        'Guerrier':     'Guerrière',
+        'Moine':        'Moine',
+        'Paladin':      'Paladin',
+        'Rôdeur':       'Rôdeuse',
+        'Roublard':     'Roublarde',
+        'Ensorceleur':  'Ensorceleure',
+        'Sorcier':      'Sorcière',
+        'Magicien':     'Magicienne',
+        // Races (invariables pour la plupart)
+        'Humain':       'Humaine',
+        'Nain':         'Naine',
+        'Halfelin':     'Halfeline',
+        'Semi-Orc':     'Semi-Orque',
+    };
+
+    // Retourne le nom adapté au sexe courant du personnage
+    window.getSexeActuel = function() {
+        return document.getElementById('profil-sexe')?.value || 'M';
+    };
+
+    window.getNomGenre = function(nomMasculin) {
+        if (window.getSexeActuel() !== 'F') return nomMasculin;
+        return window.NOMS_FEMININ[nomMasculin] || nomMasculin;
+    };
+
     window.choisirSexe = function(val) {
         var h = document.getElementById('profil-sexe');
         if (h) h.value = val;
         document.querySelectorAll('.sexe-btn').forEach(function(b){ b.classList.toggle('actif', b.dataset.sexe === val); });
-        // Régénérer les tooltips race/classe avec le bon genre
-        if (window.mettreAJourTooltips && window._raceNomPurCourant !== undefined) {
-            window.mettreAJourTooltips(window._raceNomPurCourant || '', window._classeNomPurCourant || '');
-        }
         var s = window.SEXE_DATA[val];
         var el  = document.getElementById('fiche-sexe-icone');
         var sym = document.getElementById('fiche-sexe-symbole');
@@ -6723,6 +6779,8 @@
             var tt = document.getElementById('sexe-legal-tooltip');
             if (tt) tt.style.display = val === 'NB' ? '' : 'none';
         }
+        // Régénérer les libellés et tooltips race/classe avec le bon genre
+        window._rafraichirFicheGenre && window._rafraichirFicheGenre();
     };
     </script>
 
