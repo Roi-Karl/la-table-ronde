@@ -116,6 +116,59 @@
         body.mode-clair footer { background: rgba(0,0,0,0.08); color: #5a3e1b; }
         body.mode-clair footer a { color: var(--rouge-blason); }
 
+        /* Portrait personnage */
+        .fiche-portrait-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        .fiche-portrait-cadre {
+            width: 130px;
+            height: 130px;
+            border: 2px solid var(--or-sombre);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(212,175,55,0.06);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(212,175,55,0.2);
+        }
+        .fiche-portrait-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .fiche-portrait-placeholder {
+            width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            opacity: 0.35;
+        }
+        .fiche-portrait-loader {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(244,235,208,0.9);
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 0.6rem;
+            color: var(--or-sombre);
+            text-align: center;
+            gap: 6px;
+            z-index: 2;
+        }
+        .portrait-spinner {
+            width: 20px; height: 20px;
+            border: 2px solid rgba(212,175,55,0.3);
+            border-top-color: var(--or-sombre);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
         /* Selecteur sexe */
         .sexe-choix{display:flex;gap:8px;flex-wrap:wrap;}
         .sexe-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--or-sombre);border-radius:20px;background:transparent;font-family:'Lora',serif;font-size:0.78rem;color:var(--texte-body);cursor:pointer;transition:all 0.2s;opacity:0.55;}
@@ -2013,6 +2066,18 @@
                         </button>
                     </div>
 
+                    <!-- Portrait -->
+                    <div class="fiche-portrait-wrap">
+                        <div class="fiche-portrait-cadre" id="fiche-portrait-cadre">
+                            <div class="fiche-portrait-placeholder" id="fiche-portrait-placeholder">🛡️</div>
+                            <img id="fiche-portrait-img" class="fiche-portrait-img" src="" alt="Portrait" style="display:none;" />
+                            <div class="fiche-portrait-loader" id="fiche-portrait-loader" style="display:none;">
+                                <div class="portrait-spinner"></div>
+                                Le peintre royal travaille…
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Rang -->
                     <div class="fiche-ligne">
                         <span class="fiche-label">Rang :</span>
@@ -3002,6 +3067,36 @@
                 btn.style.borderColor  = "green";
                 btn.style.color        = "green";
 
+                // Portrait : générer si race+classe+sexe définis
+                if (infos.race && infos.classe && infos.sexe) {
+                    const racePortrait   = infos.race.split('|')[0];
+                    const classePortrait = infos.classe.split('|')[0];
+                    // Récupérer portrait existant depuis Firestore
+                    let oldPortrait = "";
+                    try {
+                        const snapP = await getDoc(doc(db, "membres", user.uid));
+                        if (snapP.exists()) {
+                            const dp = snapP.data();
+                            oldPortrait = dp.portrait_url || "";
+                            // Détecter si race/classe/sexe ont changé
+                            const memeCombo = dp.portrait_race === racePortrait
+                                && dp.portrait_classe === classePortrait
+                                && dp.portrait_sexe   === infos.sexe;
+                            if (oldPortrait && memeCombo) {
+                                // Même combinaison : afficher existant
+                                window._afficherPortrait && window._afficherPortrait(oldPortrait);
+                            } else {
+                                // Nouvelle combo : générer
+                                window._genererPortrait && window._genererPortrait(racePortrait, classePortrait, infos.sexe);
+                            }
+                        } else {
+                            window._genererPortrait && window._genererPortrait(racePortrait, classePortrait, infos.sexe);
+                        }
+                    } catch(eP) {
+                        window._genererPortrait && window._genererPortrait(racePortrait, classePortrait, infos.sexe);
+                    }
+                }
+
                 // Recalculer caracs + traits avec la nouvelle race/classe
                 const raceNomSave   = (document.getElementById('profil-race')?.value   || '').split('|')[0];
                 const classeNomSave = (document.getElementById('profil-classe')?.value || '').split('|')[0];
@@ -3041,6 +3136,20 @@
                     btn.style.color        = "var(--rouge-blason)";
                 }, 2500);
             }
+        };
+
+        // Sauvegarder l'URL du portrait dans Firestore (scope Firebase)
+        window._sauvegarderPortraitUrl = async function(url, race, classe, sexe) {
+            const user = auth.currentUser;
+            if (!user) return;
+            try {
+                await setDoc(doc(db, "membres", user.uid), {
+                    portrait_url:    url,
+                    portrait_race:   race,
+                    portrait_classe: classe,
+                    portrait_sexe:   sexe
+                }, { merge: true });
+            } catch(e) { console.warn("Portrait Firestore:", e); }
         };
 
         // ── TABLEAU DES RANGS ─────────────────────
@@ -3090,6 +3199,8 @@
                             document.getElementById('profil-race').value = data.race || "";
                         }
                         if (data.sexe && window.choisirSexe) window.choisirSexe(data.sexe);
+                        // Afficher portrait existant
+                        if (data.portrait_url) window._afficherPortrait && window._afficherPortrait(data.portrait_url);
                         if (document.getElementById('profil-classe')) {
                             document.getElementById('profil-classe').value = data.classe || "";
                         }
@@ -6158,7 +6269,87 @@
         </div>
     </div>
 
+        <script>
+    // Sexe du personnage
+    window.SEXE_DATA = {
+        'F' : { icone:'♀️', label:'Féminin',     pronom:'elle', accord:'e'  },
+        'M' : { icone:'♂️', label:'Masculin',    pronom:'il',   accord:''   },
+        'NB': { icone:'⚧️',  label:'Non binaire', pronom:'iel',  accord:''   }
+    };
+    window.choisirSexe = function(val) {
+        var h = document.getElementById('profil-sexe');
+        if (h) h.value = val;
+        document.querySelectorAll('.sexe-btn').forEach(function(b){ b.classList.toggle('actif', b.dataset.sexe === val); });
+        var s = window.SEXE_DATA[val];
+        var el  = document.getElementById('fiche-sexe-icone');
+        var sym = document.getElementById('fiche-sexe-symbole');
+        if (el && sym && s) {
+            sym.textContent = s.icone;
+            el.style.display = 'inline-block';
+            el.style.cursor  = val === 'NB' ? 'help' : 'default';
+            var tt = document.getElementById('sexe-legal-tooltip');
+            if (tt) tt.style.display = val === 'NB' ? '' : 'none';
+        }
+    };
+    </script>
+
     <script>
+    // Portrait IA - Pollinations.ai
+    var _promptsCache = null;
+    async function _chargerPrompts() {
+        if (_promptsCache) return _promptsCache;
+        try {
+            var r = await fetch("https://roi-karl.github.io/character_prompts.json");
+            _promptsCache = await r.json();
+        } catch(e) { _promptsCache = []; }
+        return _promptsCache;
+    }
+    window._afficherPortrait = function(url) {
+        var img = document.getElementById('fiche-portrait-img');
+        var ph  = document.getElementById('fiche-portrait-placeholder');
+        var ld  = document.getElementById('fiche-portrait-loader');
+        if (!img) return;
+        if (ld)  ld.style.display  = 'none';
+        if (ph)  ph.style.display  = 'none';
+        img.src = url;
+        img.style.display = 'block';
+    };
+    window._genererPortrait = async function(race, classe, sexe) {
+        var img = document.getElementById('fiche-portrait-img');
+        var ph  = document.getElementById('fiche-portrait-placeholder');
+        var ld  = document.getElementById('fiche-portrait-loader');
+        if (!img) return;
+        if (ph)  ph.style.display = 'none';
+        img.style.display = 'none';
+        if (ld)  ld.style.display = 'flex';
+        var sexeP = (sexe === 'NB') ? 'Masculin' : sexe;
+        try {
+            var prompts = await _chargerPrompts();
+            var entry = prompts.find(function(p) {
+                return p.race === race && p.classe === classe && p.sexe === sexeP;
+            });
+            if (!entry) { if(ld)ld.style.display='none'; if(ph)ph.style.display='flex'; return; }
+            var seed = Math.floor(Math.random()*9000)+1000;
+            var url  = "https://image.pollinations.ai/prompt/"
+                     + encodeURIComponent(entry.prompt)
+                     + "?width=512&height=512&nologo=true&seed=" + seed;
+            var tempImg = new Image();
+            tempImg.onload = async function() {
+                if (ld) ld.style.display = 'none';
+                window._afficherPortrait(url);
+                if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(url, race, classe, sexe);
+            };
+            tempImg.onerror = function() {
+                if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
+            };
+            tempImg.src = url;
+        } catch(e) {
+            if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
+        }
+    };
+    </script>
+
+<script>
     // ======================================================
     //  CARTE DU ROYAUME
     // ======================================================
