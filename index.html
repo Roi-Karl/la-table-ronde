@@ -213,6 +213,25 @@
             text-align: center;
             margin-top: 2px;
         }
+        .fiche-btn-carte {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 0;
+            margin-top: 4px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            color: var(--or-sombre);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        .fiche-btn-carte:hover { opacity: 1; }
         /* ── Modale agrandissement portrait ── */
         #portrait-zoom-overlay {
             display: none;
@@ -1317,8 +1336,8 @@
             flex-direction: column;
             gap: 4px;
             border-top: 1px dashed rgba(212,175,55,0.3);
-            padding-top: 10px;
-            margin-top: 2px;
+            padding-top: 8px;
+            margin-top: 6px;
         }
         .fiche-histoire-label {
             font-family: 'Cinzel', serif;
@@ -2311,15 +2330,6 @@
 
                 <div class="fiche-corps">
 
-                    <!-- Bouton Carte du Royaume -->
-                    <div style="margin-bottom:10px;">
-                        <button onclick="ouvrirCarte()" title="Carte du Royaume"
-                                style="background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; gap:6px;">
-                            <span style="font-size:1.5rem; line-height:1;">🗺️</span>
-                            <span style="font-family:'Cinzel',serif; font-size:0.65rem; color:var(--or-sombre); letter-spacing:0.08em; text-transform:uppercase;">Carte du Royaume</span>
-                        </button>
-                    </div>
-
                     <!-- Layout 2 colonnes : stats gauche / portrait droite -->
                     <div class="fiche-layout">
 
@@ -2366,6 +2376,12 @@
                                     <div class="rpg-tooltip-box" id="tooltip-alignement-fiche"></div>
                                 </span>
                                 <button onclick="ouvrirQuizModal()" title="Déterminer votre alignement" class="fiche-btn-icone">⏳</button>
+                            </div>
+
+                            <!-- Histoire (dans la colonne stats, sous Alignement) -->
+                            <div id="bloc-histoire" class="fiche-histoire">
+                                <span class="fiche-histoire-label">Histoire :</span>
+                                <span id="profil-histoire" class="fiche-histoire-texte">—</span>
                             </div>
 
                         </div><!-- /fiche-stats-col -->
@@ -2511,15 +2527,14 @@
                                 </svg>
                             </div>
                             <div class="portrait-label">✦ Portrait ✦</div>
+                            <!-- Bouton Carte du Royaume sous le portrait -->
+                            <button onclick="ouvrirCarte()" title="Carte du Royaume" class="fiche-btn-carte">
+                                <span style="font-size:1.1rem; line-height:1;">🗺️</span>
+                                <span>Carte du Royaume</span>
+                            </button>
                         </div><!-- /fiche-portrait-col -->
 
                     </div><!-- /fiche-layout -->
-
-                    <!-- Histoire -->
-                    <div id="bloc-histoire" class="fiche-histoire">
-                        <span class="fiche-histoire-label">Histoire :</span>
-                        <span id="profil-histoire" class="fiche-histoire-texte">—</span>
-                    </div>
 
 
                     <!-- Niveau + XP (cases héros) -->
