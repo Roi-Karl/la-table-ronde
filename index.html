@@ -6363,12 +6363,15 @@
         );
         var sexeMap = {'M':'Masculin','F':'Féminin','NB':'Masculin'};
         var sexeP = sexeMap[sexe] || sexe;
+        // Mapping classes site -> JSON
+        var classeMap = {'Sorcier':'Occultiste'};
+        var classeP = classeMap[classe] || classe;
         console.log('[Portrait] DEBUT race='+race+' classe='+classe+' sexeP='+sexeP);
         try {
             var prompts = await _chargerPrompts();
             console.log('[Portrait] prompts nb=', prompts ? prompts.length : 0);
             var entry = prompts.find(function(p) {
-                return p.race === race && p.classe === classe && p.sexe === sexeP;
+                return p.race === race && p.classe === classeP && p.sexe === sexeP;
             });
             console.log('[Portrait] entry=', entry ? entry.fichier : 'AUCUN');
             if (!entry && prompts.length > 0) {
