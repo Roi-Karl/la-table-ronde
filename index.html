@@ -6378,7 +6378,8 @@
             try {
             var url  = "https://image.pollinations.ai/prompt/"
                      + encodeURIComponent(entry.prompt)
-                     + "?width=512&height=512&nologo=true&seed=" + seed;
+                     + "?width=512&height=512&model=flux&seed=" + seed
+                     + "&referer=roi-karl.github.io";
             console.log('[Portrait] URL ok, len=', url.length);
             } catch(eUrl) { console.error("[Portrait] URL build error:", eUrl); throw eUrl; }
             var tempImg = new Image();
