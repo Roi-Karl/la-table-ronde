@@ -3633,6 +3633,8 @@
                         // Tooltips fiche personnage
                         raceNomPur   = data.race   ? data.race.split('|')[0]   : '';
                         classeNomPur = data.classe ? data.classe.split('|')[0] : '';
+                        window._raceNomPurCourant   = raceNomPur;
+                        window._classeNomPurCourant = classeNomPur;
                         if (window.mettreAJourTooltips) window.mettreAJourTooltips(raceNomPur, classeNomPur);
                         if (document.getElementById('profil-couleur-blason')) {
                             const couleur = data.couleur_blason || "#8B0000";
@@ -5275,7 +5277,6 @@
         const descJoueurResolu = (typeof descJoueurRaw === 'object' && descJoueurRaw !== null)
             ? (descJoueurRaw[cleGenre] || descJoueurRaw.masculin || '')
             : (descJoueurRaw || '');
-
         // Formater la description_joueur : sections séparées par lignes vides
         const descBrut = descJoueurResolu.trim();
         const paragraphes = descBrut.split(/\n\n+/).map(p => {
@@ -6708,6 +6709,10 @@
         var h = document.getElementById('profil-sexe');
         if (h) h.value = val;
         document.querySelectorAll('.sexe-btn').forEach(function(b){ b.classList.toggle('actif', b.dataset.sexe === val); });
+        // Régénérer les tooltips race/classe avec le bon genre
+        if (window.mettreAJourTooltips && window._raceNomPurCourant !== undefined) {
+            window.mettreAJourTooltips(window._raceNomPurCourant || '', window._classeNomPurCourant || '');
+        }
         var s = window.SEXE_DATA[val];
         var el  = document.getElementById('fiche-sexe-icone');
         var sym = document.getElementById('fiche-sexe-symbole');
