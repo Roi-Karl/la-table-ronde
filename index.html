@@ -6385,9 +6385,11 @@
                 if (window._sauvegarderPortraitUrl) window._sauvegarderPortraitUrl(url, race, classe, sexe);
             };
             tempImg.onerror = function() {
+                console.error('[Portrait] onerror url=', tempImg.src);
                 if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
                 _toastPortrait('❌ Le peintre a abandonné… Ressayez plus tard.','err');
             };
+            console.log('[Portrait] URL =', url);
             tempImg.src = url;
         } catch(e) {
             if (ld) ld.style.display='none'; if(ph) ph.style.display='flex';
