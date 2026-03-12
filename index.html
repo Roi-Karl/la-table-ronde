@@ -3627,8 +3627,16 @@
                         const classeData = parseRC(data.classe);
                         const elRace   = document.getElementById('fiche-race-texte');
                         const elClasse = document.getElementById('fiche-classe-texte');
-                        if (elRace)   elRace.innerHTML   = raceData   ? `${raceData.icone} ${raceData.nom}`   : '—';
-                        if (elClasse) elClasse.innerHTML = classeData ? `${classeData.icone} ${classeData.nom}` : '—';
+                        if (elRace) {
+                            const rRPG = raceData && window.RPG_RACES ? window.RPG_RACES[raceData.nom] : null;
+                            const rNom = rRPG ? window.gNomRaceClasse(raceData.nom, rRPG) : (raceData ? raceData.nom : '—');
+                            elRace.innerHTML = raceData ? `${raceData.icone} ${rNom}` : '—';
+                        }
+                        if (elClasse) {
+                            const cRPG = classeData && window.RPG_CLASSES ? window.RPG_CLASSES[classeData.nom] : null;
+                            const cNom = cRPG ? window.gNomRaceClasse(classeData.nom, cRPG) : (classeData ? classeData.nom : '—');
+                            elClasse.innerHTML = classeData ? `${classeData.icone} ${cNom}` : '—';
+                        }
 
                         // Tooltips fiche personnage
                         raceNomPur   = data.race   ? data.race.split('|')[0]   : '';
@@ -4866,6 +4874,17 @@
                     </div>`;
             }
         }
+        // Re-render noms race/classe dans la fiche
+        const elRaceTxt   = document.getElementById('fiche-race-texte');
+        const elClasseTxt = document.getElementById('fiche-classe-texte');
+        if (elRaceTxt && _rpgModalCourant.race) {
+            const rObj = window.RPG_RACES?.[_rpgModalCourant.race];
+            if (rObj) elRaceTxt.innerHTML = `${rObj.icone} ${window.gNomRaceClasse(_rpgModalCourant.race, rObj)}`;
+        }
+        if (elClasseTxt && _rpgModalCourant.classe) {
+            const cObj = window.RPG_CLASSES?.[_rpgModalCourant.classe];
+            if (cObj) elClasseTxt.innerHTML = `${cObj.icone} ${window.gNomRaceClasse(_rpgModalCourant.classe, cObj)}`;
+        }
     };
 
     function aperçuRaceClasse() {
@@ -4971,8 +4990,10 @@
                     items + `</div>`;
             };
 
-            const htmlRace   = renderTraits(traitsRace,   raceNomPur   || '—', raceObj?.icone   || '🧑');
-            const htmlClasse = renderTraits(traitsClasse, classeNomPur || '—', classeObj?.icone || '⚔️');
+            const raceNomGenre   = raceObj   ? window.gNomRaceClasse(raceNomPur, raceObj)     : (raceNomPur || '—');
+            const classeNomGenre = classeObj ? window.gNomRaceClasse(classeNomPur, classeObj) : (classeNomPur || '—');
+            const htmlRace   = renderTraits(traitsRace,   raceNomGenre, raceObj?.icone   || '🧑');
+            const htmlClasse = renderTraits(traitsClasse, classeNomGenre, classeObj?.icone || '⚔️');
 
             if (htmlRace || htmlClasse) {
                 blocTraits.innerHTML = htmlRace + htmlClasse;
@@ -5361,7 +5382,8 @@
             </div>` : '';
 
         const typeLabel = type === 'race' ? 'RACE' : 'CLASSE';
-        const nomAffiche = type === 'race' ? _rpgModalCourant.race : _rpgModalCourant.classe;
+        const nomBrut = type === 'race' ? _rpgModalCourant.race : _rpgModalCourant.classe;
+        const nomAffiche = window.gNomRaceClasse(nomBrut, data);
 
         document.getElementById('rpg-modal-contenu').innerHTML = `
             <!-- En-tête -->
@@ -6807,6 +6829,14 @@
         var sexe = window.getSexe();
         if (sexe === 'F') return raceData.description_physique.feminin || raceData.description_physique.masculin || '';
         return raceData.description_physique.masculin || '';
+    };
+
+    // gNomRaceClasse(clé, data) → retourne le nom genré d'une race ou classe
+    // La clé est le nom masculin (ex: "Guerrier"), data contient optionnellement nom_f
+    window.gNomRaceClasse = function(cle, data) {
+        if (!cle) return '';
+        if (window.estFeminin() && data && data.nom_f) return data.nom_f;
+        return cle;
     };
 
     // ── Dictionnaire de genrage français ─────────────────────
