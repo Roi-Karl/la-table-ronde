@@ -6148,6 +6148,8 @@
 
         function _fetch(q) {
             if (!_svc) { window.initGooglePlaces(); if (!_svc) return; }
+            // S'assurer que le token existe toujours
+            if (!_token) _token = new google.maps.places.AutocompleteSessionToken();
             _svc.getPlacePredictions(
                 { input: q, sessionToken: _token, language: "fr" },
                 function(predictions, status) {
@@ -6187,9 +6189,15 @@
             var input = document.getElementById("profil-adresse-input");
             if (input) input.value = description;
             document.getElementById("profil-adresse-formatee").value = description;
-            if (!_psvc) return;
+
+            // Toujours renouveler le token et recréer le service avant l'appel
+            var tokenPourCetAppel = _token;
+            _token = new google.maps.places.AutocompleteSessionToken();
+            // Recréer PlacesService à chaque fois pour éviter la perte de contexte
+            _psvc = new google.maps.places.PlacesService(document.createElement("div"));
+
             _psvc.getDetails(
-                { placeId: placeId, fields: ["geometry","formatted_address","address_components"], sessionToken: _token },
+                { placeId: placeId, fields: ["geometry","formatted_address","address_components"], sessionToken: tokenPourCetAppel },
                 function(place, status) {
                     if (status === google.maps.places.PlacesServiceStatus.OK && place) {
                         var lat = place.geometry.location.lat();
@@ -6209,8 +6217,14 @@
                             aff.textContent = "✅ " + (place.formatted_address || description);
                             aff.style.display = "block";
                         }
+                    } else {
+                        // En cas d'échec, afficher quand même l'adresse saisie
+                        var aff = document.getElementById("profil-adresse-affichee");
+                        if (aff) {
+                            aff.textContent = "📍 " + description;
+                            aff.style.display = "block";
+                        }
                     }
-                    _token = new google.maps.places.AutocompleteSessionToken();
                 }
             );
         };
@@ -6234,4 +6248,3 @@
     </script>
 </body>
 </html>
-
