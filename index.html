@@ -6171,7 +6171,7 @@
             document.getElementById("carte-modal-overlay").style.display = "none";
             document.body.style.overflow = "";
             // Fermer infobulle si ouverte
-            if (_carteInfoWin) { _carteInfoWin.close(); _carteInfoWin = null; }
+            if (_carteInfoWin) { _carteInfoWin.close(); }
         }
 
         async function _chargerMembres() {
@@ -6306,6 +6306,7 @@
                         '</div>' +
                         (membre.adresse ? '<div style="font-size:0.62rem; color:#9a7a50; margin-top:4px;">📍 ' + membre.adresse + '</div>' : '') +
                         '</div>';
+                    if (!_carteInfoWin) _carteInfoWin = new google.maps.InfoWindow();
                     _carteInfoWin.setContent(html);
                     _carteInfoWin.open(_carteMap, marker);
                 });
