@@ -1,4 +1,4 @@
-/**
+/** 
  * ═══════════════════════════════════════════════════════════════
  *  LA TABLE RONDE (MAIS CARRÉE) — Données RPG
  *  Races, Classes, Bonus de caractéristiques, Descriptions
