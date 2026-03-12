@@ -116,6 +116,15 @@
         body.mode-clair footer { background: rgba(0,0,0,0.08); color: #5a3e1b; }
         body.mode-clair footer a { color: var(--rouge-blason); }
 
+        /* Selecteur sexe */
+        .sexe-choix{display:flex;gap:8px;flex-wrap:wrap;}
+        .sexe-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--or-sombre);border-radius:20px;background:transparent;font-family:'Lora',serif;font-size:0.78rem;color:var(--texte-body);cursor:pointer;transition:all 0.2s;opacity:0.55;}
+        .sexe-btn:hover{opacity:0.85;}
+        .sexe-btn.actif{background:rgba(212,175,55,0.18);border-color:var(--or-royal);color:var(--rouge-blason);font-weight:bold;opacity:1;}
+        .sexe-icone-fiche{font-size:0.9rem;cursor:help;position:relative;display:inline-block;}
+        .sexe-tooltip{display:none;position:absolute;top:130%;left:50%;transform:translateX(-50%);background:var(--parchemin,#f4ebd0);border:1px solid rgba(212,175,55,0.5);border-radius:3px;padding:8px 10px;min-width:240px;max-width:280px;font-family:'Lora',serif;font-style:italic;font-size:0.63rem;color:#5a3a1a;line-height:1.55;z-index:999;box-shadow:0 3px 10px rgba(0,0,0,0.2);pointer-events:none;white-space:normal;}
+        .sexe-icone-fiche:hover .sexe-tooltip{display:block;}
+
         /* Toggle switch */
         .mode-toggle-wrap {
             display: flex;
@@ -2021,6 +2030,10 @@
                             <span id="fiche-race-texte">—</span>
                             <div class="rpg-tooltip-box" id="tooltip-race-fiche"></div>
                         </span>
+                        <span id="fiche-sexe-icone" class="sexe-icone-fiche" style="display:none;margin-left:4px;">
+                            <span id="fiche-sexe-symbole"></span>
+                            <div class="sexe-tooltip" id="sexe-legal-tooltip"><strong>Mention légale / Legal notice</strong><br><br>🇨🇦 Par souci de lisibilité, les textes utilisent le masculin comme forme neutre pour les personnages non binaires. Ce choix vise uniquement la simplicité et ne reflète aucune position discriminatoire.<br><br>🇬🇧 For readability, texts use the masculine gender as neutral for non-binary characters. This choice reflects no discriminatory stance.</div>
+                        </span>
                     </div>
 
                     <!-- Classe -->
@@ -2329,6 +2342,17 @@
                             <option value="📜 Parchemin (mage)">📜 Parchemin (mage)</option>
                             <option value="🍺 Chope de cervoise">🍺 Chope de cervoise</option>
                         </select>
+                    </div>
+
+                    <!-- Sexe -->
+                    <div class="ligne-info" style="align-items:center;gap:8px;flex-wrap:wrap;">
+                        <span class="label">Sexe du personnage :</span>
+                        <div class="sexe-choix">
+                            <button type="button" class="sexe-btn" data-sexe="F" onclick="choisirSexe('F')">♀️ Féminin</button>
+                            <button type="button" class="sexe-btn" data-sexe="M" onclick="choisirSexe('M')">♂️ Masculin</button>
+                            <button type="button" class="sexe-btn" data-sexe="NB" onclick="choisirSexe('NB')">⚧️ Non binaire</button>
+                        </div>
+                        <input type="hidden" id="profil-sexe" value="">
                     </div>
 
                     <!-- ── Race ── -->
@@ -2958,6 +2982,7 @@
                 lng:            parseFloat(document.getElementById('profil-lng')?.value) || null,
                 arme:           document.getElementById('profil-arme')?.value          || "",
                 race:           document.getElementById('profil-race')?.value          || "",
+                sexe:           document.getElementById('profil-sexe')?.value          || "",
                 classe:         document.getElementById('profil-classe')?.value        || "",
                 naissance:      document.getElementById('profil-naissance')?.value     || "",
                 couleur_blason: document.getElementById('profil-couleur-blason')?.value || "#8B0000",
@@ -3064,6 +3089,7 @@
                         if (document.getElementById('profil-race')) {
                             document.getElementById('profil-race').value = data.race || "";
                         }
+                        if (data.sexe && window.choisirSexe) window.choisirSexe(data.sexe);
                         if (document.getElementById('profil-classe')) {
                             document.getElementById('profil-classe').value = data.classe || "";
                         }
