@@ -6275,6 +6275,14 @@
                         jours = Math.max(0, Math.floor((Date.now()/1000 - membre.cree_le.seconds) / 86400));
                     }
                     var xp = 10 + (jours * 12) + (membre.xp_quiz || 0) + (membre.xp_newsletter || 0);
+                    // Calcul niveau depuis XP
+                    var niveaux = window.NIVEAUX_DATA || [];
+                    var niveau = 1;
+                    for (var ni = 0; ni < niveaux.length; ni++) { if (xp >= niveaux[ni].xpMin) niveau = niveaux[ni].niveau; else break; }
+                    // Calcul rang
+                    var grades = window.GRADES_DATA || [];
+                    var rang = grades[0] || { icone: "🪵", nom: "Serf Égaré" };
+                    for (var gi = 0; gi < grades.length; gi++) { if (jours >= grades[gi].seuil) rang = grades[gi]; else break; }
                     var raceRaw  = membre.race   || "";
                     var classeRaw = membre.classe || "";
                     var raceNom  = raceRaw.split("|")[0]  || "";
@@ -6288,11 +6296,13 @@
                     var html = '<div style="font-family:Lora,serif; min-width:170px; max-width:220px; padding:2px;">' +
                         '<div style="font-family:Cinzel,serif; font-size:0.9rem; font-weight:bold; color:#8B0000; margin-bottom:4px;">' +
                             (membre.pseudo || "Chevalier Anonyme") + '</div>' +
+                        '<div style="font-size:0.7rem; color:#7a5a2a; margin-bottom:4px;">' + rang.icone + " " + rang.nom + '</div>' +
                         (rcLine ? '<div style="font-size:0.72rem; color:#5a3a1a; margin-bottom:3px;">' + rcLine + '</div>' : '') +
                         (devise  ? '<div style="font-size:0.68rem; font-style:italic; color:#7a5a2a; margin-bottom:5px;">' + devise + '</div>' : '') +
                         '<div style="display:flex; gap:10px; font-size:0.7rem; color:#5a3a1a; border-top:1px solid rgba(212,175,55,0.3); padding-top:5px; margin-top:2px;">' +
-                            '<span>⚔️ ' + xp + ' PUI</span>' +
-                            '<span>📅 ' + jours + ' jours</span>' +
+                            '<span>⭐ Niv.' + niveau + '</span>' +
+                            '<span>✨ ' + xp + ' XP</span>' +
+                            '<span>📅 ' + jours + ' j.</span>' +
                         '</div>' +
                         (membre.adresse ? '<div style="font-size:0.62rem; color:#9a7a50; margin-top:4px;">📍 ' + membre.adresse + '</div>' : '') +
                         '</div>';
