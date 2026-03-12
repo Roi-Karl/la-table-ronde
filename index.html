@@ -6361,7 +6361,8 @@
             + '<span>Le peintre royal travaille…</span>',
             'loading'
         );
-        var sexeP = (sexe === 'NB') ? 'Masculin' : sexe;
+        var sexeMap = {'M':'Masculin','F':'Féminin','NB':'Masculin'};
+        var sexeP = sexeMap[sexe] || sexe;
         console.log('[Portrait] DEBUT race='+race+' classe='+classe+' sexeP='+sexeP);
         try {
             var prompts = await _chargerPrompts();
