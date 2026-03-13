@@ -7543,5 +7543,31 @@
         </div>
     </div>
 
+    <!-- ── Livre du Joueur (Codex) ──────────────────────────── -->
+    <div id="book-trigger" class="book-icon-trigger" title="Ouvrir le Codex du Joueur">
+        <div class="seal-inner">📖</div>
+    </div>
+
+    <div id="player-book-modal" class="book-modal">
+        <div class="book-frame">
+            <button id="close-book" class="book-close-btn">&times;</button>
+            <div class="book-container">
+                <aside class="book-sidebar">
+                    <div class="book-sidebar-header">
+                        <span class="sidebar-blason">⚜️</span>
+                        <h2>Codex</h2>
+                    </div>
+                    <div class="book-search-bar">
+                        <input type="text" placeholder="Rechercher…" />
+                    </div>
+                    <ul id="book-toc"></ul>
+                    <div class="book-sidebar-footer">✦ ✦ ✦</div>
+                </aside>
+                <main class="book-content" id="book-display-area"></main>
+            </div>
+        </div>
+    </div>
+    <script src="player-book.js"></script>
+
 </body>
 </html>
