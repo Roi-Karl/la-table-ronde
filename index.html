@@ -1518,6 +1518,135 @@
             text-align: right;
             white-space: nowrap;
             margin-top: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+        .echoppe-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        .echoppe-qte-wrap {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(212,175,55,0.4);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .echoppe-qte-btn {
+            background: rgba(212,175,55,0.15);
+            border: none;
+            color: var(--or-sombre);
+            font-size: 0.9rem;
+            width: 20px;
+            height: 22px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            font-family: 'Cinzel', serif;
+        }
+        .echoppe-qte-btn:hover { background: rgba(212,175,55,0.35); }
+        .echoppe-qte-input {
+            width: 32px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid rgba(212,175,55,0.3);
+            border-right: 1px solid rgba(212,175,55,0.3);
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            font-weight: bold;
+            color: var(--rouge-blason);
+            background: transparent;
+            padding: 2px 0;
+            -moz-appearance: textfield;
+        }
+        .echoppe-qte-input::-webkit-outer-spin-button,
+        .echoppe-qte-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+        .echoppe-btn-acheter {
+            font-family: 'Cinzel', serif;
+            font-size: 0.52rem;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            background: var(--rouge-blason);
+            border: none;
+            border-radius: 3px;
+            color: var(--parchemin, #f5e6c8);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.15s;
+        }
+        .echoppe-btn-acheter:hover { opacity: 0.85; }
+        .echoppe-btn-vendre {
+            font-family: 'Cinzel', serif;
+            font-size: 0.5rem;
+            letter-spacing: 0.04em;
+            padding: 3px 7px;
+            background: transparent;
+            border: 1px solid var(--or-sombre);
+            border-radius: 3px;
+            color: var(--or-sombre);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.15s, color 0.15s;
+        }
+        .echoppe-btn-vendre:hover { background: var(--or-sombre); color: #fff; }
+        .echoppe-badge-qte {
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            font-size: 0.5rem;
+            font-weight: bold;
+            background: var(--rouge-blason);
+            color: var(--parchemin, #f5e6c8);
+            border-radius: 8px;
+            padding: 1px 5px;
+            margin-left: 2px;
+            vertical-align: top;
+        }
+        #echoppe-tresor-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 7px 12px;
+            background: rgba(212,175,55,0.08);
+            border-bottom: 1px solid rgba(212,175,55,0.2);
+            flex-shrink: 0;
+        }
+        .echoppe-tresor-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+        }
+        .echoppe-tresor-val {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--rouge-blason);
+        }
+        .echoppe-tresor-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.48rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--or-sombre);
+        }
+        #echoppe-toast {
+            position: sticky;
+            bottom: 0;
+            left: 0; right: 0;
+            background: rgba(50,30,10,0.92);
+            color: #f5e6c8;
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            text-align: center;
+            padding: 8px 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            border-top: 1px solid rgba(212,175,55,0.3);
         }
         .echoppe-categorie-titre {
             font-family: 'Cinzel', serif;
@@ -3795,6 +3924,9 @@
                             setTimeout(() => window.sauvegarderTresor?.(), 500);
                         }
                         window.mettreAJourTotalTresor?.();
+                        // Charger l'inventaire depuis Firestore
+                        window._inventaire = data.inventaire || {};
+                        setTimeout(() => { window._invMettreAJourBlocVisible?.(); window._invRendreContenu?.(_invCatActive || 'armes'); }, 0);
                         // pv_niveaux_lances est chargé via profilData dans mettreAJourFicheCaracs
                         profilData.pv_niveaux_lances = data.pv_niveaux_lances || {};
                         if (data.cree_le) dateCreation = data.cree_le.toDate();
@@ -6652,8 +6784,245 @@
         if (nav && !nav.contains(e.target)) fermerMenu();
     });
     // ══════════════════════════════════════════════════════
-    //  MODALE ÉCHOPPE
+    //  INVENTAIRE + ÉCHOPPE — Système unifié
     // ══════════════════════════════════════════════════════
+
+    // ── Taux de conversion ──────────────────────────────
+    const TAUX_PC = { pp:100000, po:1000, pe:500, pa:100, pc:1 };
+
+    function _parsePrixEnPc(prixStr) {
+        if (!prixStr || prixStr === '—') return null;
+        const m = String(prixStr).trim().toLowerCase().match(/^([\d,\.]+)\s*(pp|po|pe|pa|pc)$/);
+        if (!m) return null;
+        return Math.round(parseFloat(m[1].replace(',','.')) * TAUX_PC[m[2]]);
+    }
+
+    function _formaterPc(totalPc) {
+        if (!totalPc || totalPc <= 0) return '0 pc';
+        const ordre = [['pp',100000],['po',1000],['pe',500],['pa',100],['pc',1]];
+        let r = totalPc; const parts = [];
+        for (const [a, v] of ordre) { if (r >= v) { const n=Math.floor(r/v); parts.push(`${n} ${a}`); r-=n*v; } }
+        return parts.join(' + ') || '0 pc';
+    }
+
+    function _tresorEnPc() {
+        return Object.entries(TAUX_PC).reduce((t,[a,v]) =>
+            t + (parseInt(document.getElementById('tresor-'+a)?.value)||0) * v, 0);
+    }
+
+    function _crediterTresor(montantPc) {
+        const ordre = ['pp','po','pe','pa','pc'];
+        let r = montantPc;
+        for (const a of ordre) {
+            if (r <= 0) break;
+            const nb = Math.floor(r / TAUX_PC[a]);
+            if (nb > 0) {
+                const el = document.getElementById('tresor-'+a);
+                if (el) el.value = (parseInt(el.value)||0) + nb;
+                r -= nb * TAUX_PC[a];
+            }
+        }
+        if (r > 0) { const el = document.getElementById('tresor-pc'); if (el) el.value=(parseInt(el.value)||0)+r; }
+        window.mettreAJourTotalTresor?.();
+        window.sauvegarderTresor?.();
+    }
+
+    function _deduireDuTresor(montantPc) {
+        if (_tresorEnPc() < montantPc) return false;
+        // Construire solde courant
+        const solde = {};
+        for (const a of Object.keys(TAUX_PC)) solde[a] = parseInt(document.getElementById('tresor-'+a)?.value)||0;
+        // Payer en partant des grosses pièces
+        let r = montantPc;
+        const aDebiter = {};
+        for (const a of ['pp','po','pe','pa','pc']) {
+            if (r <= 0) break;
+            const dispo = solde[a] * TAUX_PC[a];
+            if (dispo <= 0) continue;
+            const nbPieces = Math.min(solde[a], Math.ceil(r / TAUX_PC[a]));
+            aDebiter[a] = (aDebiter[a]||0) + nbPieces;
+            r -= nbPieces * TAUX_PC[a];
+        }
+        // r peut être négatif → rendre la monnaie
+        const rendu = -r; // pc à rendre
+        for (const [a, nb] of Object.entries(aDebiter)) {
+            const el = document.getElementById('tresor-'+a);
+            if (el) el.value = (parseInt(el.value)||0) - nb;
+        }
+        if (rendu > 0) _crediterTresor(rendu);
+        window.mettreAJourTotalTresor?.();
+        window.sauvegarderTresor?.();
+        return true;
+    }
+
+    // ── Inventaire Firebase ─────────────────────────────
+    window._inventaire = {};
+
+    window.sauvegarderInventaire = async function() {
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+        try {
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, 'membres', user.uid),
+                { inventaire: window._inventaire }, { merge: true }
+            );
+        } catch(e) { console.warn('Erreur sauvegarde inventaire:', e); }
+    };
+
+    window.chargerInventaire = async function() {
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+        try {
+            const snap = await window._firebaseGetDoc(
+                window._firebaseDoc(window._firebaseDb, 'membres', user.uid)
+            );
+            if (snap.exists()) window._inventaire = snap.data().inventaire || {};
+        } catch(e) { console.warn('Erreur chargement inventaire:', e); }
+        _invRafraichir();
+    };
+
+    // ── Toast échoppe ───────────────────────────────────
+    function _afficherToastEchoppe(msg) {
+        const t = document.getElementById('echoppe-toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.style.opacity = '1';
+        clearTimeout(t._timer);
+        t._timer = setTimeout(() => { t.style.opacity='0'; }, 2800);
+    }
+    window._afficherToast = _afficherToastEchoppe;
+
+    // ── Barre trésor dans l'échoppe ─────────────────────
+    function _syncBarreTresorEchoppe() {
+        const ids = ['pp','po','pe','pa','pc'];
+        ids.forEach(a => {
+            const el = document.getElementById('et-'+a);
+            const src = document.getElementById('tresor-'+a);
+            if (el && src) el.textContent = src.value;
+        });
+    }
+    window._syncBarreTresorEchoppe = _syncBarreTresorEchoppe;
+
+    // ── Achat ───────────────────────────────────────────
+    window._acheterItem = function(nomItem, ongletId, icone, prixStr, qte) {
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) { _afficherToastEchoppe('⚠️ Connexion requise pour acheter.'); return; }
+        const n = Math.max(1, parseInt(qte)||1);
+        const prixPc = _parsePrixEnPc(prixStr);
+        if (!prixPc) { _afficherToastEchoppe('⚠️ Prix invalide.'); return; }
+        const total = prixPc * n;
+        if (!_deduireDuTresor(total)) {
+            _afficherToastEchoppe('❌ Trésor insuffisant !'); return;
+        }
+        // Ajouter à l'inventaire
+        if (!window._inventaire[nomItem]) {
+            window._inventaire[nomItem] = { qte:0, onglet:ongletId, icone:icone||'📦', prix_pc:prixPc };
+        }
+        window._inventaire[nomItem].qte += n;
+        window._inventaire[nomItem].prix_pc = prixPc;
+        window.sauvegarderInventaire();
+        _syncBarreTresorEchoppe();
+        _invRafraichir();
+        const label = n > 1 ? `${n}× ${nomItem}` : nomItem;
+        _afficherToastEchoppe(`✅ ${label} acheté pour ${_formaterPc(total)}`);
+        // Rafraîchir badge dans l'échoppe
+        _rendreItemsEchoppe(_echoppeOngletActif, '');
+    };
+
+    // ── Vente depuis l'échoppe ──────────────────────────
+    window._vendreItemEchoppe = function(nomItem) {
+        const entry = window._inventaire[nomItem];
+        if (!entry || entry.qte <= 0) { _afficherToastEchoppe('❌ Vous ne possédez pas cet objet.'); return; }
+        const vendPc = Math.floor((entry.prix_pc||0) * 0.5);
+        entry.qte -= 1;
+        if (entry.qte <= 0) delete window._inventaire[nomItem];
+        _crediterTresor(vendPc);
+        window.sauvegarderInventaire();
+        _syncBarreTresorEchoppe();
+        _invRafraichir();
+        _afficherToastEchoppe(`💰 ${nomItem} vendu pour ${_formaterPc(vendPc)} (50%)`);
+        _rendreItemsEchoppe(_echoppeOngletActif, '');
+    };
+
+    // ── Vente depuis la fiche inventaire ────────────────
+    window.invVendre = function(nomItem) {
+        const entry = window._inventaire[nomItem];
+        if (!entry || entry.qte <= 0) return;
+        const vendPc = Math.floor((entry.prix_pc||0) * 0.5);
+        entry.qte -= 1;
+        if (entry.qte <= 0) delete window._inventaire[nomItem];
+        _crediterTresor(vendPc);
+        window.sauvegarderInventaire();
+        _invRafraichir();
+        _afficherToastEchoppe(`💰 ${nomItem} vendu pour ${_formaterPc(vendPc)} (50%)`);
+    };
+
+    // ── Section inventaire fiche ────────────────────────
+    const INV_CATS_FICHE = ['armes','armures','equipement','objets','montures','vehicules'];
+    let _invCatActive = 'armes';
+
+    function _invItemsDeCat(catId) {
+        const inv = window._inventaire || {};
+        const result = [];
+        for (const [nom, entry] of Object.entries(inv)) {
+            if (entry.onglet === catId && entry.qte > 0) {
+                result.push({ nom, qte:entry.qte, icone:entry.icone||'📦', prix_pc:entry.prix_pc||null });
+            }
+        }
+        return result;
+    }
+
+    function _invRendreContenu(catId) {
+        const contenu = document.getElementById('inv-contenu');
+        if (!contenu) return;
+        const items = _invItemsDeCat(catId);
+        if (items.length === 0) {
+            contenu.innerHTML = `<div class="inv-vide">Aucun objet dans cette catégorie.</div>`;
+            return;
+        }
+        const totalRevente = items.reduce((s,it)=>s+Math.floor((it.prix_pc||0)*0.5)*it.qte,0);
+        contenu.innerHTML = items.map(it => {
+            const vendPc = it.prix_pc ? Math.floor(it.prix_pc*0.5) : null;
+            const nomEsc = it.nom.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+            return `<div class="inv-item">
+                <div class="inv-item-icone">${it.icone}</div>
+                <div class="inv-item-nom">${it.nom}</div>
+                <div class="inv-item-qte">×${it.qte}</div>
+                ${vendPc !== null ? `<button class="inv-btn-vendre" onclick="invVendre('${nomEsc}')">💰 ${_formaterPc(vendPc)}</button>` : ''}
+            </div>`;
+        }).join('') + (totalRevente > 0 ? `<div class="inv-total">Valeur totale de revente : ${_formaterPc(totalRevente)}</div>` : '');
+    }
+    window._invRendreContenu = _invRendreContenu;
+
+    function _invMettreAJourBlocVisible() {
+        const inv = window._inventaire || {};
+        const aDesItems = Object.values(inv).some(e => e.qte > 0 && INV_CATS_FICHE.includes(e.onglet));
+        const bloc = document.getElementById('bloc-inventaire');
+        if (bloc) bloc.style.display = aDesItems ? 'block' : 'none';
+        // Badges sur les onglets
+        document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn => {
+            const cat = btn.dataset.cat;
+            const n = _invItemsDeCat(cat).reduce((s,i)=>s+i.qte,0);
+            // Icone + label propre
+            const labels = { armes:'⚔️ Armes', armures:'🛡️ Armures', equipement:'🎒 Équipement', objets:'💎 Objets', montures:'🐎 Montures', vehicules:'⚓ Véhicules' };
+            btn.textContent = (labels[cat]||cat) + (n > 0 ? ` (${n})` : '');
+        });
+    }
+    window._invMettreAJourBlocVisible = _invMettreAJourBlocVisible;
+
+    function _invRafraichir() {
+        _invMettreAJourBlocVisible();
+        _invRendreContenu(_invCatActive);
+    }
+
+    window.invAfficherCat = function(catId) {
+        _invCatActive = catId;
+        document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn =>
+            btn.classList.toggle('actif', btn.dataset.cat === catId));
+        _invRendreContenu(catId);
+    };
+
+    // ── MODALE ÉCHOPPE ──────────────────────────────────
     const ECHOPPE_ONGLETS = [
         { id:'armes',      label:'⚔️ Armes',       data: () => window.MATERIEL_ARMES },
         { id:'armures',    label:'🛡️ Armures',     data: () => window.MATERIEL_ARMURES },
@@ -6673,7 +7042,7 @@
         document.getElementById('echoppe-recherche').value = '';
         document.getElementById('echoppe-modal-overlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        // Afficher après que la modale est visible (données disponibles)
+        _syncBarreTresorEchoppe();
         requestAnimationFrame(() => _afficherOngletEchoppe(_echoppeOngletActif));
     }
     window.ouvrirEchoppe = ouvrirEchoppe;
@@ -6689,90 +7058,70 @@
         const bar = document.getElementById('echoppe-onglets');
         bar.innerHTML = ECHOPPE_ONGLETS.map(o => `
             <div class="echoppe-onglet${o.id === _echoppeOngletActif ? ' actif' : ''}"
-                 data-id="${o.id}"
-                 onclick="_afficherOngletEchoppe('${o.id}')">${o.label}</div>
+                 data-id="${o.id}" onclick="_afficherOngletEchoppe('${o.id}')">${o.label}</div>
         `).join('');
     }
 
     function _afficherOngletEchoppe(id) {
         _echoppeOngletActif = id;
         document.getElementById('echoppe-recherche').value = '';
-        const onglet = ECHOPPE_ONGLETS.find(o => o.id === id);
-        // Mettre à jour le sous-titre
-        const sousTitre = document.getElementById('echoppe-sous-titre');
         const sousTitres = {
-            armes: 'Armes corps-à-corps & distance',
-            armures: 'Armures légères, intermédiaires & lourdes',
-            equipement: 'Outils, contenants & équipements divers',
-            objets: 'Objets spéciaux & instruments',
-            montures: 'Montures & animaux de trait',
-            vehicules: 'Embarcations & véhicules terrestres',
-            potions: 'Potions, élixirs & remèdes',
-            parchemins: 'Parchemins de sorts & invocations',
-            auberge: 'Hébergement, repas & services',
+            armes:'Armes corps-à-corps & distance', armures:'Armures légères, intermédiaires & lourdes',
+            equipement:'Outils, contenants & équipements divers', objets:'Objets spéciaux & instruments',
+            montures:'Montures & animaux de trait', vehicules:'Embarcations & véhicules terrestres',
+            potions:'Potions, élixirs & remèdes', parchemins:'Parchemins de sorts & invocations', auberge:'Hébergement, repas & services',
         };
+        const sousTitre = document.getElementById('echoppe-sous-titre');
         if (sousTitre) sousTitre.textContent = sousTitres[id] || '';
-        // Mettre à jour onglets actifs
-        document.querySelectorAll('.echoppe-onglet').forEach(el => {
-            el.classList.toggle('actif', el.dataset.id === id);
-        });
+        document.querySelectorAll('.echoppe-onglet').forEach(el => el.classList.toggle('actif', el.dataset.id === id));
         _rendreItemsEchoppe(id, '');
     }
     window._afficherOngletEchoppe = _afficherOngletEchoppe;
 
     function filtrerEchoppe() {
-        const q = document.getElementById('echoppe-recherche').value;
-        _rendreItemsEchoppe(_echoppeOngletActif, q);
+        _rendreItemsEchoppe(_echoppeOngletActif, document.getElementById('echoppe-recherche').value);
     }
     window.filtrerEchoppe = filtrerEchoppe;
 
-    function _getPrix(item) {
-        return item.prix || item.cout || item.price || '—';
-    }
+    function _getPrix(item) { return item.prix || item.cout || item.price || '—'; }
 
     function _getStats(ongletId, nom, item) {
         if (ongletId === 'armes') {
-            const props = (item.proprietes || []).join(', ');
-            return `${item.degats || ''} ${item.type_degats || ''} · ${item.poids || ''}${props ? ' · ' + props : ''}`.trim().replace(/^·|·$/g,'').trim();
+            const props = (item.proprietes||[]).join(', ');
+            return `${item.degats||''} ${item.type_degats||''} · ${item.poids||''}${props?' · '+props:''}`.trim().replace(/^·|·$/g,'').trim();
         }
-        if (ongletId === 'armures') {
-            return `CA : ${item.ca || '—'} · ${item.categorie || ''} · ${item.poids || ''}`;
-        }
-        if (ongletId === 'montures') {
-            return `Vitesse : ${item.vitesse || '—'} · Charge : ${item.charge_max || '—'}`;
-        }
-        if (ongletId === 'vehicules') {
-            return `${item.categorie || ''} · ${item.vitesse || ''}`;
-        }
+        if (ongletId === 'armures') return `CA : ${item.ca||'—'} · ${item.categorie||''} · ${item.poids||''}`;
+        if (ongletId === 'montures') return `Vitesse : ${item.vitesse||'—'} · Charge : ${item.charge_max||'—'}`;
+        if (ongletId === 'vehicules') return `${item.categorie||''} · ${item.vitesse||''}`;
         if (item.categorie) return item.categorie;
         return '';
     }
 
+    // Sélecteur de quantité par item (stocké en mémoire)
+    const _echoppeQte = {};
+
     function _rendreItemsEchoppe(id, recherche) {
         const onglet  = ECHOPPE_ONGLETS.find(o => o.id === id);
         const contenu = document.getElementById('echoppe-contenu');
+        const estConnecte = !!window._firebaseAuth?.currentUser;
 
         const data = onglet?.data();
         if (!data) {
             const noms = { potions:'Potions & Élixirs', parchemins:'Parchemins & Sorts', auberge:'Auberge & Services' };
             contenu.innerHTML = `<div class="echoppe-vide" style="padding:40px 20px;">
-                <div style="font-size:2.5rem; margin-bottom:12px;">${(onglet?.label||'').split(' ')[0]}</div>
-                <div style="font-family:'Cinzel',serif; font-size:0.75rem; color:var(--rouge-blason); margin-bottom:8px;">
-                    ${noms[id] || id}
-                </div>
-                <div style="font-family:'Lora',serif; font-style:italic; font-size:0.75rem; color:#9a7a50;">
+                <div style="font-size:2.5rem;margin-bottom:12px;">${(onglet?.label||'').split(' ')[0]}</div>
+                <div style="font-family:'Cinzel',serif;font-size:0.75rem;color:var(--rouge-blason);margin-bottom:8px;">${noms[id]||id}</div>
+                <div style="font-family:'Lora',serif;font-style:italic;font-size:0.75rem;color:#9a7a50;">
                     Cette section est en cours de préparation.<br>Le Sénéchal y travaille activement.
-                </div>
-            </div>`;
+                </div></div>`;
             return;
         }
 
-        // Grouper par catégorie
-        const q = (recherche || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+        const q = (recherche||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
         const groupes = {};
         Object.entries(data).forEach(([nom, item]) => {
             const matchNom  = nom.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q);
-            const matchDesc = (item.description||'').toLowerCase().includes(recherche.toLowerCase());
+            const matchDesc = (item.description||'').toLowerCase().includes((recherche||'').toLowerCase());
             if (q && !matchNom && !matchDesc) return;
             const cat = item.categorie || 'Divers';
             if (!groupes[cat]) groupes[cat] = [];
@@ -6787,208 +7136,52 @@
         contenu.innerHTML = Object.entries(groupes).map(([cat, items]) => `
             <div class="echoppe-categorie-titre">${cat}</div>
             ${items.map(([nom, item]) => {
-                const stats = _getStats(id, nom, item);
-                const prix  = _getPrix(item);
+                const stats   = _getStats(id, nom, item);
+                const prixStr = _getPrix(item);
+                const prixPc  = _parsePrixEnPc(prixStr);
+                const qteInv  = window._inventaire[nom]?.qte || 0;
+                const key     = id+'|'+nom;
+                if (!_echoppeQte[key]) _echoppeQte[key] = 1;
+                const nomEsc  = nom.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+                const icone   = item.icone || '📦';
+
+                const badgeInv = qteInv > 0
+                    ? `<span class="echoppe-badge-qte" title="Vous en possédez ${qteInv}">×${qteInv}</span>` : '';
+
+                const actionsAchat = estConnecte && prixPc ? `
+                    <div class="echoppe-qte-wrap">
+                        <button class="echoppe-qte-btn" onclick="this.nextElementSibling.stepDown();this.nextElementSibling.dispatchEvent(new Event('change'))">−</button>
+                        <input type="number" class="echoppe-qte-input" min="1" max="99" value="${_echoppeQte[key]}"
+                               onchange="_echoppeQte['${key}']=Math.max(1,parseInt(this.value)||1);this.value=_echoppeQte['${key}']">
+                        <button class="echoppe-qte-btn" onclick="this.previousElementSibling.stepUp();this.previousElementSibling.dispatchEvent(new Event('change'))">+</button>
+                    </div>
+                    <button class="echoppe-btn-acheter" onclick="window._acheterItem('${nomEsc}','${id}','${icone}','${prixStr}',_echoppeQte['${key}'])">
+                        🛒 Acheter
+                    </button>` : (!estConnecte ? `<span style="font-family:'Lora',serif;font-style:italic;font-size:0.62rem;color:#9a7a50;">Connexion requise</span>` : '');
+
+                const actionVente = estConnecte && qteInv > 0 ? `
+                    <button class="echoppe-btn-vendre" onclick="window._vendreItemEchoppe('${nomEsc}')">
+                        💰 Vendre (${_formaterPc(Math.floor((prixPc||0)*0.5))})
+                    </button>` : '';
+
                 return `<div class="echoppe-item">
-                    <div class="echoppe-item-icone">${item.icone || '📦'}</div>
+                    <div class="echoppe-item-icone">${icone}${badgeInv}</div>
                     <div class="echoppe-item-corps">
                         <div class="echoppe-item-nom">${nom}</div>
                         ${stats ? `<div class="echoppe-item-stats">${stats}</div>` : ''}
-                        <div class="echoppe-item-desc">${item.description || ''}</div>
+                        <div class="echoppe-item-desc">${item.description||''}</div>
                     </div>
-                    <div class="echoppe-item-prix">${prix}</div>
+                    <div class="echoppe-item-prix">
+                        <div>${prixStr}</div>
+                        <div class="echoppe-actions">
+                            ${actionsAchat}
+                            ${actionVente}
+                        </div>
+                    </div>
                 </div>`;
             }).join('')}
         `).join('');
     }
-
-
-    </script>
-
-    <script>
-    // ══════════════════════════════════════════════════════
-    //  INVENTAIRE — Section fiche personnage
-    // ══════════════════════════════════════════════════════
-
-    // Catégories affichées dans la fiche (pas potions/parchemins/auberge)
-    const INV_CATS = {
-        armes:      { label:'⚔️ Armes',      data: () => window.MATERIEL_ARMES },
-        armures:    { label:'🛡️ Armures',    data: () => window.MATERIEL_ARMURES },
-        equipement: { label:'🎒 Équipement', data: () => window.MATERIEL_EQUIPEMENT },
-        objets:     { label:'💎 Objets',     data: () => window.MATERIEL_OBJETS },
-        montures:   { label:'🐎 Montures',   data: () => window.MATERIEL_MONTURES },
-        vehicules:  { label:'⚓ Véhicules',  data: () => window.MATERIEL_VEHICULES },
-    };
-
-    let _invCatActive = 'armes';
-
-    // Taux de conversion (pc = pièce de cuivre)
-    const INV_TAUX_PC = { pp:100000, po:1000, pe:500, pa:100, pc:1 };
-
-    function _invParsePrixPc(prixStr) {
-        if (!prixStr || prixStr === '—') return null;
-        const m = String(prixStr).trim().toLowerCase().match(/^([\d,\.]+)\s*(pp|po|pe|pa|pc)$/);
-        if (!m) return null;
-        return Math.round(parseFloat(m[1].replace(',','.')) * INV_TAUX_PC[m[2]]);
-    }
-
-    function _invFormaterPc(pc) {
-        if (!pc || pc <= 0) return '0 pc';
-        const ordre = [['pp',100000],['po',1000],['pe',500],['pa',100],['pc',1]];
-        let r = pc; const parts = [];
-        for (const [a, v] of ordre) { if (r >= v) { const n=Math.floor(r/v); parts.push(`${n} ${a}`); r-=n*v; } }
-        return parts.join(' + ') || '0 pc';
-    }
-
-    // Récupérer les items de l'inventaire appartenant à une catégorie
-    function _invItemsDeCat(catId) {
-        const inv = window._inventaire || {};
-        const data = INV_CATS[catId]?.data() || {};
-        const result = [];
-        for (const [nom, entry] of Object.entries(inv)) {
-            if ((entry.onglet === catId) && entry.qte > 0) {
-                const refItem = data[nom];
-                result.push({
-                    nom,
-                    qte: entry.qte,
-                    icone: entry.icone || refItem?.icone || '📦',
-                    prix_pc: entry.prix_pc || _invParsePrixPc(refItem?.prix || refItem?.cout || ''),
-                });
-            }
-        }
-        return result;
-    }
-
-    window.invAfficherCat = function(catId) {
-        _invCatActive = catId;
-        // Mettre à jour onglets
-        document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn => {
-            btn.classList.toggle('actif', btn.dataset.cat === catId);
-        });
-        _invRendreContenu(catId);
-    };
-
-    function _invRendreContenu(catId) {
-        const contenu = document.getElementById('inv-contenu');
-        if (!contenu) return;
-        const items = _invItemsDeCat(catId);
-
-        if (items.length === 0) {
-            contenu.innerHTML = `<div class="inv-vide">Aucun objet dans cette catégorie.</div>`;
-            return;
-        }
-
-        const totalPc = items.reduce((s, it) => s + (it.prix_pc || 0) * it.qte, 0);
-        const valeurVente = Math.floor(totalPc * 0.5);
-
-        contenu.innerHTML = items.map(it => {
-            const vendPc = it.prix_pc ? Math.floor(it.prix_pc * 0.5) : null;
-            const nomEsc = it.nom.replace(/'/g,"\\'");
-            return `<div class="inv-item">
-                <div class="inv-item-icone">${it.icone}</div>
-                <div class="inv-item-nom">${it.nom}</div>
-                <div class="inv-item-qte">×${it.qte}</div>
-                ${vendPc !== null ? `
-                <button class="inv-btn-vendre" onclick="invVendre('${nomEsc}')">
-                    💰 ${_invFormaterPc(vendPc)}
-                </button>` : ''}
-            </div>`;
-        }).join('') + `<div class="inv-total">Valeur totale de revente : ${_invFormaterPc(valeurVente)}</div>`;
-    }
-
-    window.invVendre = function(nomItem) {
-        const inv = window._inventaire || {};
-        const entry = inv[nomItem];
-        if (!entry || entry.qte <= 0) return;
-        const vendPc = entry.prix_pc ? Math.floor(entry.prix_pc * 0.5) : 0;
-
-        // Déduire de l'inventaire
-        entry.qte -= 1;
-        if (entry.qte <= 0) delete window._inventaire[nomItem];
-
-        // Créditer le trésor
-        _invCrediterTresor(vendPc);
-        window.sauvegarderInventaire?.();
-
-        // Rafraîchir
-        _invRendreContenu(_invCatActive);
-        _invMettreAJourBlocVisible();
-        _syncBarreTresorEchoppe?.();
-
-        // Toast si disponible
-        if (window._afficherToast) window._afficherToast(`💰 ${nomItem} vendu pour ${_invFormaterPc(vendPc)} (50%)`);
-    };
-
-    function _invCrediterTresor(montantPc) {
-        const ordre = ['pp','po','pe','pa','pc'];
-        let r = montantPc;
-        for (const a of ordre) {
-            if (r <= 0) break;
-            const nb = Math.floor(r / INV_TAUX_PC[a]);
-            if (nb > 0) {
-                const el = document.getElementById('tresor-' + a);
-                if (el) el.value = (parseInt(el.value)||0) + nb;
-                r -= nb * INV_TAUX_PC[a];
-            }
-        }
-        if (r > 0) {
-            const el = document.getElementById('tresor-pc');
-            if (el) el.value = (parseInt(el.value)||0) + r;
-        }
-        window.mettreAJourTotalTresor?.();
-        window.sauvegarderTresor?.();
-    }
-
-    // Afficher/cacher le bloc inventaire selon si l'inventaire est vide ou non
-    function _invMettreAJourBlocVisible() {
-        const inv = window._inventaire || {};
-        const aCatVisible = Object.keys(INV_CATS);
-        const aDesItems = Object.values(inv).some(e =>
-            e.qte > 0 && aCatVisible.includes(e.onglet)
-        );
-        const bloc = document.getElementById('bloc-inventaire');
-        if (bloc) bloc.style.display = aDesItems ? 'block' : 'none';
-
-        // Mettre à jour les badges sur les onglets
-        document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn => {
-            const cat = btn.dataset.cat;
-            const n = _invItemsDeCat(cat).reduce((s,i)=>s+i.qte,0);
-            // Retirer ancien badge
-            btn.textContent = btn.textContent.replace(/\s*\(\d+\)$/,'');
-            if (n > 0) btn.textContent += ` (${n})`;
-        });
-    }
-
-    // Hook : appelé après chargement de l'inventaire depuis Firebase
-    const _invOrigCharger = window.chargerInventaire;
-    window.chargerInventaire = async function() {
-        await _invOrigCharger?.();
-        _invMettreAJourBlocVisible();
-        _invRendreContenu(_invCatActive);
-    };
-
-    // Hook : appelé après achat dans l'échoppe pour rafraîchir la fiche
-    const _invOrigAcheter = window._acheterItem;
-    window._acheterItem = function(...args) {
-        _invOrigAcheter?.(...args);
-        setTimeout(() => {
-            _invMettreAJourBlocVisible();
-            _invRendreContenu(_invCatActive);
-        }, 100);
-    };
-
-    // Hook : appelé après vente dans l'échoppe pour rafraîchir la fiche
-    const _invOrigVendre = window._vendreItem;
-    window._vendreItem = function(...args) {
-        _invOrigVendre?.(...args);
-        setTimeout(() => {
-            _invMettreAJourBlocVisible();
-            _invRendreContenu(_invCatActive);
-        }, 100);
-    };
-
-    window._invMettreAJourBlocVisible = _invMettreAJourBlocVisible;
-    window._invRendreContenu = _invRendreContenu;
     </script>
     <!-- ─── TOOLTIP PORTAL (position:fixed, z-index max, jamais clippé) ── -->
     <div id="rpg-tooltip-portal"></div>
@@ -7034,9 +7227,36 @@
                               color:var(--texte); border-radius:3px; box-sizing:border-box;">
             </div>
 
+            <!-- Barre trésor -->
+            <div id="echoppe-tresor-bar">
+                <div class="echoppe-tresor-item">
+                    <span class="echoppe-tresor-val" id="et-pp">0</span>
+                    <span class="echoppe-tresor-label">Platine</span>
+                </div>
+                <div class="echoppe-tresor-item">
+                    <span class="echoppe-tresor-val" id="et-po">0</span>
+                    <span class="echoppe-tresor-label">Or</span>
+                </div>
+                <div class="echoppe-tresor-item">
+                    <span class="echoppe-tresor-val" id="et-pe">0</span>
+                    <span class="echoppe-tresor-label">Électrum</span>
+                </div>
+                <div class="echoppe-tresor-item">
+                    <span class="echoppe-tresor-val" id="et-pa">0</span>
+                    <span class="echoppe-tresor-label">Argent</span>
+                </div>
+                <div class="echoppe-tresor-item">
+                    <span class="echoppe-tresor-val" id="et-pc">0</span>
+                    <span class="echoppe-tresor-label">Cuivre</span>
+                </div>
+            </div>
+
             <!-- Contenu scrollable -->
             <div id="echoppe-contenu" style="flex:1; overflow-y:auto; padding:12px 16px;">
             </div>
+
+            <!-- Toast confirmation -->
+            <div id="echoppe-toast"></div>
         </div>
     </div>
 
