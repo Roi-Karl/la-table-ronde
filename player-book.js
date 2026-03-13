@@ -365,11 +365,11 @@ const SORTS_PAR_CLASSE = {
         ],
     },
 
-    "Occultiste": {
+    "Sorcier": {
         carac_sort: "CHA",
         carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
         methode: "Sorts connus (très peu, mais emplacements récupérés au repos court)",
-        ressource_speciale: "Invocations occultes (capacités passives de pacte) + Magie du pacte",
+        ressource_speciale: "Invocations occultes (capacités passives de pacte) + Bénédiction de pacte (Lame/Tome/Chaîne)",
         style: "Puissance sombre, pacte avec une entité, peu d'emplacements mais récupérés fréquemment",
         sorts_connus: "2 au niveau 1",
         emplacements_niv1: 1,
@@ -381,14 +381,53 @@ const SORTS_PAR_CLASSE = {
             { niveau:5,  slots:{0:3,3:2} },
         ],
         sorts: [
-            { niveau:0, nom:"Décharge occulte", icone:"⚡", ecole:"Évocation", temps_incantation:"1 action", portee:"36 m", duree:"Instantané", description:"Attaque à distance : 1d10 force. Peut être améliorée via Invocations occultes (explosif, répulsif, effrayant...)" },
+            { niveau:0, nom:"Eldritch Blast", icone:"⚡", ecole:"Évocation", temps_incantation:"1 action", portee:"36 m", duree:"Instantané", description:"1 rayon de force : attaque à distance, 1d10 force. Personnalisable via Invocations (explosif, répulsif, affaiblissant, effrayant...). Devient 2 rayons niv.5, 3 niv.11, 4 niv.17." },
             { niveau:0, nom:"Contact venimeux", icone:"☠️", ecole:"Conjuration", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"Attaque de mêlée : JS Constitution DD ou 1d10 poison. (2d10 niv.5, 3d10 niv.11, 4d10 niv.17)" },
             { niveau:0, nom:"Bouffée de poison", icone:"💚", ecole:"Nécromancie", temps_incantation:"1 action", portee:"3 m", duree:"Instantané", description:"JS Constitution DD ou 1d12 poison. (2d12 niv.5, 3d12 niv.11, 4d12 niv.17)" },
-            { niveau:1, nom:"Armure d'Agathys", icone:"❄️", ecole:"Abjuration", temps_incantation:"1 action", portee:"Personnel", duree:"1 heure", description:"5 PV temporaires + quiconque vous frappe en mêlée subit 5 dégâts de froid. +5 par emplacement supérieur." },
-            { niveau:1, nom:"Soif de sang", icone:"🩸", ecole:"Nécromancie", concentration:true, temps_incantation:"1 action bonus", portee:"18 m", duree:"Concentration, 1 min", description:"Jusqu'à 3 cibles : JS Constitution DD ou 1d6 nécrotique et vous récupérez les mêmes PV. +1d6 par emplacement supérieur." },
-            { niveau:1, nom:"Maléfice", icone:"👁️", ecole:"Enchantement", concentration:true, temps_incantation:"1 action bonus", portee:"27 m", duree:"Concentration, 1h", description:"Cible maudite : +1d6 nécrotique sur vos attaques contre elle. Elle a désavantage aux jets d'une caractéristique choisie." },
-            { niveau:2, nom:"Rayon d'affaiblissement", icone:"💀", ecole:"Nécromancie", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"Attaque à distance : 4d8+mod. CHA nécrotique. Si cible à 0 PV → dissout en poussière." },
-            { niveau:2, nom:"Ténèbres", icone:"🌑", ecole:"Évocation", concentration:true, temps_incantation:"1 action", portee:"18 m", duree:"Concentration, 10 min", description:"Obscurité magique dans une sphère de 4,5 m. Aucune lumière naturelle ne peut la pénétrer. Peut être lancé sur un objet." },
+            { niveau:0, nom:"Frissons", icone:"🌀", ecole:"Enchantement", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"JS Sagesse DD ou la cible subit désavantage à ses jets d'attaque jusqu'à la fin de votre prochain tour." },
+            { niveau:1, nom:"Armure d'Agathys", icone:"❄️", ecole:"Abjuration", temps_incantation:"1 action", portee:"Personnel", duree:"1 heure", description:"5 PV temporaires. Quiconque vous frappe en mêlée subit 5 dégâts de froid. +5 par emplacement supérieur." },
+            { niveau:1, nom:"Maléfice", icone:"👁️", ecole:"Enchantement", concentration:true, temps_incantation:"1 action bonus", portee:"27 m", duree:"Concentration, 1h", description:"Cible maudite : +1d6 nécrotique sur vos attaques. Elle a désavantage aux jets d'une caractéristique choisie. Se déplace sur une nouvelle cible si la première meurt." },
+            { niveau:1, nom:"Protection contre le Bien et le Mal", icone:"🔮", ecole:"Abjuration", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 10 min", description:"La cible est protégée contre : aberrations, célestes, élémentaires, fées, fiélons, morts-vivants. Ces créatures ont désavantage à l'attaquer et ne peuvent pas la charmer, effrayer ou posséder." },
+            { niveau:2, nom:"Rayon d'affaiblissement", icone:"💀", ecole:"Nécromancie", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"Attaque à distance : 4d8+mod. CHA nécrotique. Si la cible tombe à 0 PV, elle se dissout en poussière — aucune résurrection sans sort puissant." },
+            { niveau:2, nom:"Ténèbres", icone:"🌑", ecole:"Évocation", concentration:true, temps_incantation:"1 action", portee:"18 m", duree:"Concentration, 10 min", description:"Obscurité magique dans une sphère de 4,5 m. Aucune lumière (même magique inférieure) ne peut la pénétrer. Peut être lancé sur un objet." },
+            { niveau:3, nom:"Contresort", icone:"🚫", ecole:"Abjuration", temps_incantation:"1 réaction", portee:"18 m", duree:"Instantané", description:"Réaction : interrompt un sort de niveau 3 ou moins (automatique). Pour niveau 4+ : JS INT DD 10+niveau du sort. En cas d'échec, le sort adverse fonctionne." },
+        ],
+    },
+
+    "Magicien": {
+        carac_sort: "INT",
+        carac_sort_complet: "Intelligence — DD de sauvegarde = 8 + bonus maîtrise + mod. INT",
+        methode: "Grimoire — prépare INT + niveau sorts par jour, liste illimitée copiable",
+        ressource_speciale: "Récupération arcanique (emplacements récupérés au repos court), École de magie (spécialisation)",
+        style: "Puissance maximale à haut niveau, fragilité physique, préparation et polyvalence absolues",
+        emplacements_niv1: 2,
+        table_emplacements: [
+            { niveau:1,  slots:{0:3,1:2} },
+            { niveau:2,  slots:{0:3,1:3} },
+            { niveau:3,  slots:{0:3,1:4,2:2} },
+            { niveau:4,  slots:{0:4,1:4,2:3} },
+            { niveau:5,  slots:{0:4,1:4,2:3,3:2} },
+        ],
+        sorts: [
+            // Tours de magie
+            { niveau:0, nom:"Trait de feu", icone:"🔥", ecole:"Évocation", temps_incantation:"1 action", portee:"36 m", duree:"Instantané", description:"Attaque à distance : 1d10 feu. (2d10 niv.5, 3d10 niv.11, 4d10 niv.17). Le plus puissant tour de magie offensif." },
+            { niveau:0, nom:"Rayon de givre", icone:"❄️", ecole:"Évocation", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"Attaque à distance : 1d8 froid. Réduit la vitesse de la cible de 3 m jusqu'à son prochain tour." },
+            { niveau:0, nom:"Illusion mineure", icone:"🔮", ecole:"Illusion", temps_incantation:"1 action", portee:"9 m", duree:"Concentration, 1 min", description:"Son ou image inerte (cube 1,5 m). Très utile pour distraction et reconnaissance." },
+            { niveau:0, nom:"Prestidigitation", icone:"✨", ecole:"Transmutation", temps_incantation:"1 action", portee:"3 m", duree:"Jusqu'à 1h", description:"Effets mineurs à volonté : flamme, nettoyage, marquage, son, odeur, chaleur. Outil de roleplay constant." },
+            // Niveau 1
+            { niveau:1, nom:"Projectile magique", icone:"💫", ecole:"Évocation", temps_incantation:"1 action", portee:"36 m", duree:"Instantané", description:"3 fléchettes (1d4+1 chacune) infaillibles, touchent une ou plusieurs cibles. +1 fléchette par emplacement supérieur." },
+            { niveau:1, nom:"Bouclier", icone:"🛡️", ecole:"Abjuration", temps_incantation:"1 réaction", portee:"Personnel", duree:"1 round", description:"+5 CA jusqu'au début du prochain tour, en réaction à une attaque. Bloque aussi Projectile magique. Le sort défensif le plus efficace du jeu." },
+            { niveau:1, nom:"Mains brûlantes", icone:"🔥", ecole:"Évocation", temps_incantation:"1 action", portee:"Cône 4,5 m", duree:"Instantané", description:"JS Dextérité DD ou 3d6 feu (moitié si réussite). +1d6 par emplacement supérieur. Parfait contre plusieurs ennemis proches." },
+            { niveau:1, nom:"Sommeil", icone:"💤", ecole:"Enchantement", temps_incantation:"1 action", portee:"27 m", duree:"1 min", description:"Endort des créatures représentant 5d8 PV cumulés (les plus basses d'abord). Ne fonctionne pas sur les morts-vivants et constructions." },
+            { niveau:1, nom:"Identification", icone:"🔍", ecole:"Divination", rituel:true, temps_incantation:"1 min (rituel)", portee:"Contact", duree:"Instantané", description:"Révèle les propriétés magiques d'un objet et les sorts actifs sur une créature. Peut être lancé comme rituel (sans emplacement)." },
+            // Niveau 2
+            { niveau:2, nom:"Invisibilité", icone:"👻", ecole:"Illusion", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 1h", description:"Cible invisible jusqu'à ce qu'elle attaque ou lance un sort. +1 cible par emplacement supérieur. Indispensable pour l'infiltration." },
+            { niveau:2, nom:"Flèche acide de Melf", icone:"💚", ecole:"Évocation", temps_incantation:"1 action", portee:"27 m", duree:"Instantané + 1 round", description:"Attaque à distance : 4d4 acide immédiat + 2d4 acide à la fin du prochain tour de la cible. +1d4 par emplacement supérieur." },
+            { niveau:2, nom:"Bouche magique", icone:"🗣️", ecole:"Illusion", rituel:true, temps_incantation:"1 min (rituel)", portee:"9 m", duree:"Jusqu'à la déclenchement", description:"Programme un message de 25 mots (avec voix et gestes) sur un objet, déclenché par une condition que vous définissez." },
+            // Niveau 3
+            { niveau:3, nom:"Boule de feu", icone:"💥", ecole:"Évocation", temps_incantation:"1 action", portee:"45 m", duree:"Instantané", description:"Explosion dans une sphère de 6 m. JS Dextérité DD ou 8d6 feu (moitié si réussite). Enflamme les objets non portés. +1d6 par emplacement supérieur." },
+            { niveau:3, nom:"Contre-sort", icone:"🚫", ecole:"Abjuration", temps_incantation:"1 réaction", portee:"18 m", duree:"Instantané", description:"Annule automatiquement un sort de niv.3 ou moins. Pour niv.4+ : JS INT DD 10+niveau. La réaction ultime du Magicien." },
+            { niveau:3, nom:"Vol", icone:"🦅", ecole:"Transmutation", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 10 min", description:"Confère une vitesse de vol de 18 m. +1 cible par emplacement supérieur." },
         ],
     },
 
