@@ -242,6 +242,215 @@ function _descStr(val) {
     return String(val).trim();
 }
 
+/* ═══════════════════════════════════════════════════════════════
+ *  SORTS PAR CLASSE — Données Phase 3
+ *  Chaque classe lanceuse de sorts avec ses sorts emblématiques
+ * ═══════════════════════════════════════════════════════════════ */
+
+const SORTS_PAR_CLASSE = {
+
+    "Barde": {
+        carac_sort: "CHA",
+        carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
+        methode: "Sorts connus (nombre limité, toujours disponibles)",
+        ressource_speciale: "Inspiration bardique (dé bonus d6→d12 offert à un allié)",
+        style: "Soutien, contrôle et polyvalence magique",
+        sorts_connus: "4 au niveau 1",
+        emplacements_niv1: 2,
+        table_emplacements: [
+            { niveau:1,  slots:{0:2,1:2} },
+            { niveau:2,  slots:{0:2,1:3} },
+            { niveau:3,  slots:{0:2,1:4,2:2} },
+            { niveau:4,  slots:{0:3,1:4,2:3} },
+            { niveau:5,  slots:{0:3,1:4,2:3,3:2} },
+        ],
+        sorts: [
+            // Tours de magie
+            { niveau:0, nom:"Bouffonneries", icone:"🎭", ecole:"Enchantement", temps_incantation:"1 action", portee:"18 m", duree:"Concentration, 1 min", description:"La cible ratée un jet de sagesse DD doit accomplir une action idiote à son prochain tour — danser, rire, imiter un animal." },
+            { niveau:0, nom:"Lumière", icone:"💡", ecole:"Évocation", temps_incantation:"1 action", portee:"Contact", duree:"1 heure", description:"Un objet touché émet une lumière vive sur 6 m et faible sur 6 m supplémentaires. Peut être dissipé par Ténèbres." },
+            { niveau:0, nom:"Prestidigitation", icone:"✨", ecole:"Transmutation", temps_incantation:"1 action", portee:"3 m", duree:"1 heure max", description:"Effets magiques mineurs à volonté : flamme, nettoyage, odeur, son illusoire, réchauffer un aliment, marquer un objet..." },
+            { niveau:0, nom:"Illusion mineure", icone:"🔮", ecole:"Illusion", temps_incantation:"1 action", portee:"9 m", duree:"Concentration, 1 min", description:"Crée un son ou une image inerte d'un cube de 1,5 m. L'image ne résiste pas à l'investigation (elle est translucide au toucher)." },
+            // Niveau 1
+            { niveau:1, nom:"Soins", icone:"❤️", ecole:"Évocation", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"Restaure 1d8 + mod. SAG PV à une créature. Amplifiable : +1d8 par emplacement supplémentaire." },
+            { niveau:1, nom:"Héroïsme", icone:"🛡️", ecole:"Enchantement", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 1 min", description:"La cible est immunisée à la peur et gagne mod. CHA PV temporaires à chaque début de son tour." },
+            { niveau:1, nom:"Charme-personne", icone:"💫", ecole:"Enchantement", temps_incantation:"1 action", portee:"9 m", duree:"1 heure", description:"JS Sagesse ou la cible vous considère comme un ami. Annulé si elle ou ses alliés sont attaqués. La cible sait qu'elle était charmée après." },
+            { niveau:1, nom:"Sommeil", icone:"💤", ecole:"Enchantement", temps_incantation:"1 action", portee:"27 m", duree:"1 min", description:"Affecte 5d8 PV de créatures (les plus basses d'abord). Elles s'endorment. Réveillées si blessées ou secouées." },
+            { niveau:1, nom:"Lueurs féeriques", icone:"🌟", ecole:"Évocation", concentration:true, temps_incantation:"1 action", portee:"18 m", duree:"Concentration, 1 min", description:"Chaque créature dans un cube de 6 m doit réussir un JS Dextérité ou être soulignée de lumière. Les attaques contre ces cibles ont l'avantage." },
+            // Niveau 2
+            { niveau:2, nom:"Suggestion", icone:"🗣️", ecole:"Enchantement", concentration:true, temps_incantation:"1 action", portee:"9 m", duree:"Concentration, 8h", description:"JS Sagesse ou la cible suit une suggestion raisonnable (pas suicidaire). Ex : 'Posez votre arme et rentrez chez vous.'" },
+            { niveau:2, nom:"Fracas", icone:"🔔", ecole:"Évocation", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"Explosion sonore dans une sphère de 3 m. JS Constitution DD ou 3d8 tonnerre + sourd 1 round. Objets non portés automatiquement touchés." },
+        ],
+    },
+
+    "Clerc": {
+        carac_sort: "SAG",
+        carac_sort_complet: "Sagesse — DD de sauvegarde = 8 + bonus maîtrise + mod. SAG",
+        methode: "Sorts préparés chaque jour (nombre = mod. SAG + niveau)",
+        ressource_speciale: "Canal divin (2/repos court à haut niveau) — Renvoi des morts-vivants",
+        style: "Guérison, soutien divin et combat sacré",
+        emplacements_niv1: 2,
+        table_emplacements: [
+            { niveau:1,  slots:{0:3,1:2} },
+            { niveau:2,  slots:{0:3,1:3} },
+            { niveau:3,  slots:{0:3,1:4,2:2} },
+            { niveau:4,  slots:{0:4,1:4,2:3} },
+            { niveau:5,  slots:{0:4,1:4,2:3,3:2} },
+        ],
+        sorts: [
+            { niveau:0, nom:"Flamme sacrée", icone:"🔥", ecole:"Évocation", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"JS Dextérité DD ou 1d8 dégâts radiants. Ignore la couverture. (2d8 niv.5, 3d8 niv.11, 4d8 niv.17)" },
+            { niveau:0, nom:"Guidance", icone:"📿", ecole:"Divination", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 1 min", description:"La cible peut ajouter 1d4 à un test de caractéristique de son choix avant la fin du sort." },
+            { niveau:0, nom:"Résistance", icone:"🛡️", ecole:"Abjuration", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 1 min", description:"La cible peut ajouter 1d4 à un jet de sauvegarde de son choix avant la fin du sort." },
+            { niveau:1, nom:"Soins", icone:"❤️", ecole:"Évocation", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"Restaure 1d8 + mod. SAG PV. +1d8 par emplacement supérieur." },
+            { niveau:1, nom:"Bénédiction", icone:"✨", ecole:"Enchantement", concentration:true, temps_incantation:"1 action", portee:"9 m", duree:"Concentration, 1 min", description:"3 créatures au choix ajoutent 1d4 à tous leurs jets d'attaque et de sauvegarde." },
+            { niveau:1, nom:"Bouclier de la foi", icone:"🛡️", ecole:"Abjuration", concentration:true, temps_incantation:"1 action bonus", portee:"18 m", duree:"Concentration, 10 min", description:"+2 CA à une créature visible." },
+            { niveau:1, nom:"Injonction", icone:"🗣️", ecole:"Enchantement", temps_incantation:"1 action", portee:"18 m", duree:"1 round", description:"JS Sagesse ou la cible obéit à un mot d'ordre : Approche, Fuis, Tombe, Halte, Pars." },
+            { niveau:2, nom:"Soins de groupe", icone:"💚", ecole:"Évocation", temps_incantation:"1 action", portee:"9 m", duree:"Instantané", description:"Jusqu'à 6 créatures récupèrent chacune 1d4 + mod. SAG PV. +1d4 par emplacement supérieur." },
+            { niveau:2, nom:"Arme spirituelle", icone:"⚔️", ecole:"Évocation", concentration:false, temps_incantation:"1 action bonus", portee:"18 m", duree:"1 min", description:"Invoque une arme flottante. Chaque tour : attaque bonus (1d8 + mod. SAG radiant). +1d8 par 2 emplacements supérieurs." },
+            { niveau:3, nom:"Revigorer", icone:"💛", ecole:"Nécromancie", temps_incantation:"1 action", portee:"9 m", duree:"Instantané", description:"Restaure 3d8 + mod. SAG PV. La cible ne peut pas bénéficier du sort à nouveau avant un repos court." },
+        ],
+    },
+
+    "Druide": {
+        carac_sort: "SAG",
+        carac_sort_complet: "Sagesse — DD de sauvegarde = 8 + bonus maîtrise + mod. SAG",
+        methode: "Sorts préparés chaque jour (liste complète de sorts de druide disponibles)",
+        ressource_speciale: "Forme sauvage (2/repos court) — transformation en bête",
+        style: "Nature, métamorphose et magie élémentaire",
+        emplacements_niv1: 2,
+        table_emplacements: [
+            { niveau:1,  slots:{0:2,1:2} },
+            { niveau:2,  slots:{0:2,1:3} },
+            { niveau:3,  slots:{0:2,1:4,2:2} },
+            { niveau:4,  slots:{0:3,1:4,2:3} },
+            { niveau:5,  slots:{0:3,1:4,2:3,3:2} },
+        ],
+        sorts: [
+            { niveau:0, nom:"Poignée de foudre", icone:"⚡", ecole:"Évocation", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"JS Dextérité DD ou 1d8 foudre. La cible ne peut pas effectuer de réaction jusqu'à son prochain tour. (2d8 niv.5)" },
+            { niveau:0, nom:"Flammes", icone:"🔥", ecole:"Évocation", temps_incantation:"1 action", portee:"Contact", duree:"10 min", description:"Flamme dans la main : attaque à distance (portée 9 m) qui inflige 1d8 feu. Peut éclairer 3 m." },
+            { niveau:0, nom:"Épines", icone:"🌿", ecole:"Transmutation", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"JS Constitution DD ou 1d6 perforants. Si la cible réussit, les dégâts sont ignorés. Croît avec le niveau." },
+            { niveau:1, nom:"Soin des blessures", icone:"❤️", ecole:"Évocation", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"Restaure 1d8 + mod. SAG PV." },
+            { niveau:1, nom:"Enchevêtrement", icone:"🌱", ecole:"Conjuration", concentration:true, temps_incantation:"1 action", portee:"27 m", duree:"Concentration, 1 min", description:"Plantes entravantes dans un carré de 6 m. JS Force ou entravé. Réitéré chaque tour." },
+            { niveau:1, nom:"Brise-tempête", icone:"🌊", ecole:"Évocation", temps_incantation:"1 action", portee:"9 m", duree:"Instantané", description:"JS Force ou la cible est repoussée de 3 m et tombe à terre. Dégâts : 1d8 tonnerre." },
+            { niveau:2, nom:"Rayon de lune", icone:"🌕", ecole:"Évocation", concentration:true, temps_incantation:"1 action", portee:"45 m", duree:"Concentration, 1 min", description:"Cylindre lumineux de 1,5 m, 12 m de haut. Toute créature dedans : JS Constitution ou 2d10 radiants. Métamorphes font la transformation." },
+            { niveau:2, nom:"Peau d'écorce", icone:"🌳", ecole:"Transmutation", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 1h", description:"CA minimum 16 pour la cible (si sa CA naturelle est inférieure)." },
+            { niveau:3, nom:"Appel de la foudre", icone:"🌩️", ecole:"Conjuration", concentration:true, temps_incantation:"1 action", portee:"36 m (nuage à 90-120 m de hauteur)", duree:"Concentration, 10 min", description:"Nuage d'orage. Chaque tour (action bonus) : foudre sur un point visible → JS Dextérité DD ou 3d10 foudre." },
+        ],
+    },
+
+    "Ensorceleur": {
+        carac_sort: "CHA",
+        carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
+        methode: "Sorts connus (nombre limité mais toujours disponibles, magie innée)",
+        ressource_speciale: "Points de sorcellerie (modifient les sorts via Métamagie)",
+        style: "Magie brute et flexible, sorts connus mais puissamment personnalisés",
+        sorts_connus: "2 au niveau 1",
+        emplacements_niv1: 2,
+        table_emplacements: [
+            { niveau:1,  slots:{0:4,1:2} },
+            { niveau:2,  slots:{0:4,1:3} },
+            { niveau:3,  slots:{0:4,1:4,2:2} },
+            { niveau:4,  slots:{0:5,1:4,2:3} },
+            { niveau:5,  slots:{0:5,1:4,2:3,3:2} },
+        ],
+        sorts: [
+            { niveau:0, nom:"Rayon de givre", icone:"❄️", ecole:"Évocation", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"Attaque à distance : 1d8 froid. La cible voit sa vitesse réduite de 3 m jusqu'à son prochain tour." },
+            { niveau:0, nom:"Aspersion acide", icone:"💚", ecole:"Conjuration", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"JS Dextérité DD ou 1d6 acide (2 cibles adjacentes). (2d6 niv.5, 3d6 niv.11, 4d6 niv.17)" },
+            { niveau:0, nom:"Contact glacial", icone:"💀", ecole:"Nécromancie", temps_incantation:"1 action", portee:"18 m", duree:"1 round", description:"Attaque à distance : 1d8 nécrotique. La cible ne peut pas récupérer de PV jusqu'à son prochain tour." },
+            { niveau:0, nom:"Trait de feu", icone:"🔥", ecole:"Évocation", temps_incantation:"1 action", portee:"36 m", duree:"Instantané", description:"Attaque à distance : 1d10 feu. (2d10 niv.5, 3d10 niv.11, 4d10 niv.17)" },
+            { niveau:1, nom:"Bouclier", icone:"🛡️", ecole:"Abjuration", temps_incantation:"1 réaction", portee:"Personnel", duree:"1 round", description:"Réaction contre une attaque qui vous toucherait : +5 CA jusqu'au début de votre prochain tour. Bloque aussi Projectile magique." },
+            { niveau:1, nom:"Projectile magique", icone:"💫", ecole:"Évocation", temps_incantation:"1 action", portee:"36 m", duree:"Instantané", description:"3 fléchettes magiques, 1d4+1 force chacune, infaillibles. +1 fléchette par emplacement supérieur." },
+            { niveau:1, nom:"Mains brûlantes", icone:"🔥", ecole:"Évocation", temps_incantation:"1 action", portee:"Personnel (cône 4,5 m)", duree:"Instantané", description:"JS Dextérité DD ou 3d6 feu (moitié en cas de succès). +1d6 par emplacement supérieur." },
+            { niveau:2, nom:"Invisibilité", icone:"👻", ecole:"Illusion", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 1h", description:"Cible invisible jusqu'à ce qu'elle attaque ou lance un sort. +1 cible par emplacement supérieur." },
+            { niveau:2, nom:"Flétrissement", icone:"💀", ecole:"Nécromancie", temps_incantation:"1 action", portee:"9 m", duree:"Instantané", description:"JS Constitution DD ou 3d8 nécrotique (moitié en cas de succès). Aucun effet sur les morts-vivants et constructions." },
+        ],
+    },
+
+    "Occultiste": {
+        carac_sort: "CHA",
+        carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
+        methode: "Sorts connus (très peu, mais emplacements récupérés au repos court)",
+        ressource_speciale: "Invocations occultes (capacités passives de pacte) + Magie du pacte",
+        style: "Puissance sombre, pacte avec une entité, peu d'emplacements mais récupérés fréquemment",
+        sorts_connus: "2 au niveau 1",
+        emplacements_niv1: 1,
+        table_emplacements: [
+            { niveau:1,  slots:{0:2,1:1} },
+            { niveau:2,  slots:{0:2,1:2} },
+            { niveau:3,  slots:{0:2,2:2} },
+            { niveau:4,  slots:{0:3,2:2} },
+            { niveau:5,  slots:{0:3,3:2} },
+        ],
+        sorts: [
+            { niveau:0, nom:"Décharge occulte", icone:"⚡", ecole:"Évocation", temps_incantation:"1 action", portee:"36 m", duree:"Instantané", description:"Attaque à distance : 1d10 force. Peut être améliorée via Invocations occultes (explosif, répulsif, effrayant...)" },
+            { niveau:0, nom:"Contact venimeux", icone:"☠️", ecole:"Conjuration", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"Attaque de mêlée : JS Constitution DD ou 1d10 poison. (2d10 niv.5, 3d10 niv.11, 4d10 niv.17)" },
+            { niveau:0, nom:"Bouffée de poison", icone:"💚", ecole:"Nécromancie", temps_incantation:"1 action", portee:"3 m", duree:"Instantané", description:"JS Constitution DD ou 1d12 poison. (2d12 niv.5, 3d12 niv.11, 4d12 niv.17)" },
+            { niveau:1, nom:"Armure d'Agathys", icone:"❄️", ecole:"Abjuration", temps_incantation:"1 action", portee:"Personnel", duree:"1 heure", description:"5 PV temporaires + quiconque vous frappe en mêlée subit 5 dégâts de froid. +5 par emplacement supérieur." },
+            { niveau:1, nom:"Soif de sang", icone:"🩸", ecole:"Nécromancie", concentration:true, temps_incantation:"1 action bonus", portee:"18 m", duree:"Concentration, 1 min", description:"Jusqu'à 3 cibles : JS Constitution DD ou 1d6 nécrotique et vous récupérez les mêmes PV. +1d6 par emplacement supérieur." },
+            { niveau:1, nom:"Maléfice", icone:"👁️", ecole:"Enchantement", concentration:true, temps_incantation:"1 action bonus", portee:"27 m", duree:"Concentration, 1h", description:"Cible maudite : +1d6 nécrotique sur vos attaques contre elle. Elle a désavantage aux jets d'une caractéristique choisie." },
+            { niveau:2, nom:"Rayon d'affaiblissement", icone:"💀", ecole:"Nécromancie", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"Attaque à distance : 4d8+mod. CHA nécrotique. Si cible à 0 PV → dissout en poussière." },
+            { niveau:2, nom:"Ténèbres", icone:"🌑", ecole:"Évocation", concentration:true, temps_incantation:"1 action", portee:"18 m", duree:"Concentration, 10 min", description:"Obscurité magique dans une sphère de 4,5 m. Aucune lumière naturelle ne peut la pénétrer. Peut être lancé sur un objet." },
+        ],
+    },
+
+    "Paladin": {
+        carac_sort: "CHA",
+        carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
+        methode: "Sorts préparés (mod. CHA + ½ niveau Paladin)",
+        ressource_speciale: "Châtiment divin (1d8 rayonnant supplémentaire sur une attaque), Imposition des mains",
+        style: "Combat sacré, protection divine, sorts de soutien offensifs",
+        emplacements_niv1: 2,
+        table_emplacements: [
+            { niveau:2,  slots:{1:2} },
+            { niveau:3,  slots:{1:3} },
+            { niveau:4,  slots:{1:3} },
+            { niveau:5,  slots:{1:4,2:2} },
+        ],
+        sorts: [
+            { niveau:1, nom:"Châtiment destructeur", icone:"⚡", ecole:"Évocation", concentration:true, temps_incantation:"1 action bonus", portee:"Personnel", duree:"Concentration, 1 min", description:"Prochaine attaque réussie : +2d6 foudre supplémentaires. La cible et les créatures dans 1,5 m doivent réussir un JS Dextérité ou être aveuglées jusqu'à la fin de votre prochain tour." },
+            { niveau:1, nom:"Bouclier de la foi", icone:"🛡️", ecole:"Abjuration", concentration:true, temps_incantation:"1 action bonus", portee:"18 m", duree:"Concentration, 10 min", description:"+2 CA à une créature visible." },
+            { niveau:1, nom:"Soins", icone:"❤️", ecole:"Évocation", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"Restaure 1d8 + mod. CHA PV." },
+            { niveau:1, nom:"Bénédiction", icone:"✨", ecole:"Enchantement", concentration:true, temps_incantation:"1 action", portee:"9 m", duree:"Concentration, 1 min", description:"3 créatures ajoutent 1d4 à leurs jets d'attaque et JS." },
+            { niveau:2, nom:"Aide", icone:"💪", ecole:"Abjuration", temps_incantation:"1 action", portee:"9 m", duree:"8 heures", description:"Jusqu'à 3 alliés : +5 PV maximum et actuels. +5 PV par emplacement supérieur." },
+            { niveau:2, nom:"Trouver destrier", icone:"🐴", ecole:"Invocation", rituel:false, temps_incantation:"10 min", portee:"9 m", duree:"Instantané", description:"Convoque un esprit en forme de destrier (cheval, poney, mastiff...). Lien télépathique. Disparaît à 0 PV." },
+        ],
+    },
+
+    "Moine": {
+        carac_sort: "SAG",
+        carac_sort_complet: "Sagesse (traditions de certains archétypes uniquement)",
+        methode: "Capacités de ki — pas de sorts classiques au niveau de base",
+        ressource_speciale: "Points de ki (égaux au niveau) — Coup étourdissant, Déluge de coups, Pas du vent",
+        style: "Arts martiaux, vitesse surhumaine, ki élémentaire selon tradition",
+        emplacements_niv1: 0,
+        table_emplacements: [],
+        sorts: [
+            { niveau:0, nom:"Déluge de coups (ki)", icone:"👊", ecole:"Capacité de ki", temps_incantation:"1 action bonus", portee:"Mêlée", duree:"Instantané", description:"Dépensez 1 ki : effectuez 2 attaques à mains nues supplémentaires en action bonus." },
+            { niveau:0, nom:"Coup étourdissant (ki)", icone:"💫", ecole:"Capacité de ki", temps_incantation:"Lors d'une attaque", portee:"Mêlée", duree:"1 round", description:"Dépensez 1 ki après avoir touché : JS Constitution DD ou la cible est étourdie jusqu'au début de votre prochain tour (pas d'action, pas de réaction, attaques contre elle avec avantage)." },
+            { niveau:0, nom:"Pas du vent (ki)", icone:"💨", ecole:"Capacité de ki", temps_incantation:"1 action bonus", portee:"Personnel", duree:"1 tour", description:"Dépensez 1 ki : Désengagez ou Foncez en action bonus. Peut courir sur les surfaces verticales et l'eau jusqu'à la fin du tour." },
+            { niveau:0, nom:"Arrêt du temps (ki)", icone:"⏸️", ecole:"Capacité de ki", temps_incantation:"Réaction", portee:"Personnel", duree:"Instantané", description:"Dépensez 1 ki : réaction pour dévier un projectile (réduit les dégâts de 1d10 + DEX + niveau Moine). À haut niveau, peut renvoyer le projectile." },
+        ],
+    },
+
+    "Roublard": {
+        carac_sort: "INT",
+        carac_sort_complet: "Intelligence (Escroc arcanique uniquement, sous-classe niv.3)",
+        methode: "Sorts connus (Escroc arcanique uniquement — quelques sorts de Mage)",
+        ressource_speciale: "Attaque sournoise (dés bonus si avantage ou allié adjacent), Ruse (action bonus polyvalente)",
+        style: "Furtivité, burst de dégâts, compétences élargies — magie optionnelle selon archétype",
+        emplacements_niv1: 0,
+        table_emplacements: [],
+        sorts: [
+            { niveau:0, nom:"Attaque sournoise", icone:"🗡️", ecole:"Capacité de classe", temps_incantation:"Lors d'une attaque", portee:"Mêlée ou distance", duree:"Instantané", description:"1 fois par tour, si avantage au jet d'attaque ou si un allié non neutralisé est adjacent à la cible : +1d6 dégâts (croît avec le niveau : 2d6 niv.3, 3d6 niv.5...)." },
+            { niveau:0, nom:"Ruse", icone:"🃏", ecole:"Capacité de classe", temps_incantation:"1 action bonus", portee:"Variable", duree:"1 tour", description:"Permet d'utiliser Se cacher, Foncer ou Se désengager en action bonus chaque tour." },
+            { niveau:0, nom:"Coup bas", icone:"👊", ecole:"Capacité de classe (niv.2)", temps_incantation:"Réaction", portee:"Mêlée", duree:"Instantané", description:"Réaction contre une créature qui rate une attaque de mêlée contre vous : effectuez une attaque de mêlée contre elle." },
+            { niveau:1, nom:"Couleur vaporisée (Escroc)", icone:"🌈", ecole:"Illusion", temps_incantation:"1 action", portee:"Personnel", duree:"1 round", description:"(Escroc arcanique) Raies colorées aveuglantes dans un cône de 4,5 m. JS Dextérité DD ou aveuglé 1 round." },
+            { niveau:1, nom:"Serviteur invisible (Escroc)", icone:"👻", ecole:"Conjuration", rituel:true, temps_incantation:"1 action", portee:"18 m", duree:"1 heure", description:"(Escroc arcanique) Entité invisible qui accomplit des tâches simples : porter, nettoyer, ouvrir des portes. CA 10, 1 PV." },
+        ],
+    },
+};
+
+// Dédoublonner si "Barde" défini deux fois (la seconde définition simple est un bug — supprimer)
+// (Version complète utilisée par renderSortsClasse)
 const Codex = {
     sections: [
         { id:'accueil',          tit:'Introduction',          ico:'📜' },
@@ -259,6 +468,15 @@ const Codex = {
         { id:'monnaie',     tit:'Monnaie & Commerce',  ico:'🪙' },
         { id:'grades',      tit:'La Hiérarchie',       ico:'👑' },
         { id:'lois',        tit:'Les Lois',             ico:'📋' },
+        { id:'sorts',       tit:'Sorts & Magie',        ico:'✨', subs:()=>{
+            const cl=window.RPG_CLASSES||{};
+            const lanceurs=window.SORTS_PAR_CLASSE||{};
+            return Object.keys(cl).filter(k=>lanceurs[k]!==undefined).map(k=>({id:'sorts__'+k,tit:(cl[k].icone||'')+' '+k}));
+        }},
+        { id:'bestiaire',   tit:'Bestiaire',            ico:'🐉', subs:()=>{
+            const cats=window.RPG_BESTIAIRE_CATEGORIES||[];
+            return cats.map(c=>({id:'bestiaire__'+c.id,tit:c.icone+' '+c.label}));
+        }},
     ],
 
     init() {
@@ -341,8 +559,10 @@ const Codex = {
         this.setActiveLink(id);
         const d = document.getElementById('book-display-area');
         let html='';
-        if      (id.startsWith('race__'))   html=this.renderRaceDetail(id.replace('race__',''));
-        else if (id.startsWith('classe__')) html=this.renderClasseDetail(id.replace('classe__',''));
+        if      (id.startsWith('race__'))        html=this.renderRaceDetail(id.replace('race__',''));
+        else if (id.startsWith('classe__'))      html=this.renderClasseDetail(id.replace('classe__',''));
+        else if (id.startsWith('sorts__'))       html=this.renderSortsClasse(id.replace('sorts__',''));
+        else if (id.startsWith('bestiaire__'))   html=this.renderBestiaireCat(id.replace('bestiaire__',''));
         else {
             const map={
                 accueil:()=>this.renderAccueil(), regles:()=>this.renderRegles(),
@@ -353,6 +573,7 @@ const Codex = {
                 equipement:()=>this.renderEquipement(), auberge:()=>this.renderAuberge(),
                 montures:()=>this.renderMontures(), monnaie:()=>this.renderMonnaie(),
                 grades:()=>this.renderGrades(), lois:()=>this.renderLois(),
+                sorts:()=>this.renderSorts(), bestiaire:()=>this.renderBestiaire(),
             };
             html = map[id] ? map[id]() : `<div class="book-page"><p>Chapitre introuvable.</p></div>`;
         }
@@ -853,6 +1074,220 @@ const Codex = {
         <div style="text-align:center;font-family:var(--bk-font-title);font-size:.82rem;color:rgba(122,0,0,.5);letter-spacing:.08em;">Signé et scellé de la Main du Roi Karl<br><span style="font-size:1.3rem;opacity:.3;margin-top:4px;display:block;">⚜️</span></div>
         </div>`;
     },
+
+    /* ─────────────────── SORTS & MAGIE ─────────────────── */
+
+    renderSorts() {
+        const cl = window.RPG_CLASSES || {};
+        const lanceurs = Object.entries(cl).filter(([k]) => (window.SORTS_PAR_CLASSE||{})[k] !== undefined);
+        const cartes = lanceurs.map(([nom, d]) => {
+            const info = SORTS_PAR_CLASSE[nom] || {};
+            const carac = info.carac_sort || '—';
+            const slots = info.emplacements_niv1 || '—';
+            return `<div class="book-card" style="cursor:pointer;" data-nav="sorts__${nom}">
+                <div class="book-card-header">
+                    <span class="book-card-icon">${d.icone}</span>
+                    <div class="book-card-title">
+                        <h2 style="margin:0;padding:0;border:none;">${nom}</h2>
+                        <div class="card-subtitle">${info.style||_descStr(d.tooltip)}</div>
+                    </div>
+                    <span class="stat-tag" style="background:#1a2a4a;color:#80aaff;margin-left:auto;">${carac}</span>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;font-size:.78rem;">
+                    <span style="color:rgba(30,21,9,.6);">Sorts niv.1 : <strong>${slots}</strong> emplacements</span>
+                    ${info.sorts_connus ? `<span style="color:rgba(30,21,9,.6);">· Sorts connus : <strong>${info.sorts_connus}</strong></span>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+        return `<div class="book-page">
+        <h1 class="page-title cinzel">Sorts & Magie</h1>
+        <div class="ornament-center">❧ ✦ ❧</div>
+        <div class="book-intro-box">La magie est une force qui imprègne le monde. Certains la canalisent par la foi, d'autres par l'étude, d'autres encore la portent dans leur sang. Choisissez votre vocation pour découvrir ses secrets.<cite>— Archives de la Tour des Arcanes</cite></div>
+        <div class="book-card" style="margin-bottom:20px;"><ul class="trait-list">
+            <li><span class="trait-ico">📖</span><span><span class="trait-name">Sorts préparés :</span> Clerc, Druide, Paladin — préparent leurs sorts chaque jour depuis une liste complète.</span></li>
+            <li><span class="trait-ico">🧬</span><span><span class="trait-name">Sorts connus :</span> Barde, Ensorceleur, Occultiste — apprennent un nombre limité de sorts, toujours disponibles.</span></li>
+            <li><span class="trait-ico">📚</span><span><span class="trait-name">Grimoire :</span> Le Mage copie ses sorts dans un livre — peut en préparer autant que SAG + niveau.</span></li>
+            <li><span class="trait-ico">⚡</span><span><span class="trait-name">Emplacements de sort :</span> Ressource dépensée pour lancer un sort. Récupérés au repos long (Occultiste : repos court).</span></li>
+            <li><span class="trait-ico">🌀</span><span><span class="trait-name">Tours de magie :</span> Sorts mineurs lancés à volonté — illimités, jamais épuisés.</span></li>
+        </ul></div>
+        <h2>✨ Classes qui lancent des sorts</h2>
+        ${cartes}
+        </div>`;
+    },
+
+    renderSortsClasse(nom) {
+        const d = (window.RPG_CLASSES || {})[nom];
+        if (!d) return `<div class="book-page"><p>Classe introuvable.</p></div>`;
+        const info = SORTS_PAR_CLASSE[nom] || {};
+        const sorts = info.sorts || [];
+        const niveaux = [0,1,2,3,4,5,6,7,8,9];
+
+        // Table emplacements
+        const slotRows = (info.table_emplacements || []).map(r => {
+            const cells = niveaux.map(n => `<td style="text-align:center;">${r.slots[n]||'—'}</td>`).join('');
+            return `<tr><td style="text-align:center;"><span class="niveau-badge">${r.niveau}</span></td>${cells}</tr>`;
+        }).join('');
+
+        // Sorts par niveau
+        const sortsSections = niveaux.map(n => {
+            const liste = sorts.filter(s => s.niveau === n);
+            if (!liste.length) return '';
+            const label = n === 0 ? 'Tours de magie (niveau 0)' : `Niveau ${n}`;
+            const coulBg = n === 0 ? 'rgba(200,168,75,0.08)' : 'rgba(255,255,255,0.3)';
+            const items = liste.map(s => `
+                <div style="padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:10px;align-items:flex-start;">
+                    <div style="min-width:22px;text-align:center;">${s.icone||'✦'}</div>
+                    <div style="flex:1;">
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <strong style="font-family:var(--bk-font-title);font-size:.88rem;color:var(--bk-royal);">${s.nom}</strong>
+                            ${s.concentration ? `<span class="stat-tag warn" style="font-size:.64rem;">Concentration</span>` : ''}
+                            ${s.rituel ? `<span class="stat-tag" style="font-size:.64rem;">Rituel</span>` : ''}
+                            <span style="font-size:.7rem;color:rgba(62,32,6,.45);">${s.ecole||''}</span>
+                        </div>
+                        <div style="font-size:.78rem;color:rgba(30,21,9,.55);margin-top:2px;">
+                            ${s.temps_incantation ? `⏱ ${s.temps_incantation}` : ''} 
+                            ${s.portee ? `· 📍 ${s.portee}` : ''} 
+                            ${s.duree ? `· ⌛ ${s.duree}` : ''}
+                        </div>
+                        <div style="font-size:.82rem;color:rgba(30,21,9,.7);margin-top:4px;line-height:1.55;">${s.description}</div>
+                    </div>
+                </div>`).join('');
+            return `<div style="margin-bottom:16px;border:1px solid rgba(200,168,75,.3);border-radius:3px;overflow:hidden;">
+                <div style="background:var(--bk-leather);color:var(--bk-gold);padding:7px 14px;font-family:var(--bk-font-title);font-size:.78rem;letter-spacing:.06em;">${label} <span style="opacity:.5;font-size:.7rem;">(${liste.length} sort${liste.length>1?'s':''})</span></div>
+                <div style="background:${coulBg};">${items}</div>
+            </div>`;
+        }).join('');
+
+        const slotTable = slotRows ? `
+        <h2>📊 Emplacements de sorts par niveau</h2>
+        <div style="overflow-x:auto;"><table class="bk-table" style="min-width:500px;">
+        <thead><tr><th style="text-align:center;">Niv.</th>${niveaux.map(n=>`<th style="text-align:center;">${n===0?'Tours':n}</th>`).join('')}</tr></thead>
+        <tbody>${slotRows}</tbody></table></div>
+        <div class="ornament-divider"><span>✦</span></div>` : '';
+
+        return `<div class="book-page">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:5px;">
+            <span style="font-size:2.8rem;">${d.icone}</span>
+            <div>
+                <h1 class="page-title cinzel" style="text-align:left;margin:0;">${nom}</h1>
+                <div style="font-style:italic;color:rgba(62,32,6,.55);margin-top:2px;">${info.style||''}</div>
+            </div>
+        </div>
+        <div class="ornament-center">❧ ✦ ❧</div>
+        <div class="book-card" style="margin-bottom:20px;"><ul class="trait-list">
+            <li><span class="trait-ico">⚡</span><span><span class="trait-name">Caractéristique :</span> ${info.carac_sort_complet||'—'}</span></li>
+            <li><span class="trait-ico">📖</span><span><span class="trait-name">Méthode :</span> ${info.methode||'—'}</span></li>
+            ${info.ressource_speciale ? `<li><span class="trait-ico">⚗️</span><span><span class="trait-name">Ressource spéciale :</span> ${info.ressource_speciale}</span></li>` : ''}
+        </ul></div>
+        ${slotTable}
+        <h2>✨ Répertoire de sorts</h2>
+        ${sortsSections || '<p>Aucun sort référencé pour cette classe.</p>'}
+        </div>`;
+    },
+
+    /* ─────────────────── BESTIAIRE ─────────────────── */
+
+    renderBestiaire() {
+        const b = window.RPG_BESTIAIRE || {};
+        const cats = window.RPG_BESTIAIRE_CATEGORIES || [];
+        const resume = cats.map(c => {
+            const nb = Object.values(b).filter(e => e.categorie === c.id).length;
+            if (!nb) return '';
+            return `<div class="book-card" style="cursor:pointer;padding:14px 18px;" data-nav="bestiaire__${c.id}">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:2rem;">${c.icone}</span>
+                    <div><div style="font-family:var(--bk-font-title);color:var(--bk-royal);font-size:.95rem;">${c.label}</div>
+                    <div style="font-size:.75rem;color:rgba(62,32,6,.5);">${nb} créature${nb>1?'s':''}</div></div>
+                    <span style="margin-left:auto;font-size:.75rem;color:var(--bk-gold2);">▶ Voir</span>
+                </div>
+            </div>`;
+        }).join('');
+        return `<div class="book-page">
+        <h1 class="page-title cinzel">Bestiaire du Royaume</h1>
+        <div class="ornament-center">❧ ✦ ❧</div>
+        <div class="book-intro-box">Ces pages recensent les créatures documentées par les éclaireurs de la Table Ronde. Chaque entrée représente un danger potentiel ou un allié improbable. Que le lecteur reste toujours sur ses gardes.<cite>— Frère Aldric, Archiviste Royal</cite></div>
+        <div class="book-card" style="margin-bottom:20px;"><ul class="trait-list">
+            <li><span class="trait-ico">⚔️</span><span><span class="trait-name">FD (Facteur de Danger) :</span> Indique la menace relative. FD 1/4 = débutant, FD 10+ = vétéran expérimenté requis.</span></li>
+            <li><span class="trait-ico">✨</span><span><span class="trait-name">XP :</span> Expérience accordée à chaque membre du groupe si la créature est vaincue.</span></li>
+            <li><span class="trait-ico">🛡️</span><span><span class="trait-name">CA :</span> Classe d'Armure — difficulté à toucher la créature au corps à corps ou à distance.</span></li>
+        </ul></div>
+        <h2>🐉 Catégories</h2>
+        ${resume}
+        </div>`;
+    },
+
+    renderBestiaireCat(catId) {
+        const b = window.RPG_BESTIAIRE || {};
+        const cats = window.RPG_BESTIAIRE_CATEGORIES || [];
+        const cat = cats.find(c => c.id === catId);
+        if (!cat) return `<div class="book-page"><p>Catégorie introuvable.</p></div>`;
+        const creatures = Object.entries(b).filter(([,e]) => e.categorie === catId);
+
+        const cartes = creatures.map(([nom, e], idx) => {
+            const caracHtml = Object.entries(e.carac||{}).map(([k,v]) => {
+                const mod = Math.floor((v-10)/2);
+                const cls = mod > 0 ? 'modif-pos' : mod < 0 ? 'modif-neg' : 'modif-zero';
+                return `<div style="text-align:center;flex:1;min-width:44px;">
+                    <div style="font-family:var(--bk-font-title);font-size:.68rem;color:rgba(62,32,6,.5);">${k}</div>
+                    <div style="font-size:.95rem;font-weight:bold;">${v}</div>
+                    <div class="${cls}" style="font-size:.75rem;">${mod>=0?'+'+mod:mod}</div>
+                </div>`;
+            }).join('');
+            const traitsHtml = (e.traits||[]).map(t =>
+                `<li><span class="trait-ico">⚡</span><span><span class="trait-name">${t.nom} :</span> ${t.desc}</span></li>`
+            ).join('');
+            const actionsHtml = (e.actions||[]).map(a =>
+                `<li><span class="trait-ico">⚔️</span><span><span class="trait-name">${a.nom} :</span> ${a.desc}</span></li>`
+            ).join('');
+            const reactionsHtml = (e.reactions||[]).map(r =>
+                `<li><span class="trait-ico">🔄</span><span><span class="trait-name">${r.nom} :</span> ${r.desc}</span></li>`
+            ).join('');
+            const tags = [
+                e.resistances?.length ? `<span class="stat-tag" style="background:#2a3a1a;color:#90c080;">Résist: ${e.resistances.join(', ')}</span>` : '',
+                e.immunites?.length ? `<span class="stat-tag" style="background:#1a1a3a;color:#8080d0;">Immun: ${e.immunites.join(', ')}</span>` : '',
+            ].filter(Boolean).join('');
+
+            return `<div class="book-card" style="border-left:4px solid ${e.couleur||'var(--bk-royal)'};margin-bottom:14px;">
+                <div class="book-card-header" style="cursor:pointer;" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.bst-arrow').textContent=this.nextElementSibling.classList.contains('open')?'▾':'▸';">
+                    <span style="font-size:1.8rem;">${e.icone}</span>
+                    <div class="book-card-title" style="flex:1;">
+                        <h2 style="margin:0;padding:0;border:none;">${nom}</h2>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;">
+                            <span class="stat-tag">FD ${e.fd}</span>
+                            <span class="stat-tag" style="background:#2a1a0a;color:#e8c080;">${e.xp} XP</span>
+                            <span class="stat-tag ca">CA ${e.ca}</span>
+                            <span style="font-size:.72rem;color:rgba(62,32,6,.5);align-self:center;">${e.taille} · ${e.categorie} · ${e.alignement}</span>
+                        </div>
+                    </div>
+                    <span class="bst-arrow" style="font-size:1.1rem;color:var(--bk-gold2);">▸</span>
+                </div>
+                <div class="card-desc-body" style="margin:0;padding:0;border:none;background:transparent;">
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;font-size:.8rem;">
+                        <div>❤️ <strong>PV :</strong> ${e.pv}</div>
+                        <div>🏃 <strong>Vitesse :</strong> ${e.vitesse}</div>
+                        <div style="grid-column:1/-1;">👁️ <strong>Sens :</strong> ${e.sens}</div>
+                    </div>
+                    <div style="display:flex;gap:4px;margin-bottom:12px;background:rgba(255,255,255,.3);padding:8px;border-radius:3px;">${caracHtml}</div>
+                    ${tags ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;">${tags}</div>` : ''}
+                    ${traitsHtml ? `<h3 style="margin-top:8px;">⚡ Traits</h3><ul class="trait-list">${traitsHtml}</ul>` : ''}
+                    ${actionsHtml ? `<h3 style="margin-top:8px;">⚔️ Actions</h3><ul class="trait-list">${actionsHtml}</ul>` : ''}
+                    ${reactionsHtml ? `<h3 style="margin-top:8px;">🔄 Réactions</h3><ul class="trait-list">${reactionsHtml}</ul>` : ''}
+                    <div style="margin-top:10px;padding:10px 12px;background:rgba(255,255,255,.25);border-left:3px solid ${e.couleur||'var(--bk-gold2)'};font-style:italic;font-size:.83rem;line-height:1.6;border-radius:0 3px 3px 0;">${e.description}</div>
+                    ${e.environnement?.length ? `<div style="margin-top:8px;font-size:.75rem;color:rgba(62,32,6,.5);">🌍 Environnements : ${e.environnement.join(', ')}</div>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+
+        return `<div class="book-page">
+        <h1 class="page-title cinzel">${cat.icone} ${cat.label}</h1>
+        <div class="ornament-center">❧ ✦ ❧</div>
+        <p>${creatures.length} créature${creatures.length>1?'s':''} répertoriée${creatures.length>1?'s':''}. <em>Cliquez sur une créature pour voir ses statistiques complètes.</em></p>
+        ${cartes}
+        </div>`;
+    },
 };
 
-document.addEventListener('DOMContentLoaded', () => Codex.init());
+document.addEventListener('DOMContentLoaded', () => {
+    window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
+    Codex.init();
+});
