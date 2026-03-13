@@ -7045,12 +7045,12 @@
         ).join('') + '</tr>';
 
         const tbody = items.map(({nom, entry, ref}) => {
-            const nomEsc = nom.replace(/\/g,'\\').replace(/'/g,"\'");
             const vendPc = entry.prix_pc ? Math.floor(entry.prix_pc * 0.5) : null;
+            const nomAttr = nom.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
             return '<tr>' + cols.map(c => {
                 if (c.key === 'vendre') {
                     const btn = vendPc !== null
-                        ? `<button class="inv-btn-vendre" onclick="invVendre('${nomEsc}')">💰 ${_formaterPc(vendPc)}</button>`
+                        ? `<button class="inv-btn-vendre" data-nom="${nomAttr}">💰 ${_formaterPc(vendPc)}</button>`
                         : '';
                     return `<td class="${c.css}">${btn}</td>`;
                 }
@@ -7083,6 +7083,32 @@
         if (bloc) bloc.style.display = aDesItems ? 'block' : 'none';
     }
     window._invMettreAJourBlocVisible = _invMettreAJourBlocVisible;
+
+    // ── Event delegation : évite tout échappement dans les onclick ──
+    document.addEventListener('click', function(e) {
+        // Bouton vendre dans l'inventaire fiche
+        const btnVendreFiche = e.target.closest('#inv-contenu .inv-btn-vendre');
+        if (btnVendreFiche) {
+            const nom = btnVendreFiche.dataset.nom;
+            if (nom) window.invVendre(nom);
+            return;
+        }
+        // Bouton acheter dans l'échoppe
+        const btnAcheter = e.target.closest('.echoppe-btn-acheter[data-nom]');
+        if (btnAcheter) {
+            const { nom, onglet, icone, prix, key } = btnAcheter.dataset;
+            const qte = _echoppeQte[key] || 1;
+            window._acheterItem(nom, onglet, icone, prix, qte);
+            return;
+        }
+        // Bouton vendre dans l'échoppe
+        const btnVendreEchoppe = e.target.closest('#echoppe-contenu .echoppe-btn-vendre[data-nom]');
+        if (btnVendreEchoppe) {
+            const nom = btnVendreEchoppe.dataset.nom;
+            if (nom) window._vendreItemEchoppe(nom);
+            return;
+        }
+    });
 
     function _invRafraichir() {
         _invMettreAJourBlocVisible();
@@ -7216,8 +7242,8 @@
                 const qteInv  = window._inventaire[nom]?.qte || 0;
                 const key     = id+'|'+nom;
                 if (!_echoppeQte[key]) _echoppeQte[key] = 1;
-                const nomEsc  = nom.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
                 const icone   = item.icone || '📦';
+                const nomAttr = nom.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
 
                 const badgeInv = qteInv > 0
                     ? `<span class="echoppe-badge-qte" title="Vous en possédez ${qteInv}">×${qteInv}</span>` : '';
@@ -7229,12 +7255,12 @@
                                onchange="_echoppeQte['${key}']=Math.max(1,parseInt(this.value)||1);this.value=_echoppeQte['${key}']">
                         <button class="echoppe-qte-btn" onclick="this.previousElementSibling.stepUp();this.previousElementSibling.dispatchEvent(new Event('change'))">+</button>
                     </div>
-                    <button class="echoppe-btn-acheter" onclick="window._acheterItem('${nomEsc}','${id}','${icone}','${prixStr}',_echoppeQte['${key}'])">
+                    <button class="echoppe-btn-acheter" data-nom="${nomAttr}" data-onglet="${id}" data-icone="${icone}" data-prix="${prixStr}" data-key="${key}">
                         🛒 Acheter
                     </button>` : (!estConnecte ? `<span style="font-family:'Lora',serif;font-style:italic;font-size:0.62rem;color:#9a7a50;">Connexion requise</span>` : '');
 
                 const actionVente = estConnecte && qteInv > 0 ? `
-                    <button class="echoppe-btn-vendre" onclick="window._vendreItemEchoppe('${nomEsc}')">
+                    <button class="echoppe-btn-vendre" data-nom="${nomAttr}">
                         💰 Vendre (${_formaterPc(Math.floor((prixPc||0)*0.5))})
                     </button>` : '';
 
