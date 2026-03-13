@@ -3797,7 +3797,7 @@
                                 </div>`}
                             </div>`;
 
-                        const descBrut = (rangActuel.description_joueur || rangActuel.description || '').trim();
+                        const _dj3800 = rangActuel.description_joueur || rangActuel.description || ''; const descBrut = (typeof _dj3800 === 'object' ? (_dj3800.masculin || _dj3800.feminin || '') : _dj3800).trim();
                         const corps = descBrut.split(/\n\n+/).map(p =>
                             `<p style="font-family:'Lora',serif;font-size:0.82rem;color:#3a2a0a;line-height:1.65;margin:0 0 12px;">${p.trim().replace(/\n/g,' ')}</p>`
                         ).join('');
@@ -3860,7 +3860,7 @@
                     // Normalisation : famille (rpg-data.js) ou categorie (ancien)
                     const aCategorie = aData ? (aData.famille || aData.categorie || '') : '';
                     // Normalisation : description_joueur (rpg-data.js) ou description (ancien)
-                    const aDesc      = aData ? (aData.description_joueur || aData.description || aData.desc || '') : '';
+                    const _djA = aData ? (aData.description_joueur || aData.description || aData.desc || '') : ''; const aDesc = typeof _djA === 'object' ? (_djA.masculin || _djA.feminin || '') : _djA;
 
                     elAlignTxt.innerHTML = aData
                         ? `${aData.icone} ${alignement}`
@@ -4323,7 +4323,7 @@
         const catLabel    = categorie === "Bien" ? "⚪ Alignement du Bien"
                           : categorie === "Mal"  ? "🔴 Alignement du Mal"
                           : "⚫ Alignement Neutre";
-        const descBrut    = (ad.description_joueur || ad.description || ad.desc || '').trim();
+        const _dj4326 = ad.description_joueur || ad.description || ad.desc || ''; const descBrut = (typeof _dj4326 === 'object' ? (_dj4326.masculin || _dj4326.feminin || '') : _dj4326).trim();
 
         const corps = descBrut.split(/\n\n+/).map(p => {
             const t = p.trim();
@@ -4753,7 +4753,7 @@
             .join('');
 
         // Extraire la première section du description_joueur (avant les Traits raciaux / Capacités)
-        const descRaw = (data.description_joueur || '').trim();
+        const _dj4756 = data.description_joueur || ''; const descRaw = (typeof _dj4756 === 'object' ? (_dj4756.masculin || _dj4756.feminin || '') : _dj4756).trim();
         const descCourt = descRaw.split(/\n\n/)[0].replace(/\n/g,' ').trim();
 
         return `
@@ -5263,7 +5263,7 @@
             .join('');
 
         // Formater la description_joueur : sections séparées par lignes vides
-        const descBrut = (data.description_joueur || '').trim();
+        const _dj5266 = data.description_joueur || ''; const descBrut = (typeof _dj5266 === 'object' ? (_dj5266.masculin || _dj5266.feminin || '') : _dj5266).trim();
         const paragraphes = descBrut.split(/\n\n+/).map(p => {
             const lignes = p.trim().split('\n');
             if (lignes.length === 1) {
@@ -5457,7 +5457,7 @@
             </div>`;
 
         // Utilise description_joueur (rpg-data.js) ou description (GRADES inline)
-        const descBrut = (grade.description_joueur || grade.description || '').trim();
+        const _dj5460 = grade.description_joueur || grade.description || ''; const descBrut = (typeof _dj5460 === 'object' ? (_dj5460.masculin || _dj5460.feminin || '') : _dj5460).trim();
         const corps = descBrut.split(/\n\n+/).map(p => {
             const t = p.trim().replace(/\n/g, ' ');
             return `<p style="font-family:'Lora',serif; font-size:0.82rem; color:#3a2a0a;
@@ -7386,43 +7386,6 @@
             font-family: 'Lora', serif;
         }
     </style>
-
-    <!-- ======================================================
-         📖 CODEX DU JOUEUR — Bouton + Modale
-    ====================================================== -->
-
-    <!-- Bouton Sceau (fixe, coin inférieur droit) -->
-    <div id="book-trigger" class="book-icon-trigger" title="Ouvrir le Codex">
-        <div class="seal-inner">📖</div>
-    </div>
-
-    <!-- Modale Codex -->
-    <div id="player-book-modal" class="book-modal">
-        <div class="book-frame">
-            <button id="close-book" class="book-close-btn">&times;</button>
-
-            <div class="book-container">
-                <!-- Barre latérale -->
-                <aside class="book-sidebar">
-                    <div class="book-sidebar-header">
-                        <span class="sidebar-blason">⚜️</span>
-                        <h2 class="cinzel">Sommaire</h2>
-                    </div>
-                    <div class="book-search-bar">
-                        <input type="text" placeholder="Rechercher…" id="book-search-input">
-                    </div>
-                    <ul id="book-toc"></ul>
-                    <div class="book-sidebar-footer">❦ ✦ ❦</div>
-                </aside>
-
-                <!-- Zone de contenu -->
-                <main class="book-content" id="book-display-area"></main>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script Codex -->
-    <script src="player-book.js"></script>
 
     <!-- ══ MODALE ZOOM PORTRAIT ══ -->
     <div id="portrait-zoom-overlay" onclick="fermerZoomPortrait()">
