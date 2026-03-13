@@ -1764,6 +1764,88 @@
             height: 28px;
         }
         .inv-section-vide { display: none; }
+
+        /* ── Barre poids ──────────────────────────── */
+        .poids-barre-wrap { background: rgba(0,0,0,0.12); border-radius: 3px; height: 10px; overflow: hidden; margin: 6px 0 4px; }
+        .poids-barre-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease, background 0.4s; background: var(--or-royal); }
+        .poids-barre-fill.lourd  { background: #c07000; }
+        .poids-barre-fill.surcharge { background: var(--rouge-blason); }
+        .poids-legende { display: flex; justify-content: space-between; font-family: 'Cinzel', serif; font-size: 0.6rem; color: #3a2a0a; font-weight: bold; }
+
+        /* ── PV dynamiques ────────────────────────── */
+        .pv-dyn-barre-wrap { background: rgba(0,0,0,0.12); border-radius: 3px; height: 12px; overflow: hidden; margin: 5px 0 3px; }
+        .pv-dyn-barre-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease, background 0.4s; background: #8B0000; }
+        .pv-dyn-barre-fill.moyen { background: #b05a00; }
+        .pv-dyn-barre-fill.critique { background: #cc0000; animation: pv-pulse 1.2s ease-in-out infinite; }
+        @keyframes pv-pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        .pv-dyn-compteur { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+        .pv-dyn-val { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: bold; color: var(--rouge-blason); min-width: 90px; text-align: center; }
+        .pv-dyn-btn { background: none; border: 1px solid rgba(212,175,55,0.5); color: var(--or-sombre); font-family: 'Cinzel', serif; font-size: 1rem; font-weight: bold; width: 26px; height: 26px; border-radius: 3px; cursor: pointer; transition: background 0.15s; padding: 0; line-height: 1; }
+        .pv-dyn-btn:hover { background: rgba(212,175,55,0.2); color: var(--rouge-blason); }
+        .pv-dyn-btn.grand { width: 32px; height: 32px; font-size: 1.1rem; }
+        .pv-dyn-soin { border-color: rgba(0,180,80,0.5); color: #0a5020; }
+        .pv-dyn-soin:hover { background: rgba(0,180,80,0.12); color: #0a5020; }
+        .pv-dyn-note { font-family: 'Cinzel', serif; font-size: 0.62rem; color: #3a2a0a; font-weight: bold; text-align: center; margin-top: 3px; }
+        .pv-dyn-input-wrap { display: flex; align-items: center; gap: 4px; }
+        .pv-dyn-input { width: 44px; text-align: center; font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: bold; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.4); border-radius: 3px; padding: 2px 4px; color: var(--texte-body); -moz-appearance: textfield; }
+        .pv-dyn-input::-webkit-inner-spin-button, .pv-dyn-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+        /* ── Conditions ───────────────────────────── */
+        .conditions-grille { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .cond-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: rgba(212,175,55,0.04); border: 1px solid rgba(212,175,55,0.25); border-radius: 4px; padding: 5px 7px; cursor: pointer; transition: all 0.18s; min-width: 52px; user-select: none; }
+        .cond-btn:hover { background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.5); }
+        .cond-btn.actif { background: rgba(139,0,0,0.15); border-color: var(--rouge-blason); }
+        .cond-icone { font-size: 1.2rem; line-height: 1; }
+        .cond-nom { font-family: 'Cinzel', serif; font-size: 0.55rem; color: #3a2a0a; font-weight: bold; text-transform: uppercase; letter-spacing: 0.04em; text-align: center; }
+        .cond-btn.actif .cond-nom { color: var(--rouge-blason); }
+
+        /* ── Notes & Journal ──────────────────────── */
+        .notes-textarea { width: 100%; min-height: 110px; background: rgba(212,175,55,0.04); border: 1px solid rgba(212,175,55,0.3); border-radius: 3px; color: var(--texte-body); font-family: 'Lora', serif; font-size: 0.8rem; line-height: 1.6; padding: 10px 12px; resize: vertical; box-sizing: border-box; transition: border-color 0.2s; }
+        .notes-textarea:focus { outline: none; border-color: rgba(212,175,55,0.65); }
+        .notes-statut { font-family: 'Lora', serif; font-size: 0.65rem; font-style: italic; color: #888; margin-top: 4px; text-align: right; min-height: 14px; }
+
+        /* ── Dés intégrés ─────────────────────────── */
+        .des-grille { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; justify-content: center; }
+        .de-btn { background: rgba(212,175,55,0.07); border: 1px solid rgba(212,175,55,0.4); border-radius: 4px; color: var(--or-sombre); font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: bold; padding: 6px 10px; cursor: pointer; transition: all 0.15s; min-width: 44px; text-align: center; }
+        .de-btn:hover { background: rgba(212,175,55,0.2); color: var(--rouge-blason); border-color: var(--or-royal); }
+        .de-btn:active { transform: scale(0.93); }
+        .de-resultat { text-align: center; margin-top: 8px; font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: bold; color: var(--rouge-blason); min-height: 28px; }
+        .de-historique { margin-top: 6px; max-height: 72px; overflow-y: auto; font-family: 'Lora', serif; font-size: 0.68rem; color: #5a4020; line-height: 1.6; text-align: center; }
+        .de-historique::-webkit-scrollbar { width: 4px; }
+        .de-historique::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.3); border-radius: 2px; }
+
+        /* ── Compagnons & Alliés ──────────────────── */
+        .compagnon-liste { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+        .compagnon-item { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 6px; background: rgba(212,175,55,0.04); border: 1px solid rgba(212,175,55,0.2); border-radius: 3px; padding: 7px 10px; }
+        .compagnon-nom { font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: bold; color: var(--rouge-blason); }
+        .compagnon-relation { font-family: 'Lora', serif; font-size: 0.72rem; font-style: italic; color: var(--or-sombre); }
+        .compagnon-notes { font-family: 'Lora', serif; font-size: 0.72rem; color: #5a4020; margin-top: 2px; }
+        .compagnon-suppr { background: none; border: none; color: #888; cursor: pointer; font-size: 0.9rem; padding: 0 2px; opacity: 0.5; transition: opacity 0.15s; }
+        .compagnon-suppr:hover { opacity: 1; color: var(--rouge-blason); }
+        .compagnon-form { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+        .compagnon-input { background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.3); border-radius: 3px; color: var(--texte-body); font-family: 'Lora', serif; font-size: 0.78rem; padding: 5px 8px; width: 100%; box-sizing: border-box; }
+        .compagnon-input:focus { outline: none; border-color: rgba(212,175,55,0.6); }
+        .compagnon-input.pleine-largeur { grid-column: 1 / -1; }
+        .compagnon-ajouter { grid-column: 1 / -1; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.4); color: var(--or-sombre); font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: bold; padding: 6px; border-radius: 3px; cursor: pointer; transition: background 0.15s; }
+        .compagnon-ajouter:hover { background: rgba(212,175,55,0.22); color: var(--rouge-blason); }
+
+        /* ── Quêtes actives ───────────────────────── */
+        .quete-liste { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+        .quete-item { background: rgba(212,175,55,0.04); border: 1px solid rgba(212,175,55,0.2); border-left: 3px solid var(--or-sombre); border-radius: 0 3px 3px 0; padding: 7px 10px; display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: start; }
+        .quete-item.accomplie { opacity: 0.45; border-left-color: #5a5a5a; }
+        .quete-titre { font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: bold; color: var(--rouge-blason); }
+        .quete-item.accomplie .quete-titre { text-decoration: line-through; }
+        .quete-objectif { font-family: 'Lora', serif; font-size: 0.72rem; color: #5a4020; margin-top: 2px; }
+        .quete-actions { display: flex; gap: 4px; flex-shrink: 0; }
+        .quete-btn { background: none; border: 1px solid rgba(212,175,55,0.3); border-radius: 3px; color: var(--or-sombre); font-size: 0.75rem; cursor: pointer; padding: 2px 6px; transition: background 0.15s; }
+        .quete-btn:hover { background: rgba(212,175,55,0.15); }
+        .quete-form { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+        .quete-input { background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.3); border-radius: 3px; color: var(--texte-body); font-family: 'Lora', serif; font-size: 0.78rem; padding: 5px 8px; width: 100%; box-sizing: border-box; }
+        .quete-input:focus { outline: none; border-color: rgba(212,175,55,0.6); }
+        .quete-input.pleine-largeur { grid-column: 1 / -1; }
+        .quete-ajouter { grid-column: 1 / -1; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.4); color: var(--or-sombre); font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: bold; padding: 6px; border-radius: 3px; cursor: pointer; transition: background 0.15s; }
+        .quete-ajouter:hover { background: rgba(212,175,55,0.22); color: var(--rouge-blason); }
+
                         /* ── Boutons +/− trésor ─────────────────────── */
         .tresor-btn-adj {
             background: none;
@@ -2938,6 +3020,95 @@
                         </div>
                     </div>
 
+                    <!-- ── POIDS PORTÉ ── -->
+                    <div id="bloc-poids" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:8px;"><span style="font-size:1.3rem;vertical-align:middle;">⚖️</span> Poids porté</p>
+                        <div class="poids-barre-wrap"><div id="poids-barre-fill" class="poids-barre-fill" style="width:0%;"></div></div>
+                        <div class="poids-legende">
+                            <span id="poids-porte-val">0 kg</span>
+                            <span id="poids-statut"></span>
+                            <span id="poids-max-val">— kg</span>
+                        </div>
+                    </div>
+
+                    <!-- ── PV DYNAMIQUES ── -->
+                    <div id="bloc-pv-dynamique" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:8px;"><span style="font-size:1.3rem;vertical-align:middle;">❤️</span> Points de vie actuels</p>
+                        <div class="pv-dyn-barre-wrap"><div id="pv-dyn-barre" class="pv-dyn-barre-fill" style="width:100%;"></div></div>
+                        <div class="pv-dyn-compteur">
+                            <div class="pv-dyn-input-wrap">
+                                <button class="pv-dyn-btn grand pv-dyn-soin" id="pv-btn-moins5" title="−5 PV">−5</button>
+                                <button class="pv-dyn-btn pv-dyn-soin" id="pv-btn-moins1" title="−1 PV">−1</button>
+                            </div>
+                            <div style="text-align:center;">
+                                <div class="pv-dyn-val"><span id="pv-actuel">—</span> / <span id="pv-max-dyn">—</span></div>
+                            </div>
+                            <div class="pv-dyn-input-wrap">
+                                <button class="pv-dyn-btn pv-dyn-soin" id="pv-btn-plus1" title="+1 PV">+1</button>
+                                <button class="pv-dyn-btn grand pv-dyn-soin" id="pv-btn-plus5" title="+5 PV">+5</button>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;">
+                            <input type="number" id="pv-soin-montant" class="pv-dyn-input" placeholder="+" min="1" title="Montant personnalisé">
+                            <button class="pv-dyn-btn pv-dyn-soin" onclick="window._pvAjuster(parseInt(document.getElementById('pv-soin-montant').value)||0)">Soin</button>
+                            <button class="pv-dyn-btn" onclick="window._pvAjuster(-(parseInt(document.getElementById('pv-soin-montant').value)||0))">Dégât</button>
+                            <button class="pv-dyn-btn" id="pv-btn-reset" title="Restaurer PV max">↺</button>
+                        </div>
+                        <div class="pv-dyn-note" id="pv-dyn-note"></div>
+                    </div>
+
+                    <!-- ── CONDITIONS ── -->
+                    <div id="bloc-conditions" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:4px;"><span style="font-size:1.3rem;vertical-align:middle;">⚡</span> Conditions</p>
+                        <div class="conditions-grille" id="conditions-grille"></div>
+                    </div>
+
+                    <!-- ── LANCEUR DE DÉS ── -->
+                    <div id="bloc-des-fiche" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:4px;"><span style="font-size:1.3rem;vertical-align:middle;">🎲</span> Lanceur de dés</p>
+                        <div class="des-grille">
+                            <button class="de-btn" onclick="window._lancerDe(4)">d4</button>
+                            <button class="de-btn" onclick="window._lancerDe(6)">d6</button>
+                            <button class="de-btn" onclick="window._lancerDe(8)">d8</button>
+                            <button class="de-btn" onclick="window._lancerDe(10)">d10</button>
+                            <button class="de-btn" onclick="window._lancerDe(12)">d12</button>
+                            <button class="de-btn" onclick="window._lancerDe(20)">d20</button>
+                            <button class="de-btn" onclick="window._lancerDe(100)" style="min-width:52px;">d100</button>
+                        </div>
+                        <div class="de-resultat" id="de-fiche-resultat"></div>
+                        <div class="de-historique" id="de-fiche-historique"></div>
+                    </div>
+
+                    <!-- ── COMPAGNONS & ALLIÉS ── -->
+                    <div id="bloc-compagnons" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:4px;"><span style="font-size:1.3rem;vertical-align:middle;">👥</span> Compagnons &amp; Alliés</p>
+                        <div class="compagnon-liste" id="compagnon-liste"></div>
+                        <div class="compagnon-form" id="compagnon-form">
+                            <input type="text" class="compagnon-input" id="comp-nom" placeholder="Nom du PNJ">
+                            <input type="text" class="compagnon-input" id="comp-relation" placeholder="Relation (allié, ennemi…)">
+                            <input type="text" class="compagnon-input pleine-largeur" id="comp-notes" placeholder="Notes (lieu, mission, description…)">
+                            <button class="compagnon-ajouter" onclick="window._compajouterCompagnon()">＋ Ajouter un compagnon</button>
+                        </div>
+                    </div>
+
+                    <!-- ── QUÊTES ACTIVES ── -->
+                    <div id="bloc-quetes" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:4px;"><span style="font-size:1.3rem;vertical-align:middle;">⚔️</span> Quêtes actives</p>
+                        <div class="quete-liste" id="quete-liste"></div>
+                        <div class="quete-form" id="quete-form">
+                            <input type="text" class="quete-input pleine-largeur" id="quete-titre-inp" placeholder="Titre de la quête">
+                            <input type="text" class="quete-input pleine-largeur" id="quete-obj-inp" placeholder="Objectif / description">
+                            <button class="quete-ajouter" onclick="window._queteAjouter()">＋ Ajouter une quête</button>
+                        </div>
+                    </div>
+
+                    <!-- ── NOTES & JOURNAL ── -->
+                    <div id="bloc-notes" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:8px;"><span style="font-size:1.3rem;vertical-align:middle;">📝</span> Notes &amp; Journal</p>
+                        <textarea class="notes-textarea" id="notes-journal" placeholder="Notez vos aventures, observations, secrets découverts…"></textarea>
+                        <div class="notes-statut" id="notes-statut"></div>
+                    </div>
+
                 </div>
             </div>
 
@@ -3930,6 +4101,8 @@
                         setTimeout(() => { window._invMettreAJourBlocVisible?.(); window._invRendreContenu?.(); }, 0);
                         // pv_niveaux_lances est chargé via profilData dans mettreAJourFicheCaracs
                         profilData.pv_niveaux_lances = data.pv_niveaux_lances || {};
+                        // Charger les données Phase 1
+                        setTimeout(() => window._chargerPhase1 && window._chargerPhase1(data), 100);
                         if (data.cree_le) dateCreation = data.cree_le.toDate();
                     } else {
                         await setDoc(doc(db, "membres", user.uid), {
@@ -5136,6 +5309,7 @@
     function mettreAJourFicheCaracs(profilData, raceNomPur, classeNomPur) {
         const CARACS = ['force','dexterite','constitution','intelligence','sagesse','charisme'];
         window._caracJets = window._caracJets || {};
+        window._profilDataCourant = profilData; // exposé pour les modules Phase 1+
 
         const bonusTotal = (window.getBonusTotal && raceNomPur && classeNomPur)
             ? window.getBonusTotal(raceNomPur, classeNomPur)
@@ -7113,6 +7287,7 @@
     function _invRafraichir() {
         _invMettreAJourBlocVisible();
         _invRendreContenu();
+        window._poidsRafraichir && window._poidsRafraichir();
     }
 
     window.invAfficherCat = function(catId) {
@@ -7120,6 +7295,492 @@
         document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn =>
             btn.classList.toggle('actif', btn.dataset.cat === catId));
         _invRendreContenu();
+    };
+
+    // ══════════════════════════════════════════════════════
+    //  PHASE 1A — POIDS PORTÉ vs CAPACITÉ DE CHARGE
+    // ══════════════════════════════════════════════════════
+    // Capacité = 15 × score Force (D&D 5e)
+    // Catégories : léger < 1/3, lourd < 2/3, surcharge ≥ 2/3
+
+    function _parsePoidsSansUnite(str) {
+        if (!str || str === '—') return 0;
+        const s = String(str).toLowerCase().replace(',', '.');
+        const m = s.match(/([\d.]+)\s*(kg|g)?/);
+        if (!m) return 0;
+        const val = parseFloat(m[1]);
+        if (m[2] === 'g') return val / 1000;
+        return val; // kg par défaut
+    }
+
+    window._poidsRafraichir = function() {
+        const bloc = document.getElementById('bloc-poids');
+        if (!bloc) return;
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) { bloc.style.display = 'none'; return; }
+
+        // Score de Force (brut + bonus race/classe)
+        const profil = window._profilDataCourant || {};
+        const bonus  = window._bonusTotalActuel  || {};
+        const scoreFor = (profil.carac_force || 10) + (bonus.force || 0);
+        const chargeMax = scoreFor * 15; // kg
+
+        // Calcul du poids porté depuis l'inventaire
+        let porte = 0;
+        const inv = window._inventaire || {};
+        for (const [nom, entry] of Object.entries(inv)) {
+            if (entry.qte <= 0) continue;
+            // Chercher dans toutes les sources de données
+            const sources = [
+                window.MATERIEL_ARMES, window.MATERIEL_ARMURES,
+                window.MATERIEL_EQUIPEMENT, window.MATERIEL_OBJETS,
+                window.MATERIEL_MONTURES, window.MATERIEL_VEHICULES
+            ];
+            let poidsItem = 0;
+            for (const src of sources) {
+                if (src && src[nom]) { poidsItem = _parsePoidsSansUnite(src[nom].poids); break; }
+            }
+            porte += poidsItem * entry.qte;
+        }
+
+        const pct = chargeMax > 0 ? Math.min(100, (porte / chargeMax) * 100) : 0;
+        const fill  = document.getElementById('poids-barre-fill');
+        const elPorte = document.getElementById('poids-porte-val');
+        const elMax   = document.getElementById('poids-max-val');
+        const elStatut = document.getElementById('poids-statut');
+
+        if (fill) {
+            fill.style.width = pct + '%';
+            fill.classList.remove('lourd', 'surcharge');
+            if (pct >= 66.7) fill.classList.add('surcharge');
+            else if (pct >= 33.4) fill.classList.add('lourd');
+        }
+        if (elPorte) elPorte.textContent = porte.toFixed(1) + ' kg';
+        if (elMax)   elMax.textContent   = chargeMax + ' kg';
+        if (elStatut) {
+            if (pct >= 100)      elStatut.textContent = '🔴 Surchargé';
+            else if (pct >= 66.7) elStatut.textContent = '🟠 Chargé';
+            else if (pct >= 33.4) elStatut.textContent = '🟡 Modéré';
+            else                  elStatut.textContent = '🟢 Léger';
+        }
+        // Afficher seulement si race/classe défini (score Force connu)
+        const aRace   = !!window._raceNomPurCourant;
+        const aClasse = !!window._classeNomPurCourant;
+        bloc.style.display = (aRace && aClasse) ? 'block' : 'none';
+    };
+
+    // ══════════════════════════════════════════════════════
+    //  PHASE 1B — PV DYNAMIQUES
+    // ══════════════════════════════════════════════════════
+    // pv_actuel sauvegardé dans Firestore (séparé de pv_niveaux_lances)
+
+    window._pvActuelCourant = null; // null = pas encore chargé
+
+    function _pvDynAfficher() {
+        const bloc = document.getElementById('bloc-pv-dynamique');
+        if (!bloc) return;
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) { bloc.style.display = 'none'; return; }
+        const pvMax = window._pvState?.pv_total || null;
+        if (!pvMax) { bloc.style.display = 'none'; return; }
+
+        // Initialiser pv_actuel au max si pas encore défini
+        if (window._pvActuelCourant === null) window._pvActuelCourant = pvMax;
+        const actuel = Math.max(0, Math.min(pvMax, window._pvActuelCourant));
+        window._pvActuelCourant = actuel;
+
+        const pct = pvMax > 0 ? Math.max(0, (actuel / pvMax) * 100) : 0;
+        const barre = document.getElementById('pv-dyn-barre');
+        if (barre) {
+            barre.style.width = pct + '%';
+            barre.classList.remove('moyen', 'critique');
+            if (pct <= 25) barre.classList.add('critique');
+            else if (pct <= 50) barre.classList.add('moyen');
+        }
+        const elAct = document.getElementById('pv-actuel');
+        const elMax = document.getElementById('pv-max-dyn');
+        const elNote = document.getElementById('pv-dyn-note');
+        if (elAct) elAct.textContent = actuel;
+        if (elMax) elMax.textContent = pvMax;
+        if (elNote) {
+            if (actuel === 0)        elNote.textContent = '☠️ Inconscient — jets de sauvegarde contre la mort';
+            else if (pct <= 25)      elNote.textContent = '🔴 Critique — soins urgents nécessaires';
+            else if (pct <= 50)      elNote.textContent = '🟠 Blessé — repos recommandé';
+            else if (pct < 100)      elNote.textContent = '🟡 Légèrement blessé';
+            else                     elNote.textContent = '🟢 En pleine forme';
+        }
+        bloc.style.display = 'block';
+    }
+
+    window._pvAjuster = async function(delta) {
+        if (!delta) return;
+        const pvMax = window._pvState?.pv_total || 0;
+        if (!pvMax) return;
+        if (window._pvActuelCourant === null) window._pvActuelCourant = pvMax;
+        window._pvActuelCourant = Math.max(0, Math.min(pvMax, window._pvActuelCourant + delta));
+        _pvDynAfficher();
+        // Sauvegarder dans Firestore
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+        try {
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, 'membres', user.uid),
+                { pv_actuel: window._pvActuelCourant }, { merge: true }
+            );
+        } catch(e) { console.warn('Erreur sauvegarde PV actuel:', e); }
+    };
+
+    // Attacher les boutons +/−
+    document.addEventListener('DOMContentLoaded', function() {
+        const bindings = [
+            ['pv-btn-moins5', -5], ['pv-btn-moins1', -1],
+            ['pv-btn-plus1',  +1], ['pv-btn-plus5',  +5],
+        ];
+        bindings.forEach(([id, delta]) => {
+            const btn = document.getElementById(id);
+            if (btn) btn.addEventListener('click', () => window._pvAjuster(delta));
+        });
+        const btnReset = document.getElementById('pv-btn-reset');
+        if (btnReset) btnReset.addEventListener('click', async () => {
+            window._pvActuelCourant = window._pvState?.pv_total || 0;
+            _pvDynAfficher();
+            const user = window._firebaseAuth?.currentUser;
+            if (!user) return;
+            try {
+                await window._firebaseSetDoc(
+                    window._firebaseDoc(window._firebaseDb, 'membres', user.uid),
+                    { pv_actuel: window._pvActuelCourant }, { merge: true }
+                );
+            } catch(e) {}
+        });
+    });
+
+    // Appelé après mettreAJourPV pour synchroniser l'affichage
+    const _pvDynOriginal = window.mettreAJourPV;
+    window.mettreAJourPV = function(profilData, classeNomPur, niveauActuel, bonusTotal) {
+        _pvDynOriginal && _pvDynOriginal(profilData, classeNomPur, niveauActuel, bonusTotal);
+        // Charger pv_actuel depuis profilData si disponible
+        if (profilData && typeof profilData.pv_actuel === 'number') {
+            window._pvActuelCourant = profilData.pv_actuel;
+        }
+        _pvDynAfficher();
+    };
+
+    // ══════════════════════════════════════════════════════
+    //  PHASE 1C — CONDITIONS DE COMBAT
+    // ══════════════════════════════════════════════════════
+
+    const CONDITIONS_LIST = [
+        { id:'aveugle',      icone:'🙈', nom:'Aveugle' },
+        { id:'charme',       icone:'💖', nom:'Charmé' },
+        { id:'effraie',      icone:'😨', nom:'Effrayé' },
+        { id:'empoigne',     icone:'🤼', nom:'Empoigné' },
+        { id:'empoisonne',   icone:'☠️', nom:'Empoisonné' },
+        { id:'entrave',      icone:'⛓️', nom:'Entravé' },
+        { id:'etourdi',      icone:'💫', nom:'Étourdi' },
+        { id:'inconscient',  icone:'💤', nom:'Inconscient' },
+        { id:'invisible',    icone:'👻', nom:'Invisible' },
+        { id:'paralyse',     icone:'🧊', nom:'Paralysé' },
+        { id:'petrifie',     icone:'🗿', nom:'Pétrifié' },
+        { id:'prone',        icone:'⬇️', nom:'À terre' },
+        { id:'sourd',        icone:'🔇', nom:'Sourd' },
+        { id:'surcharge',    icone:'⚖️', nom:'Surchargé' },
+    ];
+
+    window._conditions = {}; // { id: true/false }
+
+    function _condRendreGrille() {
+        const grille = document.getElementById('conditions-grille');
+        if (!grille) return;
+        grille.innerHTML = CONDITIONS_LIST.map(c => {
+            const actif = window._conditions[c.id] ? 'actif' : '';
+            return `<button class="cond-btn ${actif}" data-cond="${c.id}" title="${c.nom}">
+                <span class="cond-icone">${c.icone}</span>
+                <span class="cond-nom">${c.nom}</span>
+            </button>`;
+        }).join('');
+    }
+
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.cond-btn[data-cond]');
+        if (!btn) return;
+        const id = btn.dataset.cond;
+        window._conditions[id] = !window._conditions[id];
+        btn.classList.toggle('actif', !!window._conditions[id]);
+        _condSauvegarder();
+    });
+
+    async function _condSauvegarder() {
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+        try {
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, 'membres', user.uid),
+                { conditions: window._conditions }, { merge: true }
+            );
+        } catch(e) { console.warn('Erreur sauvegarde conditions:', e); }
+    }
+
+    function _condAfficherBloc() {
+        const bloc = document.getElementById('bloc-conditions');
+        const user = window._firebaseAuth?.currentUser;
+        if (bloc) bloc.style.display = user ? 'block' : 'none';
+        _condRendreGrille();
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  PHASE 1D — LANCEUR DE DÉS INTÉGRÉ
+    // ══════════════════════════════════════════════════════
+
+    let _deHistorique = [];
+
+    window._lancerDe = function(faces) {
+        const resultat = Math.floor(Math.random() * faces) + 1;
+        const elRes = document.getElementById('de-fiche-resultat');
+        const elHist = document.getElementById('de-fiche-historique');
+        if (elRes) {
+            elRes.textContent = `🎲 d${faces} → ${resultat}`;
+            elRes.style.animation = 'none';
+            void elRes.offsetWidth;
+            elRes.style.animation = 'pv-pulse 0.3s ease';
+        }
+        _deHistorique.unshift(`d${faces} → ${resultat}`);
+        if (_deHistorique.length > 20) _deHistorique.pop();
+        if (elHist) elHist.innerHTML = _deHistorique
+            .map((h, i) => `<span style="opacity:${1 - i * 0.05}">${h}</span>`)
+            .join(' &nbsp;·&nbsp; ');
+    };
+
+    function _desAfficherBloc() {
+        const bloc = document.getElementById('bloc-des-fiche');
+        const user = window._firebaseAuth?.currentUser;
+        if (bloc) bloc.style.display = user ? 'block' : 'none';
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  PHASE 1E — COMPAGNONS & ALLIÉS
+    // ══════════════════════════════════════════════════════
+
+    window._compagnons = []; // [{ nom, relation, notes }]
+
+    function _compRendreListe() {
+        const liste = document.getElementById('compagnon-liste');
+        if (!liste) return;
+        if (window._compagnons.length === 0) {
+            liste.innerHTML = '<div style="font-family:\'Lora\',serif;font-size:0.75rem;font-style:italic;color:#888;padding:4px 0;">Aucun compagnon enregistré.</div>';
+            return;
+        }
+        liste.innerHTML = window._compagnons.map((c, i) => `
+            <div class="compagnon-item">
+                <div>
+                    <div class="compagnon-nom">${c.icone || '👤'} ${c.nom}</div>
+                    <div class="compagnon-relation">${c.relation || ''}</div>
+                    ${c.notes ? `<div class="compagnon-notes">${c.notes}</div>` : ''}
+                </div>
+                <button class="compagnon-suppr" data-comp-idx="${i}" title="Retirer">✕</button>
+            </div>`).join('');
+    }
+
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.compagnon-suppr[data-comp-idx]');
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.compIdx);
+        window._compagnons.splice(idx, 1);
+        _compRendreListe();
+        _compSauvegarder();
+    });
+
+    window._compajouterCompagnon = async function() {
+        const nom = (document.getElementById('comp-nom')?.value || '').trim();
+        if (!nom) return;
+        const relation = (document.getElementById('comp-relation')?.value || '').trim();
+        const notes    = (document.getElementById('comp-notes')?.value || '').trim();
+        // Icône selon relation
+        const icones = { allié:'🤝', ami:'💛', ennemi:'⚔️', marchand:'💰', mentor:'📚', neutre:'😐' };
+        const icone  = icones[relation.toLowerCase().split(' ')[0]] || '👤';
+        window._compagnons.push({ nom, relation, notes, icone });
+        _compRendreListe();
+        document.getElementById('comp-nom').value = '';
+        document.getElementById('comp-relation').value = '';
+        document.getElementById('comp-notes').value = '';
+        await _compSauvegarder();
+    };
+
+    async function _compSauvegarder() {
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+        try {
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, 'membres', user.uid),
+                { compagnons: window._compagnons }, { merge: true }
+            );
+        } catch(e) { console.warn('Erreur sauvegarde compagnons:', e); }
+    }
+
+    function _compAfficherBloc() {
+        const bloc = document.getElementById('bloc-compagnons');
+        const user = window._firebaseAuth?.currentUser;
+        if (bloc) bloc.style.display = user ? 'block' : 'none';
+        _compRendreListe();
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  PHASE 1F — QUÊTES ACTIVES
+    // ══════════════════════════════════════════════════════
+
+    window._quetes = []; // [{ titre, objectif, accomplie }]
+
+    function _queteRendreListe() {
+        const liste = document.getElementById('quete-liste');
+        if (!liste) return;
+        const actives = window._quetes.filter(q => !q.accomplie);
+        const terminees = window._quetes.filter(q => q.accomplie);
+        const toutes = [...actives, ...terminees];
+        if (toutes.length === 0) {
+            liste.innerHTML = '<div style="font-family:\'Lora\',serif;font-size:0.75rem;font-style:italic;color:#888;padding:4px 0;">Aucune quête enregistrée.</div>';
+            return;
+        }
+        liste.innerHTML = toutes.map((q, i) => {
+            const idx = window._quetes.indexOf(q);
+            const acc = q.accomplie ? 'accomplie' : '';
+            return `<div class="quete-item ${acc}">
+                <div>
+                    <div class="quete-titre">${q.titre}</div>
+                    ${q.objectif ? `<div class="quete-objectif">${q.objectif}</div>` : ''}
+                </div>
+                <div class="quete-actions">
+                    <button class="quete-btn" data-quete-toggle="${idx}" title="${q.accomplie ? 'Rouvrir' : 'Marquer accomplie'}">${q.accomplie ? '↩' : '✓'}</button>
+                    <button class="quete-btn" data-quete-suppr="${idx}" title="Supprimer">✕</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    document.addEventListener('click', function(e) {
+        const btnToggle = e.target.closest('.quete-btn[data-quete-toggle]');
+        if (btnToggle) {
+            const idx = parseInt(btnToggle.dataset.queteToggle);
+            if (window._quetes[idx]) {
+                window._quetes[idx].accomplie = !window._quetes[idx].accomplie;
+                _queteRendreListe();
+                _queteSauvegarder();
+            }
+            return;
+        }
+        const btnSuppr = e.target.closest('.quete-btn[data-quete-suppr]');
+        if (btnSuppr) {
+            const idx = parseInt(btnSuppr.dataset.queteSuppr);
+            window._quetes.splice(idx, 1);
+            _queteRendreListe();
+            _queteSauvegarder();
+            return;
+        }
+    });
+
+    window._queteAjouter = async function() {
+        const titre = (document.getElementById('quete-titre-inp')?.value || '').trim();
+        if (!titre) return;
+        const objectif = (document.getElementById('quete-obj-inp')?.value || '').trim();
+        window._quetes.push({ titre, objectif, accomplie: false });
+        _queteRendreListe();
+        document.getElementById('quete-titre-inp').value = '';
+        document.getElementById('quete-obj-inp').value = '';
+        await _queteSauvegarder();
+    };
+
+    async function _queteSauvegarder() {
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+        try {
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, 'membres', user.uid),
+                { quetes: window._quetes }, { merge: true }
+            );
+        } catch(e) { console.warn('Erreur sauvegarde quêtes:', e); }
+    }
+
+    function _queteAfficherBloc() {
+        const bloc = document.getElementById('bloc-quetes');
+        const user = window._firebaseAuth?.currentUser;
+        if (bloc) bloc.style.display = user ? 'block' : 'none';
+        _queteRendreListe();
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  PHASE 1G — NOTES & JOURNAL
+    // ══════════════════════════════════════════════════════
+
+    let _notesDebounce = null;
+
+    async function _notesSauvegarder() {
+        const user = window._firebaseAuth?.currentUser;
+        if (!user) return;
+        const texte = document.getElementById('notes-journal')?.value || '';
+        const elStatut = document.getElementById('notes-statut');
+        try {
+            await window._firebaseSetDoc(
+                window._firebaseDoc(window._firebaseDb, 'membres', user.uid),
+                { notes_journal: texte }, { merge: true }
+            );
+            if (elStatut) { elStatut.textContent = 'Sauvegardé ✓'; setTimeout(() => { if(elStatut) elStatut.textContent=''; }, 2500); }
+        } catch(e) {
+            if (elStatut) elStatut.textContent = 'Erreur de sauvegarde.';
+            console.warn('Erreur sauvegarde notes:', e);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('notes-journal');
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                const elStatut = document.getElementById('notes-statut');
+                if (elStatut) elStatut.textContent = 'Modification en cours…';
+                clearTimeout(_notesDebounce);
+                _notesDebounce = setTimeout(_notesSauvegarder, 1800);
+            });
+        }
+    });
+
+    function _notesAfficherBloc() {
+        const bloc = document.getElementById('bloc-notes');
+        const user = window._firebaseAuth?.currentUser;
+        if (bloc) bloc.style.display = user ? 'block' : 'none';
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  CHARGEMENT PHASE 1 depuis Firestore (hook onAuth)
+    // ══════════════════════════════════════════════════════
+    // Appelé après chargement du profil principal
+
+    window._chargerPhase1 = function(data) {
+        // PV actuel
+        if (typeof data.pv_actuel === 'number') {
+            window._pvActuelCourant = data.pv_actuel;
+        }
+        // Conditions
+        window._conditions = data.conditions || {};
+        _condRendreGrille();
+        // Compagnons
+        window._compagnons = Array.isArray(data.compagnons) ? data.compagnons : [];
+        _compRendreListe();
+        // Quêtes
+        window._quetes = Array.isArray(data.quetes) ? data.quetes : [];
+        _queteRendreListe();
+        // Notes
+        const textarea = document.getElementById('notes-journal');
+        if (textarea && typeof data.notes_journal === 'string') {
+            textarea.value = data.notes_journal;
+        }
+        // Afficher tous les blocs
+        _condAfficherBloc();
+        _desAfficherBloc();
+        _compAfficherBloc();
+        _queteAfficherBloc();
+        _notesAfficherBloc();
+        // PV dynamique (nécessite _pvState → appelé après mettreAJourPV)
+        setTimeout(_pvDynAfficher, 200);
+        // Poids (nécessite _inventaire + _profilDataCourant)
+        setTimeout(window._poidsRafraichir, 300);
     };
 
     // ── MODALE ÉCHOPPE ──────────────────────────────────
