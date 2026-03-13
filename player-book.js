@@ -234,6 +234,14 @@
 })();
 
 
+// Utilitaire : convertir description (string, array ou objet {masculin/féminin}) en string propre
+function _descStr(val) {
+    if (!val) return '';
+    if (Array.isArray(val)) return val.join('\n').trim();
+    if (typeof val === 'object') return String(val.masculin || val.feminin || val.féminin || val.description || Object.values(val)[0] || '').trim();
+    return String(val).trim();
+}
+
 const Codex = {
     sections: [
         { id:'accueil',          tit:'Introduction',          ico:'📜' },
@@ -285,6 +293,7 @@ const Codex = {
 
     renderTOC() {
         const toc = document.getElementById('book-toc');
+        const self = this;
         toc.innerHTML = this.sections.map(s=>{
             const hasSubs = typeof s.subs==='function';
             const subs    = hasSubs ? s.subs() : [];
@@ -299,12 +308,23 @@ const Codex = {
             toc.querySelectorAll(':scope > li').forEach(li=>{ li.style.display=(!q||li.textContent.toLowerCase().includes(q))?'':'none'; });
         });
 
-        toc.querySelectorAll('li[data-id]').forEach(li=>{
+        // Listeners items parents
+        toc.querySelectorAll(':scope > li[data-id]').forEach(li=>{
             const item=li.querySelector(':scope > .toc-item');
             if (!item) return;
-            item.addEventListener('click',()=>{
+            item.addEventListener('click', ()=>{
                 if (li.dataset.hasSubs==='true') li.classList.toggle('open');
-                this.loadChapter(li.dataset.id);
+                self.loadChapter(li.dataset.id);
+            });
+        });
+
+        // Listeners sous-items (stopPropagation pour éviter de déclencher le parent)
+        toc.querySelectorAll('.toc-sub li[data-id]').forEach(li=>{
+            const item=li.querySelector(':scope > .toc-item');
+            if (!item) return;
+            item.addEventListener('click', (e)=>{
+                e.stopPropagation();
+                self.loadChapter(li.dataset.id);
             });
         });
     },
