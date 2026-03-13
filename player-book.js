@@ -566,7 +566,7 @@ const Codex = {
         for (let [nom,d] of Object.entries(races)) {
             const bon=Object.entries(d.bonus||{}).map(([s,v])=>`<span class="stat-tag">${s.toUpperCase()} +${v}</span>`).join('');
             h+=`<div class="book-card">
-            <div class="book-card-header"><span class="book-card-icon">${d.icone}</span><div class="book-card-title"><h2>${nom}</h2><div class="card-subtitle">${d.tooltip||''}</div></div></div>
+            <div class="book-card-header"><span class="book-card-icon">${d.icone}</span><div class="book-card-title"><h2>${nom}</h2><div class="card-subtitle">${_descStr(d.tooltip)}</div></div></div>
             <div class="stat-grid">${bon}</div>
             ${d.traits?`<ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
             <button class="card-desc-toggle"><span class="toggle-label">Lire la description</span><span class="toggle-arrow">▸</span></button>
@@ -579,7 +579,7 @@ const Codex = {
         const d=(window.RPG_RACES||{})[nom]; if(!d) return `<div class="book-page"><p>Race introuvable.</p></div>`;
         const bon=Object.entries(d.bonus||{}).map(([s,v])=>`<span class="stat-tag">${s.toUpperCase()} +${v}</span>`).join('');
         return `<div class="book-page">
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:5px;"><span style="font-size:2.8rem;">${d.icone}</span><div><h1 class="page-title cinzel" style="text-align:left;margin:0;">${nom}</h1><div style="font-style:italic;color:rgba(62,32,6,.55);margin-top:2px;">${d.tooltip||''}</div></div></div>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:5px;"><span style="font-size:2.8rem;">${d.icone}</span><div><h1 class="page-title cinzel" style="text-align:left;margin:0;">${nom}</h1><div style="font-style:italic;color:rgba(62,32,6,.55);margin-top:2px;">${_descStr(d.tooltip)}</div></div></div>
         <div class="ornament-center">❧ ✦ ❧</div>
         <h2>⚡ Bonus</h2><div class="stat-grid">${bon}</div>
         ${d.traits?`<h2>🌟 Traits Raciaux</h2><ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
@@ -593,7 +593,7 @@ const Codex = {
         for (let [nom,d] of Object.entries(cl)) {
             const bon=Object.entries(d.bonus||{}).map(([s,v])=>`<span class="stat-tag positive">${s.toUpperCase()} +${v}</span>`).join('');
             h+=`<div class="book-card">
-            <div class="book-card-header"><span class="book-card-icon">${d.icone}</span><div class="book-card-title"><h2>${nom}</h2><div class="card-subtitle">${d.tooltip||''}</div></div><span class="stat-tag dv">d${d.de_vie||d.des_vie||'?'}</span></div>
+            <div class="book-card-header"><span class="book-card-icon">${d.icone}</span><div class="book-card-title"><h2>${nom}</h2><div class="card-subtitle">${_descStr(d.tooltip)}</div></div><span class="stat-tag dv">d${d.de_vie||d.des_vie||'?'}</span></div>
             <div class="stat-grid">${bon}</div>
             ${d.traits?`<ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
             <button class="card-desc-toggle"><span class="toggle-label">Lire la description</span><span class="toggle-arrow">▸</span></button>
@@ -606,7 +606,7 @@ const Codex = {
         const d=(window.RPG_CLASSES||{})[nom]; if(!d) return `<div class="book-page"><p>Classe introuvable.</p></div>`;
         const bon=Object.entries(d.bonus||{}).map(([s,v])=>`<span class="stat-tag positive">${s.toUpperCase()} +${v}</span>`).join('');
         return `<div class="book-page">
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:5px;"><span style="font-size:2.8rem;">${d.icone}</span><div><h1 class="page-title cinzel" style="text-align:left;margin:0;">${nom}</h1><div style="font-style:italic;color:rgba(62,32,6,.55);margin-top:2px;">${d.tooltip||''}</div></div></div>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:5px;"><span style="font-size:2.8rem;">${d.icone}</span><div><h1 class="page-title cinzel" style="text-align:left;margin:0;">${nom}</h1><div style="font-style:italic;color:rgba(62,32,6,.55);margin-top:2px;">${_descStr(d.tooltip)}</div></div></div>
         <div class="ornament-center">❧ ✦ ❧</div>
         <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;"><span class="stat-tag dv">Dé de Vie : d${d.de_vie||d.des_vie||'?'}</span>${bon}</div>
         ${d.traits?`<h2>⚡ Capacités</h2><ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
@@ -620,7 +620,7 @@ const Codex = {
         const cards=entries.map(([nom,d],i)=>`
         <div class="align-card" data-idx="${i}" style="border-top:3px solid ${d.couleur||'var(--bk-royal)'};">
             <div class="align-card-top"><span class="align-ico">${d.icone}</span><div><div class="align-name">${nom}</div><div class="align-titre">${d.titre||''}</div></div></div>
-            <div class="align-desc">${d.desc||d.tooltip||''}</div>
+            <div class="align-desc">${_descStr(d.desc||d.tooltip)}</div>
         </div>
         <div class="grade-detail-panel" id="align-detail-${i}">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:13px;padding-bottom:11px;border-bottom:1px solid rgba(200,168,75,.3);">
@@ -803,19 +803,20 @@ const Codex = {
         const grades=window.RPG_GRADES||[];
         const cards=grades.map((g,i)=>{
             const seuil=g.seuil===0?'Dès le 1er jour':`À partir de ${g.seuil} jour${g.seuil>1?'s':''}`;
-            const desc=typeof g.description_joueur==='object'?(g.description_joueur.masculin||''):( g.description_joueur||g.tooltip||'');
+            const desc=_descStr(g.description_joueur||g.tooltip);
+            const tooltipTxt=_descStr(g.tooltip||g.description_joueur);
             return `
             <div class="grade-card" data-idx="${i}" style="padding-left:18px;">
                 <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${g.coul||'var(--bk-royal)'};border-radius:2px 0 0 2px;"></div>
                 <div class="grade-card-header"><span class="grade-ico">${g.icone}</span><div><div class="grade-name">${g.nom}</div><div class="grade-seuil">${seuil}</div></div></div>
-                <div class="grade-tooltip">${g.tooltip||''}</div>
+                <div class="grade-tooltip">${tooltipTxt}</div>
             </div>
             <div class="grade-detail-panel" id="grade-detail-${i}">
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:13px;padding-bottom:11px;border-bottom:1px solid rgba(200,168,75,.3);">
                     <span style="font-size:1.8rem;">${g.icone}</span>
                     <div><h2 style="margin:0;padding:0;border:none;font-family:var(--bk-font-title);color:var(--bk-royal);font-size:1.05rem;">${g.nom}</h2><div style="font-size:.7rem;color:rgba(62,32,6,.45);">${seuil}</div></div>
                 </div>
-                <div style="white-space:pre-line;font-size:.86rem;line-height:1.78;color:#1e1509;">${desc.trim()}</div>
+                <div style="white-space:pre-line;font-size:.86rem;line-height:1.78;color:#1e1509;">${desc}</div>
             </div>`;
         }).join('');
         return `<div class="book-page">
