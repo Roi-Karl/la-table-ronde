@@ -2861,6 +2861,32 @@
                         </div>
                     </div>
 
+                    <!-- ── PV DYNAMIQUES (entre Niveau/XP et PV/Initiative) ── -->
+                    <div id="bloc-pv-dynamique" style="margin-bottom:8px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:8px;"><span style="font-size:1.3rem;vertical-align:middle;">❤️</span> Points de vie actuels</p>
+                        <div class="pv-dyn-barre-wrap"><div id="pv-dyn-barre" class="pv-dyn-barre-fill" style="width:100%;"></div></div>
+                        <div class="pv-dyn-compteur">
+                            <div class="pv-dyn-input-wrap">
+                                <button class="pv-dyn-btn grand pv-dyn-soin" id="pv-btn-moins5" title="−5 PV">−5</button>
+                                <button class="pv-dyn-btn pv-dyn-soin" id="pv-btn-moins1" title="−1 PV">−1</button>
+                            </div>
+                            <div style="text-align:center;">
+                                <div class="pv-dyn-val"><span id="pv-actuel">—</span> / <span id="pv-max-dyn">—</span></div>
+                            </div>
+                            <div class="pv-dyn-input-wrap">
+                                <button class="pv-dyn-btn pv-dyn-soin" id="pv-btn-plus1" title="+1 PV">+1</button>
+                                <button class="pv-dyn-btn grand pv-dyn-soin" id="pv-btn-plus5" title="+5 PV">+5</button>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;">
+                            <input type="number" id="pv-soin-montant" class="pv-dyn-input" placeholder="+" min="1" title="Montant personnalisé">
+                            <button class="pv-dyn-btn pv-dyn-soin" onclick="window._pvAjuster(parseInt(document.getElementById('pv-soin-montant').value)||0)">Soin</button>
+                            <button class="pv-dyn-btn" onclick="window._pvAjuster(-(parseInt(document.getElementById('pv-soin-montant').value)||0))">Dégât</button>
+                            <button class="pv-dyn-btn" id="pv-btn-reset" title="Restaurer PV max">↺</button>
+                        </div>
+                        <div class="pv-dyn-note" id="pv-dyn-note"></div>
+                    </div>
+
                     <!-- PV + Initiative (côte à côte) -->
                     <div style="display:flex; gap:10px; border-top:1px dashed rgba(212,175,55,0.3); padding-top:10px; margin-top:2px;">
                         <div class="fiche-stat-box" style="flex:1; position:relative;">
@@ -2941,7 +2967,16 @@
 
                     <!-- ── INVENTAIRE ── -->
                     <div id="bloc-inventaire" style="margin-top:18px; padding:14px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
-                        <p class="fiche-carac-titre" style="margin-bottom:14px;"><span style="font-size:1.6rem;vertical-align:middle;">🎒</span> Inventaire</p>
+                        <p class="fiche-carac-titre" style="margin-bottom:8px;"><span style="font-size:1.6rem;vertical-align:middle;">🎒</span> Inventaire</p>
+                        <!-- ── POIDS PORTÉ (sous le titre Inventaire) ── -->
+                        <div id="bloc-poids" style="margin-bottom:14px; padding:8px 12px; background:rgba(212,175,55,0.06); border:1px solid rgba(212,175,55,0.2); border-radius:3px; display:none;">
+                            <div class="poids-barre-wrap"><div id="poids-barre-fill" class="poids-barre-fill" style="width:0%;"></div></div>
+                            <div class="poids-legende">
+                                <span id="poids-porte-val">0 kg</span>
+                                <span id="poids-statut"></span>
+                                <span id="poids-max-val">— kg</span>
+                            </div>
+                        </div>
                         <div id="inv-contenu"></div>
                     </div>
 
@@ -3018,43 +3053,6 @@
                         <div id="tresor-total" style="text-align:center; font-family:'Cinzel',serif; font-size:1.2rem; color:#3a2a0a; font-weight:bold; padding:12px; background:rgba(0,0,0,0.08); border-radius:3px; display:none;">
                             ≈ <span id="tresor-total-valeur" style="color:var(--or-royal); font-weight:bold; font-size:1.8rem;">0</span> po équivalent
                         </div>
-                    </div>
-
-                    <!-- ── POIDS PORTÉ ── -->
-                    <div id="bloc-poids" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
-                        <p class="fiche-carac-titre" style="margin-bottom:8px;"><span style="font-size:1.3rem;vertical-align:middle;">⚖️</span> Poids porté</p>
-                        <div class="poids-barre-wrap"><div id="poids-barre-fill" class="poids-barre-fill" style="width:0%;"></div></div>
-                        <div class="poids-legende">
-                            <span id="poids-porte-val">0 kg</span>
-                            <span id="poids-statut"></span>
-                            <span id="poids-max-val">— kg</span>
-                        </div>
-                    </div>
-
-                    <!-- ── PV DYNAMIQUES ── -->
-                    <div id="bloc-pv-dynamique" style="margin-top:14px; padding:12px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
-                        <p class="fiche-carac-titre" style="margin-bottom:8px;"><span style="font-size:1.3rem;vertical-align:middle;">❤️</span> Points de vie actuels</p>
-                        <div class="pv-dyn-barre-wrap"><div id="pv-dyn-barre" class="pv-dyn-barre-fill" style="width:100%;"></div></div>
-                        <div class="pv-dyn-compteur">
-                            <div class="pv-dyn-input-wrap">
-                                <button class="pv-dyn-btn grand pv-dyn-soin" id="pv-btn-moins5" title="−5 PV">−5</button>
-                                <button class="pv-dyn-btn pv-dyn-soin" id="pv-btn-moins1" title="−1 PV">−1</button>
-                            </div>
-                            <div style="text-align:center;">
-                                <div class="pv-dyn-val"><span id="pv-actuel">—</span> / <span id="pv-max-dyn">—</span></div>
-                            </div>
-                            <div class="pv-dyn-input-wrap">
-                                <button class="pv-dyn-btn pv-dyn-soin" id="pv-btn-plus1" title="+1 PV">+1</button>
-                                <button class="pv-dyn-btn grand pv-dyn-soin" id="pv-btn-plus5" title="+5 PV">+5</button>
-                            </div>
-                        </div>
-                        <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;">
-                            <input type="number" id="pv-soin-montant" class="pv-dyn-input" placeholder="+" min="1" title="Montant personnalisé">
-                            <button class="pv-dyn-btn pv-dyn-soin" onclick="window._pvAjuster(parseInt(document.getElementById('pv-soin-montant').value)||0)">Soin</button>
-                            <button class="pv-dyn-btn" onclick="window._pvAjuster(-(parseInt(document.getElementById('pv-soin-montant').value)||0))">Dégât</button>
-                            <button class="pv-dyn-btn" id="pv-btn-reset" title="Restaurer PV max">↺</button>
-                        </div>
-                        <div class="pv-dyn-note" id="pv-dyn-note"></div>
                     </div>
 
                     <!-- ── CONDITIONS ── -->
@@ -7363,10 +7361,9 @@
             else if (pct >= 33.4) elStatut.textContent = '🟡 Modéré';
             else                  elStatut.textContent = '🟢 Léger';
         }
-        // Afficher seulement si race/classe défini (score Force connu)
-        const aRace   = !!window._raceNomPurCourant;
-        const aClasse = !!window._classeNomPurCourant;
-        bloc.style.display = (aRace && aClasse) ? 'block' : 'none';
+        // Afficher seulement si l'inventaire a des items avec poids
+        const aItems = Object.values(inv).some(e => e.qte > 0);
+        bloc.style.display = aItems ? 'block' : 'none';
     };
 
     // ══════════════════════════════════════════════════════
