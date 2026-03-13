@@ -253,6 +253,7 @@ const Codex = {
 
     renderTOC() {
         const toc = document.getElementById('book-toc');
+        const self = this;
         toc.innerHTML = this.sections.map(s=>{
             const hasSubs = typeof s.subs==='function';
             const subs    = hasSubs ? s.subs() : [];
@@ -267,12 +268,23 @@ const Codex = {
             toc.querySelectorAll(':scope > li').forEach(li=>{ li.style.display=(!q||li.textContent.toLowerCase().includes(q))?'':'none'; });
         });
 
-        toc.querySelectorAll('li[data-id]').forEach(li=>{
+        // Listeners pour les items parents (avec ou sans subs)
+        toc.querySelectorAll(':scope > li[data-id]').forEach(li=>{
             const item=li.querySelector(':scope > .toc-item');
             if (!item) return;
-            item.addEventListener('click',()=>{
+            item.addEventListener('click', (e)=>{
                 if (li.dataset.hasSubs==='true') li.classList.toggle('open');
-                this.loadChapter(li.dataset.id);
+                self.loadChapter(li.dataset.id);
+            });
+        });
+
+        // Listeners séparés pour les sous-items
+        toc.querySelectorAll('.toc-sub li[data-id]').forEach(li=>{
+            const item=li.querySelector(':scope > .toc-item');
+            if (!item) return;
+            item.addEventListener('click', (e)=>{
+                e.stopPropagation();
+                self.loadChapter(li.dataset.id);
             });
         });
     },
