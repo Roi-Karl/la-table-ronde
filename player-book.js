@@ -214,10 +214,11 @@
 })();
 
 
-// Utilitaire : convertir description (string ou array) en string propre
+// Utilitaire : convertir description (string, array ou objet {masculin/féminin}) en string propre
 function _descStr(val) {
     if (!val) return '';
     if (Array.isArray(val)) return val.join('\n').trim();
+    if (typeof val === 'object') return String(val.masculin || val.feminin || val.féminin || val.description || Object.values(val)[0] || '').trim();
     return String(val).trim();
 }
 
