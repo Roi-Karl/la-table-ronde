@@ -1537,135 +1537,90 @@
             text-align: center;
             padding: 30px 0;
         }
-        /* ── Boutons achat / vente échoppe ──────────────── */
-        .echoppe-actions {
+        /* ── Section Inventaire fiche ───────────────── */
+        .inv-onglets {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            flex-wrap: wrap;
             gap: 4px;
-            flex-shrink: 0;
+            margin-bottom: 10px;
         }
-        .echoppe-btn-acheter {
-            background: var(--rouge-blason);
-            color: var(--parchemin);
-            border: none;
-            border-radius: 3px;
+        .inv-onglet {
             font-family: 'Cinzel', serif;
             font-size: 0.52rem;
-            font-weight: bold;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
             padding: 4px 8px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: background 0.15s, transform 0.1s;
-        }
-        .echoppe-btn-acheter:hover { background: #a01010; transform: scale(1.03); }
-        .echoppe-btn-acheter:disabled { background: #bbb; cursor: not-allowed; transform: none; }
-        .echoppe-btn-vendre {
-            background: transparent;
-            color: var(--or-sombre);
-            border: 1px solid var(--or-sombre);
+            border: 1px solid rgba(212,175,55,0.35);
             border-radius: 3px;
+            cursor: pointer;
+            color: var(--or-sombre);
+            background: transparent;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+        }
+        .inv-onglet:hover { background: rgba(212,175,55,0.12); }
+        .inv-onglet.actif {
+            background: var(--rouge-blason);
+            color: var(--parchemin);
+            border-color: var(--rouge-blason);
+        }
+        .inv-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(212,175,55,0.12);
+        }
+        .inv-item:last-child { border-bottom: none; }
+        .inv-item-icone { font-size: 1.1rem; width: 22px; text-align: center; flex-shrink: 0; }
+        .inv-item-nom {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            font-weight: bold;
+            color: var(--rouge-blason);
+            flex: 1;
+            min-width: 0;
+        }
+        .inv-item-qte {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            color: var(--or-sombre);
+            background: rgba(212,175,55,0.1);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 10px;
+            padding: 1px 7px;
+            flex-shrink: 0;
+        }
+        .inv-btn-vendre {
             font-family: 'Cinzel', serif;
             font-size: 0.5rem;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
             padding: 3px 7px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: background 0.15s, color 0.15s;
-        }
-        .echoppe-btn-vendre:hover { background: var(--or-sombre); color: #fff; }
-        .echoppe-qte-wrap {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            margin-bottom: 2px;
-        }
-        .echoppe-qte-wrap input {
-            width: 34px;
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-size: 0.62rem;
-            border: 1px solid rgba(212,175,55,0.4);
+            background: transparent;
+            border: 1px solid var(--or-sombre);
             border-radius: 3px;
-            background: rgba(212,175,55,0.07);
-            color: #3a2a0a;
-            padding: 2px 3px;
-        }
-        .echoppe-qte-wrap button {
-            background: none;
-            border: 1px solid rgba(212,175,55,0.4);
-            border-radius: 2px;
             color: var(--or-sombre);
-            font-size: 0.7rem;
-            width: 18px; height: 18px;
             cursor: pointer;
-            line-height: 1;
-            padding: 0;
-        }
-        .echoppe-qte-wrap button:hover { background: rgba(212,175,55,0.15); }
-        /* ── Badge quantité possédée ─────────────────────── */
-        .echoppe-badge-qte {
-            display: inline-block;
-            background: var(--or-sombre);
-            color: #fff;
-            border-radius: 8px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.46rem;
-            padding: 1px 5px;
-            margin-left: 4px;
-            vertical-align: middle;
-        }
-        /* ── Barre trésor dans modale échoppe ────────────── */
-        #echoppe-tresor-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 6px 16px;
-            background: rgba(212,175,55,0.08);
-            border-bottom: 1px solid rgba(212,175,55,0.2);
             flex-shrink: 0;
-            flex-wrap: wrap;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
         }
-        .echoppe-tresor-piece {
-            font-family: 'Cinzel', serif;
-            font-size: 0.62rem;
-            color: #5a3e1b;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-        .echoppe-tresor-piece span.val {
-            font-weight: bold;
-            color: var(--or-sombre);
-            min-width: 20px;
-            text-align: right;
-        }
-        /* ── Toast notification achat/vente ──────────────── */
-        #echoppe-toast {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: #2a1a06;
-            color: var(--parchemin);
+        .inv-btn-vendre:hover { background: var(--or-sombre); color: #fff; }
+        .inv-vide {
             font-family: 'Lora', serif;
             font-style: italic;
-            font-size: 0.78rem;
-            padding: 8px 18px;
-            border-radius: 4px;
-            border: 1px solid var(--or-sombre);
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s, transform 0.3s;
+            font-size: 0.72rem;
+            color: #9a7a50;
             text-align: center;
-            max-width: 280px;
+            padding: 14px 0;
         }
-        #echoppe-toast.visible {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+        .inv-total {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            color: var(--or-sombre);
+            text-align: right;
+            margin-top: 6px;
+            letter-spacing: 0.04em;
         }
         /* ── Boutons +/− trésor ─────────────────────── */
         .tresor-btn-adj {
@@ -2760,6 +2715,24 @@
                         <p class="fiche-carac-titre" style="margin-bottom:12px;">✦ Traits spéciaux ✦</p>
                     </div>
 
+                    <!-- ── INVENTAIRE ── -->
+                    <div id="bloc-inventaire" style="margin-top:18px; padding:14px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
+                        <p class="fiche-carac-titre" style="margin-bottom:10px;"><span style="font-size:1.6rem;vertical-align:middle;">🎒</span> Inventaire</p>
+
+                        <!-- Onglets catégories -->
+                        <div class="inv-onglets" id="inv-onglets">
+                            <button class="inv-onglet actif" data-cat="armes"      onclick="invAfficherCat('armes')">⚔️ Armes</button>
+                            <button class="inv-onglet"       data-cat="armures"    onclick="invAfficherCat('armures')">🛡️ Armures</button>
+                            <button class="inv-onglet"       data-cat="equipement" onclick="invAfficherCat('equipement')">🎒 Équipement</button>
+                            <button class="inv-onglet"       data-cat="objets"     onclick="invAfficherCat('objets')">💎 Objets</button>
+                            <button class="inv-onglet"       data-cat="montures"   onclick="invAfficherCat('montures')">🐎 Montures</button>
+                            <button class="inv-onglet"       data-cat="vehicules"  onclick="invAfficherCat('vehicules')">⚓ Véhicules</button>
+                        </div>
+
+                        <!-- Contenu de l'onglet actif -->
+                        <div id="inv-contenu"></div>
+                    </div>
+
                     <!-- ── TRÉSOR ── -->
                     <div style="margin-top:18px; padding:14px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px;">
                         <p class="fiche-carac-titre" style="margin-bottom:10px;"><span style="font-size:2rem;vertical-align:middle;">💰</span> Trésor</p>
@@ -3822,8 +3795,6 @@
                             setTimeout(() => window.sauvegarderTresor?.(), 500);
                         }
                         window.mettreAJourTotalTresor?.();
-                        // Charger l'inventaire du joueur
-                        window._inventaire = data.inventaire || {};
                         // pv_niveaux_lances est chargé via profilData dans mettreAJourFicheCaracs
                         profilData.pv_niveaux_lances = data.pv_niveaux_lances || {};
                         if (data.cree_le) dateCreation = data.cree_le.toDate();
@@ -6696,264 +6667,14 @@
     ];
     let _echoppeOngletActif = 'armes';
 
-    // ── Taux de conversion (tout en pc = pièces de cuivre) ──
-    const TAUX_PC = { pp: 100000, po: 1000, pe: 500, pa: 100, pc: 1 };
-
-    // ── Parseur de prix  ex: "2 po", "5 pa", "50 pc" ──────
-    function _parsePrixEnPc(prixStr) {
-        if (!prixStr || prixStr === '—') return null;
-        const s = String(prixStr).trim().toLowerCase();
-        const m = s.match(/^([\d,\.]+)\s*(pp|po|pe|pa|pc)$/);
-        if (!m) return null;
-        const val  = parseFloat(m[1].replace(',', '.'));
-        const unit = m[2];
-        return Math.round(val * TAUX_PC[unit]);
-    }
-
-    // ── Formater un montant en pc vers la devise la plus lisible ──
-    function _formaterPc(totalPc) {
-        if (totalPc <= 0) return '0 pc';
-        const pieces = [
-            { abrev:'pp', val: TAUX_PC.pp },
-            { abrev:'po', val: TAUX_PC.po },
-            { abrev:'pe', val: TAUX_PC.pe },
-            { abrev:'pa', val: TAUX_PC.pa },
-            { abrev:'pc', val: TAUX_PC.pc },
-        ];
-        let reste = totalPc;
-        const parts = [];
-        for (const p of pieces) {
-            if (reste >= p.val) {
-                const n = Math.floor(reste / p.val);
-                parts.push(`${n} ${p.abrev}`);
-                reste -= n * p.val;
-            }
-        }
-        return parts.join(' + ') || '0 pc';
-    }
-
-    // ── Lire le trésor actuel en pc ───────────────────────
-    function _tresorEnPc() {
-        let total = 0;
-        for (const [abrev, taux] of Object.entries(TAUX_PC)) {
-            const el = document.getElementById('tresor-' + abrev);
-            total += (parseInt(el?.value) || 0) * taux;
-        }
-        return total;
-    }
-
-    // ── Déduire un montant en pc du trésor (monnaie exacte d'abord) ──
-    function _deduireDuTresor(montantPc) {
-        let reste = montantPc;
-        // Déduire du moins précieux au plus précieux pour minimiser le change
-        const ordre = ['pc','pa','pe','po','pp'];
-        const avant = {};
-        for (const a of ordre) {
-            const el = document.getElementById('tresor-' + a);
-            avant[a] = parseInt(el?.value) || 0;
-        }
-        const apres = { ...avant };
-        // D'abord essayer de payer exactement
-        for (const a of ordre) {
-            if (reste <= 0) break;
-            const possible = Math.min(apres[a], Math.floor(reste / TAUX_PC[a]));
-            apres[a] -= possible;
-            reste    -= possible * TAUX_PC[a];
-        }
-        // Si reste > 0, on doit faire de la monnaie (payer plus et récupérer la monnaie)
-        if (reste > 0) {
-            // Trouver une pièce qui couvre le reste
-            const ordreGrand = ['pa','pe','po','pp'];
-            for (const a of ordreGrand) {
-                if (apres[a] > 0 && TAUX_PC[a] >= reste) {
-                    apres[a] -= 1;
-                    reste    -= TAUX_PC[a];
-                    break;
-                }
-            }
-        }
-        if (reste > 0) return false; // Pas assez de fonds
-        // Rembourser le surplus (si on a payé trop)
-        if (reste < 0) {
-            let surplus = -reste;
-            const ordreRemb = ['pc','pa','pe','po','pp'];
-            for (const a of ordreRemb) {
-                const nb = Math.floor(surplus / TAUX_PC[a]);
-                if (nb > 0) {
-                    apres[a] += nb;
-                    surplus  -= nb * TAUX_PC[a];
-                }
-            }
-        }
-        // Appliquer
-        for (const a of ordre) {
-            const el = document.getElementById('tresor-' + a);
-            if (el) el.value = apres[a];
-        }
-        window.mettreAJourTotalTresor?.();
-        window.sauvegarderTresor?.();
-        _syncBarreTresorEchoppe();
-        return true;
-    }
-
-    // ── Créditer un montant en pc au trésor ───────────────
-    function _crediterTresor(montantPc) {
-        let reste = montantPc;
-        const ordre = ['pp','po','pe','pa','pc'];
-        for (const a of ordre) {
-            if (reste <= 0) break;
-            const nb = Math.floor(reste / TAUX_PC[a]);
-            if (nb > 0) {
-                const el = document.getElementById('tresor-' + a);
-                if (el) el.value = (parseInt(el.value) || 0) + nb;
-                reste -= nb * TAUX_PC[a];
-            }
-        }
-        // Reste en pc
-        if (reste > 0) {
-            const el = document.getElementById('tresor-pc');
-            if (el) el.value = (parseInt(el.value) || 0) + reste;
-        }
-        window.mettreAJourTotalTresor?.();
-        window.sauvegarderTresor?.();
-        _syncBarreTresorEchoppe();
-    }
-
-    // ── Sync barre trésor dans la modale ──────────────────
-    function _syncBarreTresorEchoppe() {
-        for (const abrev of ['pp','po','pe','pa','pc']) {
-            const el  = document.getElementById('tresor-' + abrev);
-            const dst = document.getElementById('et-' + abrev);
-            if (dst) dst.textContent = el ? (parseInt(el.value) || 0) : 0;
-        }
-    }
-
-    // ══════════════════════════════════════════════════════
-    //  INVENTAIRE (stocké en Firestore + mémoire locale)
-    // ══════════════════════════════════════════════════════
-    // Structure: { "Épée longue": { qte: 2, onglet: "armes", icone: "⚔️", prix_pc: 1500 }, ... }
-    window._inventaire = {};
-
-    window.chargerInventaire = async function() {
-        const user = window._firebaseAuth?.currentUser;
-        if (!user) return;
-        try {
-            const _db      = window._firebaseDb;
-            const _doc     = window._firebaseDoc;
-            const _getDoc  = window._firebaseGetDoc;
-            if (!_db || !_doc || !_getDoc) return;
-            const snap = await _getDoc(_doc(_db, 'membres', user.uid));
-            if (snap.exists()) {
-                const d = snap.data();
-                window._inventaire = d.inventaire || {};
-            }
-        } catch(e) { console.warn('Erreur chargement inventaire:', e); }
-    };
-
-    window.sauvegarderInventaire = async function() {
-        const user = window._firebaseAuth?.currentUser;
-        if (!user) return;
-        try {
-            const _db  = window._firebaseDb;
-            const _doc = window._firebaseDoc;
-            const _set = window._firebaseSetDoc;
-            const _ts  = window._firebaseServerTimestamp;
-            if (!_db || !_doc || !_set) return;
-            await _set(_doc(_db, 'membres', user.uid),
-                { inventaire: window._inventaire, mis_a_jour: _ts() },
-                { merge: true });
-        } catch(e) { console.warn('Erreur sauvegarde inventaire:', e); }
-    };
-
-    function _qteInventaire(nomItem) {
-        return window._inventaire[nomItem]?.qte || 0;
-    }
-
-    // ── Toast ──────────────────────────────────────────────
-    let _toastTimer = null;
-    function _afficherToast(msg, ok = true) {
-        const el = document.getElementById('echoppe-toast');
-        if (!el) return;
-        el.textContent = msg;
-        el.style.background = ok ? '#1a3a1a' : '#3a1a1a';
-        el.classList.add('visible');
-        clearTimeout(_toastTimer);
-        _toastTimer = setTimeout(() => el.classList.remove('visible'), 2800);
-    }
-
-    // ══════════════════════════════════════════════════════
-    //  ACTIONS ACHAT / VENTE
-    // ══════════════════════════════════════════════════════
-    window._acheterItem = function(nomItem, ongletId, icone, prixStr) {
-        const inputEl = document.getElementById('qte-' + CSS.escape(nomItem));
-        const qte = inputEl ? Math.max(1, parseInt(inputEl.value) || 1) : 1;
-        const prixUnitPc = _parsePrixEnPc(prixStr);
-        if (!prixUnitPc) { _afficherToast('Prix introuvable pour cet article.', false); return; }
-        const totalPc = prixUnitPc * qte;
-        const tresorPc = _tresorEnPc();
-        if (tresorPc < totalPc) {
-            _afficherToast(`Fonds insuffisants ! Il vous manque ${_formaterPc(totalPc - tresorPc)}.`, false);
-            return;
-        }
-        const ok = _deduireDuTresor(totalPc);
-        if (!ok) { _afficherToast('Impossible de déduire le montant du trésor.', false); return; }
-        // Ajouter à l'inventaire
-        if (!window._inventaire[nomItem]) {
-            window._inventaire[nomItem] = { qte: 0, onglet: ongletId, icone, prix_pc: prixUnitPc };
-        }
-        window._inventaire[nomItem].qte += qte;
-        window.sauvegarderInventaire();
-        const label = qte > 1 ? `${qte}× ${nomItem}` : nomItem;
-        _afficherToast(`⚔️ ${label} acheté${qte > 1 ? 's' : ''} pour ${_formaterPc(totalPc)}`);
-        // Rafraîchir l'affichage
-        _rendreItemsEchoppe(_echoppeOngletActif, document.getElementById('echoppe-recherche')?.value || '');
-    };
-
-    window._vendreItem = function(nomItem, prixStr) {
-        const qtePos = _qteInventaire(nomItem);
-        if (qtePos <= 0) { _afficherToast('Vous ne possédez pas cet article.', false); return; }
-        const inputEl = document.getElementById('qte-' + CSS.escape(nomItem));
-        const qte = inputEl ? Math.min(Math.max(1, parseInt(inputEl.value) || 1), qtePos) : 1;
-        const prixUnitPc = _parsePrixEnPc(prixStr);
-        if (!prixUnitPc) { _afficherToast('Prix de vente introuvable.', false); return; }
-        const totalPc = Math.floor(prixUnitPc * qte * 0.5); // 50%
-        // Retirer de l'inventaire
-        window._inventaire[nomItem].qte -= qte;
-        if (window._inventaire[nomItem].qte <= 0) delete window._inventaire[nomItem];
-        _crediterTresor(totalPc);
-        window.sauvegarderInventaire();
-        const label = qte > 1 ? `${qte}× ${nomItem}` : nomItem;
-        _afficherToast(`💰 ${label} vendu${qte > 1 ? 's' : ''} pour ${_formaterPc(totalPc)} (50%)`);
-        _rendreItemsEchoppe(_echoppeOngletActif, document.getElementById('echoppe-recherche')?.value || '');
-    };
-
-    // Vente d'un item générique (non listé dans l'échoppe)
-    window._vendreItemGenerique = function(nomItem) {
-        const inv = window._inventaire[nomItem];
-        if (!inv || inv.qte <= 0) { _afficherToast('Vous ne possédez pas cet article.', false); return; }
-        const totalPc = Math.floor((inv.prix_pc || 0) * 0.5);
-        window._inventaire[nomItem].qte -= 1;
-        if (window._inventaire[nomItem].qte <= 0) delete window._inventaire[nomItem];
-        _crediterTresor(totalPc);
-        window.sauvegarderInventaire();
-        _afficherToast(`💰 ${nomItem} vendu pour ${_formaterPc(totalPc)} (50%)`);
-    };
-
     function ouvrirEchoppe(ongletDepart) {
         _echoppeOngletActif = ongletDepart || 'armes';
         _construireOngletsEchoppe();
         document.getElementById('echoppe-recherche').value = '';
-        _syncBarreTresorEchoppe();
         document.getElementById('echoppe-modal-overlay').style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        // Charger inventaire si pas encore fait
-        if (Object.keys(window._inventaire).length === 0) {
-            window.chargerInventaire().then(() => {
-                requestAnimationFrame(() => _afficherOngletEchoppe(_echoppeOngletActif));
-            });
-        } else {
-            requestAnimationFrame(() => _afficherOngletEchoppe(_echoppeOngletActif));
-        }
+        // Afficher après que la modale est visible (données disponibles)
+        requestAnimationFrame(() => _afficherOngletEchoppe(_echoppeOngletActif));
     }
     window.ouvrirEchoppe = ouvrirEchoppe;
 
@@ -6977,6 +6698,7 @@
         _echoppeOngletActif = id;
         document.getElementById('echoppe-recherche').value = '';
         const onglet = ECHOPPE_ONGLETS.find(o => o.id === id);
+        // Mettre à jour le sous-titre
         const sousTitre = document.getElementById('echoppe-sous-titre');
         const sousTitres = {
             armes: 'Armes corps-à-corps & distance',
@@ -6990,6 +6712,7 @@
             auberge: 'Hébergement, repas & services',
         };
         if (sousTitre) sousTitre.textContent = sousTitres[id] || '';
+        // Mettre à jour onglets actifs
         document.querySelectorAll('.echoppe-onglet').forEach(el => {
             el.classList.toggle('actif', el.dataset.id === id);
         });
@@ -7028,7 +6751,6 @@
     function _rendreItemsEchoppe(id, recherche) {
         const onglet  = ECHOPPE_ONGLETS.find(o => o.id === id);
         const contenu = document.getElementById('echoppe-contenu');
-        const estConnecte = !!window._firebaseAuth?.currentUser;
 
         const data = onglet?.data();
         if (!data) {
@@ -7062,58 +6784,211 @@
             return;
         }
 
-        const tresorPc = _tresorEnPc();
-
         contenu.innerHTML = Object.entries(groupes).map(([cat, items]) => `
             <div class="echoppe-categorie-titre">${cat}</div>
             ${items.map(([nom, item]) => {
-                const stats   = _getStats(id, nom, item);
-                const prixStr = _getPrix(item);
-                const prixPc  = _parsePrixEnPc(prixStr);
-                const vendPc  = prixPc ? Math.floor(prixPc * 0.5) : null;
-                const qteInv  = _qteInventaire(nom);
-                const peutAcheter = estConnecte && prixPc !== null;
-                const peutVendre  = estConnecte && qteInv > 0;
-                const nomEsc  = nom.replace(/'/g, "\\'");
-                const prixEsc = prixStr.replace(/'/g, "\\'");
-                const icone   = item.icone || '📦';
-
+                const stats = _getStats(id, nom, item);
+                const prix  = _getPrix(item);
                 return `<div class="echoppe-item">
-                    <div class="echoppe-item-icone">${icone}</div>
+                    <div class="echoppe-item-icone">${item.icone || '📦'}</div>
                     <div class="echoppe-item-corps">
-                        <div class="echoppe-item-nom">
-                            ${nom}
-                            ${qteInv > 0 ? `<span class="echoppe-badge-qte">×${qteInv}</span>` : ''}
-                        </div>
+                        <div class="echoppe-item-nom">${nom}</div>
                         ${stats ? `<div class="echoppe-item-stats">${stats}</div>` : ''}
                         <div class="echoppe-item-desc">${item.description || ''}</div>
                     </div>
-                    <div class="echoppe-actions">
-                        <div class="echoppe-item-prix">${prixStr}</div>
-                        ${peutAcheter ? `
-                        <div class="echoppe-qte-wrap">
-                            <button onclick="this.nextElementSibling.value=Math.max(1,(+this.nextElementSibling.value||1)-1)">−</button>
-                            <input type="number" id="qte-${nom}" value="1" min="1" max="99">
-                            <button onclick="this.previousElementSibling.value=Math.min(99,(+this.previousElementSibling.value||1)+1)">+</button>
-                        </div>
-                        <button class="echoppe-btn-acheter"
-                            onclick="window._acheterItem('${nomEsc}','${id}','${icone}','${prixEsc}')">
-                            🛒 Acheter
-                        </button>
-                        ` : !estConnecte ? `<div style="font-family:'Lora',serif;font-style:italic;font-size:0.58rem;color:#9a7a50;">Connexion requise</div>` : ''}
-                        ${peutVendre ? `
-                        <button class="echoppe-btn-vendre"
-                            onclick="window._vendreItem('${nomEsc}','${prixEsc}')">
-                            💰 Vendre (${vendPc ? _formaterPc(vendPc) : '50%'})
-                        </button>
-                        ` : ''}
-                    </div>
+                    <div class="echoppe-item-prix">${prix}</div>
                 </div>`;
             }).join('')}
         `).join('');
     }
 
 
+    </script>
+
+    <script>
+    // ══════════════════════════════════════════════════════
+    //  INVENTAIRE — Section fiche personnage
+    // ══════════════════════════════════════════════════════
+
+    // Catégories affichées dans la fiche (pas potions/parchemins/auberge)
+    const INV_CATS = {
+        armes:      { label:'⚔️ Armes',      data: () => window.MATERIEL_ARMES },
+        armures:    { label:'🛡️ Armures',    data: () => window.MATERIEL_ARMURES },
+        equipement: { label:'🎒 Équipement', data: () => window.MATERIEL_EQUIPEMENT },
+        objets:     { label:'💎 Objets',     data: () => window.MATERIEL_OBJETS },
+        montures:   { label:'🐎 Montures',   data: () => window.MATERIEL_MONTURES },
+        vehicules:  { label:'⚓ Véhicules',  data: () => window.MATERIEL_VEHICULES },
+    };
+
+    let _invCatActive = 'armes';
+
+    // Taux de conversion (pc = pièce de cuivre)
+    const INV_TAUX_PC = { pp:100000, po:1000, pe:500, pa:100, pc:1 };
+
+    function _invParsePrixPc(prixStr) {
+        if (!prixStr || prixStr === '—') return null;
+        const m = String(prixStr).trim().toLowerCase().match(/^([\d,\.]+)\s*(pp|po|pe|pa|pc)$/);
+        if (!m) return null;
+        return Math.round(parseFloat(m[1].replace(',','.')) * INV_TAUX_PC[m[2]]);
+    }
+
+    function _invFormaterPc(pc) {
+        if (!pc || pc <= 0) return '0 pc';
+        const ordre = [['pp',100000],['po',1000],['pe',500],['pa',100],['pc',1]];
+        let r = pc; const parts = [];
+        for (const [a, v] of ordre) { if (r >= v) { const n=Math.floor(r/v); parts.push(`${n} ${a}`); r-=n*v; } }
+        return parts.join(' + ') || '0 pc';
+    }
+
+    // Récupérer les items de l'inventaire appartenant à une catégorie
+    function _invItemsDeCat(catId) {
+        const inv = window._inventaire || {};
+        const data = INV_CATS[catId]?.data() || {};
+        const result = [];
+        for (const [nom, entry] of Object.entries(inv)) {
+            if ((entry.onglet === catId) && entry.qte > 0) {
+                const refItem = data[nom];
+                result.push({
+                    nom,
+                    qte: entry.qte,
+                    icone: entry.icone || refItem?.icone || '📦',
+                    prix_pc: entry.prix_pc || _invParsePrixPc(refItem?.prix || refItem?.cout || ''),
+                });
+            }
+        }
+        return result;
+    }
+
+    window.invAfficherCat = function(catId) {
+        _invCatActive = catId;
+        // Mettre à jour onglets
+        document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn => {
+            btn.classList.toggle('actif', btn.dataset.cat === catId);
+        });
+        _invRendreContenu(catId);
+    };
+
+    function _invRendreContenu(catId) {
+        const contenu = document.getElementById('inv-contenu');
+        if (!contenu) return;
+        const items = _invItemsDeCat(catId);
+
+        if (items.length === 0) {
+            contenu.innerHTML = `<div class="inv-vide">Aucun objet dans cette catégorie.</div>`;
+            return;
+        }
+
+        const totalPc = items.reduce((s, it) => s + (it.prix_pc || 0) * it.qte, 0);
+        const valeurVente = Math.floor(totalPc * 0.5);
+
+        contenu.innerHTML = items.map(it => {
+            const vendPc = it.prix_pc ? Math.floor(it.prix_pc * 0.5) : null;
+            const nomEsc = it.nom.replace(/'/g,"\\'");
+            return `<div class="inv-item">
+                <div class="inv-item-icone">${it.icone}</div>
+                <div class="inv-item-nom">${it.nom}</div>
+                <div class="inv-item-qte">×${it.qte}</div>
+                ${vendPc !== null ? `
+                <button class="inv-btn-vendre" onclick="invVendre('${nomEsc}')">
+                    💰 ${_invFormaterPc(vendPc)}
+                </button>` : ''}
+            </div>`;
+        }).join('') + `<div class="inv-total">Valeur totale de revente : ${_invFormaterPc(valeurVente)}</div>`;
+    }
+
+    window.invVendre = function(nomItem) {
+        const inv = window._inventaire || {};
+        const entry = inv[nomItem];
+        if (!entry || entry.qte <= 0) return;
+        const vendPc = entry.prix_pc ? Math.floor(entry.prix_pc * 0.5) : 0;
+
+        // Déduire de l'inventaire
+        entry.qte -= 1;
+        if (entry.qte <= 0) delete window._inventaire[nomItem];
+
+        // Créditer le trésor
+        _invCrediterTresor(vendPc);
+        window.sauvegarderInventaire?.();
+
+        // Rafraîchir
+        _invRendreContenu(_invCatActive);
+        _invMettreAJourBlocVisible();
+        _syncBarreTresorEchoppe?.();
+
+        // Toast si disponible
+        if (window._afficherToast) window._afficherToast(`💰 ${nomItem} vendu pour ${_invFormaterPc(vendPc)} (50%)`);
+    };
+
+    function _invCrediterTresor(montantPc) {
+        const ordre = ['pp','po','pe','pa','pc'];
+        let r = montantPc;
+        for (const a of ordre) {
+            if (r <= 0) break;
+            const nb = Math.floor(r / INV_TAUX_PC[a]);
+            if (nb > 0) {
+                const el = document.getElementById('tresor-' + a);
+                if (el) el.value = (parseInt(el.value)||0) + nb;
+                r -= nb * INV_TAUX_PC[a];
+            }
+        }
+        if (r > 0) {
+            const el = document.getElementById('tresor-pc');
+            if (el) el.value = (parseInt(el.value)||0) + r;
+        }
+        window.mettreAJourTotalTresor?.();
+        window.sauvegarderTresor?.();
+    }
+
+    // Afficher/cacher le bloc inventaire selon si l'inventaire est vide ou non
+    function _invMettreAJourBlocVisible() {
+        const inv = window._inventaire || {};
+        const aCatVisible = Object.keys(INV_CATS);
+        const aDesItems = Object.values(inv).some(e =>
+            e.qte > 0 && aCatVisible.includes(e.onglet)
+        );
+        const bloc = document.getElementById('bloc-inventaire');
+        if (bloc) bloc.style.display = aDesItems ? 'block' : 'none';
+
+        // Mettre à jour les badges sur les onglets
+        document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn => {
+            const cat = btn.dataset.cat;
+            const n = _invItemsDeCat(cat).reduce((s,i)=>s+i.qte,0);
+            // Retirer ancien badge
+            btn.textContent = btn.textContent.replace(/\s*\(\d+\)$/,'');
+            if (n > 0) btn.textContent += ` (${n})`;
+        });
+    }
+
+    // Hook : appelé après chargement de l'inventaire depuis Firebase
+    const _invOrigCharger = window.chargerInventaire;
+    window.chargerInventaire = async function() {
+        await _invOrigCharger?.();
+        _invMettreAJourBlocVisible();
+        _invRendreContenu(_invCatActive);
+    };
+
+    // Hook : appelé après achat dans l'échoppe pour rafraîchir la fiche
+    const _invOrigAcheter = window._acheterItem;
+    window._acheterItem = function(...args) {
+        _invOrigAcheter?.(...args);
+        setTimeout(() => {
+            _invMettreAJourBlocVisible();
+            _invRendreContenu(_invCatActive);
+        }, 100);
+    };
+
+    // Hook : appelé après vente dans l'échoppe pour rafraîchir la fiche
+    const _invOrigVendre = window._vendreItem;
+    window._vendreItem = function(...args) {
+        _invOrigVendre?.(...args);
+        setTimeout(() => {
+            _invMettreAJourBlocVisible();
+            _invRendreContenu(_invCatActive);
+        }, 100);
+    };
+
+    window._invMettreAJourBlocVisible = _invMettreAJourBlocVisible;
+    window._invRendreContenu = _invRendreContenu;
     </script>
     <!-- ─── TOOLTIP PORTAL (position:fixed, z-index max, jamais clippé) ── -->
     <div id="rpg-tooltip-portal"></div>
@@ -7150,15 +7025,6 @@
                         flex-shrink:0; padding:0 4px;">
             </div>
 
-            <!-- Barre trésor -->
-            <div id="echoppe-tresor-bar">
-                <div class="echoppe-tresor-piece">💎<span class="val" id="et-pp">0</span> pp</div>
-                <div class="echoppe-tresor-piece">🥇<span class="val" id="et-po">0</span> po</div>
-                <div class="echoppe-tresor-piece">🔵<span class="val" id="et-pe">0</span> pe</div>
-                <div class="echoppe-tresor-piece">🥈<span class="val" id="et-pa">0</span> pa</div>
-                <div class="echoppe-tresor-piece">🟤<span class="val" id="et-pc">0</span> pc</div>
-            </div>
-
             <!-- Barre de recherche -->
             <div style="padding:8px 16px; flex-shrink:0; border-bottom:1px solid rgba(212,175,55,0.15);">
                 <input id="echoppe-recherche" type="text" placeholder="🔍 Rechercher..."
@@ -7173,8 +7039,6 @@
             </div>
         </div>
     </div>
-    <!-- Toast notification achat/vente -->
-    <div id="echoppe-toast"></div>
 
         <script>
     // Sexe du personnage
