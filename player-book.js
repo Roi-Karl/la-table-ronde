@@ -57,6 +57,9 @@
     z-index:10; transition:all .2s;
 }
 .book-close-btn:hover { background:#9a1010; transform:scale(1.1); }
+@media (max-width:540px) {
+    .book-close-btn { width:34px; height:34px; font-size:17px; right:8px; top:5px; }
+}
 .book-container { display:flex; height:100%; overflow:hidden; }
 .book-sidebar {
     width:var(--bk-sidebar-w); min-width:var(--bk-sidebar-w);
@@ -194,33 +197,42 @@
 .niveau-table tbody tr:hover { background:rgba(200,168,75,.12); }
 .niveau-badge { display:inline-block; background:var(--bk-royal); color:var(--bk-gold-light); border-radius:50%; width:24px; height:24px; line-height:24px; font-family:var(--bk-font-title); font-size:.75rem; font-weight:bold; }
 @media (max-width:768px) {
-    .book-frame { width:100%; height:100vh; margin:0; border:0; }
-    .book-sidebar { width:220px; min-width:220px; }
+    .book-frame { width:100%; height:100vh; max-width:none; margin:0; border:0; border-radius:0; }
+    .book-sidebar { width:200px; min-width:200px; }
     .book-page { padding:26px 20px 36px; }
     .book-page h1.page-title { font-size:1.45rem; }
     .welcome-columns,.align-grid { grid-template-columns:1fr; }
     .grade-grid { grid-template-columns:1fr; }
+    .book-icon-trigger { bottom:20px; right:20px; width:60px; height:60px; }
+    .seal-inner { font-size:28px; }
 }
 @media (max-width:540px) {
-    .book-container { flex-direction:column; }
-    .book-sidebar { width:100%; min-width:unset; height:auto; border-right:none; border-bottom:2px solid var(--bk-gold2); }
-    #book-toc { display:flex; flex-wrap:wrap; padding:5px; }
+    .book-modal { padding:0; }
+    .book-frame { width:100%; height:100dvh; height:100vh; margin:0; border:0; border-radius:0; display:flex; flex-direction:column; }
+    .book-container { flex-direction:column; flex:1; overflow:hidden; }
+    .book-sidebar {
+        width:100%; min-width:unset; height:auto; max-height:44px;
+        border-right:none; border-bottom:2px solid var(--bk-gold2);
+        overflow:hidden; flex-shrink:0;
+    }
+    .book-sidebar-header,.book-search-bar,.book-sidebar-footer { display:none; }
+    #book-toc { display:flex; flex-wrap:nowrap; overflow-x:auto; padding:4px 6px; gap:2px; flex-shrink:0; }
+    #book-toc::-webkit-scrollbar { display:none; }
     #book-toc > li { flex:0 0 auto; }
-    #book-toc > li > .toc-item { padding:6px 10px; font-size:.68rem; }
-    .toc-sub,.book-sidebar-header,.book-search-bar,.book-sidebar-footer { display:none; }
+    #book-toc > li > .toc-item { padding:6px 9px; font-size:.62rem; white-space:nowrap; }
+    .toc-sub { display:none !important; }
+    .book-content { flex:1; overflow-y:auto; min-height:0; }
+    .book-page { padding:20px 16px 30px; }
+    .book-page h1.page-title { font-size:1.2rem; }
+    .book-icon-trigger { bottom:16px; right:16px; width:54px; height:54px; }
+    .seal-inner { font-size:24px; }
+    .bk-table { font-size:.7rem; }
+    .bk-table th, .bk-table td { padding:5px 6px; }
 }
 `;
     document.head.appendChild(style);
 })();
 
-
-// Utilitaire : convertir description (string, array ou objet {masculin/féminin}) en string propre
-function _descStr(val) {
-    if (!val) return '';
-    if (Array.isArray(val)) return val.join('\n').trim();
-    if (typeof val === 'object') return String(val.masculin || val.feminin || val.féminin || val.description || Object.values(val)[0] || '').trim();
-    return String(val).trim();
-}
 
 const Codex = {
     sections: [
@@ -245,6 +257,18 @@ const Codex = {
         const trigger = document.getElementById('book-trigger');
         const close   = document.getElementById('close-book');
         if (!trigger||!close) return;
+
+        // Cacher le bouton par défaut — visible seulement pour les membres connectés
+        trigger.style.display = 'none';
+        const _waitAuth = setInterval(() => {
+            const auth = window._firebaseAuth;
+            if (!auth) return;
+            clearInterval(_waitAuth);
+            auth.onAuthStateChanged(user => {
+                trigger.style.display = user ? 'flex' : 'none';
+            });
+        }, 150);
+
         const frame = document.querySelector('.book-frame');
         if (frame && !frame.querySelector('.bk-corner-bl')) {
             ['bk-corner-bl','bk-corner-br'].forEach(cls=>{ const d=document.createElement('span'); d.className=cls; d.textContent='✦'; frame.appendChild(d); });
@@ -261,7 +285,6 @@ const Codex = {
 
     renderTOC() {
         const toc = document.getElementById('book-toc');
-        const self = this;
         toc.innerHTML = this.sections.map(s=>{
             const hasSubs = typeof s.subs==='function';
             const subs    = hasSubs ? s.subs() : [];
@@ -276,23 +299,12 @@ const Codex = {
             toc.querySelectorAll(':scope > li').forEach(li=>{ li.style.display=(!q||li.textContent.toLowerCase().includes(q))?'':'none'; });
         });
 
-        // Listeners pour les items parents (avec ou sans subs)
-        toc.querySelectorAll(':scope > li[data-id]').forEach(li=>{
+        toc.querySelectorAll('li[data-id]').forEach(li=>{
             const item=li.querySelector(':scope > .toc-item');
             if (!item) return;
-            item.addEventListener('click', (e)=>{
+            item.addEventListener('click',()=>{
                 if (li.dataset.hasSubs==='true') li.classList.toggle('open');
-                self.loadChapter(li.dataset.id);
-            });
-        });
-
-        // Listeners séparés pour les sous-items
-        toc.querySelectorAll('.toc-sub li[data-id]').forEach(li=>{
-            const item=li.querySelector(':scope > .toc-item');
-            if (!item) return;
-            item.addEventListener('click', (e)=>{
-                e.stopPropagation();
-                self.loadChapter(li.dataset.id);
+                this.loadChapter(li.dataset.id);
             });
         });
     },
@@ -538,7 +550,7 @@ const Codex = {
             <div class="stat-grid">${bon}</div>
             ${d.traits?`<ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
             <button class="card-desc-toggle"><span class="toggle-label">Lire la description</span><span class="toggle-arrow">▸</span></button>
-            <div class="card-desc-body">${_descStr(d.description_joueur)}</div></div>`;
+            <div class="card-desc-body">${(d.description_joueur||'').trim()}</div></div>`;
         }
         return h+`</div>`;
     },
@@ -551,7 +563,7 @@ const Codex = {
         <div class="ornament-center">❧ ✦ ❧</div>
         <h2>⚡ Bonus</h2><div class="stat-grid">${bon}</div>
         ${d.traits?`<h2>🌟 Traits Raciaux</h2><ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
-        <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${_descStr(d.description_joueur)}</div>
+        <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${(d.description_joueur||'').trim()}</div>
         </div>`;
     },
 
@@ -565,7 +577,7 @@ const Codex = {
             <div class="stat-grid">${bon}</div>
             ${d.traits?`<ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
             <button class="card-desc-toggle"><span class="toggle-label">Lire la description</span><span class="toggle-arrow">▸</span></button>
-            <div class="card-desc-body">${_descStr(d.description_joueur||d.description)}</div></div>`;
+            <div class="card-desc-body">${(d.description_joueur||d.description||'').trim()}</div></div>`;
         }
         return h+`</div>`;
     },
@@ -578,7 +590,7 @@ const Codex = {
         <div class="ornament-center">❧ ✦ ❧</div>
         <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;"><span class="stat-tag dv">Dé de Vie : d${d.de_vie||d.des_vie||'?'}</span>${bon}</div>
         ${d.traits?`<h2>⚡ Capacités</h2><ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
-        <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${_descStr(d.description_joueur||d.description)}</div>
+        <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${(d.description_joueur||d.description||'').trim()}</div>
         </div>`;
     },
 
@@ -595,7 +607,7 @@ const Codex = {
                 <span style="font-size:1.9rem;">${d.icone}</span>
                 <h2 style="margin:0;padding:0;border:none;font-family:var(--bk-font-title);color:var(--bk-royal);font-size:1.05rem;">${nom} — ${d.titre||''}</h2>
             </div>
-            <div style="white-space:pre-line;font-size:.86rem;line-height:1.78;color:#1e1509;">${_descStr(d.description_joueur||d.desc)}</div>
+            <div style="white-space:pre-line;font-size:.86rem;line-height:1.78;color:#1e1509;">${(d.description_joueur||d.desc||'').trim()}</div>
         </div>`).join('');
 
         return `<div class="book-page">
