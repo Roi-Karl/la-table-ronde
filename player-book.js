@@ -214,6 +214,13 @@
 })();
 
 
+// Utilitaire : convertir description (string ou array) en string propre
+function _descStr(val) {
+    if (!val) return '';
+    if (Array.isArray(val)) return val.join('\n').trim();
+    return String(val).trim();
+}
+
 const Codex = {
     sections: [
         { id:'accueil',          tit:'Introduction',          ico:'📜' },
@@ -530,7 +537,7 @@ const Codex = {
             <div class="stat-grid">${bon}</div>
             ${d.traits?`<ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
             <button class="card-desc-toggle"><span class="toggle-label">Lire la description</span><span class="toggle-arrow">▸</span></button>
-            <div class="card-desc-body">${(d.description_joueur||'').trim()}</div></div>`;
+            <div class="card-desc-body">${_descStr(d.description_joueur)}</div></div>`;
         }
         return h+`</div>`;
     },
@@ -543,7 +550,7 @@ const Codex = {
         <div class="ornament-center">❧ ✦ ❧</div>
         <h2>⚡ Bonus</h2><div class="stat-grid">${bon}</div>
         ${d.traits?`<h2>🌟 Traits Raciaux</h2><ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
-        <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${(d.description_joueur||'').trim()}</div>
+        <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${_descStr(d.description_joueur)}</div>
         </div>`;
     },
 
@@ -557,7 +564,7 @@ const Codex = {
             <div class="stat-grid">${bon}</div>
             ${d.traits?`<ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
             <button class="card-desc-toggle"><span class="toggle-label">Lire la description</span><span class="toggle-arrow">▸</span></button>
-            <div class="card-desc-body">${(d.description_joueur||d.description||'').trim()}</div></div>`;
+            <div class="card-desc-body">${_descStr(d.description_joueur||d.description)}</div></div>`;
         }
         return h+`</div>`;
     },
@@ -570,7 +577,7 @@ const Codex = {
         <div class="ornament-center">❧ ✦ ❧</div>
         <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;"><span class="stat-tag dv">Dé de Vie : d${d.de_vie||d.des_vie||'?'}</span>${bon}</div>
         ${d.traits?`<h2>⚡ Capacités</h2><ul class="trait-list">${d.traits.map(t=>`<li><span class="trait-ico">${t.icone}</span><span><span class="trait-name">${t.nom} :</span>${t.desc}</span></li>`).join('')}</ul>`:''}
-        <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${(d.description_joueur||d.description||'').trim()}</div>
+        <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${_descStr(d.description_joueur||d.description)}</div>
         </div>`;
     },
 
@@ -587,7 +594,7 @@ const Codex = {
                 <span style="font-size:1.9rem;">${d.icone}</span>
                 <h2 style="margin:0;padding:0;border:none;font-family:var(--bk-font-title);color:var(--bk-royal);font-size:1.05rem;">${nom} — ${d.titre||''}</h2>
             </div>
-            <div style="white-space:pre-line;font-size:.86rem;line-height:1.78;color:#1e1509;">${(d.description_joueur||d.desc||'').trim()}</div>
+            <div style="white-space:pre-line;font-size:.86rem;line-height:1.78;color:#1e1509;">${_descStr(d.description_joueur||d.desc)}</div>
         </div>`).join('');
 
         return `<div class="book-page">
