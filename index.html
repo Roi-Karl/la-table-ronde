@@ -1666,92 +1666,105 @@
             text-align: center;
             padding: 30px 0;
         }
-        /* ── Section Inventaire fiche ───────────────── */
-        .inv-onglets {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 10px;
+        /* ── Section Inventaire fiche (tableaux) ──────── */
+        .inv-section {
+            margin-bottom: 16px;
         }
-        .inv-onglet {
-            font-family: 'Cinzel', serif;
-            font-size: 0.52rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            padding: 4px 8px;
-            border: 1px solid rgba(212,175,55,0.35);
-            border-radius: 3px;
-            cursor: pointer;
-            color: var(--or-sombre);
-            background: transparent;
-            transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
-        }
-        .inv-onglet:hover { background: rgba(212,175,55,0.12); }
-        .inv-onglet.actif {
-            background: var(--rouge-blason);
-            color: var(--parchemin);
-            border-color: var(--rouge-blason);
-        }
-        .inv-item {
+        .inv-table-titre {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 5px 0;
-            border-bottom: 1px solid rgba(212,175,55,0.12);
-        }
-        .inv-item:last-child { border-bottom: none; }
-        .inv-item-icone { font-size: 1.1rem; width: 22px; text-align: center; flex-shrink: 0; }
-        .inv-item-nom {
+            justify-content: center;
+            gap: 7px;
             font-family: 'Cinzel', serif;
-            font-size: 0.65rem;
+            font-size: 0.62rem;
+            font-weight: bold;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--rouge-blason);
+            border: 1.5px solid #3a2a0a;
+            border-radius: 3px 3px 0 0;
+            padding: 4px 10px;
+            background: rgba(212,175,55,0.10);
+            margin-bottom: 0;
+        }
+        .inv-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1.5px solid #3a2a0a;
+            border-top: none;
+            border-radius: 0 0 3px 3px;
+            font-size: 0.62rem;
+            background: rgba(255,255,255,0.25);
+        }
+        .inv-table th {
+            font-family: 'Cinzel', serif;
+            font-size: 0.52rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--rouge-blason);
+            border-bottom: 1.5px solid #3a2a0a;
+            border-right: 1px solid rgba(58,42,10,0.35);
+            padding: 4px 6px;
+            text-align: left;
+            background: rgba(212,175,55,0.06);
+            white-space: nowrap;
+        }
+        .inv-table th:last-child { border-right: none; }
+        .inv-table td {
+            font-family: 'Lora', serif;
+            font-size: 0.6rem;
+            color: #2a1a00;
+            padding: 4px 6px;
+            border-bottom: 1px solid rgba(58,42,10,0.18);
+            border-right: 1px solid rgba(58,42,10,0.18);
+            vertical-align: middle;
+        }
+        .inv-table td:last-child { border-right: none; }
+        .inv-table tr:last-child td { border-bottom: none; }
+        .inv-table .inv-td-nom {
+            font-family: 'Cinzel', serif;
             font-weight: bold;
             color: var(--rouge-blason);
-            flex: 1;
-            min-width: 0;
+            white-space: nowrap;
         }
-        .inv-item-qte {
+        .inv-table .inv-td-icone {
+            text-align: center;
+            font-size: 1rem;
+            width: 26px;
+            padding: 3px 4px;
+        }
+        .inv-table .inv-td-qte {
+            text-align: center;
             font-family: 'Cinzel', serif;
-            font-size: 0.6rem;
-            color: var(--or-sombre);
-            background: rgba(212,175,55,0.1);
-            border: 1px solid rgba(212,175,55,0.3);
-            border-radius: 10px;
-            padding: 1px 7px;
-            flex-shrink: 0;
+            font-weight: bold;
+            width: 36px;
+        }
+        .inv-table .inv-td-vendre {
+            text-align: right;
+            width: 90px;
+            white-space: nowrap;
         }
         .inv-btn-vendre {
             font-family: 'Cinzel', serif;
-            font-size: 0.5rem;
+            font-size: 0.48rem;
             letter-spacing: 0.04em;
-            padding: 3px 7px;
+            padding: 2px 6px;
             background: transparent;
             border: 1px solid var(--or-sombre);
             border-radius: 3px;
             color: var(--or-sombre);
             cursor: pointer;
-            flex-shrink: 0;
             transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
         }
         .inv-btn-vendre:hover { background: var(--or-sombre); color: #fff; }
-        .inv-vide {
-            font-family: 'Lora', serif;
+        .inv-ligne-vide td {
             font-style: italic;
-            font-size: 0.72rem;
-            color: #9a7a50;
+            color: #c0a878;
             text-align: center;
-            padding: 14px 0;
+            height: 28px;
         }
-        .inv-total {
-            font-family: 'Cinzel', serif;
-            font-size: 0.6rem;
-            color: var(--or-sombre);
-            text-align: right;
-            margin-top: 6px;
-            letter-spacing: 0.04em;
-        }
-        /* ── Boutons +/− trésor ─────────────────────── */
+        .inv-section-vide { display: none; }
+                        /* ── Boutons +/− trésor ─────────────────────── */
         .tresor-btn-adj {
             background: none;
             border: 1px solid rgba(212,175,55,0.5);
@@ -2846,19 +2859,7 @@
 
                     <!-- ── INVENTAIRE ── -->
                     <div id="bloc-inventaire" style="margin-top:18px; padding:14px 16px; background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:3px; display:none;">
-                        <p class="fiche-carac-titre" style="margin-bottom:10px;"><span style="font-size:1.6rem;vertical-align:middle;">🎒</span> Inventaire</p>
-
-                        <!-- Onglets catégories -->
-                        <div class="inv-onglets" id="inv-onglets">
-                            <button class="inv-onglet actif" data-cat="armes"      onclick="invAfficherCat('armes')">⚔️ Armes</button>
-                            <button class="inv-onglet"       data-cat="armures"    onclick="invAfficherCat('armures')">🛡️ Armures</button>
-                            <button class="inv-onglet"       data-cat="equipement" onclick="invAfficherCat('equipement')">🎒 Équipement</button>
-                            <button class="inv-onglet"       data-cat="objets"     onclick="invAfficherCat('objets')">💎 Objets</button>
-                            <button class="inv-onglet"       data-cat="montures"   onclick="invAfficherCat('montures')">🐎 Montures</button>
-                            <button class="inv-onglet"       data-cat="vehicules"  onclick="invAfficherCat('vehicules')">⚓ Véhicules</button>
-                        </div>
-
-                        <!-- Contenu de l'onglet actif -->
+                        <p class="fiche-carac-titre" style="margin-bottom:14px;"><span style="font-size:1.6rem;vertical-align:middle;">🎒</span> Inventaire</p>
                         <div id="inv-contenu"></div>
                     </div>
 
@@ -3926,7 +3927,7 @@
                         window.mettreAJourTotalTresor?.();
                         // Charger l'inventaire depuis Firestore
                         window._inventaire = data.inventaire || {};
-                        setTimeout(() => { window._invMettreAJourBlocVisible?.(); window._invRendreContenu?.(_invCatActive || 'armes'); }, 0);
+                        setTimeout(() => { window._invMettreAJourBlocVisible?.(); window._invRendreContenu?.(); }, 0);
                         // pv_niveaux_lances est chargé via profilData dans mettreAJourFicheCaracs
                         profilData.pv_niveaux_lances = data.pv_niveaux_lances || {};
                         if (data.cree_le) dateCreation = data.cree_le.toDate();
@@ -6959,38 +6960,119 @@
 
     // ── Section inventaire fiche ────────────────────────
     const INV_CATS_FICHE = ['armes','armures','equipement','objets','montures','vehicules'];
-    let _invCatActive = 'armes';
+    let _invCatActive = 'armes'; // gardé pour compat
+
+    // ── Colonnes par catégorie ───────────────────────────
+    const INV_COLONNES = {
+        armes: [
+            { key:'icone',    label:'',        css:'inv-td-icone', fn: (nom,e,ref)=>e.icone||ref?.icone||'📦' },
+            { key:'nom',      label:'Arme',    css:'inv-td-nom',   fn: (nom)=>nom },
+            { key:'qte',      label:'Qté',     css:'inv-td-qte',   fn: (nom,e)=>e.qte },
+            { key:'degats',   label:'Dégâts',  css:'',             fn: (nom,e,ref)=>ref?.degats||'—' },
+            { key:'type',     label:'Type',    css:'',             fn: (nom,e,ref)=>ref?.type_degats||'—' },
+            { key:'poids',    label:'Poids',   css:'',             fn: (nom,e,ref)=>ref?.poids||'—' },
+            { key:'vendre',   label:'Vente',   css:'inv-td-vendre',fn: null },
+        ],
+        armures: [
+            { key:'icone',    label:'',        css:'inv-td-icone', fn: (nom,e,ref)=>e.icone||ref?.icone||'📦' },
+            { key:'nom',      label:'Armure',  css:'inv-td-nom',   fn: (nom)=>nom },
+            { key:'qte',      label:'Qté',     css:'inv-td-qte',   fn: (nom,e)=>e.qte },
+            { key:'ca',       label:'CA',      css:'',             fn: (nom,e,ref)=>ref?.ca||'—' },
+            { key:'poids',    label:'Poids',   css:'',             fn: (nom,e,ref)=>ref?.poids||'—' },
+            { key:'vendre',   label:'Vente',   css:'inv-td-vendre',fn: null },
+        ],
+        equipement: [
+            { key:'icone',    label:'',        css:'inv-td-icone', fn: (nom,e,ref)=>e.icone||ref?.icone||'📦' },
+            { key:'nom',      label:'Objet',   css:'inv-td-nom',   fn: (nom)=>nom },
+            { key:'qte',      label:'Qté',     css:'inv-td-qte',   fn: (nom,e)=>e.qte },
+            { key:'poids',    label:'Poids',   css:'',             fn: (nom,e,ref)=>ref?.poids||'—' },
+            { key:'props',    label:'Notes',   css:'',             fn: (nom,e,ref)=>(ref?.proprietes||[]).join(', ')||'—' },
+            { key:'vendre',   label:'Vente',   css:'inv-td-vendre',fn: null },
+        ],
+        objets: [
+            { key:'icone',    label:'',        css:'inv-td-icone', fn: (nom,e,ref)=>e.icone||ref?.icone||'📦' },
+            { key:'nom',      label:'Objet',   css:'inv-td-nom',   fn: (nom)=>nom },
+            { key:'qte',      label:'Qté',     css:'inv-td-qte',   fn: (nom,e)=>e.qte },
+            { key:'props',    label:'Notes',   css:'',             fn: (nom,e,ref)=>(ref?.proprietes||[]).join(', ')||'—' },
+            { key:'vendre',   label:'Vente',   css:'inv-td-vendre',fn: null },
+        ],
+        montures: [
+            { key:'icone',    label:'',        css:'inv-td-icone', fn: (nom,e,ref)=>e.icone||ref?.icone||'📦' },
+            { key:'nom',      label:'Monture', css:'inv-td-nom',   fn: (nom)=>nom },
+            { key:'qte',      label:'Qté',     css:'inv-td-qte',   fn: (nom,e)=>e.qte },
+            { key:'vitesse',  label:'Vitesse', css:'',             fn: (nom,e,ref)=>ref?.vitesse||'—' },
+            { key:'charge',   label:'Charge',  css:'',             fn: (nom,e,ref)=>ref?.charge_max||'—' },
+            { key:'vendre',   label:'Vente',   css:'inv-td-vendre',fn: null },
+        ],
+        vehicules: [
+            { key:'icone',    label:'',         css:'inv-td-icone', fn: (nom,e,ref)=>e.icone||ref?.icone||'📦' },
+            { key:'nom',      label:'Véhicule', css:'inv-td-nom',   fn: (nom)=>nom },
+            { key:'qte',      label:'Qté',      css:'inv-td-qte',   fn: (nom,e)=>e.qte },
+            { key:'props',    label:'Notes',    css:'',             fn: (nom,e,ref)=>(ref?.proprietes||[]).slice(0,1).join('')||'—' },
+            { key:'vendre',   label:'Vente',    css:'inv-td-vendre',fn: null },
+        ],
+    };
+
+    const INV_CAT_META = {
+        armes:      { label:'Armes',      icone:'⚔️', data: ()=>window.MATERIEL_ARMES },
+        armures:    { label:'Armures',    icone:'🛡️', data: ()=>window.MATERIEL_ARMURES },
+        equipement: { label:'Équipement', icone:'🎒', data: ()=>window.MATERIEL_EQUIPEMENT },
+        objets:     { label:'Objets',     icone:'💎', data: ()=>window.MATERIEL_OBJETS },
+        montures:   { label:'Montures',   icone:'🐎', data: ()=>window.MATERIEL_MONTURES },
+        vehicules:  { label:'Véhicules',  icone:'⚓', data: ()=>window.MATERIEL_VEHICULES },
+    };
 
     function _invItemsDeCat(catId) {
         const inv = window._inventaire || {};
+        const refData = INV_CAT_META[catId]?.data() || {};
         const result = [];
         for (const [nom, entry] of Object.entries(inv)) {
             if (entry.onglet === catId && entry.qte > 0) {
-                result.push({ nom, qte:entry.qte, icone:entry.icone||'📦', prix_pc:entry.prix_pc||null });
+                result.push({ nom, entry, ref: refData[nom] || null });
             }
         }
         return result;
     }
 
-    function _invRendreContenu(catId) {
+    function _invRendreTableau(catId) {
+        const items = _invItemsDeCat(catId);
+        if (items.length === 0) return '';
+        const meta = INV_CAT_META[catId];
+        const cols = INV_COLONNES[catId] || [];
+
+        const thead = '<tr>' + cols.map(c =>
+            c.label ? `<th>${c.label}</th>` : '<th></th>'
+        ).join('') + '</tr>';
+
+        const tbody = items.map(({nom, entry, ref}) => {
+            const nomEsc = nom.replace(/\/g,'\\').replace(/'/g,"\'");
+            const vendPc = entry.prix_pc ? Math.floor(entry.prix_pc * 0.5) : null;
+            return '<tr>' + cols.map(c => {
+                if (c.key === 'vendre') {
+                    const btn = vendPc !== null
+                        ? `<button class="inv-btn-vendre" onclick="invVendre('${nomEsc}')">💰 ${_formaterPc(vendPc)}</button>`
+                        : '';
+                    return `<td class="${c.css}">${btn}</td>`;
+                }
+                const val = c.fn ? c.fn(nom, entry, ref) : '';
+                return `<td class="${c.css||''}">${val}</td>`;
+            }).join('') + '</tr>';
+        }).join('');
+
+        return `<div class="inv-section">
+            <div class="inv-table-titre">${meta.icone} ${meta.label}</div>
+            <table class="inv-table">
+                <thead>${thead}</thead>
+                <tbody>${tbody}</tbody>
+            </table>
+        </div>`;
+    }
+
+    function _invRendreContenu() {
         const contenu = document.getElementById('inv-contenu');
         if (!contenu) return;
-        const items = _invItemsDeCat(catId);
-        if (items.length === 0) {
-            contenu.innerHTML = `<div class="inv-vide">Aucun objet dans cette catégorie.</div>`;
-            return;
-        }
-        const totalRevente = items.reduce((s,it)=>s+Math.floor((it.prix_pc||0)*0.5)*it.qte,0);
-        contenu.innerHTML = items.map(it => {
-            const vendPc = it.prix_pc ? Math.floor(it.prix_pc*0.5) : null;
-            const nomEsc = it.nom.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-            return `<div class="inv-item">
-                <div class="inv-item-icone">${it.icone}</div>
-                <div class="inv-item-nom">${it.nom}</div>
-                <div class="inv-item-qte">×${it.qte}</div>
-                ${vendPc !== null ? `<button class="inv-btn-vendre" onclick="invVendre('${nomEsc}')">💰 ${_formaterPc(vendPc)}</button>` : ''}
-            </div>`;
-        }).join('') + (totalRevente > 0 ? `<div class="inv-total">Valeur totale de revente : ${_formaterPc(totalRevente)}</div>` : '');
+        const html = INV_CATS_FICHE.map(cat => _invRendreTableau(cat)).join('');
+        contenu.innerHTML = html || '';
     }
     window._invRendreContenu = _invRendreContenu;
 
@@ -6999,27 +7081,19 @@
         const aDesItems = Object.values(inv).some(e => e.qte > 0 && INV_CATS_FICHE.includes(e.onglet));
         const bloc = document.getElementById('bloc-inventaire');
         if (bloc) bloc.style.display = aDesItems ? 'block' : 'none';
-        // Badges sur les onglets
-        document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn => {
-            const cat = btn.dataset.cat;
-            const n = _invItemsDeCat(cat).reduce((s,i)=>s+i.qte,0);
-            // Icone + label propre
-            const labels = { armes:'⚔️ Armes', armures:'🛡️ Armures', equipement:'🎒 Équipement', objets:'💎 Objets', montures:'🐎 Montures', vehicules:'⚓ Véhicules' };
-            btn.textContent = (labels[cat]||cat) + (n > 0 ? ` (${n})` : '');
-        });
     }
     window._invMettreAJourBlocVisible = _invMettreAJourBlocVisible;
 
     function _invRafraichir() {
         _invMettreAJourBlocVisible();
-        _invRendreContenu(_invCatActive);
+        _invRendreContenu();
     }
 
     window.invAfficherCat = function(catId) {
         _invCatActive = catId;
         document.querySelectorAll('#inv-onglets .inv-onglet').forEach(btn =>
             btn.classList.toggle('actif', btn.dataset.cat === catId));
-        _invRendreContenu(catId);
+        _invRendreContenu();
     };
 
     // ── MODALE ÉCHOPPE ──────────────────────────────────
