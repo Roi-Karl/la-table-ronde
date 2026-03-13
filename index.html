@@ -3687,7 +3687,12 @@
             getDocs,
             query,
             orderBy,
-            limit
+            limit,
+            addDoc,
+            onSnapshot,
+            updateDoc,
+            where,
+            Timestamp
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // ── GRADES → source unique : rpg-data.js (window.RPG_GRADES) ─
@@ -4417,6 +4422,11 @@
         window._firebaseOrderBy   = orderBy;
         window._firebaseLimit     = limit;
         window._firebaseServerTimestamp = serverTimestamp;
+        window._firebaseAddDoc    = addDoc;
+        window._firebaseOnSnapshot = onSnapshot;
+        window._firebaseUpdateDoc = updateDoc;
+        window._firebaseWhere     = where;
+        window._firebaseTimestamp = Timestamp;
         window.GRADES_DATA        = GRADES; // = window.RPG_GRADES via rpg-data.js
         window.NIVEAUX_DATA       = NIVEAUX;
         window.getNiveauFromXP    = getNiveauFromXP;
@@ -6175,6 +6185,9 @@
         const contenu = document.getElementById('fiche-modal-contenu');
         if (!overlay || !contenu) return;
 
+        // Assurer que uid est disponible (Firestore stocke l'uid comme id du document)
+        if (!data.uid && data.id) data.uid = data.id;
+
         const jours   = calcJours(data);
         const xp      = calcXPTotal(data);
         const rang    = getRangFromJours(jours);
@@ -6227,6 +6240,16 @@
             </div>
 
             ${data.histoire ? `<div class="fiche-modal-histoire">✦ ${data.histoire} ✦</div>` : ''}
+
+            ${data.uid && data.uid !== (window._firebaseAuth?.currentUser?.uid) ? `
+            <div style="margin-top:16px;text-align:center;">
+                <button onclick="window.ouvrirMessageriePrive('${data.uid}','${(data.pseudo||'???').replace(/'/g,"\\'")}'); document.getElementById('fiche-modal-overlay').style.display='none'; document.body.style.overflow='';"
+                    style="background:linear-gradient(135deg,#7a0000,#5a0000);color:#f0d070;border:1px solid #c8a84b;border-radius:3px;padding:9px 22px;cursor:pointer;font-family:'Cinzel',serif;font-size:.76rem;letter-spacing:.06em;transition:background .2s;"
+                    onmouseover="this.style.background='linear-gradient(135deg,#9a1010,#7a0000)'"
+                    onmouseout="this.style.background='linear-gradient(135deg,#7a0000,#5a0000)'">
+                    💬 Envoyer un message privé
+                </button>
+            </div>` : ''}
         `;
 
         overlay.style.display = 'flex';
@@ -8836,6 +8859,7 @@
     </div>
     <script src="bestiaire-data.js"></script>
     <script src="player-book.js"></script>
+    <script src="messages.js"></script>
 
 </body>
 </html>
