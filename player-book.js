@@ -1330,7 +1330,7 @@ const Codex = {
         ${cartes}
         </div>`;
     },
-};
+
 renderObjetsMagiques() {
     // On récupère les données (doivent être exposées globalement)
     const items = window.MAGIC_ITEMS_DATA || [];
