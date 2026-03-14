@@ -269,7 +269,7 @@ const Codex = {
             </div>`;
         }
 
-        const categoriesOrdre = ["Armes", "Armures", "Anneaux", "Potions", "Baguettes", "Bâtons", "Sceptres", "Objet merveilleux"];
+        const categoriesOrdre = ["Arme", "Armure", "Anneau", "Potion", "Baguette", "Bâton", "Sceptre", "Objet merveilleux"];
 
         const sectionsHtml = categoriesOrdre.map(cat => {
             const items = window.MAGIC_ITEMS_DATA.filter(o => o.type === cat);
