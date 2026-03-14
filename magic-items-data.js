@@ -7,13 +7,35 @@
 
 const MAGIC_ITEMS_DATA = [
     // 🛡️ ARMURES & BOUCLIERS
-    { nom: "Chemise de mailles en adamantine", type: "Armure", rarete: "Peu commun", lien: false, prix: "5033 po", note: "Transforme les coups critiques subis en coups normaux." },
-    { nom: "Demi-plate en adamantine", type: "Armure", rarete: "Peu commun", lien: false, prix: "6188 po", note: "Transforme les coups critiques subis en coups normaux." },
-    { nom: "Harnois en adamantine", type: "Armure", rarete: "Peu commun", lien: false, prix: "7425 po", note: "Transforme les coups critiques subis en coups normaux." },
-    { nom: "Armure +1", type: "Armure", rarete: "Rare", lien: false, prix: "1980 po", note: "Bonus de +1 à la CA." },
-    { nom: "Armure de vulnérabilité", type: "Armure", rarete: "Rare", lien: true, prix: "0 po", note: "Maudite. Résistance à un type de dégât, mais vulnérabilité à deux autres." },
-    { nom: "Bouclier +1", type: "Armure", rarete: "Peu commun", lien: false, prix: "1518 po", note: "Bonus de +1 à la CA (en plus du bonus normal du bouclier)." },
-    { nom: "Bouclier d'attraction des projectiles", type: "Armure", rarete: "Rare", lien: true, prix: "6000 po", note: "Maudit. Résistance aux dégâts à distance, mais attire les attaques." },
+ // Adamantine (immunité aux critiques)
+    { nom: "Chemise de mailles en adamantine",     type: "Armure", rarete: "Peu commun", lien: false, prix: "5033 po",  note: "Transforme les coups critiques subis en coups normaux." },
+    { nom: "Demi-plate en adamantine",             type: "Armure", rarete: "Peu commun", lien: false, prix: "6188 po",  note: "Transforme les coups critiques subis en coups normaux." },
+    { nom: "Harnois en adamantine",                type: "Armure", rarete: "Peu commun", lien: false, prix: "7425 po",  note: "Transforme les coups critiques subis en coups normaux." },
+
+    // Armures +X (bonus magique simple)
+    { nom: "Armure +1",                            type: "Armure", rarete: "Rare",       lien: false, prix: "1980 po",  note: "Bonus de +1 à la Classe d'Armure." },
+    { nom: "Armure +2",                            type: "Armure", rarete: "Très rare",  lien: false, prix: "6000 po",  note: "Bonus de +2 à la Classe d'Armure." },
+    { nom: "Armure +3",                            type: "Armure", rarete: "Légendaire", lien: false, prix: "18000 po", note: "Bonus de +3 à la Classe d'Armure." },
+
+    // Boucliers +X
+    { nom: "Bouclier +1",                          type: "Armure", rarete: "Peu commun", lien: false, prix: "1518 po",  note: "Bonus de +1 à la Classe d'Armure (en plus du bonus normal du bouclier)." },
+    { nom: "Bouclier +2",                          type: "Armure", rarete: "Rare",       lien: false, prix: "6000 po",  note: "Bonus de +2 à la Classe d'Armure." },
+    { nom: "Bouclier +3",                          type: "Armure", rarete: "Très rare",  lien: false, prix: "18000 po", note: "Bonus de +3 à la Classe d'Armure." },
+
+    // Objets maudits / particuliers
+    { nom: "Armure de vulnérabilité",              type: "Armure", rarete: "Rare",       lien: true,  prix: "0 po",   note: "Maudite. Résistance à un type de dégât, mais vulnérabilité à deux autres types." },
+    { nom: "Bouclier d'attraction des projectiles",type: "Armure", rarete: "Rare",       lien: true,  prix: "6000 po", note: "Maudit. Résistance aux dégâts à distance non magiques, mais attire les projectiles vers vous." },
+
+    // Autres armures classiques / très utiles
+    { nom: "Armure d'invulnérabilité",             type: "Armure", rarete: "Légendaire", lien: false, prix: "48000 po", note: "Vous pouvez utiliser une action pour devenir immunisé aux dégâts non magiques pendant 10 minutes (1 fois par jour)." },
+    { nom: "Armure de résistance",                 type: "Armure", rarete: "Rare",       lien: false, prix: "12000 po", note: "Confère la résistance à un type de dégât (choisi à la création : acide, froid, feu, force, foudre, nécrotique, poison, psychique, radiant, tonnerre)." },
+    { nom: "Cape de protection",                   type: "Armure", rarete: "Peu commun", lien: false, prix: "3600 po",  note: "+1 à la CA et aux jets de sauvegarde. Peut être portée par-dessus une armure." },
+    { nom: "Armure de mithral",                    type: "Armure", rarete: "Peu commun", lien: false, prix: "4000–8000 po", note: "Ignore les exigences de Force et de discrétion de l'armure. Pas de malus de discrétion." },
+
+    // Variantes rares / légendaires emblématiques
+    { nom: "Armure de plates +1 en adamantine",    type: "Armure", rarete: "Rare",       lien: false, prix: "10000 po", note: "Combinaison +1 et adamantine." },
+    { nom: "Harnois de puissance démoniaque",      type: "Armure", rarete: "Très rare",  lien: false, prix: "32000 po", note: "Force 19, mais malédiction possible selon la campagne." },
+    { nom: "Armure de commandement draconique",    type: "Armure", rarete: "Légendaire", lien: false, prix: "65000 po", note: "CA 19 + DEX (max +2), résistance à un type de dégâts draconique, sorts liés aux dragons." },
 
     // ⚔️ ARMES & MUNITIONS
     { nom: "Arme +1", type: "Arme", rarete: "Peu commun", lien: false, prix: "825 po", note: "Bonus de +1 aux jets d'attaque et de dégâts." },
