@@ -309,7 +309,7 @@ const Codex = {
             </div>`;
     },
 
-    _getRareteClass(rarete) {
+_getRareteClass(rarete) {
         switch(rarete) {
             case 'Commun':      return 'ca';
             case 'Peu commun':  return 'positive';
@@ -321,23 +321,21 @@ const Codex = {
     }
 };
 
-// --- INITIALISATION FINALE ---
-
+// --- INITIALISATION SÉCURISÉE ---
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Liaison sécurisée des données (évite les erreurs si un fichier manque)
-    if (typeof SORTS_PAR_CLASSE !== 'undefined') {
-        window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
-    }
-    
-    if (typeof MAGIC_ITEMS_DATA !== 'undefined') {
-        window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
-    }
+    // On lie les données globales
+    if (typeof SORTS_PAR_CLASSE !== 'undefined') window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
+    if (typeof MAGIC_ITEMS_DATA !== 'undefined') window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
 
-    // 2. Initialisation du Codex (Activation du bouton)
-    if (typeof PlayerBook !== 'undefined') {
-        PlayerBook.init();
-        console.log("✅ Codex du Roi Karl prêt.");
+    // On active le bouton de l'icône 📖
+    const bookTrigger = document.getElementById('book-trigger');
+    if (bookTrigger) {
+        bookTrigger.addEventListener('click', () => {
+            PlayerBook.init(); // On initialise le contenu
+            PlayerBook.open(); // On ouvre la fenêtre
+        });
+        console.log("✅ Bouton du Codex activé.");
     } else {
-        console.error("❌ Erreur : L'objet PlayerBook est introuvable dans player-book.js");
+        console.error("❌ Erreur : L'ID 'book-trigger' est introuvable dans le HTML.");
     }
 });
