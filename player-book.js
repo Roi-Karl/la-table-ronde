@@ -490,6 +490,7 @@ const SORTS_PAR_CLASSE = {
 
 // Dédoublonner si "Barde" défini deux fois (la seconde définition simple est un bug — supprimer)
 // (Version complète utilisée par renderSortsClasse)
+window.MAGIC_ITEMS_DATA = window.MAGIC_ITEMS_DATA || [];
 const Codex = {
     sections: [
         { id:'accueil',          tit:'Introduction',          ico:'📜' },
@@ -1330,7 +1331,6 @@ const Codex = {
         ${cartes}
         </div>`;
     },
-
 renderObjetsMagiques() {
     const items = window.MAGIC_ITEMS_DATA || [];
 
