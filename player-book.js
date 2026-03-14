@@ -530,9 +530,7 @@ const Codex = {
         const close   = document.getElementById('close-book');
         if (!trigger||!close) return;
 
-        // Cacher le bouton par défaut — visible seulement pour les membres connectés
-   // Cacher le bouton par défaut
-const trigger = document.getElementById('book-trigger'); // ou querySelector si besoin
+// Cacher le bouton par défaut — visible seulement pour les membres connectés
 trigger.style.display = 'none';
 
 // Attendre que Firebase Auth soit prêt
