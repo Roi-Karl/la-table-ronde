@@ -321,21 +321,38 @@ _getRareteClass(rarete) {
     }
 };
 
-// --- INITIALISATION SÉCURISÉE ---
-document.addEventListener('DOMContentLoaded', () => {
-    // On lie les données globales
-    if (typeof SORTS_PAR_CLASSE !== 'undefined') window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
-    if (typeof MAGIC_ITEMS_DATA !== 'undefined') window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
 
-    // On active le bouton de l'icône 📖
-    const bookTrigger = document.getElementById('book-trigger');
-    if (bookTrigger) {
-        bookTrigger.addEventListener('click', () => {
-            PlayerBook.init(); // On initialise le contenu
-            PlayerBook.open(); // On ouvre la fenêtre
-        });
-        console.log("✅ Bouton du Codex activé.");
+// --- INITIALISATION "FORCEE" ---
+(function() {
+    const initCodex = () => {
+        const bookTrigger = document.getElementById('book-trigger');
+        const closeBtn = document.getElementById('close-book');
+
+        if (bookTrigger) {
+            // On s'assure qu'on n'ajoute pas l'événement deux fois
+            bookTrigger.onclick = null; 
+            bookTrigger.onclick = (e) => {
+                e.preventDefault();
+                PlayerBook.init();
+                PlayerBook.open();
+                console.log("📖 Codex ouvert via clic direct.");
+            };
+            console.log("✅ Lien établi avec l'icône du livre.");
+        }
+
+        if (closeBtn) {
+            closeBtn.onclick = () => PlayerBook.close();
+        }
+    };
+
+    // On essaie d'initialiser immédiatement
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCodex);
     } else {
-        console.error("❌ Erreur : L'ID 'book-trigger' est introuvable dans le HTML.");
+        initCodex();
     }
-});
+
+    // Liaison des données
+    window.SORTS_PAR_CLASSE = typeof SORTS_PAR_CLASSE !== 'undefined' ? SORTS_PAR_CLASSE : [];
+    window.MAGIC_ITEMS_DATA = typeof MAGIC_ITEMS_DATA !== 'undefined' ? MAGIC_ITEMS_DATA : [];
+})();
