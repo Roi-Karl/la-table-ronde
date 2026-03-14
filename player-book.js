@@ -1377,7 +1377,9 @@ renderObjetsMagiques() {
         };
 
         liste.forEach(item => {
-            const rareteClass = rareteMap[item.rarete] || "stat-tag";
+            <div class="grade-seuil ${rareteClass}">
+    ${item.rarete} · ${item.prix}
+</div>
 
             html += `
             <div class="grade-card">
@@ -1408,6 +1410,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
    if (typeof window !== 'undefined') {
     window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
-};
+}
     Codex.init();
 });
