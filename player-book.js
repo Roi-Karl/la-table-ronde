@@ -1347,5 +1347,6 @@ const Codex = {
 };
 document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
+    window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
     Codex.init();
 });
