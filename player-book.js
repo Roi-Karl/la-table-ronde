@@ -1403,6 +1403,7 @@ renderObjetsMagiques() {
     html += `</div>`;
     return html;
 },
+};
 document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
    if (typeof window !== 'undefined') {
