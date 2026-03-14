@@ -533,7 +533,7 @@ init() {
     // Cacher le bouton par défaut
     trigger.style.display = 'none';
 
-    // Attendre que Firebase Auth soit prêt
+    // Attendre Firebase Auth
     const _waitAuth = setInterval(() => {
         const auth = window._firebaseAuth;
         if (!auth) return;
@@ -542,7 +542,6 @@ init() {
         auth.onAuthStateChanged(user => {
             if(user){
                 trigger.style.display = 'flex';
-                // S'assurer que le clic ouvre la modal
                 trigger.onclick = () => {
                     const modal = document.getElementById('player-book-modal');
                     if(modal){
@@ -554,12 +553,14 @@ init() {
             }
         });
     }, 150);
-     close.onclick = () => {
+
+    // Bouton de fermeture
+    close.onclick = () => {
         const modal = document.getElementById('player-book-modal');
         if(modal){
             modal.classList.remove('open');
         }
-  };         
+    };
 }
         const frame = document.querySelector('.book-frame');
         if (frame && !frame.querySelector('.bk-corner-bl')) {
