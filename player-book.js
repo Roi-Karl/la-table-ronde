@@ -517,11 +517,11 @@ const Codex = {
             return cats.map(c=>({id:'bestiaire__'+c.id,tit:c.icone+' '+c.label}));
         }},
         { 
-        id: "objets-magiques", 
-        label: "Objets Magiques", 
-        icon: "🪄", 
-        render: Codex.renderObjetsMagiques 
-    },
+    id: "objets-magiques", 
+    label: "Objets Magiques", 
+    icon: "🪄", 
+    render: () => Codex.renderObjetsMagiques()
+},
     ],
 
     init() {
