@@ -525,42 +525,46 @@ const Codex = {
 },
     ],
 
-init() {
-    const trigger = document.getElementById('book-trigger');
-    const close   = document.getElementById('close-book');
-    if (!trigger || !close) return;
+const Codex = {
+    init() {
+        const trigger = document.getElementById('book-trigger');
+        const close   = document.getElementById('close-book');
+        const modal   = document.getElementById('player-book-modal');
 
-    // Cacher le bouton par défaut
-    trigger.style.display = 'none';
+        if (!trigger || !close || !modal) return;
 
-    // Attendre Firebase Auth
-    const _waitAuth = setInterval(() => {
-        const auth = window._firebaseAuth;
-        if (!auth) return;
-        clearInterval(_waitAuth);
+        // Cacher le bouton par défaut
+        trigger.style.display = 'none';
 
-        auth.onAuthStateChanged(user => {
-            if(user){
-                trigger.style.display = 'flex';
-                trigger.onclick = () => {
-                    const modal = document.getElementById('player-book-modal');
-                    if(modal){
+        // Vérifier Firebase Auth toutes les 150ms
+        const _waitAuth = setInterval(() => {
+            const auth = window._firebaseAuth;
+            if (!auth) return;
+            clearInterval(_waitAuth);
+
+            // Sur changement d'état de connexion
+            auth.onAuthStateChanged(user => {
+                if(user){
+                    trigger.style.display = 'flex';
+                    // S'assurer que le clic ouvre la modal
+                    trigger.onclick = () => {
                         modal.classList.add('open');
-                    }
-                };
-            } else {
-                trigger.style.display = 'none';
-            }
-        });
-    }, 150);
+                    };
+                } else {
+                    trigger.style.display = 'none';
+                }
+            });
+        }, 150);
 
-    // Bouton de fermeture
-    close.onclick = () => {
-        const modal = document.getElementById('player-book-modal');
-        if(modal){
+        // Bouton de fermeture de la modal
+        close.onclick = () => {
             modal.classList.remove('open');
-        }
-    };
+        };
+    },
+
+    // Tu peux ajouter d'autres méthodes du Codex ici
+};
+
 }
         const frame = document.querySelector('.book-frame');
         if (frame && !frame.querySelector('.bk-corner-bl')) {
@@ -1404,9 +1408,9 @@ renderObjetsMagiques() {
     }
 };
 document.addEventListener('DOMContentLoaded', () => {
-    window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
-   if (typeof window !== 'undefined') {
-    window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
+  //  window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
+   //if (typeof window !== 'undefined') {
+    //window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
 }
     Codex.init();
 });
