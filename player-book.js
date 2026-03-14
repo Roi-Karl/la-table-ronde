@@ -525,38 +525,32 @@ const Codex = {
 },
     ],
 
-    init() {
-        const trigger = document.getElementById('book-trigger');
-        const close   = document.getElementById('close-book');
-        if (!trigger||!close) return;
+init() {
+    const trigger = document.getElementById('book-trigger');
+    const close   = document.getElementById('close-book');
+    if (!trigger || !close) return;
 
-// Cacher le bouton par défaut — visible seulement pour les membres connectés
-trigger.style.display = 'none';
+    // Cacher le bouton par défaut
+    trigger.style.display = 'none';
 
-// Attendre que Firebase Auth soit prêt
-const _waitAuth = setInterval(() => {
-    const auth = window._firebaseAuth;
-    if (!auth) return;
-    clearInterval(_waitAuth);
+    // Attendre Firebase Auth
+    const _waitAuth = setInterval(() => {
+        const auth = window._firebaseAuth;
+        if (!auth) return;
+        clearInterval(_waitAuth);
 
-    // Sur changement d'état de connexion
-    auth.onAuthStateChanged(user => {
-        if(user){
-            trigger.style.display = 'flex'; // Affiche le bouton
-            // S'assurer que le clic ouvre la modal comme avant
-            trigger.onclick = () => {
-                const modal = document.getElementById('player-book-modal');
-                if(modal){
-                    modal.classList.add('open'); // même action que le bouton original
-                }
-            };
-        } else {
-            trigger.style.display = 'none';
-        }
-    });
-}, 150);
-
-
+        auth.onAuthStateChanged(user => {
+            if(user){
+                trigger.style.display = 'flex';
+                trigger.onclick = () => {
+                    document.getElementById('player-book-modal')?.classList.add('open');
+                };
+            } else {
+                trigger.style.display = 'none';
+            }
+        });
+    }, 150);
+}
         const frame = document.querySelector('.book-frame');
         if (frame && !frame.querySelector('.bk-corner-bl')) {
             ['bk-corner-bl','bk-corner-br'].forEach(cls=>{ const d=document.createElement('span'); d.className=cls; d.textContent='✦'; frame.appendChild(d); });
