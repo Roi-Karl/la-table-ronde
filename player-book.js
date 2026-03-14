@@ -1393,7 +1393,7 @@ renderObjetsMagiques() {
                 ${sectionsHtml}
             </div>
         `;
-    },
+    },,
     
     _getRareteClass(rarete) {
         switch(rarete) {
