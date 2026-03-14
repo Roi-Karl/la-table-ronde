@@ -321,8 +321,9 @@ const Codex = {
     }
 };
 
+// À la fin de player-book.js
 document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
-    window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
-    Codex.init();
+    // Vérifiez que c'est bien MAGIC_ITEMS_DATA ici :
+    window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA; 
 });
