@@ -531,15 +531,33 @@ const Codex = {
         if (!trigger||!close) return;
 
         // Cacher le bouton par défaut — visible seulement pour les membres connectés
-        trigger.style.display = 'none';
-        const _waitAuth = setInterval(() => {
-            const auth = window._firebaseAuth;
-            if (!auth) return;
-            clearInterval(_waitAuth);
-            auth.onAuthStateChanged(user => {
-                trigger.style.display = user ? 'flex' : 'none';
-            });
-        }, 150);
+   // Cacher le bouton par défaut
+const trigger = document.getElementById('book-trigger'); // ou querySelector si besoin
+trigger.style.display = 'none';
+
+// Attendre que Firebase Auth soit prêt
+const _waitAuth = setInterval(() => {
+    const auth = window._firebaseAuth;
+    if (!auth) return;
+    clearInterval(_waitAuth);
+
+    // Sur changement d'état de connexion
+    auth.onAuthStateChanged(user => {
+        if(user){
+            trigger.style.display = 'flex'; // Affiche le bouton
+            // S'assurer que le clic ouvre la modal comme avant
+            trigger.onclick = () => {
+                const modal = document.getElementById('player-book-modal');
+                if(modal){
+                    modal.classList.add('open'); // même action que le bouton original
+                }
+            };
+        } else {
+            trigger.style.display = 'none';
+        }
+    });
+}, 150);
+
 
         const frame = document.querySelector('.book-frame');
         if (frame && !frame.querySelector('.bk-corner-bl')) {
