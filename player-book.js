@@ -1331,78 +1331,75 @@ const Codex = {
         </div>`;
     },
 
-renderObjetsMagiques() {
-    // On récupère les données (doivent être exposées globalement)
-    const items = window.MAGIC_ITEMS_DATA || [];
+},
 
-    // Grouper par catégorie (type) pour faire des sections jolies
-    const parType = {};
-    items.forEach(item => {
-        const t = item.type || "Autres";
-        if (!parType[t]) parType[t] = [];
-        parType[t].push(item);
-    });
-
-    // Générer le HTML
-    let html = `
-    <div class="book-page">
-        <h1 class="page-title cinzel">Objets Magiques du Royaume</h1>
-        <div class="ornament-center">❧ ✦ ❧</div>
-        
-        <div class="book-intro-box">
-            Trésors enchantés, reliques maudites et merveilles forgées par les anciens. 
-            Que votre bourse soit lourde et votre sagesse plus encore.
-            <cite>— Maître Orfèvre Elowen Vif-argent</cite>
-        </div>
-
-        <div class="book-card" style="margin-bottom:24px;">
-            <ul class="trait-list">
-                <li><span class="trait-ico">🪙</span><span><span class="trait-name">Prix indicatif :</span> Valeur marchande moyenne sur le marché noir / guildes.</span></li>
-                <li><span class="trait-ico">✨</span><span><span class="trait-name">Rareté :</span> Commun → Légendaire (difficulté d'obtention croissante).</span></li>
-            </ul>
-        </div>
-    `;
-
-    // Pour chaque type → section + cartes
-    Object.entries(parType).forEach(([type, liste]) => {
-        html += `
-        <h2>${type} (${liste.length})</h2>
-        <div class="grade-grid">
-        `;
-
-        liste.forEach(item => {
-            const rareteClass = {
-                "Commun":      "stat-tag",
-                "Peu commun":  "stat-tag positive",
-                "Rare":        "stat-tag dv",
-                "Très rare":   "stat-tag warn",
-                "Légendaire":  "stat-tag" // ou autre classe stylée
-            }[item.rarete] || "stat-tag";
-
-            html += `
-            <div class="grade-card">
-                <div class="grade-card-header">
-                    <span class="grade-ico">🪄</span>
-                    <div>
-                        <div class="grade-name">${item.nom}</div>
-                        <div class="grade-seuil">
-                            ${item.rarete} · ${item.prix}
-                        </div>
-                    </div>
-                </div>
-                <div class="grade-tooltip">
-                    ${item.note || "—"}
-                </div>
-            </div>
-            `;
+    renderObjetsMagiques() {
+        const items = window.MAGIC_ITEMS_DATA || [];
+        const parType = {};
+        items.forEach(item => {
+            const t = item.type || "Autres";
+            if (!parType[t]) parType[t] = [];
+            parType[t].push(item);
         });
 
-        html += `</div><div class="ornament-divider"><span>✦</span></div>`;
-    });
+        let html = `
+        <div class="book-page">
+            <h1 class="page-title cinzel">Objets Magiques du Royaume</h1>
+            <div class="ornament-center">❧ ✦ ❧</div>
+            
+            <div class="book-intro-box">
+                Trésors enchantés, reliques maudites et merveilles forgées par les anciens. 
+                Que votre bourse soit lourde et votre sagesse plus encore.
+                <cite>— Maître Orfèvre Elowen Vif-argent</cite>
+            </div>
 
-    html += `</div>`;
-    return html;
-},
+            <div class="book-card" style="margin-bottom:24px;">
+                <ul class="trait-list">
+                    <li><span class="trait-ico">🪙</span><span><span class="trait-name">Prix indicatif :</span> Valeur marchande moyenne sur le marché noir / guildes.</span></li>
+                    <li><span class="trait-ico">✨</span><span><span class="trait-name">Rareté :</span> Commun → Légendaire (difficulté d'obtention croissante).</span></li>
+                </ul>
+            </div>
+        `;
+
+        Object.entries(parType).forEach(([type, liste]) => {
+            html += `
+            <h2>${type} (${liste.length})</h2>
+            <div class="grade-grid">
+            `;
+
+            liste.forEach(item => {
+                const rareteClass = {
+                    "Commun":      "stat-tag",
+                    "Peu commun":  "stat-tag positive",
+                    "Rare":        "stat-tag dv",
+                    "Très rare":   "stat-tag warn",
+                    "Légendaire":  "stat-tag"
+                }[item.rarete] || "stat-tag";
+
+                html += `
+                <div class="grade-card">
+                    <div class="grade-card-header">
+                        <span class="grade-ico">🪄</span>
+                        <div>
+                            <div class="grade-name">${item.nom}</div>
+                            <div class="grade-seuil">
+                                ${item.rarete} · ${item.prix}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grade-tooltip">
+                        ${item.note || "—"}
+                    </div>
+                </div>
+                `;
+            });
+
+            html += `</div><div class="ornament-divider"><span>✦</span></div>`;
+        });
+
+        html += `</div>`;
+        return html;
+    },
 document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
    if (typeof window !== 'undefined') {
