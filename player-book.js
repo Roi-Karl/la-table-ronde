@@ -1331,8 +1331,6 @@ const Codex = {
         </div>`;
     },
 
-},
-
 renderObjetsMagiques() {
     const items = window.MAGIC_ITEMS_DATA || [];
 
