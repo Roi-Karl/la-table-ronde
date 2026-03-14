@@ -1377,7 +1377,7 @@ renderObjetsMagiques() {
 
     html += `</div>`;
     return html;
-}
+},
  init() {
         console.log("Codex init");
     }
