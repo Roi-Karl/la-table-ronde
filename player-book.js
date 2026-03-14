@@ -1,29 +1,28 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- *  PLAYER-BOOK.JS  ✦  Le Codex du Domaine du Roi Karl
- *  Design : Parchemin Vivant — Version Complète
+ * PLAYER-BOOK.JS ✦ Le Codex du Domaine du Roi Karl
+ * Design : Parchemin Vivant — Version Complète
  * ═══════════════════════════════════════════════════════════════
  */
-
 (function injectCodexStyles() {
     if (document.getElementById('codex-styles')) return;
     const style = document.createElement('style');
     style.id = 'codex-styles';
     style.textContent = `
 :root {
-    --bk-parchment:  #f5ead4;
-    --bk-leather:    #3e2006;
-    --bk-leather2:   #5c3210;
-    --bk-ink:        #1e1509;
-    --bk-royal:      #7a0000;
-    --bk-royal2:     #5a0000;
-    --bk-gold:       #c8a84b;
-    --bk-gold2:      #a8882b;
+    --bk-parchment: #f5ead4;
+    --bk-leather: #3e2006;
+    --bk-leather2: #5c3210;
+    --bk-ink: #1e1509;
+    --bk-royal: #7a0000;
+    --bk-royal2: #5a0000;
+    --bk-gold: #c8a84b;
+    --bk-gold2: #a8882b;
     --bk-gold-light: #f0d070;
-    --bk-font-body:  'Lora', Georgia, serif;
+    --bk-font-body: 'Lora', Georgia, serif;
     --bk-font-title: 'Cinzel', 'Times New Roman', serif;
-    --bk-sidebar-w:  265px;
-    --bk-radius:     4px;
+    --bk-sidebar-w: 265px;
+    --bk-radius: 4px;
 }
 .book-icon-trigger {
     position:fixed; bottom:30px; right:30px; width:72px; height:72px;
@@ -47,7 +46,7 @@
     display:flex; flex-direction:column; overflow:hidden;
 }
 .book-frame::before { content:'✦'; position:absolute; top:6px; left:8px; color:var(--bk-gold); font-size:16px; z-index:5; pointer-events:none; }
-.book-frame::after  { content:'✦'; position:absolute; top:6px; right:8px; color:var(--bk-gold); font-size:16px; z-index:5; pointer-events:none; }
+.book-frame::after { content:'✦'; position:absolute; top:6px; right:8px; color:var(--bk-gold); font-size:16px; z-index:5; pointer-events:none; }
 .bk-corner-bl { position:absolute; bottom:6px; left:8px; color:var(--bk-gold); font-size:16px; z-index:5; pointer-events:none; }
 .bk-corner-br { position:absolute; bottom:6px; right:8px; color:var(--bk-gold); font-size:16px; z-index:5; pointer-events:none; }
 .book-close-btn {
@@ -120,8 +119,8 @@
 .stat-grid { display:flex; flex-wrap:wrap; gap:5px; margin:9px 0; }
 .stat-tag { background:var(--bk-leather); color:var(--bk-gold); padding:2px 9px; border-radius:2px; font-size:.71rem; font-family:var(--bk-font-title); letter-spacing:.05em; white-space:nowrap; border:1px solid rgba(200,168,75,.3); }
 .stat-tag.positive { background:#1a3a1a; color:#7ecb7e; }
-.stat-tag.dv  { background:#3a1a00; color:#e8a060; }
-.stat-tag.ca  { background:#0d2040; color:#80b0e0; }
+.stat-tag.dv { background:#3a1a00; color:#e8a060; }
+.stat-tag.ca { background:#0d2040; color:#80b0e0; }
 .stat-tag.warn { background:#3a2a00; color:#e8c860; }
 .trait-list { list-style:none; padding:0; margin:9px 0 0; }
 .trait-list li { display:flex; gap:8px; padding:7px 0; border-bottom:1px solid rgba(0,0,0,.06); font-size:.86rem; line-height:1.55; align-items:flex-start; }
@@ -139,8 +138,8 @@
 .bk-table tbody tr:hover { background:rgba(200,168,75,.1); }
 .bk-table .hidden { display:none; }
 .dmg-tag { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:2px; font-family:var(--bk-font-title); }
-.dmg-tag.tranchant  { background:#3a1a1a; color:#e88080; }
-.dmg-tag.perforant  { background:#1a2a3a; color:#80aacc; }
+.dmg-tag.tranchant { background:#3a1a1a; color:#e88080; }
+.dmg-tag.perforant { background:#1a2a3a; color:#80aacc; }
 .dmg-tag.contondant { background:#2a2a1a; color:#c0b060; }
 .price-tag { color:var(--bk-gold2); font-weight:bold; font-family:var(--bk-font-title); }
 .prop { font-size:.69rem; color:rgba(62,32,6,.55); font-style:italic; }
@@ -169,8 +168,8 @@
 .carac-table th { background:var(--bk-leather); color:var(--bk-gold); padding:8px 11px; font-family:var(--bk-font-title); font-size:.73rem; font-weight:normal; letter-spacing:.05em; text-align:left; }
 .carac-table td { padding:7px 11px; border-bottom:1px solid rgba(0,0,0,.07); }
 .carac-table tbody tr:hover { background:rgba(200,168,75,.08); }
-.modif-pos  { color:#2a7a2a; font-weight:bold; }
-.modif-neg  { color:#8a2020; font-weight:bold; }
+.modif-pos { color:#2a7a2a; font-weight:bold; }
+.modif-neg { color:#8a2020; font-weight:bold; }
 .modif-zero { color:rgba(30,21,9,.4); }
 .monnaie-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(165px,1fr)); gap:11px; margin-top:13px; }
 .monnaie-card { padding:14px; border-radius:var(--bk-radius); border:1px solid rgba(200,168,75,.3); background:rgba(255,255,255,.3); text-align:center; }
@@ -232,8 +231,6 @@
 `;
     document.head.appendChild(style);
 })();
-
-
 // Utilitaire : convertir description (string, array ou objet {masculin/féminin}) en string propre
 function _descStr(val) {
     if (!val) return '';
@@ -241,14 +238,11 @@ function _descStr(val) {
     if (typeof val === 'object') return String(val.masculin || val.feminin || val.féminin || val.description || Object.values(val)[0] || '').trim();
     return String(val).trim();
 }
-
 /* ═══════════════════════════════════════════════════════════════
- *  SORTS PAR CLASSE — Données Phase 3
- *  Chaque classe lanceuse de sorts avec ses sorts emblématiques
+ * SORTS PAR CLASSE — Données Phase 3
+ * Chaque classe lanceuse de sorts avec ses sorts emblématiques
  * ═══════════════════════════════════════════════════════════════ */
-
 const SORTS_PAR_CLASSE = {
-
     "Barde": {
         carac_sort: "CHA",
         carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
@@ -258,11 +252,11 @@ const SORTS_PAR_CLASSE = {
         sorts_connus: "4 au niveau 1",
         emplacements_niv1: 2,
         table_emplacements: [
-            { niveau:1,  slots:{0:2,1:2} },
-            { niveau:2,  slots:{0:2,1:3} },
-            { niveau:3,  slots:{0:2,1:4,2:2} },
-            { niveau:4,  slots:{0:3,1:4,2:3} },
-            { niveau:5,  slots:{0:3,1:4,2:3,3:2} },
+            { niveau:1, slots:{0:2,1:2} },
+            { niveau:2, slots:{0:2,1:3} },
+            { niveau:3, slots:{0:2,1:4,2:2} },
+            { niveau:4, slots:{0:3,1:4,2:3} },
+            { niveau:5, slots:{0:3,1:4,2:3,3:2} },
         ],
         sorts: [
             // Tours de magie
@@ -281,7 +275,6 @@ const SORTS_PAR_CLASSE = {
             { niveau:2, nom:"Fracas", icone:"🔔", ecole:"Évocation", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"Explosion sonore dans une sphère de 3 m. JS Constitution DD ou 3d8 tonnerre + sourd 1 round. Objets non portés automatiquement touchés." },
         ],
     },
-
     "Clerc": {
         carac_sort: "SAG",
         carac_sort_complet: "Sagesse — DD de sauvegarde = 8 + bonus maîtrise + mod. SAG",
@@ -290,11 +283,11 @@ const SORTS_PAR_CLASSE = {
         style: "Guérison, soutien divin et combat sacré",
         emplacements_niv1: 2,
         table_emplacements: [
-            { niveau:1,  slots:{0:3,1:2} },
-            { niveau:2,  slots:{0:3,1:3} },
-            { niveau:3,  slots:{0:3,1:4,2:2} },
-            { niveau:4,  slots:{0:4,1:4,2:3} },
-            { niveau:5,  slots:{0:4,1:4,2:3,3:2} },
+            { niveau:1, slots:{0:3,1:2} },
+            { niveau:2, slots:{0:3,1:3} },
+            { niveau:3, slots:{0:3,1:4,2:2} },
+            { niveau:4, slots:{0:4,1:4,2:3} },
+            { niveau:5, slots:{0:4,1:4,2:3,3:2} },
         ],
         sorts: [
             { niveau:0, nom:"Flamme sacrée", icone:"🔥", ecole:"Évocation", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"JS Dextérité DD ou 1d8 dégâts radiants. Ignore la couverture. (2d8 niv.5, 3d8 niv.11, 4d8 niv.17)" },
@@ -309,7 +302,6 @@ const SORTS_PAR_CLASSE = {
             { niveau:3, nom:"Revigorer", icone:"💛", ecole:"Nécromancie", temps_incantation:"1 action", portee:"9 m", duree:"Instantané", description:"Restaure 3d8 + mod. SAG PV. La cible ne peut pas bénéficier du sort à nouveau avant un repos court." },
         ],
     },
-
     "Druide": {
         carac_sort: "SAG",
         carac_sort_complet: "Sagesse — DD de sauvegarde = 8 + bonus maîtrise + mod. SAG",
@@ -318,11 +310,11 @@ const SORTS_PAR_CLASSE = {
         style: "Nature, métamorphose et magie élémentaire",
         emplacements_niv1: 2,
         table_emplacements: [
-            { niveau:1,  slots:{0:2,1:2} },
-            { niveau:2,  slots:{0:2,1:3} },
-            { niveau:3,  slots:{0:2,1:4,2:2} },
-            { niveau:4,  slots:{0:3,1:4,2:3} },
-            { niveau:5,  slots:{0:3,1:4,2:3,3:2} },
+            { niveau:1, slots:{0:2,1:2} },
+            { niveau:2, slots:{0:2,1:3} },
+            { niveau:3, slots:{0:2,1:4,2:2} },
+            { niveau:4, slots:{0:3,1:4,2:3} },
+            { niveau:5, slots:{0:3,1:4,2:3,3:2} },
         ],
         sorts: [
             { niveau:0, nom:"Poignée de foudre", icone:"⚡", ecole:"Évocation", temps_incantation:"1 action", portee:"Contact", duree:"Instantané", description:"JS Dextérité DD ou 1d8 foudre. La cible ne peut pas effectuer de réaction jusqu'à son prochain tour. (2d8 niv.5)" },
@@ -336,7 +328,6 @@ const SORTS_PAR_CLASSE = {
             { niveau:3, nom:"Appel de la foudre", icone:"🌩️", ecole:"Conjuration", concentration:true, temps_incantation:"1 action", portee:"36 m (nuage à 90-120 m de hauteur)", duree:"Concentration, 10 min", description:"Nuage d'orage. Chaque tour (action bonus) : foudre sur un point visible → JS Dextérité DD ou 3d10 foudre." },
         ],
     },
-
     "Ensorceleur": {
         carac_sort: "CHA",
         carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
@@ -346,11 +337,11 @@ const SORTS_PAR_CLASSE = {
         sorts_connus: "2 au niveau 1",
         emplacements_niv1: 2,
         table_emplacements: [
-            { niveau:1,  slots:{0:4,1:2} },
-            { niveau:2,  slots:{0:4,1:3} },
-            { niveau:3,  slots:{0:4,1:4,2:2} },
-            { niveau:4,  slots:{0:5,1:4,2:3} },
-            { niveau:5,  slots:{0:5,1:4,2:3,3:2} },
+            { niveau:1, slots:{0:4,1:2} },
+            { niveau:2, slots:{0:4,1:3} },
+            { niveau:3, slots:{0:4,1:4,2:2} },
+            { niveau:4, slots:{0:5,1:4,2:3} },
+            { niveau:5, slots:{0:5,1:4,2:3,3:2} },
         ],
         sorts: [
             { niveau:0, nom:"Rayon de givre", icone:"❄️", ecole:"Évocation", temps_incantation:"1 action", portee:"18 m", duree:"Instantané", description:"Attaque à distance : 1d8 froid. La cible voit sa vitesse réduite de 3 m jusqu'à son prochain tour." },
@@ -364,7 +355,6 @@ const SORTS_PAR_CLASSE = {
             { niveau:2, nom:"Flétrissement", icone:"💀", ecole:"Nécromancie", temps_incantation:"1 action", portee:"9 m", duree:"Instantané", description:"JS Constitution DD ou 3d8 nécrotique (moitié en cas de succès). Aucun effet sur les morts-vivants et constructions." },
         ],
     },
-
     "Sorcier": {
         carac_sort: "CHA",
         carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
@@ -374,11 +364,11 @@ const SORTS_PAR_CLASSE = {
         sorts_connus: "2 au niveau 1",
         emplacements_niv1: 1,
         table_emplacements: [
-            { niveau:1,  slots:{0:2,1:1} },
-            { niveau:2,  slots:{0:2,1:2} },
-            { niveau:3,  slots:{0:2,2:2} },
-            { niveau:4,  slots:{0:3,2:2} },
-            { niveau:5,  slots:{0:3,3:2} },
+            { niveau:1, slots:{0:2,1:1} },
+            { niveau:2, slots:{0:2,1:2} },
+            { niveau:3, slots:{0:2,2:2} },
+            { niveau:4, slots:{0:3,2:2} },
+            { niveau:5, slots:{0:3,3:2} },
         ],
         sorts: [
             { niveau:0, nom:"Eldritch Blast", icone:"⚡", ecole:"Évocation", temps_incantation:"1 action", portee:"36 m", duree:"Instantané", description:"1 rayon de force : attaque à distance, 1d10 force. Personnalisable via Invocations (explosif, répulsif, affaiblissant, effrayant...). Devient 2 rayons niv.5, 3 niv.11, 4 niv.17." },
@@ -393,7 +383,6 @@ const SORTS_PAR_CLASSE = {
             { niveau:3, nom:"Contresort", icone:"🚫", ecole:"Abjuration", temps_incantation:"1 réaction", portee:"18 m", duree:"Instantané", description:"Réaction : interrompt un sort de niveau 3 ou moins (automatique). Pour niveau 4+ : JS INT DD 10+niveau du sort. En cas d'échec, le sort adverse fonctionne." },
         ],
     },
-
     "Magicien": {
         carac_sort: "INT",
         carac_sort_complet: "Intelligence — DD de sauvegarde = 8 + bonus maîtrise + mod. INT",
@@ -402,11 +391,11 @@ const SORTS_PAR_CLASSE = {
         style: "Puissance maximale à haut niveau, fragilité physique, préparation et polyvalence absolues",
         emplacements_niv1: 2,
         table_emplacements: [
-            { niveau:1,  slots:{0:3,1:2} },
-            { niveau:2,  slots:{0:3,1:3} },
-            { niveau:3,  slots:{0:3,1:4,2:2} },
-            { niveau:4,  slots:{0:4,1:4,2:3} },
-            { niveau:5,  slots:{0:4,1:4,2:3,3:2} },
+            { niveau:1, slots:{0:3,1:2} },
+            { niveau:2, slots:{0:3,1:3} },
+            { niveau:3, slots:{0:3,1:4,2:2} },
+            { niveau:4, slots:{0:4,1:4,2:3} },
+            { niveau:5, slots:{0:4,1:4,2:3,3:2} },
         ],
         sorts: [
             // Tours de magie
@@ -430,7 +419,6 @@ const SORTS_PAR_CLASSE = {
             { niveau:3, nom:"Vol", icone:"🦅", ecole:"Transmutation", concentration:true, temps_incantation:"1 action", portee:"Contact", duree:"Concentration, 10 min", description:"Confère une vitesse de vol de 18 m. +1 cible par emplacement supérieur." },
         ],
     },
-
     "Paladin": {
         carac_sort: "CHA",
         carac_sort_complet: "Charisme — DD de sauvegarde = 8 + bonus maîtrise + mod. CHA",
@@ -439,10 +427,10 @@ const SORTS_PAR_CLASSE = {
         style: "Combat sacré, protection divine, sorts de soutien offensifs",
         emplacements_niv1: 2,
         table_emplacements: [
-            { niveau:2,  slots:{1:2} },
-            { niveau:3,  slots:{1:3} },
-            { niveau:4,  slots:{1:3} },
-            { niveau:5,  slots:{1:4,2:2} },
+            { niveau:2, slots:{1:2} },
+            { niveau:3, slots:{1:3} },
+            { niveau:4, slots:{1:3} },
+            { niveau:5, slots:{1:4,2:2} },
         ],
         sorts: [
             { niveau:1, nom:"Châtiment destructeur", icone:"⚡", ecole:"Évocation", concentration:true, temps_incantation:"1 action bonus", portee:"Personnel", duree:"Concentration, 1 min", description:"Prochaine attaque réussie : +2d6 foudre supplémentaires. La cible et les créatures dans 1,5 m doivent réussir un JS Dextérité ou être aveuglées jusqu'à la fin de votre prochain tour." },
@@ -453,7 +441,6 @@ const SORTS_PAR_CLASSE = {
             { niveau:2, nom:"Trouver destrier", icone:"🐴", ecole:"Invocation", rituel:false, temps_incantation:"10 min", portee:"9 m", duree:"Instantané", description:"Convoque un esprit en forme de destrier (cheval, poney, mastiff...). Lien télépathique. Disparaît à 0 PV." },
         ],
     },
-
     "Moine": {
         carac_sort: "SAG",
         carac_sort_complet: "Sagesse (traditions de certains archétypes uniquement)",
@@ -469,7 +456,6 @@ const SORTS_PAR_CLASSE = {
             { niveau:0, nom:"Arrêt du temps (ki)", icone:"⏸️", ecole:"Capacité de ki", temps_incantation:"Réaction", portee:"Personnel", duree:"Instantané", description:"Dépensez 1 ki : réaction pour dévier un projectile (réduit les dégâts de 1d10 + DEX + niveau Moine). À haut niveau, peut renvoyer le projectile." },
         ],
     },
-
     "Roublard": {
         carac_sort: "INT",
         carac_sort_complet: "Intelligence (Escroc arcanique uniquement, sous-classe niv.3)",
@@ -487,44 +473,39 @@ const SORTS_PAR_CLASSE = {
         ],
     },
 };
-
 // Dédoublonner si "Barde" défini deux fois (la seconde définition simple est un bug — supprimer)
-// (Version complète utilisée par renderSortsClasse)
 const Codex = {
     sections: [
-        { id:'accueil',          tit:'Introduction',          ico:'📜' },
-        { id:'grades',      tit:'La Hiérarchie',       ico:'👑' },
-        { id:'regles',           tit:'Règles Fondamentales',  ico:'🎲' },
-        { id:'alignements', tit:'Les Alignements',    ico:'⚖️' },
-        { id:'caracteristiques', tit:'Caractéristiques',      ico:'⚡' },
-        { id:'niveaux',          tit:'Niveaux & Progression', ico:'📈' },
-        { id:'races',   tit:'Les Peuples',   ico:'🧑', subs:()=>Object.keys(window.RPG_RACES||{}).map(k=>({id:'race__'+k,tit:(window.RPG_RACES[k].icone||'')+' '+k})) },
-        { id:'classes', tit:'Les Vocations', ico:'⚔️', subs:()=>Object.keys(window.RPG_CLASSES||{}).map(k=>({id:'classe__'+k,tit:(window.RPG_CLASSES[k].icone||'')+' '+k})) },        
-        { id:'sorts',       tit:'Sorts & Magie',        ico:'✨', subs:()=>{
+        { id:'accueil', tit:'Introduction', ico:'📜' },
+        { id:'grades', tit:'La Hiérarchie', ico:'👑' },
+        { id:'regles', tit:'Règles Fondamentales', ico:'🎲' },
+        { id:'alignements', tit:'Les Alignements', ico:'⚖️' },
+        { id:'caracteristiques', tit:'Caractéristiques', ico:'⚡' },
+        { id:'niveaux', tit:'Niveaux & Progression', ico:'📈' },
+        { id:'races', tit:'Les Peuples', ico:'🧑', subs:()=>Object.keys(window.RPG_RACES||{}).map(k=>({id:'race__'+k,tit:(window.RPG_RACES[k].icone||'')+' '+k})) },
+        { id:'classes', tit:'Les Vocations', ico:'⚔️', subs:()=>Object.keys(window.RPG_CLASSES||{}).map(k=>({id:'classe__'+k,tit:(window.RPG_CLASSES[k].icone||'')+' '+k})) },
+        { id:'sorts', tit:'Sorts & Magie', ico:'✨', subs:()=>{
             const cl=window.RPG_CLASSES||{};
             const lanceurs=window.SORTS_PAR_CLASSE||{};
             return Object.keys(cl).filter(k=>lanceurs[k]!==undefined).map(k=>({id:'sorts__'+k,tit:(cl[k].icone||'')+' '+k}));
         }},
-        { id:'monnaie',     tit:'Monnaie & Commerce',  ico:'🪙' },
-        { id:'armes',       tit:"L'Arsenal",           ico:'🗡️' },
-        { id:'armures',     tit:'Les Armures',         ico:'🛡️' },
-        { id:'equipement',  tit:"L'Équipement",        ico:'🎒' },
-        { id:'auberge',     tit:'Auberge & Services',  ico:'🏨' },
-        { id:'montures',    tit:'Montures & Véhicules', ico:'🐎' },
-        { id:'magie-objets',tit:'Objets Magiques',      ico:'🔮' },
-        { id:'lois',        tit:'Les Lois',             ico:'📋' },
-        { id:'bestiaire',   tit:'Bestiaire',            ico:'🐉', subs:()=>{
+        { id:'monnaie', tit:'Monnaie & Commerce', ico:'🪙' },
+        { id:'armes', tit:"L'Arsenal", ico:'🗡️' },
+        { id:'armures', tit:'Les Armures', ico:'🛡️' },
+        { id:'equipement', tit:"L'Équipement", ico:'🎒' },
+        { id:'auberge', tit:'Auberge & Services', ico:'🏨' },
+        { id:'montures', tit:'Montures & Véhicules', ico:'🐎' },
+        { id:'magie-objets',tit:'Objets Magiques', ico:'🔮' },
+        { id:'lois', tit:'Les Lois', ico:'📋' },
+        { id:'bestiaire', tit:'Bestiaire', ico:'🐉', subs:()=>{
             const cats=window.RPG_BESTIAIRE_CATEGORIES||[];
             return cats.map(c=>({id:'bestiaire__'+c.id,tit:c.icone+' '+c.label}));
         }},
     ],
-
     init() {
         const trigger = document.getElementById('book-trigger');
-        const close   = document.getElementById('close-book');
+        const close = document.getElementById('close-book');
         if (!trigger||!close) return;
-
-        // Cacher le bouton par défaut — visible seulement pour les membres connectés
         trigger.style.display = 'none';
         const _waitAuth = setInterval(() => {
             const auth = window._firebaseAuth;
@@ -534,7 +515,6 @@ const Codex = {
                 trigger.style.display = user ? 'flex' : 'none';
             });
         }, 150);
-
         const frame = document.querySelector('.book-frame');
         if (frame && !frame.querySelector('.bk-corner-bl')) {
             ['bk-corner-bl','bk-corner-br'].forEach(cls=>{ const d=document.createElement('span'); d.className=cls; d.textContent='✦'; frame.appendChild(d); });
@@ -548,25 +528,21 @@ const Codex = {
             if (e.target===e.currentTarget) document.getElementById('player-book-modal').style.display='none';
         });
     },
-
     renderTOC() {
         const toc = document.getElementById('book-toc');
         const self = this;
         toc.innerHTML = this.sections.map(s=>{
             const hasSubs = typeof s.subs==='function';
-            const subs    = hasSubs ? s.subs() : [];
-            const arrow   = hasSubs ? `<span class="toc-arrow">▶</span>` : '';
+            const subs = hasSubs ? s.subs() : [];
+            const arrow = hasSubs ? `<span class="toc-arrow">▶</span>` : '';
             const subHtml = hasSubs && subs.length ? `<ul class="toc-sub">${subs.map(sub=>`<li data-id="${sub.id}"><span class="toc-item">${sub.tit}</span></li>`).join('')}</ul>` : '';
             return `<li data-id="${s.id}" data-has-subs="${hasSubs}"><span class="toc-item"><span class="toc-ico">${s.ico}</span>${s.tit}${arrow}</span>${subHtml}</li>`;
         }).join('');
-
         const si = document.getElementById('book-search-input');
         if (si) si.addEventListener('input', e=>{
             const q=e.target.value.toLowerCase();
             toc.querySelectorAll(':scope > li').forEach(li=>{ li.style.display=(!q||li.textContent.toLowerCase().includes(q))?'':'none'; });
         });
-
-        // Listeners items parents
         toc.querySelectorAll(':scope > li[data-id]').forEach(li=>{
             const item=li.querySelector(':scope > .toc-item');
             if (!item) return;
@@ -575,8 +551,6 @@ const Codex = {
                 self.loadChapter(li.dataset.id);
             });
         });
-
-        // Listeners sous-items (stopPropagation pour éviter de déclencher le parent)
         toc.querySelectorAll('.toc-sub li[data-id]').forEach(li=>{
             const item=li.querySelector(':scope > .toc-item');
             if (!item) return;
@@ -586,7 +560,6 @@ const Codex = {
             });
         });
     },
-
     setActiveLink(id) {
         document.querySelectorAll('#book-toc li').forEach(li=>li.classList.remove('active'));
         document.querySelectorAll(`#book-toc li[data-id="${id}"]`).forEach(li=>{
@@ -594,15 +567,14 @@ const Codex = {
             const p=li.closest('.toc-sub')?.closest('li'); if(p) p.classList.add('open');
         });
     },
-
     loadChapter(id) {
         this.setActiveLink(id);
         const d = document.getElementById('book-display-area');
         let html='';
-        if      (id.startsWith('race__'))        html=this.renderRaceDetail(id.replace('race__',''));
-        else if (id.startsWith('classe__'))      html=this.renderClasseDetail(id.replace('classe__',''));
-        else if (id.startsWith('sorts__'))       html=this.renderSortsClasse(id.replace('sorts__',''));
-        else if (id.startsWith('bestiaire__'))   html=this.renderBestiaireCat(id.replace('bestiaire__',''));
+        if (id.startsWith('race__')) html=this.renderRaceDetail(id.replace('race__',''));
+        else if (id.startsWith('classe__')) html=this.renderClasseDetail(id.replace('classe__',''));
+        else if (id.startsWith('sorts__')) html=this.renderSortsClasse(id.replace('sorts__',''));
+        else if (id.startsWith('bestiaire__')) html=this.renderBestiaireCat(id.replace('bestiaire__',''));
         else {
             const map={
                 accueil:()=>this.renderAccueil(),
@@ -623,13 +595,11 @@ const Codex = {
                 'magie-objets':()=>this.renderObjetsMagiques(),
                 lois:()=>this.renderLois(),
                 bestiaire:()=>this.renderBestiaire(),
-                
             };
             html = map[id] ? map[id]() : `<div class="book-page"><p>Chapitre introuvable.</p></div>`;
         }
         d.innerHTML=html; d.scrollTop=0; this.bindEvents(id);
     },
-
     bindEvents(id) {
         document.querySelectorAll('.card-desc-toggle').forEach(btn=>{
             btn.addEventListener('click',()=>{
@@ -664,9 +634,7 @@ const Codex = {
         }
         document.querySelectorAll('[data-nav]').forEach(el=>el.addEventListener('click',()=>this.loadChapter(el.dataset.nav)));
     },
-
     /* ─────────────────── CHAPITRES ─────────────────── */
-
     renderAccueil() {
         return `<div class="book-page">
         <h1 class="page-title cinzel">Codex du Royaume</h1>
@@ -691,7 +659,7 @@ const Codex = {
             <li data-nav="auberge">🏨 Auberge & Services</li>
             <li data-nav="montures">🐎 Montures & Véhicules</li>
             <li data-nav="lois">📋 Les Lois du Royaume</li>
-            <li data-nav="Bestiaire">🐉 Bestiaire</li>
+            <li data-nav="bestiaire">🐉 Bestiaire</li>
         </ul></div>
         <div class="welcome-col"><h3>⚔️ À Savoir en Priorité</h3><ul>
             <li>Jet de base = d20 + modificateur vs DD</li>
@@ -705,7 +673,6 @@ const Codex = {
         </ul></div>
         </div></div>`;
     },
-
     renderRegles() {
         return `<div class="book-page">
         <h1 class="page-title cinzel">Règles Fondamentales</h1>
@@ -753,7 +720,6 @@ const Codex = {
         ${[['😵 Assommé','Incapacité + tombe à terre + rate jets Force/Dex'],['😨 Charmé','Ne peut pas attaquer le charmeur, avantage pour lui en Charisme'],['🔒 Entravé','Vitesse 0, désavantage attaque, avantage adversaires'],['😱 Effrayé','Désavantage jets+attaques si source visible, ne peut pas s\'approcher'],['🤢 Empoisonné','Désavantage aux jets d\'attaque et de caractéristique'],['❌ Incapacité','Ne peut plus agir ni réagir'],['🫥 Invisible','Avantage attaque, adversaires désavantagés, impossible à cibler certains sorts'],['💀 Mort','Jets sauvegarde mort — 3 succès = stable, 3 échecs = mort'],['🧊 Pétrifié','Transformé en pierre, résistances, immunisé poison/maladie'],['😵 Sonné','Rate tout JS, tombe KO sur attaque, avantage total ennemis']].map(([e,d])=>`<tr><td><strong>${e}</strong></td><td style="font-size:.82rem;">${d}</td></tr>`).join('')}
         </tbody></table></div>`;
     },
-
     renderCaracs() {
         const caracs=[
             {abr:'FOR',nom:'Force',desc:'Puissance physique. Attaques CC, escalade, poussée, port de charge.',classes:'Guerrier, Barbare, Paladin',ex:'Attaque à la hache, enfoncer une porte'},
@@ -775,7 +741,6 @@ const Codex = {
                 <div style="flex:1;min-width:150px;"><strong style="color:var(--bk-royal);">Exemples :</strong> <em style="color:rgba(30,21,9,.6);">${c.ex}</em></div>
             </div>
         </div>`).join('');
-
         return `<div class="book-page">
         <h1 class="page-title cinzel">Les 6 Caractéristiques</h1>
         <div class="ornament-center">❧ ✦ ❧</div>
@@ -800,7 +765,6 @@ const Codex = {
         </tbody></table>
         </div>`;
     },
-
     renderNiveaux() {
         const bm=[0,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6];
         const xp=[0,300,900,2700,6500,14000,23000,34000,48000,64000,85000,100000,120000,140000,165000,195000,225000,265000,305000,355000];
@@ -832,7 +796,6 @@ const Codex = {
             <p><strong>Repos long :</strong> récupère la moitié des DV totaux.</p>
         </div></div>`;
     },
-
     renderRaces() {
         const races=window.RPG_RACES||{};
         let h=`<div class="book-page"><h1 class="page-title cinzel">Les Peuples du Royaume</h1><div class="ornament-center">❧ ✦ ❧</div><p>Choisissez le peuple qui résonne avec votre âme — il façonnera vos capacités, vos traits et votre rôle dans le monde.</p>`;
@@ -847,7 +810,6 @@ const Codex = {
         }
         return h+`</div>`;
     },
-
     renderRaceDetail(nom) {
         const d=(window.RPG_RACES||{})[nom]; if(!d) return `<div class="book-page"><p>Race introuvable.</p></div>`;
         const bon=Object.entries(d.bonus||{}).map(([s,v])=>`<span class="stat-tag">${s.toUpperCase()} +${v}</span>`).join('');
@@ -859,7 +821,6 @@ const Codex = {
         <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${_descStr(d.description_joueur)}</div>
         </div>`;
     },
-
     renderClasses() {
         const cl=window.RPG_CLASSES||{};
         let h=`<div class="book-page"><h1 class="page-title cinzel">Les Vocations</h1><div class="ornament-center">❧ ✦ ❧</div><p>Votre vocation est le chemin que votre âme a choisi. Chaque classe offre un style de jeu unique.</p>`;
@@ -874,7 +835,6 @@ const Codex = {
         }
         return h+`</div>`;
     },
-
     renderClasseDetail(nom) {
         const d=(window.RPG_CLASSES||{})[nom]; if(!d) return `<div class="book-page"><p>Classe introuvable.</p></div>`;
         const bon=Object.entries(d.bonus||{}).map(([s,v])=>`<span class="stat-tag positive">${s.toUpperCase()} +${v}</span>`).join('');
@@ -886,7 +846,6 @@ const Codex = {
         <h2>📖 Description</h2><div class="book-intro-box" style="font-style:normal;white-space:pre-line;">${_descStr(d.description_joueur||d.description)}</div>
         </div>`;
     },
-
     renderAlignements() {
         const al=window.RPG_ALIGNEMENTS||{};
         const entries=Object.entries(al);
@@ -902,7 +861,6 @@ const Codex = {
             </div>
             <div style="white-space:pre-line;font-size:.86rem;line-height:1.78;color:#1e1509;">${_descStr(d.description_joueur||d.desc)}</div>
         </div>`).join('');
-
         return `<div class="book-page">
         <h1 class="page-title cinzel">Les 9 Alignements</h1>
         <div class="ornament-center">❧ ✦ ❧</div>
@@ -910,7 +868,6 @@ const Codex = {
         <div class="align-grid">${cards}</div>
         </div>`;
     },
-
     renderArmes() {
         const armes=window.MATERIEL_ARMES||{};
         const cats=[...new Set(Object.values(armes).map(a=>a.categorie).filter(Boolean))];
@@ -928,7 +885,6 @@ const Codex = {
         <table class="bk-table"><thead><tr><th>Arme</th><th>Dégâts</th><th>Type</th><th>Poids</th><th>Prix</th></tr></thead><tbody id="armes-tb">${rows}</tbody></table>
         </div>`;
     },
-
     renderArmures() {
         const armures=window.MATERIEL_ARMURES||{};
         const cats=[...new Set(Object.values(armures).map(a=>a.categorie).filter(Boolean))];
@@ -952,7 +908,6 @@ const Codex = {
         <table class="bk-table"><thead><tr><th>Armure</th><th>CA</th><th>Poids</th><th>Prix</th></tr></thead><tbody id="armures-tb">${rows}</tbody></table>
         </div>`;
     },
-
     renderEquipement() {
         const eq=window.MATERIEL_EQUIPEMENT||{};
         const ob=window.MATERIEL_OBJETS||{};
@@ -979,7 +934,6 @@ const Codex = {
         <table class="bk-table"><thead><tr><th>Objet</th><th>Poids</th><th>Prix</th></tr></thead><tbody>${rowsOb}</tbody></table>
         </div>`;
     },
-
     renderAuberge() {
         const hebergement=[
             {nom:'Lit en dortoir',ico:'🛏️',prix:'7 pc/nuit',desc:'Salle partagée avec inconnus. Peu confortable mais économique.'},
@@ -1014,7 +968,6 @@ const Codex = {
         <table class="bk-table"><thead><tr><th>Service</th><th>Prix</th><th>Description</th></tr></thead><tbody>${rows}</tbody></table>
         </div>`;
     },
-
     renderMontures() {
         const mo=window.MATERIEL_MONTURES||{};
         const ve=window.MATERIEL_VEHICULES||{};
@@ -1044,7 +997,6 @@ const Codex = {
         <table class="bk-table"><thead><tr><th>Véhicule</th><th>Vitesse</th><th>Capacité</th><th>Prix</th></tr></thead><tbody>${rowsV}</tbody></table>
         </div>`;
     },
-
     renderMonnaie() {
         const mo=window.RPG_MONNAIE||{};
         const or=window.RPG_MONNAIE_ORDRE||Object.keys(mo);
@@ -1071,7 +1023,6 @@ const Codex = {
         ${[['Repas frugal','3 pc'],['Nuit en dortoir','7 pc'],['Repas ordinaire','1 pa'],['Chambre simple','5 pa/nuit'],['Cheval de selle','75 po'],['Armure de plaques','1 500 po'],['Manoir moyen','25 000 po'],['Château royal','500 000 po+']].map(([a,p])=>`<tr><td>${a}</td><td><span class="price-tag">${p}</span></td></tr>`).join('')}
         </tbody></table></div>`;
     },
-
     renderGrades() {
         const grades=window.RPG_GRADES||[];
         const cards=grades.map((g,i)=>{
@@ -1099,7 +1050,6 @@ const Codex = {
         <div class="grade-grid">${cards}</div>
         </div>`;
     },
-
     renderLois() {
         const lois=[
             {ico:'🤝',titre:'Courtoisie',texte:"L'insulte, le mépris ou le harcèlement envers un frère ou une sœur d'armes est proscrit. Le respect est la première armure de la Table Ronde.",sanction:'Avertissement, puis exclusion temporaire ou définitive.'},
@@ -1126,9 +1076,7 @@ const Codex = {
         <div style="text-align:center;font-family:var(--bk-font-title);font-size:.82rem;color:rgba(122,0,0,.5);letter-spacing:.08em;">Signé et scellé de la Main du Roi Karl<br><span style="font-size:1.3rem;opacity:.3;margin-top:4px;display:block;">⚜️</span></div>
         </div>`;
     },
-
     /* ─────────────────── SORTS & MAGIE ─────────────────── */
-
     renderSorts() {
         const cl = window.RPG_CLASSES || {};
         const lanceurs = Object.entries(cl).filter(([k]) => (window.SORTS_PAR_CLASSE||{})[k] !== undefined);
@@ -1166,21 +1114,16 @@ const Codex = {
         ${cartes}
         </div>`;
     },
-
     renderSortsClasse(nom) {
         const d = (window.RPG_CLASSES || {})[nom];
         if (!d) return `<div class="book-page"><p>Classe introuvable.</p></div>`;
         const info = SORTS_PAR_CLASSE[nom] || {};
         const sorts = info.sorts || [];
         const niveaux = [0,1,2,3,4,5,6,7,8,9];
-
-        // Table emplacements
         const slotRows = (info.table_emplacements || []).map(r => {
             const cells = niveaux.map(n => `<td style="text-align:center;">${r.slots[n]||'—'}</td>`).join('');
             return `<tr><td style="text-align:center;"><span class="niveau-badge">${r.niveau}</span></td>${cells}</tr>`;
         }).join('');
-
-        // Sorts par niveau
         const sortsSections = niveaux.map(n => {
             const liste = sorts.filter(s => s.niveau === n);
             if (!liste.length) return '';
@@ -1197,8 +1140,8 @@ const Codex = {
                             <span style="font-size:.7rem;color:rgba(62,32,6,.45);">${s.ecole||''}</span>
                         </div>
                         <div style="font-size:.78rem;color:rgba(30,21,9,.55);margin-top:2px;">
-                            ${s.temps_incantation ? `⏱ ${s.temps_incantation}` : ''} 
-                            ${s.portee ? `· 📍 ${s.portee}` : ''} 
+                            ${s.temps_incantation ? `⏱ ${s.temps_incantation}` : ''}
+                            ${s.portee ? `· 📍 ${s.portee}` : ''}
                             ${s.duree ? `· ⌛ ${s.duree}` : ''}
                         </div>
                         <div style="font-size:.82rem;color:rgba(30,21,9,.7);margin-top:4px;line-height:1.55;">${s.description}</div>
@@ -1209,14 +1152,12 @@ const Codex = {
                 <div style="background:${coulBg};">${items}</div>
             </div>`;
         }).join('');
-
         const slotTable = slotRows ? `
         <h2>📊 Emplacements de sorts par niveau</h2>
         <div style="overflow-x:auto;"><table class="bk-table" style="min-width:500px;">
         <thead><tr><th style="text-align:center;">Niv.</th>${niveaux.map(n=>`<th style="text-align:center;">${n===0?'Tours':n}</th>`).join('')}</tr></thead>
         <tbody>${slotRows}</tbody></table></div>
         <div class="ornament-divider"><span>✦</span></div>` : '';
-
         return `<div class="book-page">
         <div style="display:flex;align-items:center;gap:16px;margin-bottom:5px;">
             <span style="font-size:2.8rem;">${d.icone}</span>
@@ -1236,9 +1177,7 @@ const Codex = {
         ${sortsSections || '<p>Aucun sort référencé pour cette classe.</p>'}
         </div>`;
     },
-
     /* ─────────────────── BESTIAIRE ─────────────────── */
-
     renderBestiaire() {
         const b = window.RPG_BESTIAIRE || {};
         const cats = window.RPG_BESTIAIRE_CATEGORIES || [];
@@ -1267,14 +1206,12 @@ const Codex = {
         ${resume}
         </div>`;
     },
-
     renderBestiaireCat(catId) {
         const b = window.RPG_BESTIAIRE || {};
         const cats = window.RPG_BESTIAIRE_CATEGORIES || [];
         const cat = cats.find(c => c.id === catId);
         if (!cat) return `<div class="book-page"><p>Catégorie introuvable.</p></div>`;
         const creatures = Object.entries(b).filter(([,e]) => e.categorie === catId);
-
         const cartes = creatures.map(([nom, e], idx) => {
             const caracHtml = Object.entries(e.carac||{}).map(([k,v]) => {
                 const mod = Math.floor((v-10)/2);
@@ -1298,7 +1235,6 @@ const Codex = {
                 e.resistances?.length ? `<span class="stat-tag" style="background:#2a3a1a;color:#90c080;">Résist: ${e.resistances.join(', ')}</span>` : '',
                 e.immunites?.length ? `<span class="stat-tag" style="background:#1a1a3a;color:#8080d0;">Immun: ${e.immunites.join(', ')}</span>` : '',
             ].filter(Boolean).join('');
-
             return `<div class="book-card" style="border-left:4px solid ${e.couleur||'var(--bk-royal)'};margin-bottom:14px;">
                 <div class="book-card-header" style="cursor:pointer;" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.bst-arrow').textContent=this.nextElementSibling.classList.contains('open')?'▾':'▸';">
                     <span style="font-size:1.8rem;">${e.icone}</span>
@@ -1329,7 +1265,6 @@ const Codex = {
                 </div>
             </div>`;
         }).join('');
-
         return `<div class="book-page">
         <h1 class="page-title cinzel">${cat.icone} ${cat.label}</h1>
         <div class="ornament-center">❧ ✦ ❧</div>
@@ -1337,21 +1272,17 @@ const Codex = {
         ${cartes}
         </div>`;
     },
-};
+    /* ─────────────────── OBJETS MAGIQUES ─────────────────── */
+    renderObjetsMagiques() {
+        if (!window.MAGIC_ITEMS_DATA) 
+            return `<div class="book-page"><p>Données des objets magiques introuvables. Vérifiez le fichier js.</p></div>`;
 
-document.addEventListener('DOMContentLoaded', () => {
-    window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
-    Codex.init();
-
-renderObjetsMagiques() {
-        if (!window.MAGIC_ITEMS_DATA) return `<div class="book-page"><p>Données des objets magiques introuvables. Vérifiez le fichier js.</p></div>`;
-        
         const categoriesOrdre = ["Armes", "Armures", "Anneaux", "Potions", "Baguettes", "Bâtons", "Sceptres", "Objet merveilleux"];
-        
+
         const sectionsHtml = categoriesOrdre.map(cat => {
             const items = window.MAGIC_ITEMS_DATA.filter(o => o.type === cat);
             if (items.length === 0) return '';
-    
+
             return `
                 <div class="ornament-divider"><span>✦</span></div>
                 <h2>${cat}</h2>
@@ -1382,27 +1313,33 @@ renderObjetsMagiques() {
                 </div>
             `;
         }).join('');
-    
+
         return `
             <div class="book-page">
                 <h1 class="page-title cinzel">Les Objets Magiques</h1>
                 <div class="ornament-center">❧ ✦ ❧</div>
                 <div class="book-intro-box">
-                    Les reliques enchantées du Domaine sont rares, puissantes, et souvent dangereuses. Le symbole 🔗 indique que l'objet nécessite une harmonisation (un lien magique avec son porteur) pour dévoiler ses pouvoirs.
+                    Les reliques enchantées du Domaine sont rares, puissantes, et souvent dangereuses. 
+                    Le symbole 🔗 indique que l'objet nécessite une harmonisation (un lien magique avec son porteur) 
+                    pour dévoiler ses pouvoirs.
                 </div>
                 ${sectionsHtml}
             </div>
         `;
-    },,
-    
+    },
+
     _getRareteClass(rarete) {
         switch(rarete) {
-            case 'Commun': return 'ca';             // Bleu sombre
-            case 'Peu commun': return 'positive';   // Vert
-            case 'Rare': return 'dv';               // Orange
-            case 'Très rare': return 'warn';        // Jaune
-            case 'Légendaire': return 'royal';      // Rouge (Défini dans ton CSS de base via var)
-            default: return '';
+            case 'Commun':      return 'ca';
+            case 'Peu commun':  return 'positive';
+            case 'Rare':        return 'dv';
+            case 'Très rare':   return 'warn';
+            case 'Légendaire':  return 'royal';
+            default:            return '';
         }
     }
+};
+document.addEventListener('DOMContentLoaded', () => {
+    window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
+    Codex.init();
 });
