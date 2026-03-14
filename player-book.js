@@ -493,25 +493,26 @@ const SORTS_PAR_CLASSE = {
 const Codex = {
     sections: [
         { id:'accueil',          tit:'Introduction',          ico:'📜' },
+        { id:'grades',      tit:'La Hiérarchie',       ico:'👑' },
         { id:'regles',           tit:'Règles Fondamentales',  ico:'🎲' },
+        { id:'alignements', tit:'Les Alignements',    ico:'⚖️' },
         { id:'caracteristiques', tit:'Caractéristiques',      ico:'⚡' },
         { id:'niveaux',          tit:'Niveaux & Progression', ico:'📈' },
         { id:'races',   tit:'Les Peuples',   ico:'🧑', subs:()=>Object.keys(window.RPG_RACES||{}).map(k=>({id:'race__'+k,tit:(window.RPG_RACES[k].icone||'')+' '+k})) },
-        { id:'classes', tit:'Les Vocations', ico:'⚔️', subs:()=>Object.keys(window.RPG_CLASSES||{}).map(k=>({id:'classe__'+k,tit:(window.RPG_CLASSES[k].icone||'')+' '+k})) },
-        { id:'alignements', tit:'Les Alignements',    ico:'⚖️' },
-        { id:'armes',       tit:"L'Arsenal",           ico:'🗡️' },
-        { id:'armures',     tit:'Les Armures',         ico:'🛡️' },
-        { id:'equipement',  tit:"L'Équipement",        ico:'🎒' },
-        { id:'auberge',     tit:'Auberge & Services',  ico:'🏨' },
-        { id:'montures',    tit:'Montures & Véhicules', ico:'🐎' },
-        { id:'monnaie',     tit:'Monnaie & Commerce',  ico:'🪙' },
-        { id:'grades',      tit:'La Hiérarchie',       ico:'👑' },
-        { id:'lois',        tit:'Les Lois',             ico:'📋' },
+        { id:'classes', tit:'Les Vocations', ico:'⚔️', subs:()=>Object.keys(window.RPG_CLASSES||{}).map(k=>({id:'classe__'+k,tit:(window.RPG_CLASSES[k].icone||'')+' '+k})) },        
         { id:'sorts',       tit:'Sorts & Magie',        ico:'✨', subs:()=>{
             const cl=window.RPG_CLASSES||{};
             const lanceurs=window.SORTS_PAR_CLASSE||{};
             return Object.keys(cl).filter(k=>lanceurs[k]!==undefined).map(k=>({id:'sorts__'+k,tit:(cl[k].icone||'')+' '+k}));
         }},
+        { id:'monnaie',     tit:'Monnaie & Commerce',  ico:'🪙' },
+        { id:'armes',       tit:"L'Arsenal",           ico:'🗡️' },
+        { id:'armures',     tit:'Les Armures',         ico:'🛡️' },
+        { id:'equipement',  tit:"L'Équipement",        ico:'🎒' },
+        { id:'auberge',     tit:'Auberge & Services',  ico:'🏨' },
+        { id:'montures',    tit:'Montures & Véhicules', ico:'🐎' },
+        { id:'magie-objets',tit:'Objets Magiques',      ico:'🔮' },
+        { id:'lois',        tit:'Les Lois',             ico:'📋' },
         { id:'bestiaire',   tit:'Bestiaire',            ico:'🐉', subs:()=>{
             const cats=window.RPG_BESTIAIRE_CATEGORIES||[];
             return cats.map(c=>({id:'bestiaire__'+c.id,tit:c.icone+' '+c.label}));
@@ -604,15 +605,25 @@ const Codex = {
         else if (id.startsWith('bestiaire__'))   html=this.renderBestiaireCat(id.replace('bestiaire__',''));
         else {
             const map={
-                accueil:()=>this.renderAccueil(), regles:()=>this.renderRegles(),
-                caracteristiques:()=>this.renderCaracs(), niveaux:()=>this.renderNiveaux(),
-                races:()=>this.renderRaces(), classes:()=>this.renderClasses(),
+                accueil:()=>this.renderAccueil(),
+                grades:()=>this.renderGrades(),
+                regles:()=>this.renderRegles(),
                 alignements:()=>this.renderAlignements(),
-                armes:()=>this.renderArmes(), armures:()=>this.renderArmures(),
-                equipement:()=>this.renderEquipement(), auberge:()=>this.renderAuberge(),
-                montures:()=>this.renderMontures(), monnaie:()=>this.renderMonnaie(),
-                grades:()=>this.renderGrades(), lois:()=>this.renderLois(),
-                sorts:()=>this.renderSorts(), bestiaire:()=>this.renderBestiaire(),
+                caracteristiques:()=>this.renderCaracs(),
+                niveaux:()=>this.renderNiveaux(),
+                races:()=>this.renderRaces(),
+                classes:()=>this.renderClasses(),
+                sorts:()=>this.renderSorts(),
+                monnaie:()=>this.renderMonnaie(),
+                armes:()=>this.renderArmes(),
+                armures:()=>this.renderArmures(),
+                equipement:()=>this.renderEquipement(),
+                auberge:()=>this.renderAuberge(),
+                montures:()=>this.renderMontures(),
+                'magie-objets':()=>this.renderObjetsMagiques(),
+                lois:()=>this.renderLois(),
+                bestiaire:()=>this.renderBestiaire(),
+                
             };
             html = map[id] ? map[id]() : `<div class="book-page"><p>Chapitre introuvable.</p></div>`;
         }
@@ -665,20 +676,22 @@ const Codex = {
         <div class="welcome-crest">🏰</div>
         <div class="welcome-columns">
         <div class="welcome-col"><h3>📖 Chapitres</h3><ul>
+            <li data-nav="grades">👑 La Hiérarchie des rangs</li>
             <li data-nav="regles">🎲 Règles fondamentales</li>
+            <li data-nav="alignements">⚖️ Les 9 Alignements</li>
             <li data-nav="caracteristiques">⚡ Les 6 caractéristiques</li>
             <li data-nav="niveaux">📈 Niveaux & progression</li>
             <li data-nav="races">🧑 Les Peuples — races & traits</li>
             <li data-nav="classes">⚔️ Les Vocations — classes</li>
-            <li data-nav="alignements">⚖️ Les 9 Alignements</li>
+            <li data-nav="sorts">✨ Sorts & Magie</li>
+            <li data-nav="monnaie">🪙 Monnaie & Commerce</li>
             <li data-nav="armes">🗡️ L'Arsenal — armes</li>
             <li data-nav="armures">🛡️ Les Armures</li>
             <li data-nav="equipement">🎒 L'Équipement d'aventure</li>
             <li data-nav="auberge">🏨 Auberge & Services</li>
             <li data-nav="montures">🐎 Montures & Véhicules</li>
-            <li data-nav="monnaie">🪙 Monnaie & Commerce</li>
-            <li data-nav="grades">👑 La Hiérarchie des rangs</li>
             <li data-nav="lois">📋 Les Lois du Royaume</li>
+            <li data-nav="Bestiaire">🐉 Bestiaire</li>
         </ul></div>
         <div class="welcome-col"><h3>⚔️ À Savoir en Priorité</h3><ul>
             <li>Jet de base = d20 + modificateur vs DD</li>
@@ -1329,4 +1342,67 @@ const Codex = {
 document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
     Codex.init();
+
+renderObjetsMagiques() {
+        if (!window.MAGIC_ITEMS_DATA) return `<div class="book-page"><p>Données des objets magiques introuvables. Vérifiez le fichier js.</p></div>`;
+        
+        const categoriesOrdre = ["Armes", "Armures", "Anneaux", "Potions", "Baguettes", "Bâtons", "Sceptres", "Objet merveilleux"];
+        
+        const sectionsHtml = categoriesOrdre.map(cat => {
+            const items = window.MAGIC_ITEMS_DATA.filter(o => o.type === cat);
+            if (items.length === 0) return '';
+    
+            return `
+                <div class="ornament-divider"><span>✦</span></div>
+                <h2>${cat}</h2>
+                <div style="overflow-x:auto;">
+                    <table class="bk-table" style="min-width:600px;">
+                        <thead>
+                            <tr>
+                                <th>Objet</th>
+                                <th>Rareté</th>
+                                <th style="text-align:center;">Lien</th>
+                                <th>Prix</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${items.map(o => `
+                                <tr>
+                                    <td>
+                                        <strong style="color:var(--bk-royal);">${o.nom}</strong>
+                                        <div class="prop" style="margin-top:4px;">${o.note}</div>
+                                    </td>
+                                    <td><span class="stat-tag ${this._getRareteClass(o.rarete)}">${o.rarete}</span></td>
+                                    <td style="text-align:center;font-size:1.1rem;">${o.lien ? '🔗' : '<span style="opacity:0.2;">—</span>'}</td>
+                                    <td><span class="price-tag">${o.prix}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }).join('');
+    
+        return `
+            <div class="book-page">
+                <h1 class="page-title cinzel">Les Objets Magiques</h1>
+                <div class="ornament-center">❧ ✦ ❧</div>
+                <div class="book-intro-box">
+                    Les reliques enchantées du Domaine sont rares, puissantes, et souvent dangereuses. Le symbole 🔗 indique que l'objet nécessite une harmonisation (un lien magique avec son porteur) pour dévoiler ses pouvoirs.
+                </div>
+                ${sectionsHtml}
+            </div>
+        `;
+    },
+    
+    _getRareteClass(rarete) {
+        switch(rarete) {
+            case 'Commun': return 'ca';             // Bleu sombre
+            case 'Peu commun': return 'positive';   // Vert
+            case 'Rare': return 'dv';               // Orange
+            case 'Très rare': return 'warn';        // Jaune
+            case 'Légendaire': return 'royal';      // Rouge (Défini dans ton CSS de base via var)
+            default: return '';
+        }
+    }
 });
