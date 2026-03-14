@@ -1376,28 +1376,28 @@ renderObjetsMagiques() {
             "Légendaire":  "stat-tag"
         };
 
-        liste.forEach(item => {
-            <div class="grade-seuil ${rareteClass}">
-    ${item.rarete} · ${item.prix}
-</div>
+liste.forEach(item => {
 
-            html += `
-            <div class="grade-card">
-                <div class="grade-card-header">
-                    <span class="grade-ico">🪄</span>
-                    <div>
-                        <div class="grade-name">${item.nom}</div>
-                        <div class="grade-seuil">
-                            ${item.rarete} · ${item.prix}
-                        </div>
-                    </div>
-                </div>
-                <div class="grade-tooltip">
-                    ${item.note || "—"}
+    const rareteClass = rareteMap[item.rarete] || "stat-tag";
+
+    html += `
+    <div class="grade-card">
+        <div class="grade-card-header">
+            <span class="grade-ico">🪄</span>
+            <div>
+                <div class="grade-name">${item.nom}</div>
+                <div class="grade-seuil ${rareteClass}">
+                    ${item.rarete} · ${item.prix}
                 </div>
             </div>
-            `;
-        });
+        </div>
+        <div class="grade-tooltip">
+            ${item.note || "—"}
+        </div>
+    </div>
+    `;
+});
+
 
         html += `</div><div class="ornament-divider"><span>✦</span></div>`;
     });
