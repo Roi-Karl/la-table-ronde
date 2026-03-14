@@ -1367,6 +1367,7 @@ renderObjetsMagiques() {
         <div class="grade-grid">
         `;
 
+        // ──── Correction ici ────
         const rareteMap = {
             "Commun":      "stat-tag",
             "Peu commun":  "stat-tag positive",
