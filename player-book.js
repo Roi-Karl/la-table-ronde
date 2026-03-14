@@ -1405,6 +1405,8 @@ renderObjetsMagiques() {
 },
 document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
+   if (typeof window !== 'undefined') {
     window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
+};
     Codex.init();
 });
