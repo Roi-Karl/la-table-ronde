@@ -1272,10 +1272,18 @@ const Codex = {
         ${cartes}
         </div>`;
     },
-    /* ─────────────────── OBJETS MAGIQUES ─────────────────── */
+// ─────────────────── OBJETS MAGIQUES (version finale) ───────────────────
     renderObjetsMagiques() {
-        if (!window.MAGIC_ITEMS_DATA) 
-            return `<div class="book-page"><p>Données des objets magiques introuvables. Vérifiez le fichier js.</p></div>`;
+        if (!window.MAGIC_ITEMS_DATA || window.MAGIC_ITEMS_DATA.length === 0) {
+            return `<div class="book-page">
+                <h1 class="page-title cinzel">Les Objets Magiques</h1>
+                <div class="ornament-center">❧ ✦ ❧</div>
+                <p style="color:#8a2020; text-align:center; font-style:italic;">
+                    Données des objets magiques introuvables.<br>
+                    Vérifiez que <strong>magic-items-data.js</strong> est bien chargé AVANT player-book.js
+                </p>
+            </div>`;
+        }
 
         const categoriesOrdre = ["Armes", "Armures", "Anneaux", "Potions", "Baguettes", "Bâtons", "Sceptres", "Objet merveilleux"];
 
@@ -1299,9 +1307,8 @@ const Codex = {
                         <tbody>
                             ${items.map(o => `
                                 <tr>
-                                    <td>
-                                        <strong style="color:var(--bk-royal);">${o.nom}</strong>
-                                        <div class="prop" style="margin-top:4px;">${o.note}</div>
+                                    <td><strong style="color:var(--bk-royal);">${o.nom}</strong>
+                                        <div class="prop" style="margin-top:4px;">${o.note || ''}</div>
                                     </td>
                                     <td><span class="stat-tag ${this._getRareteClass(o.rarete)}">${o.rarete}</span></td>
                                     <td style="text-align:center;font-size:1.1rem;">${o.lien ? '🔗' : '<span style="opacity:0.2;">—</span>'}</td>
@@ -1320,8 +1327,7 @@ const Codex = {
                 <div class="ornament-center">❧ ✦ ❧</div>
                 <div class="book-intro-box">
                     Les reliques enchantées du Domaine sont rares, puissantes, et souvent dangereuses. 
-                    Le symbole 🔗 indique que l'objet nécessite une harmonisation (un lien magique avec son porteur) 
-                    pour dévoiler ses pouvoirs.
+                    Le symbole 🔗 indique que l'objet nécessite une harmonisation.
                 </div>
                 ${sectionsHtml}
             </div>
