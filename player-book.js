@@ -1378,7 +1378,9 @@ renderObjetsMagiques() {
     html += `</div>`;
     return html;
 }
-
+ init() {
+        console.log("Codex init");
+    }
 };
 document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
