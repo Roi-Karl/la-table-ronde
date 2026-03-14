@@ -324,7 +324,7 @@ const Codex = {
 // --- INITIALISATION FINALE ---
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Liaison des données globales (pour qu'elles soient accessibles au script)
+    // 1. Liaison sécurisée des données (évite les erreurs si un fichier manque)
     if (typeof SORTS_PAR_CLASSE !== 'undefined') {
         window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
     }
@@ -333,11 +333,11 @@ document.addEventListener('DOMContentLoaded', () => {
         window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
     }
 
-    // Activation du Codex (Gestion du clic sur l'icône 📖)
+    // 2. Initialisation du Codex (Activation du bouton)
     if (typeof PlayerBook !== 'undefined') {
         PlayerBook.init();
-        console.log("✅ Codex du Roi Karl initialisé avec succès.");
+        console.log("✅ Codex du Roi Karl prêt.");
     } else {
-        console.error("❌ Erreur : L'objet PlayerBook est introuvable.");
+        console.error("❌ Erreur : L'objet PlayerBook est introuvable dans player-book.js");
     }
 });
