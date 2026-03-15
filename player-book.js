@@ -545,22 +545,23 @@ const Codex = {
         }, 150);
 
         close.onclick = () => modal.classList.remove('open');
-    },
+
+            const frame = document.querySelector('.book-frame');
+        if (frame && !frame.querySelector('.bk-corner-bl')) {
+            ['bk-corner-bl','bk-corner-br'].forEach(cls=>{ const d=document.createElement('span'); d.className=cls; d.textContent='✦'; frame.appendChild(d); });
+        }
+        trigger.onclick = () => {
+          document.getElementById('player-book-modal').style.display='block';
+            this.renderTOC(); this.loadChapter('accueil');
+        };
+        close.onclick = () => { document.getElementById('player-book-modal').style.display='none'; };
+        document.getElementById('player-book-modal').addEventListener('click', e=>{
+            if (e.target===e.currentTarget) document.getElementById('player-book-modal').style.display='none';
+    }),
 
     // Tu peux ajouter d'autres méthodes du Codex ici
     
-   // const frame = document.querySelector('.book-frame');
-     //   if (frame && !frame.querySelector('.bk-corner-bl')) {
-       //     ['bk-corner-bl','bk-corner-br'].forEach(cls=>{ const d=document.createElement('span'); d.className=cls; d.textContent='✦'; frame.appendChild(d); });
-        //}
-        //trigger.onclick = () => {
-          //  document.getElementById('player-book-modal').style.display='block';
-            //this.renderTOC(); this.loadChapter('accueil');
-        //};
-        //close.onclick = () => { document.getElementById('player-book-modal').style.display='none'; };
-        //document.getElementById('player-book-modal').addEventListener('click', e=>{
-          //  if (e.target===e.currentTarget) document.getElementById('player-book-modal').style.display='none';
-        },
+
 
     renderTOC() {
         const toc = document.getElementById('book-toc');
