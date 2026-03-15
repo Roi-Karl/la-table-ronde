@@ -541,31 +541,31 @@ const SORTS_PAR_CLASSE = {
 window.MAGIC_ITEMS_DATA = window.MAGIC_ITEMS_DATA || [];
 const Codex = {
     sections: [
-        { id:'accueil', tit:'Introduction', ico:'📜' },
-        { id:'regles', tit:'Règles Fondamentales', ico:'🎲' },
-        { id:'caracteristiques', tit:'Caractéristiques', ico:'⚡' },
-        { id:'niveaux', tit:'Niveaux & Progression', ico:'📈' },
-        { id:'races', tit:'Les Peuples', ico:'🧑', subs:()=>Object.keys(window.RPG_RACES||{}).map(k=>({id:'race__'+k,tit:(window.RPG_RACES[k].icone||'')+' '+k})) },
-        { id:'classes', tit:'Les Vocations', ico:'⚔️', subs:()=>Object.keys(window.RPG_CLASSES||{}).map(k=>({id:'classe__'+k,tit:(window.RPG_CLASSES[k].icone||'')+' '+k})) },
-        { id:'alignements', tit:'Les Alignements', ico:'⚖️' },
-        { id:'armes', tit:"L'Arsenal", ico:'🗡️' },
-        { id:'armures', tit:'Les Armures', ico:'🛡️' },
-        { id:'equipement', tit:"L'Équipement", ico:'🎒' },
-        { id:'auberge', tit:'Auberge & Services', ico:'🏨' },
-        { id:'montures', tit:'Montures & Véhicules', ico:'🐎' },
-        { id:'monnaie', tit:'Monnaie & Commerce', ico:'🪙' },
-        { id:'grades', tit:'La Hiérarchie', ico:'👑' },
-        { id:'lois', tit:'Les Lois', ico:'📋' },
-        { id:'sorts', tit:'Sorts & Magie', ico:'✨', subs:()=> {
+        { id:'accueil',          tit:'Introduction',         ico:'📜' },
+        { id:'lois',             tit:'Les Lois',             ico:'📋' },
+        { id:'grades',           tit:'La Hiérarchie',        ico:'👑' },
+        { id:'regles',           tit:'Règles Fondamentales', ico:'🎲' },
+        { id:'monnaie',          tit:'Monnaie & Commerce',   ico:'🪙' },
+        { id:'alignements',      tit:'Les Alignements',      ico:'⚖️' },
+        { id:'caracteristiques', tit:'Caractéristiques',     ico:'⚡' },
+        { id:'niveaux',          tit:'Niveaux & Progression',ico:'📈' },
+        { id:'races',            tit:'Les Peuples',          ico:'🧑', subs:()=>Object.keys(window.RPG_RACES||{}).map(k=>({id:'race__'+k,tit:(window.RPG_RACES[k].icone||'')+' '+k})) },
+        { id:'classes',          tit:'Les Vocations',        ico:'⚔️', subs:()=>Object.keys(window.RPG_CLASSES||{}).map(k=>({id:'classe__'+k,tit:(window.RPG_CLASSES[k].icone||'')+' '+k})) },
+        { id:'sorts',            tit:'Sorts & Magie',        ico:'✨', subs:()=> {
             const cl=window.RPG_CLASSES||{};
             const lanceurs=window.SORTS_PAR_CLASSE||{};
             return Object.keys(cl).filter(k=>lanceurs[k]!==undefined).map(k=>({id:'sorts__'+k,tit:(cl[k].icone||'')+' '+k}));
         }},
-        { id:'bestiaire', tit:'Bestiaire', ico:'🐉', subs:()=> {
+        { id:'armes',            tit:"L'Arsenal",            ico:'🗡️' },
+        { id:'armures',          tit:'Les Armures',          ico:'🛡️' },
+        { id:'equipement',       tit:"L'Équipement",         ico:'🎒' },
+        { id:'auberge',          tit:'Auberge & Services',   ico:'🏨' },
+        { id:'montures',         tit:'Montures & Véhicules', ico:'🐎' },
+        { id:'objets-magiques',  tit:'Objets Magiques',      ico:'🪄' },
+        { id:'bestiaire',        tit:'Bestiaire',            ico:'🐉', subs:()=> {
             const cats=window.RPG_BESTIAIRE_CATEGORIES||[];
             return cats.map(c=>({id:'bestiaire__'+c.id,tit:c.icone+' '+c.label}));
         }},
-        { id:'objets-magiques', tit:'Objets Magiques', ico:'🪄' },
     ],
 
     init() {
@@ -837,20 +837,24 @@ const Codex = {
         <div class="welcome-crest">🏰</div>
         <div class="welcome-columns">
         <div class="welcome-col"><h3>📖 Chapitres</h3><ul>
+            <li data-nav="accueil">📜 Introduction</li>
+            <li data-nav="lois">📋 Les Lois du Royaume</li>
+            <li data-nav="grades">👑 La Hiérarchie des rangs</li>
             <li data-nav="regles">🎲 Règles fondamentales</li>
+            <li data-nav="monnaie">🪙 Monnaie & Commerce</li>
+            <li data-nav="alignements">⚖️ Les 9 Alignements</li>
             <li data-nav="caracteristiques">⚡ Les 6 caractéristiques</li>
             <li data-nav="niveaux">📈 Niveaux & progression</li>
             <li data-nav="races">🧑 Les Peuples — races & traits</li>
             <li data-nav="classes">⚔️ Les Vocations — classes</li>
-            <li data-nav="alignements">⚖️ Les 9 Alignements</li>
+            <li data-nav="sorts">✨ Sorts & Magie</li>
             <li data-nav="armes">🗡️ L'Arsenal — armes</li>
             <li data-nav="armures">🛡️ Les Armures</li>
             <li data-nav="equipement">🎒 L'Équipement d'aventure</li>
             <li data-nav="auberge">🏨 Auberge & Services</li>
             <li data-nav="montures">🐎 Montures & Véhicules</li>
-            <li data-nav="monnaie">🪙 Monnaie & Commerce</li>
-            <li data-nav="grades">👑 La Hiérarchie des rangs</li>
-            <li data-nav="lois">📋 Les Lois du Royaume</li>
+            <li data-nav="objets-magiques">🪄 Objets Magiques</li>
+            <li data-nav="bestiaire">🐉 Bestiaire</li>
         </ul></div>
         <div class="welcome-col"><h3>⚔️ À Savoir en Priorité</h3><ul>
             <li>Jet de base = d20 + modificateur vs DD</li>
