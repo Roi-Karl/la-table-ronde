@@ -517,7 +517,7 @@ const Codex = {
             const cats=window.RPG_BESTIAIRE_CATEGORIES||[];
             return cats.map(c=>({id:'bestiaire__'+c.id,tit:c.icone+' '+c.label}));
         }},
-        { id:"objets-magiques", label:"Objets Magiques", icon:"🪄", render:()=>Codex.renderObjetsMagiques() },
+        { id:'objets-magiques', tit:'Objets Magiques', ico:'🪄' },
     ],
 
     init() {
@@ -533,31 +533,23 @@ const Codex = {
             const auth = window._firebaseAuth;
             if (!auth) return;
             clearInterval(_waitAuth);
-
             auth.onAuthStateChanged(user => {
-                if(user){
-                    trigger.style.display = 'flex';
-                    trigger.onclick = () => modal.classList.add('open');
-                } else {
-                    trigger.style.display = 'none';
-                }
+                trigger.style.display = user ? 'flex' : 'none';
             });
         }, 150);
 
-        close.onclick = () => modal.classList.remove('open');
-
-            const frame = document.querySelector('.book-frame');
+        const frame = document.querySelector('.book-frame');
         if (frame && !frame.querySelector('.bk-corner-bl')) {
             ['bk-corner-bl','bk-corner-br'].forEach(cls=>{ const d=document.createElement('span'); d.className=cls; d.textContent='✦'; frame.appendChild(d); });
         }
         trigger.onclick = () => {
-          document.getElementById('player-book-modal').style.display='block';
+            document.getElementById('player-book-modal').style.display='block';
             this.renderTOC(); this.loadChapter('accueil');
         };
         close.onclick = () => { document.getElementById('player-book-modal').style.display='none'; };
         document.getElementById('player-book-modal').addEventListener('click', e=>{
             if (e.target===e.currentTarget) document.getElementById('player-book-modal').style.display='none';
-    })
+        });
     },
     // Tu peux ajouter d'autres méthodes du Codex ici
     
@@ -600,15 +592,14 @@ const Codex = {
                 self.loadChapter(li.dataset.id);
             });
         });
-        },
-                        //////////////////////////////////////////
+    },
 
     setActiveLink(id) {
         document.querySelectorAll('#book-toc li').forEach(li=>li.classList.remove('active'));
         document.querySelectorAll(`#book-toc li[data-id="${id}"]`).forEach(li=>{
             li.classList.add('active');
             const p=li.closest('.toc-sub')?.closest('li'); if(p) p.classList.add('open');
-        }),
+        });
     },
 
     loadChapter(id) {
@@ -630,6 +621,7 @@ const Codex = {
                 montures:()=>this.renderMontures(), monnaie:()=>this.renderMonnaie(),
                 grades:()=>this.renderGrades(), lois:()=>this.renderLois(),
                 sorts:()=>this.renderSorts(), bestiaire:()=>this.renderBestiaire(),
+                'objets-magiques':()=>this.renderObjetsMagiques(),
             };
             html = map[id] ? map[id]() : `<div class="book-page"><p>Chapitre introuvable.</p></div>`;
         }
