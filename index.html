@@ -7100,7 +7100,7 @@
     window._syncBarreTresorEchoppe = _syncBarreTresorEchoppe;
 
     // ── Achat ───────────────────────────────────────────
-    window._acheterItem = function(nomItem, ongletId, icone, prixStr, qte) {
+    window._acheterItem = function(nomItem, ongletId, icone, prixStr, qte, rarete, lien) {
         const user = window._firebaseAuth?.currentUser;
         if (!user) { _afficherToastEchoppe('⚠️ Connexion requise pour acheter.'); return; }
         const n = Math.max(1, parseInt(qte)||1);
@@ -7116,6 +7116,9 @@
         }
         window._inventaire[nomItem].qte += n;
         window._inventaire[nomItem].prix_pc = prixPc;
+        // Stocker rareté et lien pour les objets magiques
+        if (rarete) window._inventaire[nomItem].rarete = rarete;
+        if (lien)   window._inventaire[nomItem].lien   = true;
         window.sauvegarderInventaire();
         _syncBarreTresorEchoppe();
         _invRafraichir();
@@ -7154,11 +7157,35 @@
     };
 
     // ── Section inventaire fiche ────────────────────────
-    const INV_CATS_FICHE = ['armes','armures','equipement','objets','montures','vehicules'];
+    const INV_CATS_FICHE = ['potions','parchemins','armes','armures','equipement','objets','montures','vehicules'];
     let _invCatActive = 'armes'; // gardé pour compat
 
     // ── Colonnes par catégorie ───────────────────────────
     const INV_COLONNES = {
+        potions: [
+            { key:'icone',       label:'',          css:'inv-td-icone', fn: (nom,e)=>e.icone||'🧪' },
+            { key:'nom',         label:'Potion',    css:'inv-td-nom',   fn: (nom)=>nom },
+            { key:'rarete',      label:'Rareté',    css:'',             fn: (nom,e)=>{
+                const rc={'Commun':'#666','Peu commun':'#2a7a2a','Rare':'#1a4a9a','Très rare':'#6a1a9a','Légendaire':'#8b5a00','Artefact':'#8b0000'};
+                const r=e.rarete||'—'; const col=rc[r]||'#666';
+                return `<span style="font-size:.68rem;padding:1px 6px;border:1px solid ${col};color:${col};border-radius:2px;white-space:nowrap;">${r}</span>`;
+            }},
+            { key:'lien',        label:'Lien',      css:'inv-td-qte',   fn: (nom,e)=>e.lien?'<span title="Lien requis" style="color:#8b1a1a;">🔒</span>':'—' },
+            { key:'qte',         label:'Qté',       css:'inv-td-qte',   fn: (nom,e)=>e.qte },
+            { key:'vendre',      label:'Vente',     css:'inv-td-vendre',fn: null },
+        ],
+        parchemins: [
+            { key:'icone',       label:'',          css:'inv-td-icone', fn: (nom,e)=>e.icone||'📜' },
+            { key:'nom',         label:'Parchemin', css:'inv-td-nom',   fn: (nom)=>nom },
+            { key:'rarete',      label:'Rareté',    css:'',             fn: (nom,e)=>{
+                const rc={'Commun':'#666','Peu commun':'#2a7a2a','Rare':'#1a4a9a','Très rare':'#6a1a9a','Légendaire':'#8b5a00','Artefact':'#8b0000'};
+                const r=e.rarete||'—'; const col=rc[r]||'#666';
+                return `<span style="font-size:.68rem;padding:1px 6px;border:1px solid ${col};color:${col};border-radius:2px;white-space:nowrap;">${r}</span>`;
+            }},
+            { key:'lien',        label:'Lien',      css:'inv-td-qte',   fn: (nom,e)=>e.lien?'<span title="Lien requis" style="color:#8b1a1a;">🔒</span>':'—' },
+            { key:'qte',         label:'Qté',       css:'inv-td-qte',   fn: (nom,e)=>e.qte },
+            { key:'vendre',      label:'Vente',     css:'inv-td-vendre',fn: null },
+        ],
         armes: [
             { key:'icone',    label:'',        css:'inv-td-icone', fn: (nom,e,ref)=>e.icone||ref?.icone||'📦' },
             { key:'nom',      label:'Arme',    css:'inv-td-nom',   fn: (nom)=>nom },
@@ -7209,6 +7236,24 @@
     };
 
     const INV_CAT_META = {
+        potions: {
+            label:'Potions & Élixirs', icone:'🧪',
+            data: () => {
+                const src = window.MAGIC_ITEMS_DATA || [];
+                const obj = {};
+                src.filter(it => it.type === 'Potion').forEach(it => { obj[it.nom] = it; });
+                return obj;
+            }
+        },
+        parchemins: {
+            label:'Parchemins', icone:'📜',
+            data: () => {
+                const src = window.MAGIC_ITEMS_DATA || [];
+                const obj = {};
+                src.filter(it => it.type === 'Parchemin').forEach(it => { obj[it.nom] = it; });
+                return obj;
+            }
+        },
         armes:      { label:'Armes',      icone:'⚔️', data: ()=>window.MATERIEL_ARMES },
         armures:    { label:'Armures',    icone:'🛡️', data: ()=>window.MATERIEL_ARMURES },
         equipement: { label:'Équipement', icone:'🎒', data: ()=>window.MATERIEL_EQUIPEMENT },
@@ -7291,9 +7336,9 @@
         // Bouton acheter dans l'échoppe
         const btnAcheter = e.target.closest('.echoppe-btn-acheter[data-nom]');
         if (btnAcheter) {
-            const { nom, onglet, icone, prix, key } = btnAcheter.dataset;
+            const { nom, onglet, icone, prix, key, rarete, lien } = btnAcheter.dataset;
             const qte = _echoppeQte[key] || 1;
-            window._acheterItem(nom, onglet, icone, prix, qte);
+            window._acheterItem(nom, onglet, icone, prix, qte, rarete||'', lien==='1');
             return;
         }
         // Bouton vendre dans l'échoppe
@@ -8020,7 +8065,7 @@
                                onchange="_echoppeQte['${key}']=Math.max(1,parseInt(this.value)||1);this.value=_echoppeQte['${key}']">
                         <button class="echoppe-qte-btn" onclick="this.previousElementSibling.stepUp();this.previousElementSibling.dispatchEvent(new Event('change'))">+</button>
                     </div>
-                    <button class="echoppe-btn-acheter" data-nom="${nomAttr}" data-onglet="${id}" data-icone="${icone}" data-prix="${prixStr}" data-key="${key}">
+                    <button class="echoppe-btn-acheter" data-nom="${nomAttr}" data-onglet="${id}" data-icone="${icone}" data-prix="${prixStr}" data-key="${key}" data-rarete="${item.rarete||''}" data-lien="${item.lien?'1':''}">
                         🛒 Acheter
                     </button>` : (!estConnecte ? `<span style="font-family:'Lora',serif;font-style:italic;font-size:0.62rem;color:#9a7a50;">Connexion requise</span>` : ''));
 
