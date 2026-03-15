@@ -493,39 +493,33 @@ const SORTS_PAR_CLASSE = {
 window.MAGIC_ITEMS_DATA = window.MAGIC_ITEMS_DATA || [];
 const Codex = {
     sections: [
-        { id:'accueil',          tit:'Introduction',          ico:'📜' },
-        { id:'regles',           tit:'Règles Fondamentales',  ico:'🎲' },
-        { id:'caracteristiques', tit:'Caractéristiques',      ico:'⚡' },
-        { id:'niveaux',          tit:'Niveaux & Progression', ico:'📈' },
-        { id:'races',   tit:'Les Peuples',   ico:'🧑', subs:()=>Object.keys(window.RPG_RACES||{}).map(k=>({id:'race__'+k,tit:(window.RPG_RACES[k].icone||'')+' '+k})) },
+        { id:'accueil', tit:'Introduction', ico:'📜' },
+        { id:'regles', tit:'Règles Fondamentales', ico:'🎲' },
+        { id:'caracteristiques', tit:'Caractéristiques', ico:'⚡' },
+        { id:'niveaux', tit:'Niveaux & Progression', ico:'📈' },
+        { id:'races', tit:'Les Peuples', ico:'🧑', subs:()=>Object.keys(window.RPG_RACES||{}).map(k=>({id:'race__'+k,tit:(window.RPG_RACES[k].icone||'')+' '+k})) },
         { id:'classes', tit:'Les Vocations', ico:'⚔️', subs:()=>Object.keys(window.RPG_CLASSES||{}).map(k=>({id:'classe__'+k,tit:(window.RPG_CLASSES[k].icone||'')+' '+k})) },
-        { id:'alignements', tit:'Les Alignements',    ico:'⚖️' },
-        { id:'armes',       tit:"L'Arsenal",           ico:'🗡️' },
-        { id:'armures',     tit:'Les Armures',         ico:'🛡️' },
-        { id:'equipement',  tit:"L'Équipement",        ico:'🎒' },
-        { id:'auberge',     tit:'Auberge & Services',  ico:'🏨' },
-        { id:'montures',    tit:'Montures & Véhicules', ico:'🐎' },
-        { id:'monnaie',     tit:'Monnaie & Commerce',  ico:'🪙' },
-        { id:'grades',      tit:'La Hiérarchie',       ico:'👑' },
-        { id:'lois',        tit:'Les Lois',             ico:'📋' },
-        { id:'sorts',       tit:'Sorts & Magie',        ico:'✨', subs:()=>{
+        { id:'alignements', tit:'Les Alignements', ico:'⚖️' },
+        { id:'armes', tit:"L'Arsenal", ico:'🗡️' },
+        { id:'armures', tit:'Les Armures', ico:'🛡️' },
+        { id:'equipement', tit:"L'Équipement", ico:'🎒' },
+        { id:'auberge', tit:'Auberge & Services', ico:'🏨' },
+        { id:'montures', tit:'Montures & Véhicules', ico:'🐎' },
+        { id:'monnaie', tit:'Monnaie & Commerce', ico:'🪙' },
+        { id:'grades', tit:'La Hiérarchie', ico:'👑' },
+        { id:'lois', tit:'Les Lois', ico:'📋' },
+        { id:'sorts', tit:'Sorts & Magie', ico:'✨', subs:()=> {
             const cl=window.RPG_CLASSES||{};
             const lanceurs=window.SORTS_PAR_CLASSE||{};
             return Object.keys(cl).filter(k=>lanceurs[k]!==undefined).map(k=>({id:'sorts__'+k,tit:(cl[k].icone||'')+' '+k}));
         }},
-        { id:'bestiaire',   tit:'Bestiaire',            ico:'🐉', subs:()=>{
+        { id:'bestiaire', tit:'Bestiaire', ico:'🐉', subs:()=> {
             const cats=window.RPG_BESTIAIRE_CATEGORIES||[];
             return cats.map(c=>({id:'bestiaire__'+c.id,tit:c.icone+' '+c.label}));
         }},
-        { 
-    id: "objets-magiques", 
-    label: "Objets Magiques", 
-    icon: "🪄", 
-    render: () => Codex.renderObjetsMagiques()
-},
+        { id:"objets-magiques", label:"Objets Magiques", icon:"🪄", render:()=>Codex.renderObjetsMagiques() },
     ],
 
-const Codex = {
     init() {
         const trigger = document.getElementById('book-trigger');
         const close   = document.getElementById('close-book');
@@ -533,52 +527,40 @@ const Codex = {
 
         if (!trigger || !close || !modal) return;
 
-        // Cacher le bouton par défaut
         trigger.style.display = 'none';
 
-        // Vérifier Firebase Auth toutes les 150ms
         const _waitAuth = setInterval(() => {
             const auth = window._firebaseAuth;
             if (!auth) return;
             clearInterval(_waitAuth);
 
-            // Sur changement d'état de connexion
             auth.onAuthStateChanged(user => {
                 if(user){
                     trigger.style.display = 'flex';
-                    // S'assurer que le clic ouvre la modal
-                    trigger.onclick = () => {
-                        modal.classList.add('open');
-                    };
+                    trigger.onclick = () => modal.classList.add('open');
                 } else {
                     trigger.style.display = 'none';
                 }
             });
         }, 150);
 
-        // Bouton de fermeture de la modal
-        close.onclick = () => {
-            modal.classList.remove('open');
-        };
+        close.onclick = () => modal.classList.remove('open');
     },
 
     // Tu peux ajouter d'autres méthodes du Codex ici
-};
-
-}
-        const frame = document.querySelector('.book-frame');
-        if (frame && !frame.querySelector('.bk-corner-bl')) {
-            ['bk-corner-bl','bk-corner-br'].forEach(cls=>{ const d=document.createElement('span'); d.className=cls; d.textContent='✦'; frame.appendChild(d); });
-        }
-        trigger.onclick = () => {
-            document.getElementById('player-book-modal').style.display='block';
-            this.renderTOC(); this.loadChapter('accueil');
-        };
-        close.onclick = () => { document.getElementById('player-book-modal').style.display='none'; };
-        document.getElementById('player-book-modal').addEventListener('click', e=>{
-            if (e.target===e.currentTarget) document.getElementById('player-book-modal').style.display='none';
-        });
-    },
+    
+   // const frame = document.querySelector('.book-frame');
+     //   if (frame && !frame.querySelector('.bk-corner-bl')) {
+       //     ['bk-corner-bl','bk-corner-br'].forEach(cls=>{ const d=document.createElement('span'); d.className=cls; d.textContent='✦'; frame.appendChild(d); });
+        //}
+        //trigger.onclick = () => {
+          //  document.getElementById('player-book-modal').style.display='block';
+            //this.renderTOC(); this.loadChapter('accueil');
+        //};
+        //close.onclick = () => { document.getElementById('player-book-modal').style.display='none'; };
+        //document.getElementById('player-book-modal').addEventListener('click', e=>{
+          //  if (e.target===e.currentTarget) document.getElementById('player-book-modal').style.display='none';
+        },
 
     renderTOC() {
         const toc = document.getElementById('book-toc');
@@ -590,12 +572,13 @@ const Codex = {
             const subHtml = hasSubs && subs.length ? `<ul class="toc-sub">${subs.map(sub=>`<li data-id="${sub.id}"><span class="toc-item">${sub.tit}</span></li>`).join('')}</ul>` : '';
             return `<li data-id="${s.id}" data-has-subs="${hasSubs}"><span class="toc-item"><span class="toc-ico">${s.ico}</span>${s.tit}${arrow}</span>${subHtml}</li>`;
         }).join('');
-
+            
         const si = document.getElementById('book-search-input');
         if (si) si.addEventListener('input', e=>{
             const q=e.target.value.toLowerCase();
             toc.querySelectorAll(':scope > li').forEach(li=>{ li.style.display=(!q||li.textContent.toLowerCase().includes(q))?'':'none'; });
         });
+
 
         // Listeners items parents
         toc.querySelectorAll(':scope > li[data-id]').forEach(li=>{
@@ -615,8 +598,8 @@ const Codex = {
                 e.stopPropagation();
                 self.loadChapter(li.dataset.id);
             });
-        });
-    },
+        }),
+
 
     setActiveLink(id) {
         document.querySelectorAll('#book-toc li').forEach(li=>li.classList.remove('active'));
@@ -624,7 +607,7 @@ const Codex = {
             li.classList.add('active');
             const p=li.closest('.toc-sub')?.closest('li'); if(p) p.classList.add('open');
         });
-    },
+    }
 
     loadChapter(id) {
         this.setActiveLink(id);
@@ -649,7 +632,7 @@ const Codex = {
             html = map[id] ? map[id]() : `<div class="book-page"><p>Chapitre introuvable.</p></div>`;
         }
         d.innerHTML=html; d.scrollTop=0; this.bindEvents(id);
-    },
+    }
 
     bindEvents(id) {
         document.querySelectorAll('.card-desc-toggle').forEach(btn=>{
@@ -1402,7 +1385,9 @@ renderObjetsMagiques() {
 
     html += `</div>`;
     return html;
-},
+};---------------------------------------------------------------------
+
+        
  init() {
         console.log("Codex init");
     }
