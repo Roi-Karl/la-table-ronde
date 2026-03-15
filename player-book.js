@@ -536,8 +536,8 @@ const SORTS_PAR_CLASSE = {
     },
 };
 
-// Dédoublonner si "Barde" défini deux fois (la seconde définition simple est un bug — supprimer)
-// (Version complète utilisée par renderSortsClasse)
+// Exposer SORTS_PAR_CLASSE sur window pour que le TOC et renderSorts() y accèdent
+window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
 window.MAGIC_ITEMS_DATA = window.MAGIC_ITEMS_DATA || [];
 const Codex = {
     sections: [
@@ -552,9 +552,9 @@ const Codex = {
         { id:'races',            tit:'Les Peuples',          ico:'🧑', subs:()=>Object.keys(window.RPG_RACES||{}).map(k=>({id:'race__'+k,tit:(window.RPG_RACES[k].icone||'')+' '+k})) },
         { id:'classes',          tit:'Les Vocations',        ico:'⚔️', subs:()=>Object.keys(window.RPG_CLASSES||{}).map(k=>({id:'classe__'+k,tit:(window.RPG_CLASSES[k].icone||'')+' '+k})) },
         { id:'sorts',            tit:'Sorts & Magie',        ico:'✨', subs:()=> {
-            const cl=window.RPG_CLASSES||{};
-            const lanceurs=window.SORTS_PAR_CLASSE||{};
-            return Object.keys(cl).filter(k=>lanceurs[k]!==undefined).map(k=>({id:'sorts__'+k,tit:(cl[k].icone||'')+' '+k}));
+            const cl  = window.RPG_CLASSES||{};
+            const spc = window.SORTS_PAR_CLASSE || SORTS_PAR_CLASSE || {};
+            return Object.keys(cl).filter(k => spc[k] !== undefined).map(k=>({id:'sorts__'+k, tit:(cl[k].icone||'')+' '+k}));
         }},
         { id:'armes',            tit:"L'Arsenal",            ico:'🗡️' },
         { id:'armures',          tit:'Les Armures',          ico:'🛡️' },
@@ -1294,9 +1294,10 @@ const Codex = {
 
     renderSorts() {
         const cl = window.RPG_CLASSES || {};
-        const lanceurs = Object.entries(cl).filter(([k]) => (window.SORTS_PAR_CLASSE||{})[k] !== undefined);
+        const spc = window.SORTS_PAR_CLASSE || SORTS_PAR_CLASSE || {};
+        const lanceurs = Object.entries(cl).filter(([k]) => spc[k] !== undefined);
         const cartes = lanceurs.map(([nom, d]) => {
-            const info = SORTS_PAR_CLASSE[nom] || {};
+            const info = spc[nom] || {};
             const carac = info.carac_sort || '—';
             const slots = info.emplacements_niv1 || '—';
             return `<div class="book-card" style="cursor:pointer;" data-nav="sorts__${nom}">
@@ -1333,7 +1334,8 @@ const Codex = {
     renderSortsClasse(nom) {
         const d = (window.RPG_CLASSES || {})[nom];
         if (!d) return `<div class="book-page"><p>Classe introuvable.</p></div>`;
-        const info = SORTS_PAR_CLASSE[nom] || {};
+        const spc = window.SORTS_PAR_CLASSE || SORTS_PAR_CLASSE || {};
+        const info = spc[nom] || {};
         const sorts = info.sorts || [];
         const niveaux = [0,1,2,3,4,5,6,7,8,9];
 
