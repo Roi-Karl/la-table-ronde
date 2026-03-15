@@ -558,7 +558,7 @@ const Codex = {
         document.getElementById('player-book-modal').addEventListener('click', e=>{
             if (e.target===e.currentTarget) document.getElementById('player-book-modal').style.display='none';
     })
-    }
+    },
     // Tu peux ajouter d'autres méthodes du Codex ici
     
 
