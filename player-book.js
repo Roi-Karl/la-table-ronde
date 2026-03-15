@@ -183,6 +183,54 @@
 .law-content h3 { margin:0 0 5px; color:var(--bk-royal); font-family:var(--bk-font-title); }
 .law-content p { margin:0; font-size:.86rem; line-height:1.72; }
 .welcome-crest { text-align:center; margin:26px 0; opacity:.07; font-size:5rem; line-height:1; pointer-events:none; user-select:none; }
+/* ── OBJETS MAGIQUES ── */
+.om-page { max-width:1100px; }
+.om-sidebar { float:left; width:220px; margin-right:18px; margin-bottom:16px; display:flex; flex-direction:column; gap:10px; }
+.om-main { overflow:hidden; }
+.om-sidebar-section { background:rgba(255,255,255,.28); border:1px solid rgba(200,168,75,.3); border-radius:var(--bk-radius); padding:10px 12px; }
+.om-sidebar-title { font-family:var(--bk-font-title); font-size:.62rem; letter-spacing:2px; text-transform:uppercase; color:var(--bk-royal); margin-bottom:8px; border-bottom:1px solid rgba(200,168,75,.2); padding-bottom:5px; }
+.om-alpha-bar { display:flex; flex-wrap:wrap; gap:2px; }
+.om-alpha-btn { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; font-family:var(--bk-font-title); font-size:.67rem; font-weight:600; border:1px solid rgba(200,168,75,.35); background:rgba(255,255,255,.3); color:var(--bk-leather2); cursor:pointer; border-radius:2px; transition:all .15s; user-select:none; }
+.om-alpha-btn:hover { background:var(--bk-leather); color:var(--bk-gold); }
+.om-alpha-btn.om-alpha-active { background:var(--bk-royal); color:var(--bk-gold-light); border-color:var(--bk-royal); }
+.om-alpha-off { opacity:.25; cursor:default; pointer-events:none; }
+.om-type-btns, .om-rar-btns { display:flex; flex-direction:column; gap:2px; }
+.om-type-btn, .om-rar-btn { display:flex; align-items:center; gap:5px; padding:5px 8px; font-family:var(--bk-font-title); font-size:.7rem; border:1px solid rgba(200,168,75,.25); background:transparent; color:var(--bk-leather2); cursor:pointer; border-radius:2px; text-align:left; transition:all .15s; width:100%; }
+.om-type-btn:hover, .om-rar-btn:hover { background:rgba(200,168,75,.12); color:var(--bk-leather); }
+.om-type-btn.active, .om-rar-btn.active { background:var(--bk-leather); color:var(--bk-gold-light); border-color:var(--bk-gold2); }
+.om-cnt { margin-left:auto; font-size:.62rem; color:rgba(62,32,6,.4); background:rgba(0,0,0,.06); padding:1px 5px; border-radius:2px; }
+.om-topbar { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.om-search-wrap { flex:1; }
+.om-search-input { width:100%; padding:7px 11px; font-family:var(--bk-font-body); font-size:.88rem; background:rgba(255,255,255,.4); border:1px solid rgba(200,168,75,.4); border-radius:var(--bk-radius); color:var(--bk-ink); outline:none; transition:border-color .2s; box-sizing:border-box; }
+.om-search-input:focus { border-color:var(--bk-royal); }
+.om-result-count { font-family:var(--bk-font-title); font-size:.7rem; color:rgba(62,32,6,.45); white-space:nowrap; letter-spacing:.05em; }
+.om-section-hdr { display:flex; align-items:center; gap:8px; padding:9px 14px; background:linear-gradient(to right, var(--bk-royal), #6b0000 60%, transparent); color:var(--bk-parchment); cursor:pointer; border-radius:3px 3px 0 0; transition:filter .15s; user-select:none; }
+.om-section-hdr:hover { filter:brightness(1.08); }
+.om-section-arrow { font-size:.7rem; opacity:.7; transition:transform .2s; }
+.om-section-hdr.collapsed .om-section-arrow { transform:rotate(-90deg); }
+.om-section-body { border:1px solid rgba(200,168,75,.3); border-top:none; border-radius:0 0 3px 3px; overflow:hidden; }
+.om-table td.om-td-nom { font-size:.87rem; line-height:1.4; }
+.om-table td.om-td-rar { white-space:nowrap; }
+.om-table td.om-td-detail { white-space:nowrap; }
+.om-badge { display:inline-block; font-family:var(--bk-font-title); font-size:.62rem; font-weight:700; letter-spacing:.6px; padding:2px 7px; border-radius:2px; white-space:nowrap; }
+/* Détail panel */
+.om-detail-panel { position:absolute; inset:0; background:rgba(245,234,212,.97); z-index:20; display:flex; align-items:flex-start; justify-content:center; padding:30px 20px; overflow-y:auto; }
+.om-detail-inner { background:var(--bk-parchment); border:1px solid rgba(200,168,75,.5); border-radius:var(--bk-radius); max-width:640px; width:100%; box-shadow:0 4px 30px rgba(0,0,0,.18); overflow:hidden; }
+.om-detail-header { padding:18px 20px 14px; background:linear-gradient(135deg,#1c0e04,#3a1a08); border-bottom:2px solid var(--bk-gold2); }
+.om-detail-type { font-family:var(--bk-font-title); font-size:.62rem; letter-spacing:2px; color:rgba(200,168,75,.65); text-transform:uppercase; margin-bottom:5px; }
+.om-detail-name { font-family:var(--bk-font-title); font-size:1.35rem; font-weight:700; color:var(--bk-gold); margin-bottom:10px; line-height:1.3; }
+.om-detail-body { padding:18px 20px; }
+.om-det-desc-short { font-size:.92rem; font-style:italic; color:var(--bk-leather2); line-height:1.65; padding-bottom:12px; border-bottom:1px solid rgba(200,168,75,.3); }
+.om-det-desc-full { font-size:.87rem; line-height:1.78; color:var(--bk-ink); }
+.om-det-note-box { margin-top:14px; padding:9px 13px; background:rgba(255,255,255,.3); border-left:3px solid var(--bk-gold2); border-radius:0 2px 2px 0; font-size:.8rem; color:rgba(30,21,9,.6); font-style:italic; }
+.om-det-note-box strong { font-family:var(--bk-font-title); font-size:.62rem; letter-spacing:1.5px; color:var(--bk-gold2); font-style:normal; display:block; margin-bottom:3px; text-transform:uppercase; }
+.om-close-detail { font-family:var(--bk-font-title); font-size:.75rem; padding:6px 16px; background:var(--bk-royal); color:var(--bk-gold-light); border:1px solid var(--bk-gold2); border-radius:2px; cursor:pointer; letter-spacing:.05em; transition:all .15s; }
+.om-close-detail:hover { background:#9a1010; }
+@media (max-width:768px) {
+    .om-sidebar { float:none; width:100%; margin-right:0; flex-direction:row; flex-wrap:wrap; }
+    .om-sidebar-section { flex:1; min-width:160px; }
+    .om-alpha-bar { flex-wrap:nowrap; overflow-x:auto; }
+}
 .welcome-columns { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0; }
 .welcome-col { padding:15px 18px; background:rgba(255,255,255,.3); border:1px solid rgba(200,168,75,.3); border-radius:var(--bk-radius); }
 .welcome-col h3 { font-family:var(--bk-font-title); font-size:.8rem; color:var(--bk-royal); margin:0 0 6px; display:flex; align-items:center; gap:5px; }
@@ -661,6 +709,121 @@ const Codex = {
             });
         }
         document.querySelectorAll('[data-nav]').forEach(el=>el.addEventListener('click',()=>this.loadChapter(el.dataset.nav)));
+
+        // ── Objets Magiques : filtres interactifs ──
+        if (id==='objets-magiques' || id.startsWith('om__')) {
+            const self2 = this;
+            const _rerender = () => {
+                const letter  = document.getElementById('om-display-area')?.dataset.omLetter  || '';
+                const type    = document.getElementById('om-display-area')?.dataset.omType    || '';
+                const rarete  = document.getElementById('om-display-area')?.dataset.omRarete  || '';
+                const search  = document.getElementById('om-display-area')?.dataset.omSearch  || '';
+                const d2 = document.getElementById('book-display-area');
+                if (!d2) return;
+                d2.innerHTML = self2.renderObjetsMagiques(letter||undefined, type||undefined, rarete||undefined, search||undefined);
+                d2.scrollTop = 0;
+                self2.bindEvents('objets-magiques');
+            };
+
+            const store = () => document.getElementById('om-display-area');
+
+            document.querySelectorAll('.om-alpha-btn:not(.om-alpha-off)').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const el = store(); if (!el) return;
+                    const cur = el.dataset.omLetter || '';
+                    el.dataset.omLetter = (cur === btn.dataset.omLetter) ? '' : btn.dataset.omLetter;
+                    el.dataset.omSearch = '';
+                    _rerender();
+                });
+            });
+
+            document.querySelectorAll('.om-type-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const el = store(); if (!el) return;
+                    el.dataset.omType = (el.dataset.omType === btn.dataset.omType) ? '' : btn.dataset.omType;
+                    _rerender();
+                });
+            });
+
+            document.querySelectorAll('.om-rar-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const el = store(); if (!el) return;
+                    el.dataset.omRarete = (el.dataset.omRarete === btn.dataset.omRarete) ? '' : btn.dataset.omRarete;
+                    _rerender();
+                });
+            });
+
+            let omTimer;
+            const si2 = document.getElementById('om-search');
+            if (si2) si2.addEventListener('input', () => {
+                clearTimeout(omTimer);
+                omTimer = setTimeout(() => {
+                    const el = store(); if (!el) return;
+                    el.dataset.omSearch = si2.value.trim();
+                    el.dataset.omLetter = '';
+                    _rerender();
+                }, 220);
+            });
+
+            // Collapse/expand sections
+            document.querySelectorAll('.om-section-hdr').forEach(hdr => {
+                hdr.addEventListener('click', () => {
+                    const typeKey = hdr.dataset.omToggle;
+                    const bodyId = 'om-body-' + (typeKey||'').replace(/\s/g,'-');
+                    const body = document.getElementById(bodyId);
+                    if (!body) return;
+                    const collapsed = body.style.display === 'none';
+                    body.style.display = collapsed ? '' : 'none';
+                    hdr.classList.toggle('collapsed', !collapsed);
+                });
+            });
+
+            // Row click → detail
+            document.querySelectorAll('.om-row[data-om-nom]').forEach(row => {
+                row.addEventListener('click', () => {
+                    const nom = row.dataset.omNom;
+                    const item = (window.MAGIC_ITEMS_DATA||[]).find(it=>it.nom===nom);
+                    if (!item) return;
+                    const panel = document.getElementById('om-detail-panel');
+                    if (!panel) return;
+                    const CATS2 = {
+                        'Armure':'🛡️ Armure','Arme':'⚔️ Arme','Anneau':'💍 Anneau',
+                        'Potion':'🧪 Potion','Baguette':'🪄 Baguette','Bâton':'🔱 Bâton',
+                        'Sceptre':'⚡ Sceptre','Parchemin':'📜 Parchemin','Objet merveilleux':'✨ Objet merveilleux',
+                    };
+                    document.getElementById('om-det-type').textContent = (CATS2[item.type]||item.type||'').toUpperCase();
+                    document.getElementById('om-det-name').textContent = item.nom;
+                    const rs = self2._omRareteStyle(item.rarete);
+                    const rb = document.getElementById('om-det-rarete');
+                    rb.textContent = item.rarete;
+                    rb.style.cssText = rs;
+                    document.getElementById('om-det-lien').textContent = item.lien ? '🔒 Nécessite un lien' : '○ Sans lien requis';
+                    document.getElementById('om-det-prix').textContent = item.prix||'';
+                    document.getElementById('om-det-desc').textContent = item.description || 'Aucune description sommaire.';
+                    document.getElementById('om-det-full').textContent = item.details || 'Aucune description détaillée.';
+                    const nb = document.getElementById('om-det-note-box');
+                    const note = item.note||'';
+                    if (note && note !== 'Non applicable') {
+                        nb.style.display='block';
+                        document.getElementById('om-det-note').textContent = note;
+                    } else {
+                        nb.style.display='none';
+                    }
+                    panel.style.display='flex';
+                    panel.scrollTop=0;
+                    // Make panel relative to .book-content
+                    const bc = document.querySelector('.book-content');
+                    if (bc) bc.style.position='relative';
+                });
+            });
+
+            // Close detail
+            const closeBtn = document.getElementById('om-close-detail');
+            if (closeBtn) closeBtn.addEventListener('click', () => {
+                const p = document.getElementById('om-detail-panel');
+                if (p) p.style.display='none';
+            });
+        }
     },
 
     /* ─────────────────── CHAPITRES ─────────────────── */
@@ -1334,52 +1497,205 @@ const Codex = {
         </div>`;
     },
 
-    renderObjetsMagiques() {
-        const items = window.MAGIC_ITEMS_DATA || [];
+    _omRareteStyle(r) {
+        const map = {
+            'Commun':     'background:#3a3a3a;color:#c0c0c0;',
+            'Peu commun': 'background:#1a3a1a;color:#7ecb7e;',
+            'Rare':       'background:#0d2040;color:#80b0e0;',
+            'Très rare':  'background:#2a1040;color:#c080e0;',
+            'Légendaire': 'background:#3a2000;color:#f0a830;',
+            'Artefact':   'background:#3a0808;color:#e06060;',
+        };
+        return map[r] || 'background:#2a2a2a;color:#aaa;';
+    },
 
-        const parType = {};
-        items.forEach(item => {
-            const t = item.type || "Autres";
-            if (!parType[t]) parType[t] = [];
-            parType[t].push(item);
+    _omNorm(s) {
+        return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    },
+
+    renderObjetsMagiques(filterLettre, filterType, filterRarete, searchQ) {
+        const items = window.MAGIC_ITEMS_DATA || [];
+        const self = this;
+
+        const CATS = {
+            'Armure':            { icon:'🛡️',  label:'Armures & Boucliers' },
+            'Arme':              { icon:'⚔️',  label:'Armes' },
+            'Anneau':            { icon:'💍',  label:'Anneaux' },
+            'Potion':            { icon:'🧪',  label:'Potions' },
+            'Baguette':          { icon:'🪄',  label:'Baguettes' },
+            'Bâton':             { icon:'🔱',  label:'Bâtons' },
+            'Sceptre':           { icon:'⚡',  label:'Sceptres' },
+            'Parchemin':         { icon:'📜',  label:'Parchemins' },
+            'Objet merveilleux': { icon:'✨',  label:'Objets merveilleux' },
+        };
+
+        const RARETE_ORDER = ['Commun','Peu commun','Rare','Très rare','Légendaire','Artefact'];
+        const RARETE_COLORS = {
+            'Commun':'#888','Peu commun':'#4a9a4a','Rare':'#3a70c0',
+            'Très rare':'#9040c0','Légendaire':'#c08020','Artefact':'#c03030',
+        };
+
+        // Filtrage
+        const norm = s => this._omNorm(s);
+        let filtered = items.filter(it => {
+            if (filterLettre && norm(it.nom)[0] !== filterLettre) return false;
+            if (filterType && it.type !== filterType) return false;
+            if (filterRarete && it.rarete !== filterRarete) return false;
+            if (searchQ) {
+                const q = norm(searchQ);
+                if (!norm(it.nom).includes(q) && !norm(it.description||'').includes(q) && !norm(it.note||'').includes(q)) return false;
+            }
+            return true;
         });
 
-        let html = `<div class="book-page">`;
+        // Lettres disponibles
+        const availLetters = new Set(items.map(it => norm(it.nom)[0]));
 
-        Object.entries(parType).forEach(([type, liste]) => {
+        /* ── INDEX ALPHABÉTIQUE ── */
+        const alphaHtml = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l => {
+            const lc = l.toLowerCase();
+            const active = filterLettre === lc;
+            const avail = availLetters.has(lc);
+            if (!avail) return `<span class="om-alpha-btn om-alpha-off">${l}</span>`;
+            return `<span class="om-alpha-btn${active?' om-alpha-active':''}" data-om-letter="${lc}">${l}</span>`;
+        }).join('');
 
-            const rareteMap = {
-                "Commun": "stat-tag",
-                "Peu commun": "stat-tag positive",
-                "Rare": "stat-tag dv",
-                "Très rare": "stat-tag warn",
-                "Légendaire": "stat-tag"
-            };
+        /* ── FILTRES TYPES ── */
+        const typeFilterHtml = [['','📚 Tous',...Object.entries(CATS).map(([k,v])=>[k,`${v.icon} ${v.label}`])]]
+            .flat().flat();
+        // Rewritten properly:
+        const typeBtns = [['','📚 Tous'], ...Object.entries(CATS).map(([k,v]) => [k, `${v.icon} ${v.label}`])]
+            .map(([k,label]) => {
+                const active = (filterType||'') === k;
+                const cnt = items.filter(it => !k || it.type===k).length;
+                return `<button class="om-type-btn${active?' active':''}" data-om-type="${k}">${label}<span class="om-cnt">${cnt}</span></button>`;
+            }).join('');
 
-            html += `<h2>${type} (${liste.length})</h2><div class="grade-grid">`;
+        /* ── FILTRES RARETÉS ── */
+        const rareteBtns = [['','Toutes raretés'], ...RARETE_ORDER.map(r=>[r,r])]
+            .map(([k,label]) => {
+                const active = (filterRarete||'') === k;
+                const col = RARETE_COLORS[k]||'var(--bk-gold2)';
+                const dot = k ? `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin-right:4px;flex-shrink:0;"></span>` : '';
+                return `<button class="om-rar-btn${active?' active':''}" data-om-rarete="${k}">${dot}${label}</button>`;
+            }).join('');
 
-            liste.forEach(item => {
+        /* ── RECHERCHE ── */
+        const searchHtml = `<div class="om-search-wrap">
+            <input class="om-search-input" id="om-search" type="text" placeholder="Rechercher un objet…" value="${searchQ||''}">
+        </div>`;
 
-                const rareteClass = rareteMap[item.rarete] || "stat-tag";
+        /* ── CONTENU PAR CATÉGORIE ── */
+        const cats = filterType ? [filterType] : Object.keys(CATS);
+        let tablesSections = '';
 
-                html += `
-                <div class="grade-card">
-                    <div class="grade-name">${item.nom}</div>
-                    <div class="grade-seuil ${rareteClass}">
-                        ${item.rarete} · ${item.prix}
-                    </div>
-                    <div class="grade-tooltip">
-                        ${item.note || "—"}
+        cats.forEach(type => {
+            const cfg = CATS[type] || { icon:'✦', label: type };
+            const catItems = filtered.filter(it => it.type === type);
+            if (!catItems.length) return;
+
+            const rows = catItems.map(it => {
+                const rs = this._omRareteStyle(it.rarete);
+                const noteText = (it.note && it.note !== 'Non applicable') ? it.note : '';
+                const hasDetail = it.description || it.details;
+                return `<tr class="om-row" data-om-nom="${(it.nom||'').replace(/"/g,'&quot;')}" style="cursor:${hasDetail?'pointer':'default'};">
+                    <td class="om-td-nom"><strong>${it.nom}</strong>${noteText?`<div style="font-size:.72rem;font-style:italic;color:rgba(30,21,9,.5);margin-top:1px;">${noteText}</div>`:''}</td>
+                    <td class="om-td-rar"><span class="om-badge" style="${rs}">${it.rarete}</span></td>
+                    <td class="om-td-lien" style="text-align:center;">${it.lien?'<span title="Nécessite un lien" style="color:var(--bk-royal);font-size:.85rem;">🔒</span>':'<span style="opacity:.25;">○</span>'}</td>
+                    <td class="om-td-prix"><span class="price-tag">${it.prix||'—'}</span></td>
+                    ${hasDetail?`<td class="om-td-detail" style="text-align:center;"><span style="color:var(--bk-gold2);font-size:.75rem;">▸ Détail</span></td>`:`<td></td>`}
+                </tr>`;
+            }).join('');
+
+            tablesSections += `
+            <div class="om-section" style="margin-bottom:20px;">
+                <div class="om-section-hdr" data-om-toggle="${type}">
+                    <span style="font-size:1.1rem;">${cfg.icon}</span>
+                    <span style="flex:1;font-family:var(--bk-font-title);font-size:.82rem;letter-spacing:.06em;">${cfg.label.toUpperCase()}</span>
+                    <span style="font-size:.7rem;opacity:.6;">${catItems.length} OBJET${catItems.length>1?'S':''}</span>
+                    <span class="om-section-arrow">▼</span>
+                </div>
+                <div class="om-section-body" id="om-body-${type.replace(/\s/g,'-')}">
+                    <table class="bk-table om-table">
+                        <thead><tr>
+                            <th>Nom de l'objet</th>
+                            <th style="width:110px;">Rareté</th>
+                            <th style="width:50px;text-align:center;">Lien</th>
+                            <th style="width:100px;">Prix</th>
+                            <th style="width:60px;"></th>
+                        </tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            </div>`;
+        });
+
+        if (!tablesSections) {
+            tablesSections = `<div style="text-align:center;padding:40px;font-style:italic;color:rgba(30,21,9,.4);">Aucun objet ne correspond aux filtres sélectionnés.</div>`;
+        }
+
+        const totalAffiche = filtered.length;
+
+        /* ── PANNEAU DÉTAIL (overlay dans le book-content) ── */
+        const detailPanel = `
+        <div class="om-detail-panel" id="om-detail-panel" style="display:none;">
+            <div class="om-detail-inner">
+                <div class="om-detail-header">
+                    <div class="om-detail-type" id="om-det-type"></div>
+                    <div class="om-detail-name" id="om-det-name"></div>
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                        <span class="om-badge" id="om-det-rarete"></span>
+                        <span id="om-det-lien" style="font-size:.72rem;color:rgba(62,32,6,.55);font-style:italic;"></span>
+                        <span class="price-tag" id="om-det-prix" style="margin-left:auto;"></span>
                     </div>
                 </div>
-                `;
-            });
+                <div class="om-detail-body">
+                    <div class="om-det-desc-short" id="om-det-desc"></div>
+                    <div style="margin-top:14px;">
+                        <div style="font-family:var(--bk-font-title);font-size:.65rem;letter-spacing:2px;color:var(--bk-royal);text-transform:uppercase;margin-bottom:8px;">Description complète</div>
+                        <div class="om-det-desc-full" id="om-det-full"></div>
+                    </div>
+                    <div class="om-det-note-box" id="om-det-note-box" style="display:none;">
+                        <strong>Note de règle</strong>
+                        <span id="om-det-note"></span>
+                    </div>
+                </div>
+                <div style="text-align:right;padding:12px 20px 16px;border-top:1px solid rgba(200,168,75,.2);">
+                    <button class="om-close-detail" id="om-close-detail">✕ Fermer</button>
+                </div>
+            </div>
+        </div>`;
 
-            html += `</div>`;
-        });
+        return `<div class="book-page om-page" id="om-display-area" data-om-letter="${filterLettre||''}" data-om-type="${filterType||''}" data-om-rarete="${filterRarete||''}" data-om-search="${searchQ||''}">
+        <h1 class="page-title cinzel">⚗️ Objets Magiques</h1>
+        <div class="ornament-center">❧ ✦ ❧</div>
+        <div class="book-intro-box">Ces archives recensent ${items.length} objets magiques documentés par les arcanistes de la Table Ronde — armures runiques, potions alchimiques, anneaux enchantés et artefacts légendaires. <em>Cliquez sur un objet pour afficher sa description complète.</em><cite>— Maître Aldric, Archiviste Royal des Arcanes</cite></div>
 
-        html += `</div>`;
-        return html;
+        ${detailPanel}
+
+        <div class="om-sidebar">
+            <div class="om-sidebar-section">
+                <div class="om-sidebar-title">Index alphabétique</div>
+                <div class="om-alpha-bar">${alphaHtml}</div>
+            </div>
+            <div class="om-sidebar-section">
+                <div class="om-sidebar-title">Catégorie</div>
+                <div class="om-type-btns">${typeBtns}</div>
+            </div>
+            <div class="om-sidebar-section">
+                <div class="om-sidebar-title">Rareté</div>
+                <div class="om-rar-btns">${rareteBtns}</div>
+            </div>
+        </div>
+
+        <div class="om-main">
+            <div class="om-topbar">
+                ${searchHtml}
+                <div class="om-result-count">${totalAffiche} objet${totalAffiche>1?'s':''} affichés</div>
+            </div>
+            ${tablesSections}
+        </div>
+        </div>`;
     },
 };
 document.addEventListener('DOMContentLoaded', () => {
