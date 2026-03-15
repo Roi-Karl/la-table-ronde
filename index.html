@@ -7811,9 +7811,59 @@
         { id:'objets',     label:'💎 Objets',      data: () => window.MATERIEL_OBJETS },
         { id:'montures',   label:'🐎 Montures',    data: () => window.MATERIEL_MONTURES },
         { id:'vehicules',  label:'⚓ Véhicules',   data: () => window.MATERIEL_VEHICULES },
-        { id:'potions',    label:'🧪 Potions',     data: () => null },
-        { id:'parchemins', label:'📜 Parchemins',  data: () => null },
-        { id:'auberge',    label:'🍺 Auberge',     data: () => null },
+        { id:'potions',    label:'🧪 Potions',     data: () => {
+            const src = window.MAGIC_ITEMS_DATA || [];
+            const obj = {};
+            src.filter(it => it.type === 'Potion').forEach(it => {
+                obj[it.nom] = {
+                    icone: '🧪',
+                    categorie: it.rarete || 'Potion',
+                    prix: it.prix || '—',
+                    description: it.description || '',
+                    details: it.details || '',
+                    rarete: it.rarete,
+                    lien: it.lien,
+                    _magique: true,
+                };
+            });
+            return Object.keys(obj).length ? obj : null;
+        }},
+        { id:'parchemins', label:'📜 Parchemins',  data: () => {
+            const src = window.MAGIC_ITEMS_DATA || [];
+            const obj = {};
+            src.filter(it => it.type === 'Parchemin').forEach(it => {
+                obj[it.nom] = {
+                    icone: '📜',
+                    categorie: it.rarete || 'Parchemin',
+                    prix: it.prix || '—',
+                    description: it.description || '',
+                    details: it.details || '',
+                    rarete: it.rarete,
+                    lien: it.lien,
+                    _magique: true,
+                };
+            });
+            return Object.keys(obj).length ? obj : null;
+        }},
+        { id:'auberge',    label:'🍺 Auberge',     data: () => ({
+            'Lit en dortoir':             { icone:'🛏️', categorie:'Hébergement',  prix:'7 pc',   description:'Salle partagée avec inconnus. Peu confortable mais économique.', _service:true },
+            'Chambre simple':             { icone:'🛏️', categorie:'Hébergement',  prix:'5 pa',   description:'Chambre individuelle, lit, chandelle, porte verrouillable.', _service:true },
+            'Chambre confortable':        { icone:'🏨', categorie:'Hébergement',  prix:'8 pa',   description:'Lit de qualité, table, bassin d\'eau chaude. Repas livrable.', _service:true },
+            'Suite privée':               { icone:'🏰', categorie:'Hébergement',  prix:'2 po',   description:'Plusieurs pièces, serviteurs, bain chaud sur demande.', _service:true },
+            'Repas frugal':               { icone:'🥣', categorie:'Restauration', prix:'3 pc',   description:'Soupe épaisse, pain rassis, eau ou petite bière.', _service:true },
+            'Repas ordinaire':            { icone:'🍖', categorie:'Restauration', prix:'1 pa',   description:'Ragoût, légumes, pain frais, chopine de bière.', _service:true },
+            'Repas de qualité':           { icone:'🍗', categorie:'Restauration', prix:'5 pa',   description:'Viande rôtie, légumes de saison, vin correct.', _service:true },
+            'Repas de banquet':           { icone:'🍽️', categorie:'Restauration', prix:'10 po',  description:'Table d\'apparat, plusieurs plats, vin millésimé, service.', _service:true },
+            'Bain chaud':                 { icone:'🛁', categorie:'Services',     prix:'3 pa',   description:'Cuve de bois, eau chaude parfumée aux herbes.', _service:true },
+            'Blanchisserie':              { icone:'👕', categorie:'Services',     prix:'1 pa',   description:'Nettoyage d\'un ensemble de vêtements ou équipement léger.', _service:true },
+            'Soins de base':              { icone:'💊', categorie:'Services',     prix:'5 pa',   description:'Pansements et herbes médicinales. Récupère 1d4 PV sans dépenser de DV.', _service:true },
+            'Garde du cheval (nuit)':     { icone:'🐴', categorie:'Services',     prix:'5 pa',   description:'Stalle, foin, eau, surveillance pour une monture.', _service:true },
+            'Service de garde (nuit)':    { icone:'⚔️', categorie:'Services',     prix:'2 pa',   description:'Un garde armé surveille votre chambre ou campement.', _service:true },
+            'Passage par bac':            { icone:'⛵', categorie:'Transport',    prix:'1 pc',   description:'Traversée d\'une rivière ou bras de mer court.', _service:true },
+            'Messager (local)':           { icone:'📨', categorie:'Transport',    prix:'2 pc',   description:'Livraison d\'un message dans la même ville.', _service:true },
+            'Messager (longue distance)': { icone:'📜', categorie:'Transport',    prix:'2 pa',   description:'Transport d\'un parchemin entre agglomérations (par lieue).', _service:true },
+            'Location de cheval (jour)':  { icone:'🐎', categorie:'Transport',    prix:'3 pa',   description:'Monture de selle pour la journée. À rendre en bon état.', _service:true },
+        }) },
     ];
     let _echoppeOngletActif = 'armes';
 
@@ -7874,6 +7924,13 @@
         if (ongletId === 'armures') return `CA : ${item.ca||'—'} · ${item.categorie||''} · ${item.poids||''}`;
         if (ongletId === 'montures') return `Vitesse : ${item.vitesse||'—'} · Charge : ${item.charge_max||'—'}`;
         if (ongletId === 'vehicules') return `${item.categorie||''} · ${item.vitesse||''}`;
+        if ((ongletId === 'potions' || ongletId === 'parchemins') && item._magique) {
+            const rc = { 'Commun':'#777','Peu commun':'#2e7d32','Rare':'#1565c0','Très rare':'#6a1b9a','Légendaire':'#e65100','Artefact':'#b71c1c' };
+            const col = rc[item.rarete] || '#777';
+            const lienBadge = item.lien
+                ? `&nbsp;<span style="font-size:0.65rem;color:#8b1a1a;vertical-align:middle;">🔒 Lien</span>` : '';
+            return `<span style="display:inline-block;padding:0 6px;border-radius:2px;border:1px solid ${col};color:${col};font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;vertical-align:middle;">${item.rarete||''}</span>${lienBadge}`;
+        }
         if (item.categorie) return item.categorie;
         return '';
     }
@@ -7914,6 +7971,9 @@
             return;
         }
 
+        // Compteur pour les IDs uniques du toggle "Lire la suite"
+        let _omDetailIdx = 0;
+
         contenu.innerHTML = Object.entries(groupes).map(([cat, items]) => `
             <div class="echoppe-categorie-titre">${cat}</div>
             ${items.map(([nom, item]) => {
@@ -7929,7 +7989,31 @@
                 const badgeInv = qteInv > 0
                     ? `<span class="echoppe-badge-qte" title="Vous en possédez ${qteInv}">×${qteInv}</span>` : '';
 
-                const actionsAchat = estConnecte && prixPc ? `
+                // ── Bouton "Lire la suite" pour potions/parchemins ──
+                let detailHtml = '';
+                if (item._magique && item.details) {
+                    const did = 'om-det-' + (++_omDetailIdx);
+                    detailHtml = `<span class="echoppe-detail-toggle" onclick="
+                        var b=document.getElementById('${did}');
+                        var open=b.style.display==='block';
+                        b.style.display=open?'none':'block';
+                        this.textContent=open?'▸ Lire la suite':'▴ Réduire';
+                    " style="cursor:pointer;font-size:0.68rem;color:var(--rouge-blason);font-family:'Cinzel',serif;border:1px solid rgba(122,0,0,0.2);padding:1px 7px;border-radius:2px;margin-top:3px;display:inline-block;">▸ Lire la suite</span>
+                    <div id="${did}" style="display:none;margin-top:6px;padding:8px 10px;background:rgba(255,255,255,0.3);border-left:2px solid rgba(200,168,75,0.5);font-size:0.75rem;font-family:'Lora',serif;line-height:1.7;color:#3a2808;border-radius:0 2px 2px 0;">${item.details}</div>`;
+                }
+
+                // ── Services Auberge : paiement direct sans inventaire ──
+                const estService = !!item._service;
+
+                const actionsAchat = estService
+                    ? (estConnecte && prixPc
+                        ? `<button class="echoppe-btn-acheter" data-nom="${nomAttr}" data-onglet="${id}" data-icone="${icone}" data-prix="${prixStr}" data-key="${key}" data-service="1"
+                               style="background:linear-gradient(135deg,#5a7a2a,#3d5a1a);"
+                               title="Payer ce service (déduit du trésor, sans ajout à l'inventaire)">
+                               💳 Payer
+                           </button>`
+                        : (!estConnecte ? `<span style="font-family:'Lora',serif;font-style:italic;font-size:0.62rem;color:#9a7a50;">Connexion requise</span>` : ''))
+                    : (estConnecte && prixPc ? `
                     <div class="echoppe-qte-wrap">
                         <button class="echoppe-qte-btn" onclick="this.nextElementSibling.stepDown();this.nextElementSibling.dispatchEvent(new Event('change'))">−</button>
                         <input type="number" class="echoppe-qte-input" min="1" max="99" value="${_echoppeQte[key]}"
@@ -7938,9 +8022,9 @@
                     </div>
                     <button class="echoppe-btn-acheter" data-nom="${nomAttr}" data-onglet="${id}" data-icone="${icone}" data-prix="${prixStr}" data-key="${key}">
                         🛒 Acheter
-                    </button>` : (!estConnecte ? `<span style="font-family:'Lora',serif;font-style:italic;font-size:0.62rem;color:#9a7a50;">Connexion requise</span>` : '');
+                    </button>` : (!estConnecte ? `<span style="font-family:'Lora',serif;font-style:italic;font-size:0.62rem;color:#9a7a50;">Connexion requise</span>` : ''));
 
-                const actionVente = estConnecte && qteInv > 0 ? `
+                const actionVente = (!estService && estConnecte && qteInv > 0) ? `
                     <button class="echoppe-btn-vendre" data-nom="${nomAttr}">
                         💰 Vendre (${_formaterPc(Math.floor((prixPc||0)*0.5))})
                     </button>` : '';
@@ -7951,6 +8035,7 @@
                         <div class="echoppe-item-nom">${nom}</div>
                         ${stats ? `<div class="echoppe-item-stats">${stats}</div>` : ''}
                         <div class="echoppe-item-desc">${item.description||''}</div>
+                        ${detailHtml}
                     </div>
                     <div class="echoppe-item-prix">
                         <div>${prixStr}</div>
@@ -7962,6 +8047,25 @@
                 </div>`;
             }).join('')}
         `).join('');
+
+        // ── Gérer les achats des services (data-service="1") ──
+        // Les services déduisent du trésor mais n'ajoutent PAS à l'inventaire
+        contenu.querySelectorAll('.echoppe-btn-acheter[data-service="1"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const user = window._firebaseAuth?.currentUser;
+                if (!user) { _afficherToastEchoppe('⚠️ Connexion requise.'); return; }
+                const nomS   = btn.dataset.nom;
+                const prixS  = btn.dataset.prix;
+                const iconeS = btn.dataset.icone || '🍺';
+                const pcS    = _parsePrixEnPc(prixS);
+                if (!pcS) { _afficherToastEchoppe('⚠️ Prix invalide.'); return; }
+                if (!_deduireDuTresor(pcS)) {
+                    _afficherToastEchoppe('❌ Trésor insuffisant !'); return;
+                }
+                _syncBarreTresorEchoppe();
+                _afficherToastEchoppe(`${iconeS} Service réglé : ${nomS} (−${prixS})`);
+            });
+        });
     }
     </script>
     <!-- ─── TOOLTIP PORTAL (position:fixed, z-index max, jamais clippé) ── -->
