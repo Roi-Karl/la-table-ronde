@@ -1389,11 +1389,7 @@ const Codex = {
         html += `</div>`;
         return html;
     },
-}
-   
- init() {
-        console.log("Codex init");
-    }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
@@ -1401,6 +1397,5 @@ document.addEventListener('DOMContentLoaded', () => {
     window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
 }
     Codex.init();
-}),
-}
+});
 
