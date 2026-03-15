@@ -93,14 +93,16 @@ const Codex = {
 
 // Lancement automatique une fois le DOM prêt
 document.addEventListener('DOMContentLoaded', () => {
-    // On expose les données globales si nécessaire
-    window.SORTS_PAR_CLASSE = window.SORTS_PAR_CLASSE || SORTS_PAR_CLASSE;
+    // Plus besoin de ça → window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
+    // → car SORTS_PAR_CLASSE est déjà déclaré en global plus haut
 
-    // Sécurité supplémentaire pour MAGIC_ITEMS_DATA
+    // Garde juste la sécurité pour MAGIC_ITEMS_DATA si tu l'utilises vraiment
     if (typeof MAGIC_ITEMS_DATA !== 'undefined') {
         window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
     }
 
+    Codex.init();
+});
     // Démarrage
     if (typeof Codex !== 'undefined' && typeof Codex.init === 'function') {
         Codex.init();
