@@ -557,8 +557,8 @@ const Codex = {
         close.onclick = () => { document.getElementById('player-book-modal').style.display='none'; };
         document.getElementById('player-book-modal').addEventListener('click', e=>{
             if (e.target===e.currentTarget) document.getElementById('player-book-modal').style.display='none';
-    }),
-
+    })
+    }
     // Tu peux ajouter d'autres méthodes du Codex ici
     
 
@@ -599,16 +599,17 @@ const Codex = {
                 e.stopPropagation();
                 self.loadChapter(li.dataset.id);
             });
-        }),
-
+        });
+        },
+                        //////////////////////////////////////////
 
     setActiveLink(id) {
         document.querySelectorAll('#book-toc li').forEach(li=>li.classList.remove('active'));
         document.querySelectorAll(`#book-toc li[data-id="${id}"]`).forEach(li=>{
             li.classList.add('active');
             const p=li.closest('.toc-sub')?.closest('li'); if(p) p.classList.add('open');
-        });
-    }
+        }),
+    },
 
     loadChapter(id) {
         this.setActiveLink(id);
@@ -633,7 +634,7 @@ const Codex = {
             html = map[id] ? map[id]() : `<div class="book-page"><p>Chapitre introuvable.</p></div>`;
         }
         d.innerHTML=html; d.scrollTop=0; this.bindEvents(id);
-    }
+    },
 
     bindEvents(id) {
         document.querySelectorAll('.card-desc-toggle').forEach(btn=>{
@@ -1340,63 +1341,66 @@ const Codex = {
         ${cartes}
         </div>`;
     },
-renderObjetsMagiques() {
-    const items = window.MAGIC_ITEMS_DATA || [];
 
-    const parType = {};
-    items.forEach(item => {
-        const t = item.type || "Autres";
-        if (!parType[t]) parType[t] = [];
-        parType[t].push(item);
-    });
+    renderObjetsMagiques() {
+        const items = window.MAGIC_ITEMS_DATA || [];
 
-    let html = `<div class="book-page">`;
+        const parType = {};
+        items.forEach(item => {
+            const t = item.type || "Autres";
+            if (!parType[t]) parType[t] = [];
+            parType[t].push(item);
+        });
 
-    Object.entries(parType).forEach(([type, liste]) => {
+        let html = `<div class="book-page">`;
 
-        const rareteMap = {
-            "Commun": "stat-tag",
-            "Peu commun": "stat-tag positive",
-            "Rare": "stat-tag dv",
-            "Très rare": "stat-tag warn",
-            "Légendaire": "stat-tag"
-        };
+        Object.entries(parType).forEach(([type, liste]) => {
 
-        html += `<h2>${type} (${liste.length})</h2><div class="grade-grid">`;
+            const rareteMap = {
+                "Commun": "stat-tag",
+                "Peu commun": "stat-tag positive",
+                "Rare": "stat-tag dv",
+                "Très rare": "stat-tag warn",
+                "Légendaire": "stat-tag"
+            };
 
-        liste.forEach(item => {
+            html += `<h2>${type} (${liste.length})</h2><div class="grade-grid">`;
 
-            const rareteClass = rareteMap[item.rarete] || "stat-tag";
+            liste.forEach(item => {
 
-            html += `
-            <div class="grade-card">
-                <div class="grade-name">${item.nom}</div>
-                <div class="grade-seuil ${rareteClass}">
-                    ${item.rarete} · ${item.prix}
+                const rareteClass = rareteMap[item.rarete] || "stat-tag";
+
+                html += `
+                <div class="grade-card">
+                    <div class="grade-name">${item.nom}</div>
+                    <div class="grade-seuil ${rareteClass}">
+                        ${item.rarete} · ${item.prix}
+                    </div>
+                    <div class="grade-tooltip">
+                        ${item.note || "—"}
+                    </div>
                 </div>
-                <div class="grade-tooltip">
-                    ${item.note || "—"}
-                </div>
-            </div>
-            `;
+                `;
+            });
+
+            html += `</div>`;
         });
 
         html += `</div>`;
-    });
-
-    html += `</div>`;
-    return html;
-};---------------------------------------------------------------------
-
-        
+        return html;
+    },
+}
+   
  init() {
         console.log("Codex init");
     }
-};
+
 document.addEventListener('DOMContentLoaded', () => {
-  //  window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
-   //if (typeof window !== 'undefined') {
-    //window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
+    window.SORTS_PAR_CLASSE = SORTS_PAR_CLASSE;
+        if (typeof window !== 'undefined') {
+    window.MAGIC_ITEMS_DATA = MAGIC_ITEMS_DATA;
 }
     Codex.init();
-});
+}),
+}
+
